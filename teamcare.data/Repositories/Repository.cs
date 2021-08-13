@@ -18,12 +18,12 @@ namespace teamcare.data.Repositories
 
         public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            return await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(i => i .Id == id);
         }
 
         public virtual async Task<List<T>> ListAllAsync()
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
         }
 
 
@@ -43,7 +43,7 @@ namespace teamcare.data.Repositories
 
         public virtual async Task<T> UpdateAsync(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Detached;
+            _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
             return entity;
         }
