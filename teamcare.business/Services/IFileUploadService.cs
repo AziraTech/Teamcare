@@ -9,5 +9,7 @@ namespace teamcare.business.Services
 	public interface IFileUploadService : IService<FileUploadModel>
     {
         Task<FileUploadModel> MoveBlobAsync(FileUploadModel model);
+
+        Task<byte[]> GetBlobAsync(FileUploadModel model);
     }
 }

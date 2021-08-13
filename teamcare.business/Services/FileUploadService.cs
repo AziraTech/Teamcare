@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -113,5 +115,43 @@ namespace teamcare.business.Services
 
             return null;
         }
+
+       
+        public async Task<byte[]> GetBlobAsync(FileUploadModel model)
+        {
+            try
+            {
+                var destinationFolder = string.IsNullOrWhiteSpace(model.DestinationFolder) ? string.Empty : $"{model.DestinationFolder}/";
+
+                BlobServiceClient blobServiceClient = new BlobServiceClient(_azureStorageOptions.ConnectionString);
+                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(model.BlobName.Split("/").Last());
+                BlobClient blob = containerClient.GetBlobClient(model.BlobName.Split("/").Last());
+                BlobDownloadInfo blobdata = await blob.DownloadAsync();                
+                if (await blob.ExistsAsync())
+                {  
+                    
+                    const string fileName = "Test.jpg";
+                    // Create random data to write to the file.
+                    byte[] dataArray = new byte[10000000];
+                    new Random().NextBytes(dataArray);
+
+                    using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+                    {
+                        await blobdata.Content.CopyToAsync(fileStream);
+                        for (int i = 0; i < dataArray.Length; i++) { fileStream.WriteByte(dataArray[i]); }
+                        fileStream.Seek(0, SeekOrigin.Begin);
+                        for (int i = 0; i < fileStream.Length; i++) { if (dataArray[i] != fileStream.ReadByte()) { } }
+                    }
+                    return dataArray;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
     }
+
 }

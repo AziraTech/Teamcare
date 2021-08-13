@@ -90,5 +90,20 @@ namespace teamcare.web.app.Controllers
 			}
 			return Json(1);
 		}
+
+		public async Task<FileContentResult> SomeImage(string id)
+		{
+			var docList = await _documentUploadService.ListAllAsync();
+			var imageByte = docList.ToArray().Where(x => x.ServiceUserId == new Guid(id)).ToArray()[0];
+			var relocateFile = await _fileUploadService.GetBlobAsync(new FileUploadModel
+			{
+				BlobName = imageByte.BlobName,
+				DestinationFolder = id,				
+				FileName = "Test.jpg"
+			});
+			byte[] bytes = relocateFile; // imageByte. DocumentBytes;
+			return File(bytes, "image/*");
+		}
+
 	}
 }
