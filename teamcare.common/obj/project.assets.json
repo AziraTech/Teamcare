@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.common\\teamcare.common.csproj",
+      "projectUniqueName": "D:\\AziraTech Projects\\Teamcare\\teamcare.common\\teamcare.common.csproj",
       "projectName": "teamcare.common",
-      "projectPath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.common\\teamcare.common.csproj",
+      "projectPath": "D:\\AziraTech Projects\\Teamcare\\teamcare.common\\teamcare.common.csproj",
       "packagesPath": "C:\\Users\\NK\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.common\\obj\\",
+      "outputPath": "D:\\AziraTech Projects\\Teamcare\\teamcare.common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\NK\\AppData\\Roaming\\NuGet\\NuGet.Config",

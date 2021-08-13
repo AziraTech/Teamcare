@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dmWP1a/VWdYPO3+JUGwqEeEhuMZWOZwZK7hW8cIvTgjc3+Ws0/AptgL5LKhs6NW+F9iyglvQS0WOJzZ25ofgLg==",
+  "dgSpecHash": "tsQmDq7vegOi0Sxwf9se2CCxy3XuK5DKbD/0zpQVGYNaq36mP+QzXSn/yMn0Q0agZCmjYZqu7LWD33asPZg2rA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.business\\teamcare.business.csproj",
+  "projectFilePath": "D:\\AziraTech Projects\\Teamcare\\teamcare.business\\teamcare.business.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\NK\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\NK\\.nuget\\packages\\azure.core\\1.15.0\\azure.core.1.15.0.nupkg.sha512",

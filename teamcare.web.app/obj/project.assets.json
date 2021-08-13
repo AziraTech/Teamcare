@@ -5469,11 +5469,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.web.app\\teamcare.web.app.csproj",
+      "projectUniqueName": "D:\\AziraTech Projects\\Teamcare\\teamcare.web.app\\teamcare.web.app.csproj",
       "projectName": "teamcare.web.app",
-      "projectPath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.web.app\\teamcare.web.app.csproj",
+      "projectPath": "D:\\AziraTech Projects\\Teamcare\\teamcare.web.app\\teamcare.web.app.csproj",
       "packagesPath": "C:\\Users\\NK\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.web.app\\obj\\",
+      "outputPath": "D:\\AziraTech Projects\\Teamcare\\teamcare.web.app\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\NK\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5490,14 +5490,14 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.business\\teamcare.business.csproj": {
-              "projectPath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.business\\teamcare.business.csproj"
+            "D:\\AziraTech Projects\\Teamcare\\teamcare.business\\teamcare.business.csproj": {
+              "projectPath": "D:\\AziraTech Projects\\Teamcare\\teamcare.business\\teamcare.business.csproj"
             },
-            "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.common\\teamcare.common.csproj": {
-              "projectPath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.common\\teamcare.common.csproj"
+            "D:\\AziraTech Projects\\Teamcare\\teamcare.common\\teamcare.common.csproj": {
+              "projectPath": "D:\\AziraTech Projects\\Teamcare\\teamcare.common\\teamcare.common.csproj"
             },
-            "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.data\\teamcare.data.csproj": {
-              "projectPath": "C:\\Users\\NK\\source\\repos\\teamcare.web.app\\src\\teamcare.data\\teamcare.data.csproj"
+            "D:\\AziraTech Projects\\Teamcare\\teamcare.data\\teamcare.data.csproj": {
+              "projectPath": "D:\\AziraTech Projects\\Teamcare\\teamcare.data\\teamcare.data.csproj"
             }
           }
         }
