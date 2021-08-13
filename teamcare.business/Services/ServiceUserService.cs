@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using teamcare.business.Models;
+using teamcare.data.Entities;
+using teamcare.data.Repositories;
+
+namespace teamcare.business.Services
+{
+    public class ServiceUserService : BaseService, IServiceUserService
+    {
+        private readonly IMapper _mapper;
+        private readonly IServiceUserRepository _serviceUserRepository;
+        private readonly IAuditService _auditService;
+
+        public ServiceUserService(IAuditService auditService, IMapper mapper,
+            IServiceUserRepository serviceUserRepository) : base(auditService)
+        {
+            _mapper = mapper;
+            _serviceUserRepository = serviceUserRepository;
+            _auditService = auditService;
+        }
+
+        public async Task<ServiceUserModel> GetByIdAsync(Guid id)
+        {
+            var serviceUser = await _serviceUserRepository.GetByIdAsync(id);
+            return _mapper.Map<ServiceUser, ServiceUserModel>(serviceUser);
+        }
+
+        public async Task<IEnumerable<ServiceUserModel>> ListAllAsync()
+        {
+            await RecordAuditEntry(new AuditModel { Action = "GetAllUsers", Details = "service call for get user", UserReference = "" });
+
+            var listUsers = await _serviceUserRepository.ListAllAsync();
+            return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
+        }
+
+        public async Task<ServiceUserModel> AddAsync(ServiceUserModel model)
+        {
+
+            var result = _mapper.Map<ServiceUserModel, ServiceUser>(model);
+            var user = await _serviceUserRepository.AddAsync(result);
+            return _mapper.Map<ServiceUser, ServiceUserModel>(user);
+        }
+
+
+
+        public Task<ServiceUserModel> UpdateAsync(ServiceUserModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(ServiceUserModel model)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

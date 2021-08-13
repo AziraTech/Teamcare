@@ -1,0 +1,15 @@
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\bin\Debug\netcoreapp3.1\teamcare.data.deps.json
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\bin\Debug\netcoreapp3.1\teamcare.data.runtimeconfig.json
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\bin\Debug\netcoreapp3.1\teamcare.data.runtimeconfig.dev.json
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\bin\Debug\netcoreapp3.1\teamcare.data.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\bin\Debug\netcoreapp3.1\teamcare.data.pdb
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\bin\Debug\netcoreapp3.1\teamcare.common.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\bin\Debug\netcoreapp3.1\teamcare.common.pdb
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.csproj.AssemblyReference.cache
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.AssemblyInfoInputs.cache
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.AssemblyInfo.cs
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.csproj.CoreCompileInputs.cache
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.csproj.CopyComplete
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.pdb
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.data\obj\Debug\netcoreapp3.1\teamcare.data.genruntimeconfig.cache

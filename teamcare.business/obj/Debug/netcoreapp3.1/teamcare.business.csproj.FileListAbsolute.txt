@@ -1,0 +1,14 @@
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\bin\Debug\netcoreapp3.1\teamcare.business.deps.json
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\bin\Debug\netcoreapp3.1\teamcare.business.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\bin\Debug\netcoreapp3.1\teamcare.business.pdb
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\bin\Debug\netcoreapp3.1\teamcare.common.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\bin\Debug\netcoreapp3.1\teamcare.data.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\bin\Debug\netcoreapp3.1\teamcare.data.pdb
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\bin\Debug\netcoreapp3.1\teamcare.common.pdb
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\obj\Debug\netcoreapp3.1\teamcare.business.csproj.AssemblyReference.cache
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\obj\Debug\netcoreapp3.1\teamcare.business.AssemblyInfoInputs.cache
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\obj\Debug\netcoreapp3.1\teamcare.business.AssemblyInfo.cs
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\obj\Debug\netcoreapp3.1\teamcare.business.csproj.CoreCompileInputs.cache
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\obj\Debug\netcoreapp3.1\teamcare.business.csproj.CopyComplete
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\obj\Debug\netcoreapp3.1\teamcare.business.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.business\obj\Debug\netcoreapp3.1\teamcare.business.pdb

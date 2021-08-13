@@ -1,0 +1,29 @@
+﻿@model List<teamcare.web.app.ViewModels.BreadcrumbItem>
+<!--begin::Breadcrumb-->
+<ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        var isLastItem = i == Model.Count - 1;
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-white opacity-75">
+            @if (!isLastItem)
+            {
+                <a href="@Model[i].Url" class="text-white text-hover-primary">@Model[i].Name</a>
+            }
+            else
+            {
+                @Model[i].Name
+            }
+        </li>
+        <!--end::Item-->
+        @if (!isLastItem)
+        {
+            <!--begin::Item-->
+            <li class="breadcrumb-item">
+                <span class="bullet bg-white opacity-75 w-5px h-2px"></span>
+            </li>
+            <!--end::Item-->
+        }
+    }
+</ul>
+<!--end::Breadcrumb-->
