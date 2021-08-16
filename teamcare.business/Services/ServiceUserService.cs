@@ -25,6 +25,8 @@ namespace teamcare.business.Services
         public async Task<ServiceUserModel> GetByIdAsync(Guid id)
         {
             var serviceUser = await _serviceUserRepository.GetByIdAsync(id);
+            var residence = serviceUser.Residence;
+            var documents = serviceUser.DocumentUploads;
             return _mapper.Map<ServiceUser, ServiceUserModel>(serviceUser);
         }
 
@@ -46,9 +48,11 @@ namespace teamcare.business.Services
 
 
 
-        public Task<ServiceUserModel> UpdateAsync(ServiceUserModel model)
+        public async Task<ServiceUserModel> UpdateAsync(ServiceUserModel model)
         {
-            throw new NotImplementedException();
+            var result = _mapper.Map<ServiceUserModel, ServiceUser>(model);
+            var serviceUser = await _serviceUserRepository.UpdateAsync(result);
+            return _mapper.Map<ServiceUser, ServiceUserModel>(serviceUser);
         }
 
         public Task DeleteAsync(ServiceUserModel model)

@@ -2,7 +2,6 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,10 +46,16 @@ namespace teamcare.business.Services
             try
             {
                 var containerClient = new BlobContainerClient(_azureStorageOptions.ConnectionString, _azureStorageOptions.Container);
+                
                 await containerClient.CreateIfNotExistsAsync();
                 model.BlobName ??= Guid.NewGuid().ToString();
-                var blobName = $"/{FolderNames.Temporary}/{model.BlobName}";
+                var fileExtension = Path.GetExtension(model.FileName);
+                var blobName = $"/{FolderNames.Temporary}/{model.BlobName}{fileExtension}";
                 var uploadResponse = await containerClient.UploadBlobAsync(blobName, BinaryData.FromBytes(model.DocumentBytes));
+
+                var blobClient = containerClient.GetBlobClient(blobName);
+                var blobHttpHeaders = new BlobHttpHeaders { ContentType = model.ContentType };
+                blobClient.SetHttpHeaders(blobHttpHeaders);
 
                 var document = await _documentUploadRepository.AddAsync(new DocumentUpload
                 {
@@ -58,7 +63,7 @@ namespace teamcare.business.Services
                     BlobName = blobName,
                     FileName = model.FileName,
                     IsTemporary = model.IsTemporary,
-                    FileExtension = Path.GetExtension(model.FileName),
+                    FileExtension = fileExtension,
                     ContentType = model.ContentType
                 });
 
@@ -116,7 +121,6 @@ namespace teamcare.business.Services
             return null;
         }
 
-       
         public async Task<byte[]> GetBlobAsync(FileUploadModel model)
         {
             try
@@ -125,17 +129,15 @@ namespace teamcare.business.Services
 
                 BlobServiceClient blobServiceClient = new BlobServiceClient(_azureStorageOptions.ConnectionString);
                 BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(model.BlobName.Split("/").Last());
-                BlobClient blob = containerClient.GetBlobClient(model.BlobName.Split("/").Last());
-                BlobDownloadInfo blobdata = await blob.DownloadAsync();                
+                BlobClient blob = containerClient.GetBlobClient(model.BlobName);
                 if (await blob.ExistsAsync())
-                {  
-                    
-                    const string fileName = "Test.jpg";
+                {
+                    BlobDownloadInfo blobdata = await blob.DownloadAsync();
                     // Create random data to write to the file.
                     byte[] dataArray = new byte[10000000];
                     new Random().NextBytes(dataArray);
 
-                    using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+                    using (FileStream fileStream = new FileStream(model.FileName, FileMode.Create))
                     {
                         await blobdata.Content.CopyToAsync(fileStream);
                         for (int i = 0; i < dataArray.Length; i++) { fileStream.WriteByte(dataArray[i]); }
@@ -153,5 +155,4 @@ namespace teamcare.business.Services
             return null;
         }
     }
-
 }

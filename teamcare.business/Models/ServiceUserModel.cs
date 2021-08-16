@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace teamcare.business.Models
 {
@@ -25,5 +26,8 @@ namespace teamcare.business.Models
         public string RelationshipToPerson { get; set; }
         public string Address { get; set; }
         public string ContactDetails { get; set; }
+
+        public ResidenceModel Residence { get; set; }
+        public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
     }
 }
