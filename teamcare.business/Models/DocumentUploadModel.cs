@@ -15,7 +15,7 @@ namespace teamcare.business.Models
         public string BlobName { get; set; }
         public string FileName { get; set; }
 
-        public string DocumentType { get; set; }
+        public int DocumentType { get; set; }
         public string ContentType { get; set; }
 
         public string DocumentSubtype { get; set; }

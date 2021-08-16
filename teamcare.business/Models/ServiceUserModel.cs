@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using teamcare.common.Enumerations;
 
 namespace teamcare.business.Models
 {
@@ -29,5 +31,7 @@ namespace teamcare.business.Models
 
         public ResidenceModel Residence { get; set; }
         public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
+
+        public DocumentUploadModel ProfilePhoto => DocumentUploads.FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
     }
 }

@@ -28,7 +28,7 @@ namespace teamcare.data.Entities.Documents
         public string BlobName { get; set; }
 
         [Column("document_type")]
-        public string DocumentType { get; set; }
+        public int DocumentType { get; set; }
 
         [Column("content_type")]
         public string ContentType { get; set; }

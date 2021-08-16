@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using teamcare.business.Models;
+using teamcare.common.Configuration;
 using teamcare.data.Entities;
 using teamcare.data.Repositories;
 
@@ -13,13 +15,16 @@ namespace teamcare.business.Services
         private readonly IMapper _mapper;
         private readonly IServiceUserRepository _serviceUserRepository;
         private readonly IAuditService _auditService;
+        private readonly AzureStorageSettings _azureStorageOptions;
 
         public ServiceUserService(IAuditService auditService, IMapper mapper,
-            IServiceUserRepository serviceUserRepository) : base(auditService)
+            IServiceUserRepository serviceUserRepository,
+            IOptions<AzureStorageSettings> azureStorageOptions) : base(auditService)
         {
             _mapper = mapper;
             _serviceUserRepository = serviceUserRepository;
             _auditService = auditService;
+            _azureStorageOptions = azureStorageOptions.Value;
         }
 
         public async Task<ServiceUserModel> GetByIdAsync(Guid id)
