@@ -39,17 +39,16 @@ namespace teamcare.web.app.Controllers
 				new BreadcrumbItem(PageTitles.ServiceUsers, string.Empty),
 			});
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-			var listOfUser = await _serviceUserService.ListAllAsync();			
-			listOfUser = _serviceUserService.ListAllSortedFiltered(0, null, (List<ServiceUserModel>)listOfUser);
-
-			var  distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray()
-								.Distinct().OrderBy(y => y.ServiceUserName).ToList();
-			ViewBag.DistinctUserNames = new SelectList(distinctArray, "ServiceUserName", "ServiceUserName");
+			
+			var listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
 
 			var listOfResidence = await _residenceService.ListAllAsync();
 			ViewBag.ListOfResidence = listOfResidence.ToArray();
-			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id, ResidenceName = a.Name })
-				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
+			var distinctResidence = listOfResidence.Select(x => new
+			{
+				ResidenceID = x.Id,
+				ResidenceName = x.Name
+			}).OrderBy(y => y.ResidenceName).ToList();
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
 			return View(listOfUser);
 		}
@@ -65,20 +64,20 @@ namespace teamcare.web.app.Controllers
 		}
 
 		public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
-        {
+		{
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-			var listOfUser = await _serviceUserService.ListAllAsync();
+			
 			//Sorting List
-			listOfUser = _serviceUserService.ListAllSortedFiltered(sortBy, filterBy, (List<ServiceUserModel>)listOfUser);
-			//Distinct DropDown
-			var distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission })
-				.ToArray().Distinct().OrderBy(y => y.ServiceUserName).ToList();
-			ViewBag.DistinctUserNames = new SelectList(distinctArray, "ServiceUserName", "ServiceUserName");			
+			var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
 			//Residence List
 			var listOfResidence = await _residenceService.ListAllAsync();
 			ViewBag.ListOfResidence = listOfResidence.ToArray();
-			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id,  ResidenceName = a.Name })
-				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
+			var distinctResidence = listOfResidence.Select(x => new
+			{
+				ResidenceID = x.Id,
+				ResidenceName = x.Name
+			}).OrderBy(y => y.ResidenceName).ToList();
+				
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
 
 			return PartialView("_DataContent", listOfUser);

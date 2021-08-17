@@ -39,23 +39,23 @@ namespace teamcare.business.Services
             return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
         }
 
-        public List<ServiceUserModel> ListAllSortedFiltered(int sortBy, string filterBy, List<ServiceUserModel> listOfUser)
+        public async Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy)
         {
+            var listUsers = await _serviceUserRepository.ListAllAsync();
+            var mappedUsers=_mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
             switch (sortBy)
             {
-                case 0: listOfUser = listOfUser.OrderBy(y => y.FirstName + " " + y.LastName).ToList(); break;
-                case 1: listOfUser = listOfUser.OrderByDescending(y => y.FirstName + " " + y.LastName).ToList(); break;
-                case 2: listOfUser = listOfUser.OrderBy(y => y.DateOfAdmission).ToList(); break;
-                case 3: listOfUser = listOfUser.OrderByDescending(y => y.DateOfAdmission).ToList(); break;
+                case 0: mappedUsers = mappedUsers.OrderBy(y => y.FirstName + " " + y.LastName).ToList(); break;
+                case 1: mappedUsers = mappedUsers.OrderByDescending(y => y.FirstName + " " + y.LastName).ToList(); break;
+                case 2: mappedUsers = mappedUsers.OrderBy(y => y.DateOfAdmission).ToList(); break;
+                case 3: mappedUsers = mappedUsers.OrderByDescending(y => y.DateOfAdmission).ToList(); break;
             }
             if (filterBy != null && "" + filterBy.Trim() != "")
             {
-                listOfUser = listOfUser.ToArray().Where(x => x.ResidenceId == new Guid(filterBy)).OrderBy(y => y.FirstName + " " + y.LastName).ToList();
+                mappedUsers = mappedUsers.ToArray().Where(x => x.ResidenceId == new Guid(filterBy)).OrderBy(y => y.FirstName + " " + y.LastName).ToList();
             }
-            return listOfUser;
+            return mappedUsers;
         }
-
-        
 
         public async Task<ServiceUserModel> AddAsync(ServiceUserModel model)
         {
