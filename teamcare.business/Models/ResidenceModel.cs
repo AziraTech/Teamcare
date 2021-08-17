@@ -14,6 +14,6 @@ namespace teamcare.business.Models
         public string Home_Tel_No { get; set; }
         public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
 
-        public DocumentUploadModel ProfilePhoto => DocumentUploads.FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
+        public DocumentUploadModel ProfilePhoto => DocumentUploads ==null ? null : DocumentUploads.FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
     }
 }

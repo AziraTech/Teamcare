@@ -28,8 +28,10 @@ namespace teamcare.business.Services
 
         public async Task<IEnumerable<ResidenceModel>> ListAllAsync()
         {
-            var result = await _repository.ListAllAsync();
-            return result.Select(i => _mapper.Map<Residence, ResidenceModel>(i));
+            var listresidence = await _repository.ListAllAsync();
+            //return result.Select(i => _mapper.Map<Residence, ResidenceModel>(i));
+            return _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);
+
         }
 
         public async Task<ResidenceModel> AddAsync(ResidenceModel model)
