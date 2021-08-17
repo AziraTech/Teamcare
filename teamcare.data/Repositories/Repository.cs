@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using teamcare.data.Data;
 using teamcare.data.Entities;
+using teamcare.data.Extensions;
 
 namespace teamcare.data.Repositories
 {
@@ -18,12 +19,12 @@ namespace teamcare.data.Repositories
 
         public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            return await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(i => i .Id == id);
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
         public virtual async Task<List<T>> ListAllAsync()
         {
-            return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
 
@@ -43,7 +44,7 @@ namespace teamcare.data.Repositories
 
         public virtual async Task<T> UpdateAsync(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.DetachLocal(entity, entity.Id);
             await _dbContext.SaveChangesAsync();
             return entity;
         }

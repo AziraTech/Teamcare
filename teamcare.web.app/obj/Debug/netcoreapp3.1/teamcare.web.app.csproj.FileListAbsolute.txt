@@ -392,3 +392,9 @@ C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcore
 C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\System.Memory.Data.dll
 C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
 C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\obj\Debug\netcoreapp3.1\teamcare.web.app.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Proxies.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.Web.dll
+C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.web.app\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.Web.Providers.Azure.dll

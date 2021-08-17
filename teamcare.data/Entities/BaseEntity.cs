@@ -11,9 +11,11 @@ namespace teamcare.data.Entities
 		[Column("id")]
 		public Guid Id { get; set; } = Guid.NewGuid();
 		
-		[ForeignKey("CreatedByUser")]
+		
 		[Column("created_by")]
 		public Guid? CreatedBy { get; set; }
+        
+        [ForeignKey("CreatedBy")]
 		public virtual User CreatedByUser { get; set; }
 
 		[Column("last_updated_by")]
