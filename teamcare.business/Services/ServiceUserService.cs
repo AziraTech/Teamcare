@@ -39,7 +39,7 @@ namespace teamcare.business.Services
             return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
         }
 
-        public List<ServiceUserModel> ListAllSorted(int sortBy, List<ServiceUserModel> listOfUser)
+        public List<ServiceUserModel> ListAllSortedFiltered(int sortBy, string filterBy, List<ServiceUserModel> listOfUser)
         {
             switch (sortBy)
             {
@@ -48,17 +48,14 @@ namespace teamcare.business.Services
                 case 2: listOfUser = listOfUser.OrderBy(y => y.DateOfAdmission).ToList(); break;
                 case 3: listOfUser = listOfUser.OrderByDescending(y => y.DateOfAdmission).ToList(); break;
             }
-            return listOfUser;
-        }
-
-        public List<ServiceUserModel> ListAllFiltered(string filterBy, List<ServiceUserModel> listOfUser)
-        {
-            if (filterBy != null && ""+filterBy.Trim() != "")
+            if (filterBy != null && "" + filterBy.Trim() != "")
             {
                 listOfUser = listOfUser.ToArray().Where(x => x.ResidenceId == new Guid(filterBy)).OrderBy(y => y.FirstName + " " + y.LastName).ToList();
             }
             return listOfUser;
         }
+
+        
 
         public async Task<ServiceUserModel> AddAsync(ServiceUserModel model)
         {

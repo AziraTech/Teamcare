@@ -39,8 +39,8 @@ namespace teamcare.web.app.Controllers
 				new BreadcrumbItem(PageTitles.ServiceUsers, string.Empty),
 			});
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-			var listOfUser = await _serviceUserService.ListAllAsync();
-			listOfUser = _serviceUserService.ListAllSorted(0, (List<ServiceUserModel>)listOfUser);
+			var listOfUser = await _serviceUserService.ListAllAsync();			
+			listOfUser = _serviceUserService.ListAllSortedFiltered(0, null, (List<ServiceUserModel>)listOfUser);
 
 			var  distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray()
 								.Distinct().OrderBy(y => y.ServiceUserName).ToList();
@@ -69,7 +69,7 @@ namespace teamcare.web.app.Controllers
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 			var listOfUser = await _serviceUserService.ListAllAsync();
 			//Sorting List
-			listOfUser = _serviceUserService.ListAllSorted(sortBy, (List<ServiceUserModel>)listOfUser);
+			listOfUser = _serviceUserService.ListAllSortedFiltered(sortBy, filterBy, (List<ServiceUserModel>)listOfUser);
 			//Distinct DropDown
 			var distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission })
 				.ToArray().Distinct().OrderBy(y => y.ServiceUserName).ToList();
@@ -80,9 +80,6 @@ namespace teamcare.web.app.Controllers
 			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id,  ResidenceName = a.Name })
 				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
-
-			//Filtering List
-			listOfUser = _serviceUserService.ListAllFiltered(filterBy, (List<ServiceUserModel>)listOfUser);
 
 			return PartialView("_DataContent", listOfUser);
 		}
