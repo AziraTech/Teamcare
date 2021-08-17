@@ -291,4 +291,25 @@ const fv3 = FormValidation
 				})
 			}
 		}
-	);
+);
+
+
+
+async function doSortFilterBy()
+{
+	var optFilterBy = $("#filterBy").val();
+	var optSortBy = $("#sortBy").val();
+
+	await $.ajax({
+		type: "POST",
+		url: '/ServiceUsers/SortFilterOption',
+		data: { sortBy: +optSortBy, filterBy : optFilterBy },
+		success: function (data) {
+			if (data) {
+				$('#partialViewDataContent').html('');
+				$('#partialViewDataContent').html(data);
+			} else { }
+		}
+	});
+
+}

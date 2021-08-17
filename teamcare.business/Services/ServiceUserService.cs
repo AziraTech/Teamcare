@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using teamcare.business.Models;
@@ -36,6 +37,27 @@ namespace teamcare.business.Services
 
             var listUsers = await _serviceUserRepository.ListAllAsync();
             return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
+        }
+
+        public List<ServiceUserModel> ListAllSorted(int sortBy, List<ServiceUserModel> listOfUser)
+        {
+            switch (sortBy)
+            {
+                case 0: listOfUser = listOfUser.OrderBy(y => y.FirstName + " " + y.LastName).ToList(); break;
+                case 1: listOfUser = listOfUser.OrderByDescending(y => y.FirstName + " " + y.LastName).ToList(); break;
+                case 2: listOfUser = listOfUser.OrderBy(y => y.DateOfAdmission).ToList(); break;
+                case 3: listOfUser = listOfUser.OrderByDescending(y => y.DateOfAdmission).ToList(); break;
+            }
+            return listOfUser;
+        }
+
+        public List<ServiceUserModel> ListAllFiltered(string filterBy, List<ServiceUserModel> listOfUser)
+        {
+            if (filterBy != null && ""+filterBy.Trim() != "")
+            {
+                listOfUser = listOfUser.ToArray().Where(x => x.ResidenceId == new Guid(filterBy)).OrderBy(y => y.FirstName + " " + y.LastName).ToList();
+            }
+            return listOfUser;
         }
 
         public async Task<ServiceUserModel> AddAsync(ServiceUserModel model)
