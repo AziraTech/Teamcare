@@ -1,32 +1,31 @@
 ﻿@model teamcare.business.Models.ServiceUserModel
 <tr>
-    <td>
-        <!--begin::User-->
-        <div class="d-flex align-items-center">
-            <!--begin::Wrapper-->
-            <div class="me-5 position-relative">
-                <!--begin::Avatar-->
-                <div class="symbol symbol-35px symbol-circle">
-                    <img src="@(Model.ProfilePhoto !=null ? ViewBag.PrePath+Model.ProfilePhoto.BlobName :"" )" alt="image" />
-                    @*<img src="public-uploads/@ViewBag.Documents.BlobName" alt="image" height="35px" />*@
-                </div>
-                <!--end::Avatar-->
-            </div>
-            <!--end::Wrapper-->
-            <!--begin::Info-->
-            <div class="d-flex flex-column justify-content-center">
-                <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.FirstName @Model.LastName (@Model.KnownAs) </a>
-                <div class="fw-bold fs-6 text-gray-400">@if (Model.Residence != null){@Model.Residence.Name}</div>
-            </div>
-            <!--end::Info-->
-        </div>
-        <!--end::User-->
-    </td>
-    @*<td>@Model.DateOfAdmission.ToString("MMM, dd yyyy")</td>*@
-    <td>@Model.DateOfAdmission</td>
-    @*<td>@Model.Religion</td>*@
-    @*<td><span class="badge badge-light-info fw-bolder px-4 py-3">@Model.RelationshipToPerson</span></td>*@
-    <td class="text-end">
-        <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="btn btn-light btn-sm">View</a>
-    </td>
+	<td>
+		<!--begin::User-->
+		<div class="d-flex align-items-center">
+			<!--begin::Wrapper-->
+			<div class="me-5 position-relative">
+				<!--begin::Avatar-->
+				<div class="symbol symbol-35px symbol-circle">
+					<img src="@(Model.ProfilePhoto !=null ? ViewBag.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200" :"" )" alt="image" />
+				</div>
+				<!--end::Avatar-->
+			</div>
+			<!--end::Wrapper-->
+			<!--begin::Info-->
+			<div class="d-flex flex-column justify-content-center">
+				<a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.Title @Model.FirstName @Model.LastName  </a>
+				<div class="fw-bold fs-6 text-gray-400">
+					@(Model.KnownAs)
+				</div>
+			</div>
+			<!--end::Info-->
+		</div>
+		<!--end::User-->
+	</td>
+	<td>@(Model.DateOfAdmission.ToString("MMM, dd yyyy"))</td>
+	<td>@(Model.Residence != null?Model.Residence.Name:"")</td>
+	<td class="text-end">
+		<a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="btn btn-light btn-sm">View</a>
+	</td>
 </tr>
