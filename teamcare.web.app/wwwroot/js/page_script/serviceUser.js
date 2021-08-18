@@ -69,7 +69,7 @@ submit.addEventListener("click", function (e) {
 					FirstName: $('#su-first_name').val(),
 					LastName: $('#su-last_name').val(),
 					KnownAs: $('#su-known_as').val(),
-					
+
 					DateOfBirth: $('#su-date_of_birth').val(),
 					LegalStatus: $('#su-legal_status').val(),
 					NHSIdNumber: $('#su-nhs_id').val(),
@@ -88,7 +88,7 @@ submit.addEventListener("click", function (e) {
 					ContactDetails: $('#su-contact_detail').val(),
 					FileName: fileName,
 					FileType: fileType,
-					TempFileId:tempFileId
+					TempFileId: tempFileId
 				}
 				var serviceUserCreateViewModel = {
 					ServiceUser: ServiceUser
@@ -98,7 +98,7 @@ submit.addEventListener("click", function (e) {
 				$.ajax({
 					type: "POST",
 					url: '/ServiceUsers/Save',
-					data: { serviceUserCreateViewModel: serviceUserCreateViewModel},
+					data: { serviceUserCreateViewModel: serviceUserCreateViewModel },
 					success: function (data) {
 						if (data) {
 							Swal.fire({
@@ -291,19 +291,16 @@ const fv3 = FormValidation
 				})
 			}
 		}
-);
+	);
 
-
-
-async function doSortFilterBy()
-{
+async function doSortFilterBy() {
 	var optFilterBy = $("#filterBy").val();
 	var optSortBy = $("#sortBy").val();
 
 	await $.ajax({
 		type: "POST",
 		url: '/ServiceUsers/SortFilterOption',
-		data: { sortBy: +optSortBy, filterBy : optFilterBy },
+		data: { sortBy: +optSortBy, filterBy: optFilterBy },
 		success: function (data) {
 			if (data) {
 				$('#partialViewDataContent').html('');
@@ -311,5 +308,8 @@ async function doSortFilterBy()
 			} else { }
 		}
 	});
-
 }
+
+$(document).ready(function() {
+    doSortFilterBy();
+});
