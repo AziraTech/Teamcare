@@ -40,7 +40,7 @@ namespace teamcare.web.app.Controllers
 			});
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 			
-			var listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
+			//	var listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
 
 			var listOfResidence = await _residenceService.ListAllAsync();
 			ViewBag.ListOfResidence = listOfResidence.ToArray();
@@ -50,7 +50,8 @@ namespace teamcare.web.app.Controllers
 				ResidenceName = x.Name
 			}).OrderBy(y => y.ResidenceName).ToList();
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
-			return View(listOfUser);
+
+			return View();
 		}
 
 		public async Task<IActionResult> Detail()
@@ -71,6 +72,7 @@ namespace teamcare.web.app.Controllers
 			var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
 			//Residence List
 			var listOfResidence = await _residenceService.ListAllAsync();
+			ViewBag.NoOfServiceUsers = listOfUser.Count();
 			ViewBag.ListOfResidence = listOfResidence.ToArray();
 			var distinctResidence = listOfResidence.Select(x => new
 			{
