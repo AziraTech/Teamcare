@@ -9,6 +9,7 @@ namespace teamcare.business.Models
         public Guid? ServiceUserId { get; set; }
 
         public Guid? ResidenceId { get; set; }
+        public Guid? UserId { get; set; }
 
         public string FileExtension { get; set; }
 

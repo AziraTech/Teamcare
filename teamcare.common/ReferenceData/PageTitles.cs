@@ -5,5 +5,6 @@
         public const string Dashboard = "Dashboard";
         public const string ServiceUsers = "Service Users";
         public const string Residence = "Residence";
+        public const string User = "User";
     }
 }
