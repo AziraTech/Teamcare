@@ -18,6 +18,11 @@ namespace teamcare.data.Entities.Documents
         public Guid? ResidenceId { get; set; }
         public virtual Residence Residence { get; set; }
 
+        [ForeignKey("User")]
+        [Column("user_id")]
+        public Guid? UserId { get; set; }
+        public virtual User User { get; set; }
+
         [Column("file_extension")]
         public string FileExtension { get; set; }
 
