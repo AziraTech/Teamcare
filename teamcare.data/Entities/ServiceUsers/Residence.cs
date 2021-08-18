@@ -23,6 +23,7 @@ namespace teamcare.data.Entities
 		public string Home_Tel_No { get; set; }
 
 		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
+		public virtual ICollection<ServiceUser> ServiceUsers { get; set; }
 
 	}
 }

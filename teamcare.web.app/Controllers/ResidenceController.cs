@@ -19,14 +19,16 @@ namespace teamcare.web.app.Controllers
 
     public class ResidenceController : BaseController
     {
+        private readonly IServiceUserService _serviceUserService;
         private readonly IResidenceService _residenceService;
         private readonly IFileUploadService _fileUploadService;
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
 
 
-        public ResidenceController(IResidenceService residenceService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
+        public ResidenceController(IServiceUserService serviceUserService, IResidenceService residenceService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
         {
+            _serviceUserService = serviceUserService;
             _residenceService = residenceService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
