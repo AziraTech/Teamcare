@@ -10,7 +10,7 @@ namespace teamcare.data.Entities
 	[Table("Residences")]
 	public class Residence : BaseEntity
 	{
-        [Column("name")]
+		[Column("name")]
 		public string Name { get; set; }
 
 		[Column("address")]

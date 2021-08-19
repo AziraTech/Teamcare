@@ -40,7 +40,7 @@ namespace teamcare.data.Entities
 		[Column("is_active")]
 		[Required]
 		public bool IsActive { get; set; }
-		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
 
+		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
 	}
 }

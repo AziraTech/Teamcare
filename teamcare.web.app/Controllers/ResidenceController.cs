@@ -52,11 +52,11 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Detail(Guid Id)
         {
-          
+
             SetPageMetadata(PageTitles.Residence, SiteSection.Residence, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
-			});
+            });
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
             return View(listOfResidence);
         }
@@ -102,45 +102,45 @@ namespace teamcare.web.app.Controllers
             return Json(1);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update(ResidenceCreateViewModel residenceCreateViewModel)
-        {
-            try
-            {
-                if (residenceCreateViewModel?.Residence != null)
-                {
-                    var createdResidence = await _residenceService.UpdateAsync(residenceCreateViewModel.Residence);
+        //[HttpPost]
+        //public async Task<IActionResult> Update(ResidenceCreateViewModel residenceCreateViewModel)
+        //{
+        //    try
+        //    {
+        //        if (residenceCreateViewModel?.Residence != null)
+        //        {
+        //            var createdResidence = await _residenceService.UpdateAsync(residenceCreateViewModel.Residence);
 
-                    if (createdResidence != null && !string.IsNullOrWhiteSpace(residenceCreateViewModel.TempFileId))
-                    {
-                        //	Get the temporary document
-                        var document =
-                            await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId));
+        //            if (createdResidence != null && !string.IsNullOrWhiteSpace(residenceCreateViewModel.TempFileId))
+        //            {
+        //                //	Get the temporary document
+        //                var document =
+        //                    await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId));
 
-                        var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
-                        {
-                            BlobName = document.BlobName,
-                            DestinationFolder = createdResidence.Id.ToString()
-                        });
+        //                var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
+        //                {
+        //                    BlobName = document.BlobName,
+        //                    DestinationFolder = createdResidence.Id.ToString()
+        //                });
 
-                        if (relocateFile != null)
-                        {
-                            document.DocumentType = (int)DocumentTypes.ProfilePhoto;
-                            document.IsTemporary = false;
-                            document.ResidenceId = createdResidence.Id;
-                            document.BlobName = relocateFile.BlobName;
+        //                if (relocateFile != null)
+        //                {
+        //                    document.DocumentType = (int)DocumentTypes.ProfilePhoto;
+        //                    document.IsTemporary = false;
+        //                    document.ResidenceId = createdResidence.Id;
+        //                    document.BlobName = relocateFile.BlobName;
 
-                            await _documentUploadService.UpdateAsync(document);
-                        }
+        //                    await _documentUploadService.UpdateAsync(document);
+        //                }
 
-                        var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            return Json(1);
-        }
+        //                var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //    return Json(1);
+        //}
     }
 }

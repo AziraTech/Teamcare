@@ -19,8 +19,10 @@ namespace teamcare.data.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<DocumentUpload>().HasOne(i => i.User).WithMany(u => u.DocumentUploads)
+                .HasForeignKey(i => i.UserId);
 
+            base.OnModelCreating(modelBuilder);
             MasterDataSeed.SeedMasterData(modelBuilder);
         }
 

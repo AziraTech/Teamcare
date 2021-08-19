@@ -29,7 +29,7 @@ namespace teamcare.business.Services
         public async Task<IEnumerable<ResidenceModel>> ListAllAsync()
         {
             var listresidence = await _repository.ListAllAsync();
-            var mapperlist= _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);
+            var mapperlist = _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);
             mapperlist = mapperlist.OrderBy(r => r.Name).ToList();
             return mapperlist;
         }
