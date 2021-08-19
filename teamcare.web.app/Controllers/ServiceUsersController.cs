@@ -39,47 +39,51 @@ namespace teamcare.web.app.Controllers
 				new BreadcrumbItem(PageTitles.ServiceUsers, string.Empty),
 			});
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-			
-			//	var listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
+
+			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
+
+			var  distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray()
+								.Distinct().OrderBy(y => y.ServiceUserName).ToList();
+			ViewBag.DistinctUserNames = new SelectList(distinctArray, "ServiceUserName", "ServiceUserName");
 
 			var listOfResidence = await _residenceService.ListAllAsync();
 			ViewBag.ListOfResidence = listOfResidence.ToArray();
-			var distinctResidence = listOfResidence.Select(x => new
-			{
-				ResidenceID = x.Id,
-				ResidenceName = x.Name
-			}).OrderBy(y => y.ResidenceName).ToList();
+			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id, ResidenceName = a.Name })
+				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
-
-			return View();
+			return View(listOfUser);
 		}
 
-		public async Task<IActionResult> Detail()
+		public async Task<IActionResult> Detail(string id)
 		{
 			SetPageMetadata(PageTitles.ServiceUsers, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
 				new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
 				new BreadcrumbItem(PageTitles.ServiceUsers, Url.Action("Index", "ServiceUsers")),
 				new BreadcrumbItem("Max Smith", null) //TODO: Replace with correct service user name
 			});
-			return View();
+			ViewBag.PrePath = "~/" + _azureStorageOptions.Container;
+			var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
+			ViewBag.DataOfServiceUser = listOfUser;
+			var listOfResidence = await _residenceService.GetByIdAsync(listOfUser.ResidenceId);
+			ViewBag.ListOfResidence = listOfResidence;
+			return View(listOfUser);
 		}
 
 		public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
-		{
-			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-			
+        {
+			ViewBag.PrePath = "/" + _azureStorageOptions.Container;			
 			//Sorting List
-			var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
+			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
+
+			//Distinct DropDown
+			var distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission })
+				.ToArray().Distinct().OrderBy(y => y.ServiceUserName).ToList();
+			ViewBag.DistinctUserNames = new SelectList(distinctArray, "ServiceUserName", "ServiceUserName");			
 			//Residence List
 			var listOfResidence = await _residenceService.ListAllAsync();
-			ViewBag.NoOfServiceUsers = listOfUser.Count();
 			ViewBag.ListOfResidence = listOfResidence.ToArray();
-			var distinctResidence = listOfResidence.Select(x => new
-			{
-				ResidenceID = x.Id,
-				ResidenceName = x.Name
-			}).OrderBy(y => y.ResidenceName).ToList();
-				
+			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id,  ResidenceName = a.Name })
+				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
 
 			return PartialView("_DataContent", listOfUser);
@@ -120,7 +124,7 @@ namespace teamcare.web.app.Controllers
                     }
 				}
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 			}
 			return Json(1);

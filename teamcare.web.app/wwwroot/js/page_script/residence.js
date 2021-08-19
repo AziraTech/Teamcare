@@ -90,7 +90,22 @@ const resupd = FormValidation
                 })
             }
         }
-    );
+);
+
+async function setCurrentTab(tabName, id) {
+    await $.ajax({
+        type: "POST",
+        url: '/Residence/SetCurrentTab',
+        data: { tabName: tabName, id: id },
+        success: function (data) {
+            if (data)
+            {
+                $('#ShowCurrentTab').html('');
+                $('#ShowCurrentTab').html(data);
+            } else { }
+        }
+    });
+}
 
 $(document).ready(function () {
 
@@ -161,7 +176,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
     $('#new_card_residence_update').click(function (e) {
         debugger
@@ -236,13 +250,31 @@ $(document).ready(function () {
         });
     });
 
-
-
     function Cleardata() {
         $('#txtname').val('');
         $('#txtaddress').val('');
         $('#txtcapacity').val('');
         $('#txttelno').val('');
     }
+
+    //document.getElementsByClassName('.resLink').addEventListener('click', function (tabName, id) {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: '/Residence/SetCurrentTab',
+    //        data: { tabName: tabName, id: id },
+    //        success: function (data) {
+    //            if (data) {
+    //                $('#ShowCurrentTab').html('');
+    //                $('#ShowCurrentTab').html(data);
+    //            } else { }
+    //        }
+    //    });
+    //}, false);se);
+
+    
+
 });
+
+
+
 
