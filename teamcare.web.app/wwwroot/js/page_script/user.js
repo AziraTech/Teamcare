@@ -58,6 +58,13 @@ const fv1 = FormValidation
                             message: "Email is required"
                         }
                     }
+                },
+                userrole: {
+                    validators: {
+                        notEmpty: {
+                            message: "UserRole is required"
+                        }
+                    }
                 }
             },
             plugins: {
@@ -76,11 +83,9 @@ const fv1 = FormValidation
 $(document).ready(function () {
 
     $('#new_card_user_submit').click(function (e) {
-        alert($('#txtrole').val());
         e.preventDefault();
         fv1.validate().then(function (s) {
             if ("Valid" == s) {
-
                 $('#new_card_user_submit').disabled = !0;
                 $('#new_card_user_submit').attr("data-kt-indicator", "on");
                 setTimeout(function () {
