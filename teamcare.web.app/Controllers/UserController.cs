@@ -40,6 +40,10 @@ namespace teamcare.web.app.Controllers
             ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 
             var listOfUser = await _userService.ListAllAsync();
+
+            var UserRoles = Enum.GetValues(typeof(UserRoles)).Cast<UserRoles>().Select(v => v.ToString()).ToList();
+            ViewBag.UserRoles =  UserRoles;
+
             return View(listOfUser);
         }
 
@@ -78,7 +82,7 @@ namespace teamcare.web.app.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             return Json(1);

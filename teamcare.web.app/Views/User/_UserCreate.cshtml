@@ -59,11 +59,13 @@
             </label>
             <!--end::Label-->
             <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select Role" data-allow-clear="true" name="userrole" id="txtrole">
-                    <option></option>
-                    <option value="1">GlobalAdmin</option>
-                    <option value="2">Admin</option>
-                    <option value="3" selected>StaffMember</option>
-                </select>
+                <option></option>
+                @foreach (var item in ViewBag.UserRoles)
+                { int i = 1;
+                    <option value="@i">@item</option>
+                    i++;
+                } 
+            </select>
         </div>
         <div class="d-flex flex-column mb-7 fv-row">
             <!--begin::Label-->
