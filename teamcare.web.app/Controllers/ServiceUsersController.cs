@@ -41,6 +41,7 @@ namespace teamcare.web.app.Controllers
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 
 			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
+			ViewBag.NoOfServiceUsers = listOfUser.Count();
 
 			var  distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray()
 								.Distinct().OrderBy(y => y.ServiceUserName).ToList();
@@ -61,7 +62,7 @@ namespace teamcare.web.app.Controllers
 				new BreadcrumbItem(PageTitles.ServiceUsers, Url.Action("Index", "ServiceUsers")),
 				new BreadcrumbItem("Max Smith", null) //TODO: Replace with correct service user name
 			});
-			ViewBag.PrePath = "~/" + _azureStorageOptions.Container;
+			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 			var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
 			ViewBag.DataOfServiceUser = listOfUser;
 			var listOfResidence = await _residenceService.GetByIdAsync(listOfUser.ResidenceId);
@@ -85,6 +86,7 @@ namespace teamcare.web.app.Controllers
 			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id,  ResidenceName = a.Name })
 				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
+			ViewBag.NoOfServiceUsers = listOfUser.Count();
 
 			return PartialView("_DataContent", listOfUser);
 		}

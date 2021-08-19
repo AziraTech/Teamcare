@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.data.Entities;
@@ -31,8 +32,10 @@ namespace teamcare.business.Services
 			await RecordAuditEntry(new AuditModel { Action = "GetAllUsers", Details = "service call for get user", UserReference = "" });
 
             var listUsers = await _userRepository.ListAllAsync();
-            return _mapper.Map<List<User>, List<UserModel>>(listUsers);
-		}
+            var mapperlist = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(listUsers);
+            return mapperlist = mapperlist.OrderBy(r => r.FirstName).ThenBy(p=>p.LastName).ToList();
+
+        }
 
         public async Task<UserModel> AddAsync(UserModel model)
         {
