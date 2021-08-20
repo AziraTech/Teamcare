@@ -85,7 +85,7 @@ namespace teamcare.web.app.Controllers
         public async Task<IActionResult> ServiceUserDetails(string Id)
         {
             ViewBag.PrePath = "/" + _azureStorageOptions.Container;            
-            IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
+            IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null,0);
             
             listOfUser = listOfUser.Where(x => x.ResidenceId == new Guid(Id));
             var distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray().Distinct().OrderBy(y => y.ServiceUserName).ToList();

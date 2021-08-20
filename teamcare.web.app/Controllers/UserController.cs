@@ -54,6 +54,15 @@ namespace teamcare.web.app.Controllers
             {
                 if (userCreateViewModel?.User != null)
                 {
+                    var listOfUser = await _userService.ListAllAsync();
+
+                    // check IfEmail already exists
+                    var user = listOfUser.FirstOrDefault(u => u.Email == userCreateViewModel.User.Email);
+                    if (user != null)
+                    {
+                        return Json(2);
+                    }
+
                     var createdUser = await _userService.AddAsync(userCreateViewModel.User);
 
                     if (createdUser != null && !string.IsNullOrWhiteSpace(userCreateViewModel.TempFileId))

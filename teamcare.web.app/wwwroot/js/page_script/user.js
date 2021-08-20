@@ -52,10 +52,13 @@ const fv1 = FormValidation
                         }
                     }
                 },
-                user_email: {
+                email: {
                     validators: {
                         notEmpty: {
-                            message: "Email is required"
+                            message: "Email address is required"
+                        },
+                        emailAddress: {
+                            message: "The value is not a valid email address"
                         }
                     }
                 },
@@ -120,7 +123,8 @@ $(document).ready(function () {
                         url: '/User/Save',
                         data: { userCreateViewModel: userCreateViewModel },
                         success: function (data) {
-                            if (data) {
+                            debugger
+                            if (data==1) {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
                                     icon: "success",
@@ -134,7 +138,21 @@ $(document).ready(function () {
                                     q.isConfirmed && modal.hide();
                                 });
                             }
-                            else { }
+                            else if(data==2) {
+                                Swal.fire({
+                                    text: "Sorry, user email already exists, please try again different email.",
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
+
+                            } else
+                            {
+
+                            }
                         }
                     });
                     //on success show message

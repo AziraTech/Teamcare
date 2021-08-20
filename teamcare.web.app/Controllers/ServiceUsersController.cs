@@ -40,7 +40,7 @@ namespace teamcare.web.app.Controllers
 			});
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 
-			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
+			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null,0);
 			ViewBag.NoOfServiceUsers = listOfUser.Count();
 
 			var  distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray()
@@ -57,24 +57,25 @@ namespace teamcare.web.app.Controllers
 
 		public async Task<IActionResult> Detail(string id)
 		{
+			var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
+
 			SetPageMetadata(PageTitles.ServiceUsers, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
 				new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
 				new BreadcrumbItem(PageTitles.ServiceUsers, Url.Action("Index", "ServiceUsers")),
-				new BreadcrumbItem("Max Smith", null) //TODO: Replace with correct service user name
+				new BreadcrumbItem(listOfUser.Title+" "+ listOfUser.FirstName+" "+listOfUser.LastName, null) //TODO: Replace with correct service user name
 			});
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-			var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
-			ViewBag.DataOfServiceUser = listOfUser;
-			var listOfResidence = await _residenceService.GetByIdAsync(listOfUser.ResidenceId);
-			ViewBag.ListOfResidence = listOfResidence;
+			//ViewBag.DataOfServiceUser = listOfUser;
+			//var listOfResidence = await _residenceService.GetByIdAsync(listOfUser.ResidenceId);
+			//ViewBag.ListOfResidence = listOfResidence;
 			return View(listOfUser);
 		}
 
-		public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
+		public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy, int archiveBy)
         {
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;			
 			//Sorting List
-			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
+			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy,archiveBy);
 
 			//Distinct DropDown
 			var distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission })
