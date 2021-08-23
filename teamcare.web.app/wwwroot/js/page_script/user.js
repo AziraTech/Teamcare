@@ -123,8 +123,7 @@ $(document).ready(function () {
                         url: '/User/Save',
                         data: { userCreateViewModel: userCreateViewModel },
                         success: function (data) {
-                            debugger
-                            if (data==1) {
+                            if (data == 1) {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
                                     icon: "success",
@@ -138,7 +137,7 @@ $(document).ready(function () {
                                     q.isConfirmed && modal.hide();
                                 });
                             }
-                            else if(data==2) {
+                            else if (data == 2) {
                                 Swal.fire({
                                     text: "Sorry, user email already exists, please try again different email.",
                                     icon: "error",
@@ -149,8 +148,7 @@ $(document).ready(function () {
                                     }
                                 });
 
-                            } else
-                            {
+                            } else {
 
                             }
                         }

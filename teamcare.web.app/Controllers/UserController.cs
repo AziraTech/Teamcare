@@ -9,6 +9,8 @@ using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
+using teamcare.common.Helpers;
+using teamcare.common.Models;
 using teamcare.common.ReferenceData;
 using teamcare.web.app.ViewModels;
 
@@ -32,19 +34,23 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Index()
         {
-            SetPageMetadata(PageTitles.Residence, SiteSection.Residence, new List<BreadcrumbItem>() {
+            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.User, string.Empty),
             });
 
             ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 
-            var listOfUser = await _userService.ListAllAsync();
+            var model = new UserListViewModel
+            {
+                Users = await _userService.ListAllAsync(),
+                CreateViewModel = new UserCreateViewModel
+                {
+                    UserRoles = EnumExtensions.GetEnumListItems<UserRoles>()
+                }
+            };
 
-            var UserRoles = Enum.GetValues(typeof(UserRoles)).Cast<UserRoles>().Select(v => v.ToString()).ToList();
-            ViewBag.UserRoles =  UserRoles;
-
-            return View(listOfUser);
+            return View(model);
         }
 
         [HttpPost]
@@ -55,7 +61,6 @@ namespace teamcare.web.app.Controllers
                 if (userCreateViewModel?.User != null)
                 {
                     var listOfUser = await _userService.ListAllAsync();
-
                     // check IfEmail already exists
                     var user = listOfUser.FirstOrDefault(u => u.Email == userCreateViewModel.User.Email);
                     if (user != null)
@@ -91,7 +96,7 @@ namespace teamcare.web.app.Controllers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
             return Json(1);

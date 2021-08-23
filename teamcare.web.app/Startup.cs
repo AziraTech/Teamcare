@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using teamcare.data.Data;
@@ -20,6 +23,7 @@ using SixLabors.ImageSharp.Web.Providers.Azure;
 using SixLabors.ImageSharp.Web.DependencyInjection;
 using SixLabors.ImageSharp.Web.Caching;
 using SixLabors.ImageSharp.Web.Processors;
+using teamcare.business.Services;
 
 namespace teamcare.web.app
 {
@@ -63,20 +67,56 @@ namespace teamcare.web.app
 				auth.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 				auth.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 			})
-				.AddCookie()
+				.AddCookie(o =>
+                {
+                    o.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
+                })
 				.AddOpenIdConnect(opts =>
 				{
 					Configuration.GetSection("AzureAd").Bind(opts);
 					opts.SaveTokens = true;
-					opts.TokenValidationParameters.IssuerValidator = ValidateIssuerWithPlaceholder;
-					opts.Events = new OpenIdConnectEvents
+                    opts.TokenValidationParameters.IssuerValidator = ValidateIssuerWithPlaceholder;
+                    opts.Events = new OpenIdConnectEvents
 					{
 						OnAuthorizationCodeReceived = async ctx =>
 						{
 						},
 						OnTicketReceived = async ctx =>
 						{
-						}
+						},
+						OnTokenValidated = async ctx =>
+                        {
+                            var userService = ctx.HttpContext.RequestServices.GetService<IUserService>();
+                            var allUsers = await userService.ListAllAsync();
+                            var loggedInEmail = ctx.Principal.Claims.FirstOrDefault(i =>
+                                i.Type.Equals(teamcare.common.ReferenceData.ClaimTypes.PreferredUsername,
+                                    StringComparison.OrdinalIgnoreCase))?.Value;
+
+                            if (string.IsNullOrWhiteSpace(loggedInEmail))
+                            {
+								// throw error here
+                            }
+                            else
+                            {
+                                var currentUser = allUsers.FirstOrDefault(i =>
+                                    i.IsActive && i.Email!=null && i.Email.Equals(loggedInEmail, StringComparison.OrdinalIgnoreCase));
+                                if (currentUser != null)
+                                {
+                                    var claims = new List<Claim>
+                                    {
+                                        new Claim(ClaimTypes.Role, currentUser.UserRole.ToString())
+                                    };
+                                    var appIdentity = new ClaimsIdentity(claims);
+
+                                    ctx.Principal.AddIdentity(appIdentity);
+                                }
+                                else
+                                {
+                                    ctx.HandleResponse();
+                                    ctx.Response.Redirect("/Authentication/SignOut");
+                                }
+                            }
+                        }
 					};
 				});
 

@@ -5,6 +5,7 @@
         Dashboard = 1,
         ServiceUsers = 2,
         Residence = 3,
+        Users = 4
     }
 }
 

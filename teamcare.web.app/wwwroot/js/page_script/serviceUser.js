@@ -296,21 +296,15 @@ const fv3 = FormValidation
 async function doSortFilterBy() {
 	var optFilterBy = $("#filterBy").val();
 	var optSortBy = $("#sortBy").val();
-	var optArchive = 0;
-	if ($('#chkIsArchive').prop('checked') === true) {
-		optArchive = 1;
-	} else {
-		optArchive = 0;
-	}
 
 	await $.ajax({
 		type: "POST",
 		url: '/ServiceUsers/SortFilterOption',
-		data: { sortBy: +optSortBy, filterBy: optFilterBy, archiveBy: optArchive },
+		data: { sortBy: +optSortBy, filterBy: optFilterBy },
 		success: function (data) {
 			if (data) {
 				$('#partialViewDataContent').html('');
-				$('#partialViewDataContent').html(data);			
+				$('#partialViewDataContent').html(data);
 				$('#TotalServiceUser').text($('#hdnTotalServiceUser').val());
 			} else { }
 		}

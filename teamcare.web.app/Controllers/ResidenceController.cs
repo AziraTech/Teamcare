@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
 using teamcare.common.ReferenceData;
-using teamcare.data.Entities;
 using teamcare.web.app.ViewModels;
 
 
@@ -59,43 +57,8 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
-            ViewBag.PrePath = "/" + _azureStorageOptions.Container;
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
             return View(listOfResidence);
-        }
-
-        public async Task<IActionResult> SetCurrentTab(string tabName, string Id)
-        {            
-            switch(tabName)
-            {
-                case "Overview": return await ResidenceDetail(new Guid(Id)); //return PartialView("_ResidenceUpdate", listOfUser);
-                case "Service_User": return await ServiceUserDetails(Id); 
-            }
-            return null;
-        }
-
-        public async Task<IActionResult> ResidenceDetail(Guid Id)
-        {
-            ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-            var listOfResidence = await _residenceService.GetByIdAsync(Id);
-            
-            return PartialView("_ResidenceUpdate", listOfResidence);
-        }
-
-        public async Task<IActionResult> ServiceUserDetails(string Id)
-        {
-            ViewBag.PrePath = "/" + _azureStorageOptions.Container;            
-            IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null,0);
-            
-            listOfUser = listOfUser.Where(x => x.ResidenceId == new Guid(Id));
-            var distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray().Distinct().OrderBy(y => y.ServiceUserName).ToList();
-            ViewBag.DistinctUserNames = new SelectList(distinctArray, "ServiceUserName", "ServiceUserName");
-            var listOfResidence = await _residenceService.ListAllAsync();
-            ViewBag.ListOfResidence = listOfResidence.ToArray();            
-            var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id, ResidenceName = a.Name }).ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
-            ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
-
-            return PartialView("_ResidenceServiceUserCard", listOfUser);
         }
 
         [HttpPost]
@@ -133,7 +96,7 @@ namespace teamcare.web.app.Controllers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
             return Json(1);

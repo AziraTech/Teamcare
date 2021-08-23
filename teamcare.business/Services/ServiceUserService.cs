@@ -39,7 +39,7 @@ namespace teamcare.business.Services
             return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
         }
 
-        public async Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy,int archiveBy)
+        public async Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy)
         {
             var listUsers = await _serviceUserRepository.ListAllAsync();
             var mappedUsers=_mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
@@ -52,17 +52,8 @@ namespace teamcare.business.Services
             }
             if (filterBy != null && "" + filterBy.Trim() != "")
             {
-                mappedUsers = mappedUsers.ToArray().Where(x => x.ResidenceId == new Guid(filterBy) && x.DeletedOn==null).OrderBy(y => y.FirstName + " " + y.LastName).ToList();
+                mappedUsers = mappedUsers.ToArray().Where(x => x.ResidenceId == new Guid(filterBy)).OrderBy(y => y.FirstName + " " + y.LastName).ToList();
             }
-            if(archiveBy == 1)// Include Archive 
-            {
-                mappedUsers = mappedUsers.ToArray().OrderBy(y => y.FirstName + " " + y.LastName).ToList();
-            }
-            else
-            {
-                mappedUsers = mappedUsers.ToArray().Where(x => x.DeletedOn == null).OrderBy(y => y.FirstName + " " + y.LastName).ToList();
-            }
-
             return mappedUsers;
         }
 

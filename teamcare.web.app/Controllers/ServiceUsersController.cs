@@ -11,11 +11,12 @@ using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
 using teamcare.common.ReferenceData;
+using teamcare.web.app.Helpers;
 using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-	[Authorize]
+	[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
 	public class ServiceUsersController : BaseController
 	{
 		private readonly IServiceUserService _serviceUserService;
@@ -40,25 +41,23 @@ namespace teamcare.web.app.Controllers
 			});
 			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
 
-			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null,0);
-			ViewBag.NoOfServiceUsers = listOfUser.Count();
-
-			var  distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission }).ToArray()
-								.Distinct().OrderBy(y => y.ServiceUserName).ToList();
-			ViewBag.DistinctUserNames = new SelectList(distinctArray, "ServiceUserName", "ServiceUserName");
-
+			//	var listOfUser = await _serviceUserService.ListAllSortedFiltered(0, null);
+			
 			var listOfResidence = await _residenceService.ListAllAsync();
 			ViewBag.ListOfResidence = listOfResidence.ToArray();
-			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id, ResidenceName = a.Name })
-				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
+			var distinctResidence = listOfResidence.Select(x => new
+			{
+				ResidenceID = x.Id,
+				ResidenceName = x.Name
+			}).OrderBy(y => y.ResidenceName).ToList();
 			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
-			return View(listOfUser);
+
+			return View();
 		}
 
 		public async Task<IActionResult> Detail(string id)
 		{
 			var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
-
 			SetPageMetadata(PageTitles.ServiceUsers, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
 				new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
 				new BreadcrumbItem(PageTitles.ServiceUsers, Url.Action("Index", "ServiceUsers")),
@@ -71,23 +70,23 @@ namespace teamcare.web.app.Controllers
 			return View(listOfUser);
 		}
 
-		public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy, int archiveBy)
-        {
-			ViewBag.PrePath = "/" + _azureStorageOptions.Container;			
+		public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
+		{
+			ViewBag.PrePath = "/" + _azureStorageOptions.Container;
+			
 			//Sorting List
-			IEnumerable<ServiceUserModel> listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy,archiveBy);
-
-			//Distinct DropDown
-			var distinctArray = (from a in listOfUser select new { ServiceUserName = a.FirstName + " " + a.LastName, DateOfAdmission = a.DateOfAdmission })
-				.ToArray().Distinct().OrderBy(y => y.ServiceUserName).ToList();
-			ViewBag.DistinctUserNames = new SelectList(distinctArray, "ServiceUserName", "ServiceUserName");			
+			var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
 			//Residence List
 			var listOfResidence = await _residenceService.ListAllAsync();
-			ViewBag.ListOfResidence = listOfResidence.ToArray();
-			var distinctResidence = (from a in listOfResidence select new { ResidenceID = a.Id,  ResidenceName = a.Name })
-				.ToArray().Distinct().OrderBy(y => y.ResidenceName).ToList();
-			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
 			ViewBag.NoOfServiceUsers = listOfUser.Count();
+			ViewBag.ListOfResidence = listOfResidence.ToArray();
+			var distinctResidence = listOfResidence.Select(x => new
+			{
+				ResidenceID = x.Id,
+				ResidenceName = x.Name
+			}).OrderBy(y => y.ResidenceName).ToList();
+				
+			ViewBag.DistinctResidence = new SelectList(distinctResidence, "ResidenceID", "ResidenceName");
 
 			return PartialView("_DataContent", listOfUser);
 		}
@@ -127,7 +126,7 @@ namespace teamcare.web.app.Controllers
                     }
 				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 			}
 			return Json(1);

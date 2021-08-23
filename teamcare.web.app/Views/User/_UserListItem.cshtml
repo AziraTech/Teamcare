@@ -1,4 +1,5 @@
-﻿@model teamcare.business.Models.UserModel
+﻿@using teamcare.common.Helpers
+@model teamcare.business.Models.UserModel
 <tr>
 	<td>
 		<!--begin::User-->
@@ -21,7 +22,7 @@
 		<!--end::User-->
 	</td>
     <td> @Model.Email</td>
-	<td>@Model.Position</td>
+    <td>@Model.UserRole.GetEnumDescription()</td>
 	<td> @Model.Mobile_No
 	</td>	
 	<td class="text-end">

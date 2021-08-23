@@ -318,6 +318,14 @@ namespace teamcare.data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("address");
 
+                    b.Property<DateTime?>("ArchivedOn")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("archived_on");
+
+                    b.Property<string>("ArchivedReason")
+                        .HasColumnType("text")
+                        .HasColumnName("archived_reason");
+
                     b.Property<string>("ContactDetails")
                         .HasColumnType("text")
                         .HasColumnName("contact_details");
@@ -507,21 +515,21 @@ namespace teamcare.data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("26fe31e7-53ac-4f06-8b51-2313d867f70e"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 18, 21, 28, 56, 385, DateTimeKind.Unspecified).AddTicks(1911), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("b6b3c284-f898-4fc0-8424-1d28e1e174dc"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 23, 5, 44, 0, 999, DateTimeKind.Unspecified).AddTicks(4183), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "hans.doyekee@gmail.com",
                             FirstName = "Teamcare",
-                            IsActive = false,
+                            IsActive = true,
                             LastName = "Admin",
                             UserRole = 1
                         },
                         new
                         {
-                            Id = new Guid("cf0f483d-aebf-4cb8-baaa-98810e9f1317"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 18, 21, 28, 56, 385, DateTimeKind.Unspecified).AddTicks(4287), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("3dd61635-81ad-4f82-9c26-61b8362be37e"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 23, 5, 44, 0, 999, DateTimeKind.Unspecified).AddTicks(5447), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "nish.kagathara0791@gmail.com",
                             FirstName = "Nishidh",
-                            IsActive = false,
+                            IsActive = true,
                             LastName = "Kagathara",
                             UserRole = 1
                         });
@@ -551,7 +559,7 @@ namespace teamcare.data.Migrations
                         .HasForeignKey("ServiceUserId");
 
                     b.HasOne("teamcare.data.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("DocumentUploads")
                         .HasForeignKey("UserId");
 
                     b.Navigation("CreatedByUser");
@@ -623,6 +631,11 @@ namespace teamcare.data.Migrations
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUser", b =>
+                {
+                    b.Navigation("DocumentUploads");
+                });
+
+            modelBuilder.Entity("teamcare.data.Entities.User", b =>
                 {
                     b.Navigation("DocumentUploads");
                 });

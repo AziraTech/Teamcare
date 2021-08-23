@@ -90,22 +90,7 @@ const resupd = FormValidation
                 })
             }
         }
-);
-
-async function setCurrentTab(tabName, id) {
-    await $.ajax({
-        type: "POST",
-        url: '/Residence/SetCurrentTab',
-        data: { tabName: tabName, id: id },
-        success: function (data) {
-            if (data)
-            {
-                $('#ShowCurrentTab').html('');
-                $('#ShowCurrentTab').html(data);
-            } else { }
-        }
-    });
-}
+    );
 
 $(document).ready(function () {
 
@@ -177,104 +162,11 @@ $(document).ready(function () {
         });
     });
 
-    $('#new_card_residence_update').click(function (e) {
-        debugger
-        e.preventDefault();
-        //$('#kt_modal_new_card_residence').modal('show');;
-
-        resupd.validate().then(function (s) {
-            if ("Valid" == s) {
-                $('#new_card_residence_update').disabled = !0;
-                $('#new_card_residence_update').attr("data-kt-indicator", "on");
-                setTimeout(function () {
-                    $('#new_card_residence_update').removeAttr("data-kt-indicator");
-                    $('#new_card_residence_update').disabled = !1;
-
-
-                    var resid = $(this).attr('resid');
-                    debugger
-
-                    //ajax call for the submit;
-                    var Residence = {
-                        Id: resid,
-                        Name: $('#txtname').val(),
-                        Address: $('#txtaddress').val(),
-                        Capacity: $('#txtcapacity').val(),
-                        Home_Tel_No: $('#txttelno').val(),
-                        FileName: fileName,
-                        FileType: fileType,
-                        TempFileId: tempFileId
-
-                    }
-                    var residenceCreateViewModel = {
-                        Residence: Residence,
-                        TempFileId: tempFileId
-                    }
-
-                    $.ajax({
-                        type: "POST",
-                        url: '/Residence/Update',
-                        data: { residenceCreateViewModel: residenceCreateViewModel },
-                        success: function (data) {
-                            if (data) {
-                                Swal.fire({
-                                    text: "Form has been successfully submitted!",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                }).then(function (q) {
-                                    Cleardata();
-                                    q.isConfirmed && modal.hide();
-                                });
-                            }
-                            else { }
-                        }
-                    });
-                }, 2e3);
-
-            } else {
-                Swal.fire({
-                    text: "Sorry, looks like there are some errors detected, please try again.",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn btn-light"
-                    }
-                });
-            }
-
-        });
-    });
-
     function Cleardata() {
         $('#txtname').val('');
         $('#txtaddress').val('');
         $('#txtcapacity').val('');
         $('#txttelno').val('');
     }
-
-    //document.getElementsByClassName('.resLink').addEventListener('click', function (tabName, id) {
-    //    $.ajax({
-    //        type: "POST",
-    //        url: '/Residence/SetCurrentTab',
-    //        data: { tabName: tabName, id: id },
-    //        success: function (data) {
-    //            if (data) {
-    //                $('#ShowCurrentTab').html('');
-    //                $('#ShowCurrentTab').html(data);
-    //            } else { }
-    //        }
-    //    });
-    //}, false);se);
-
-    
-
 });
-
-
-
 

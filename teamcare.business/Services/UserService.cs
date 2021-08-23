@@ -33,8 +33,7 @@ namespace teamcare.business.Services
 
             var listUsers = await _userRepository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(listUsers);
-            return mapperlist = mapperlist.OrderBy(r => r.FirstName).ThenBy(p=>p.LastName).ToList();
-
+            return mapperlist = mapperlist.OrderBy(r => r.FirstName).ThenBy(p => p.LastName).ToList();
         }
 
         public async Task<UserModel> AddAsync(UserModel model)

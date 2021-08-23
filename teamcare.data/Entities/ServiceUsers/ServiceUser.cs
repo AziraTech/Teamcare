@@ -69,6 +69,12 @@ namespace teamcare.data.Entities
 		[Column("contact_details")]
 		public string ContactDetails { get; set; }
 
+		[Column("archived_on")]
+		public DateTime? ArchivedOn { get; set; }
+
+		[Column("archived_reason")]
+		public string ArchivedReason { get; set; }
+
 		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
 
         public virtual Residence Residence { get; set; }
