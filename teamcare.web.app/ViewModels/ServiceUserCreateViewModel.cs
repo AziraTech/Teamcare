@@ -10,10 +10,15 @@ namespace teamcare.web.app.ViewModels
 {
     public class ServiceUserCreateViewModel : BaseViewModel
     {
+        public ServiceUserCreateViewModel()
+        {
+
+        }
         public ServiceUserCreateViewModel(IOptions<AzureStorageSettings> azureStorageOptions) : base(azureStorageOptions)
         {
-            
+
         }
         public ServiceUserModel ServiceUser { get; set; }
+        public string TempFileId { get; set; }
     }
 }

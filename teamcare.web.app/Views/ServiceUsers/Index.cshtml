@@ -1,166 +1,168 @@
 ﻿@{
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model teamcare.web.app.ViewModels.ServiceUsersViewModel
+
 }
 
 <!--begin::Toolbar-->
 <div class="d-flex flex-wrap flex-stack pb-7">
-	<!--begin::Title-->
-	<div class="d-flex flex-wrap align-items-center my-1 col-md-10 ">
-		<h3 class="fw-bolder me-5 my-1">Users (<span id="TotalServiceUser">0</span>)</h3>
-		<!--begin::Search-->
-		<div class="d-flex align-items-center position-relative my-1">
-			<!--begin::Svg Icon | path: icons/duotone/General/Search.svg-->
-			<span class="svg-icon svg-icon-3 position-absolute ms-3">
-				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-						<rect x="0" y="0" width="24" height="24" />
-						<path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-						<path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
-					</g>
-				</svg>
-			</span>
-			<!--end::Svg Icon-->
-			@*<input type="text" id="kt_filter_search" class="form-control form-control-white form-control-sm w-150px ps-9" placeholder="Search" />*@
-		</div>
-		<!--end::Search-->
-	</div>
-	<!--end::Title-->
-	<!--begin::Controls-->
-	<!--begin::Input group-->
-	<div class="col-md-1">
-		<!--begin::Wrapper-->
-		<div class="me-4">
-			<!--begin::Menu-->
-			<a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-primary fw-bolder" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
-				<!--begin::Svg Icon | path: icons/duotone/Text/Filter.svg-->
-				<span class="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
-					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-							<rect x="0" y="0" width="24" height="24" />
-							<path d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z" fill="#000000" />
-						</g>
-					</svg>
-				</span>
-				<!--end::Svg Icon-->Filter
-			</a>
-			<!--begin::Menu 1-->
+    <!--begin::Title-->
+    <div class="d-flex flex-wrap align-items-center my-1 col-md-10 ">
+        <h3 class="fw-bolder me-5 my-1">Users (<span id="TotalServiceUser">0</span>)</h3>
+        <!--begin::Search-->
+        <div class="d-flex align-items-center position-relative my-1">
+            <!--begin::Svg Icon | path: icons/duotone/General/Search.svg-->
+            <span class="svg-icon svg-icon-3 position-absolute ms-3">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                        <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
+                    </g>
+                </svg>
+            </span>
+            <!--end::Svg Icon-->
+            @*<input type="text" id="kt_filter_search" class="form-control form-control-white form-control-sm w-150px ps-9" placeholder="Search" />*@
+        </div>
+        <!--end::Search-->
+    </div>
+    <!--end::Title-->
+    <!--begin::Controls-->
+    <!--begin::Input group-->
+    <div class="col-md-1">
+        <!--begin::Wrapper-->
+        <div class="me-4">
+            <!--begin::Menu-->
+            <a href="#" class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-primary fw-bolder" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                <!--begin::Svg Icon | path: icons/duotone/Text/Filter.svg-->
+                <span class="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <path d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z" fill="#000000" />
+                        </g>
+                    </svg>
+                </span>
+                <!--end::Svg Icon-->Filter
+            </a>
+            <!--begin::Menu 1-->
 
-			<div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true">
-				<!--begin::Header-->
-				<div class="px-7 py-5">
-					<div class="fs-5 text-dark fw-bolder">Filter Options</div>
-				</div>
-				<!--end::Header-->
-				<!--begin::Menu separator-->
-				<div class="separator border-gray-200"></div>
-				<!--end::Menu separator-->
-				<!--begin::Form-->
-				<div class="px-7 py-5">
-					<!--begin::Input group-->
-					<div class="mb-10">
-						<!--begin::Label-->
-						<label class="form-label fw-bold">Sort By :</label>
-						<!--end::Label-->
-						<!--begin::Input-->
-						<div>
-							<select class="form-select form-select-solid" id="sortBy" data-kt-select2="true" data-placeholder="Sort By" data-allow-clear="true">
-								<option></option>
-								<option value="0">Sort By Name Asc</option>
-								<option value="1">Sort By Name Desc</option>
-								<option value="2">Sort By Admission Earliest</option>
-								<option value="3">Sort By Admission Later</option>
-							</select>
-						</div>
-						<!--end::Input-->
-					</div>
-					<!--end::Input group-->
-					<!--begin::Input group-->
-					<div class="mb-10">
-						<!--begin::Label-->
-						<label class="form-label fw-bold">Filter By :</label>
-						<!--end::Label-->
-						<!--begin::Input-->
-						<div>
-							<select class="form-select form-select-solid" id="filterBy" data-kt-select2="true" data-placeholder="Filter By" data-allow-clear="true">
-								<option></option>
-								@if (ViewBag.DistinctResidence != null)
-								{
-									foreach (var itm in ViewBag.DistinctResidence)
-									{
-										<option value="@itm.Value">@itm.Text</option>
-									}
-								}
-							</select>
-						</div>
-						<!--end::Input-->
-					</div>
-					<div class="mb-10">
-						<!--begin::Options-->
-						<div class="d-flex">
-							<!--begin::Options-->
-							<label class="form-check form-check-sm form-check-custom form-check-solid me-5">
-								<input class="form-check-input" type="checkbox" id="chkIsArchive">
-								<span class="form-check-label">Include Archive</span>
-							</label>
-							<!--end::Options-->
-						</div>
-						<!--end::Options-->
-					</div>
+            <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true">
+                <!--begin::Header-->
+                <div class="px-7 py-5">
+                    <div class="fs-5 text-dark fw-bolder">Filter Options</div>
+                </div>
+                <!--end::Header-->
+                <!--begin::Menu separator-->
+                <div class="separator border-gray-200"></div>
+                <!--end::Menu separator-->
+                <!--begin::Form-->
+                <div class="px-7 py-5">
+                    <!--begin::Input group-->
+                    <div class="mb-10">
+                        <!--begin::Label-->
+                        <label class="form-label fw-bold">Sort By :</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <div>
+                            <select class="form-select form-select-solid" id="sortBy" data-kt-select2="true" data-placeholder="Sort By" data-allow-clear="true">
+                                <option></option>
+                                <option value="0">Sort By Name Asc</option>
+                                <option value="1">Sort By Name Desc</option>
+                                <option value="2">Sort By Admission Earliest</option>
+                                <option value="3">Sort By Admission Later</option>
+                            </select>
+                        </div>
+                        <!--end::Input-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="mb-10">
+                        <!--begin::Label-->
+                        <label class="form-label fw-bold">Filter By :</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <div>
+                            <select class="form-select form-select-solid" id="filterBy" data-kt-select2="true" data-placeholder="Filter By" data-allow-clear="true">
+                                <option></option>
+                                @if (Model.ResidenceList != null)
+                                {
+                                    foreach (var itm in Model.ResidenceList)
+                                    {
+                                        <option value="@itm.Value">@itm.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <!--end::Input-->
+                    </div>
+                    <div class="mb-10">
+                        <!--begin::Options-->
+                        <div class="d-flex">
+                            <!--begin::Options-->
+                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
+                                <input class="form-check-input" type="checkbox" id="chkIsArchive">
+                                <span class="form-check-label">Include Archive</span>
+                            </label>
+                            <!--end::Options-->
+                        </div>
+                        <!--end::Options-->
+                    </div>
 
-					<!--end::Input group-->
-					<!--begin::Actions-->
-					<div class="d-flex justify-content-end">
-						@*<button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">Reset</button>*@
-						<button type="button" onclick="doSortFilterBy();" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
-					</div>
-					<!--end::Actions-->
-				</div>
-				<!--end::Form-->
-			</div>
+                    <!--end::Input group-->
+                    <!--begin::Actions-->
+                    <div class="d-flex justify-content-end">
+                        @*<button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">Reset</button>*@
+                        <button type="button" onclick="doSortFilterBy();" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
+                    </div>
+                    <!--end::Actions-->
+                </div>
+                <!--end::Form-->
+            </div>
 
-			<!--end::Menu 1-->
-			<!--end::Menu-->
-		</div>
-		<!--end::Wrapper-->
-	</div>
-	<div class="col-md-1">
-		<!--begin::Tab nav-->
-		<ul class="nav nav-pills me-6 mb-2 mb-sm-0">
-			<li class="nav-item m-0">
-				<a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_users_card_pane">
-					<!--begin::Svg Icon | path: icons/duotone/Layout/Layout-4-blocks-2.svg-->
-					<span class="svg-icon svg-icon-2">
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-								<rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
-								<rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-								<rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-								<rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-							</g>
-						</svg>
-					</span>
-					<!--end::Svg Icon-->
-				</a>
-			</li>
-			<li class="nav-item m-0">
-				<a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_project_users_table_pane">
-					<!--begin::Svg Icon | path: icons/duotone/Layout/Layout-horizontal.svg-->
-					<span class="svg-icon svg-icon-2">
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-								<rect x="0" y="0" width="24" height="24" />
-								<rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
-								<rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
-							</g>
-						</svg>
-					</span>
-					<!--end::Svg Icon-->
-				</a>
-			</li>
-		</ul>
-		<!--end::Tab nav-->
-	</div>
-	<!--end::Controls-->
+            <!--end::Menu 1-->
+            <!--end::Menu-->
+        </div>
+        <!--end::Wrapper-->
+    </div>
+    <div class="col-md-1">
+        <!--begin::Tab nav-->
+        <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
+            <li class="nav-item m-0">
+                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_users_card_pane">
+                    <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-4-blocks-2.svg-->
+                    <span class="svg-icon svg-icon-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
+                                <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
+            <li class="nav-item m-0">
+                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_project_users_table_pane">
+                    <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-horizontal.svg-->
+                    <span class="svg-icon svg-icon-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
+                                <rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
+        </ul>
+        <!--end::Tab nav-->
+    </div>
+    <!--end::Controls-->
 </div>
 <!--end::Toolbar-->
 <div class="tab-content" id="partialViewDataContent">
@@ -169,40 +171,40 @@
 <!--begin::Modals-->
 <!--begin::Modal - Create Service Users-->
 <div class="modal fade" id="kt_modal_create_app" tabindex="-1" aria-hidden="true">
-	<!--begin::Modal dialog-->
-	<div class="modal-dialog modal-dialog-centered mw-900px">
-		<!--begin::Modal content-->
-		<div class="modal-content">
-			<!--begin::Modal header-->
-			<div class="modal-header">
-				<!--begin::Modal title-->
-				<h2>Create Service User's Information</h2>
-				<!--end::Modal title-->
-				<!--begin::Close-->
-				<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-					<!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
-					<span class="svg-icon svg-icon-1">
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-							<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-								<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
-								<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
-							</g>
-						</svg>
-					</span>
-					<!--end::Svg Icon-->
-				</div>
-				<!--end::Close-->
-			</div>
-			<!--end::Modal header-->
-			<!--begin::Modal body-->
-			<div class="modal-body scroll-y py-lg-10 px-lg-10">
-				<partial name="_ServiceUserCreate" />
-			</div>
-			<!--end::Modal body-->
-		</div>
-		<!--end::Modal content-->
-	</div>
-	<!--end::Modal dialog-->
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-900px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2>Create Service User's Information</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y py-lg-10 px-lg-10">
+                <partial name="_ServiceUserCreate" />
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
 </div>
 <!--end::Modal - Create Service Users-->
 <!--end::Modals-->

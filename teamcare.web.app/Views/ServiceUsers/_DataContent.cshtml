@@ -1,60 +1,60 @@
-﻿@model List<teamcare.business.Models.ServiceUserModel>
+﻿@model teamcare.web.app.ViewModels.ServiceUsersViewModel
 <!--begin::Tab Content-->
 <!--begin::Tab pane-->
 <div id="kt_project_users_card_pane" class="tab-pane fade show active">
-	<!--begin::Row-->
-	<input type="hidden" value="@Model.Count" id="hdnTotalServiceUser" />
-	<div class="row g-6 g-xl-9">
-		@if (Model != null)
-		{
-			foreach (var item in Model)
-			{
-				<partial name="_ServiceUserCard" model="item" />
-			}
-		}
-	</div>
-	<!--end::Row-->
+    <!--begin::Row-->
+    <input type="hidden" value="@Model.ServiceUser.Count()" id="hdnTotalServiceUser" />
+    <div class="row g-6 g-xl-9">
+        @if (Model.ServiceUser != null)
+        {
+            foreach (var item in Model.ServiceUser)
+            {
+                <partial name="_ServiceUserCard" model="item" />
+            }
+        }
+    </div>
+    <!--end::Row-->
 </div>
 <!--end::Tab pane-->
 <!--begin::Tab pane-->
 <div id="kt_project_users_table_pane" class="tab-pane fade">
-	<!--begin::Card-->
-	<div class="card card-flush">
-		<!--begin::Card body-->
-		<div class="card-body pt-0">
-			<!--begin::Table container-->
-			<div class="table-responsive">
-				<!--begin::Table-->
-				<table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
-					<!--begin::Head-->
-					<thead class="fs-7 text-gray-400 text-uppercase">
-						<tr>
-							<th class="min-w-250px">Name</th>
-							<th class="min-w-150px">Date of Admission</th>
-							<th class="min-w-90px">Residence</th>
-							<th class="min-w-50px text-end">Details</th>
-						</tr>
-					</thead>
-					<!--end::Head-->
-					<!--begin::Body-->
-					<tbody class="fs-6">
-						@if (Model != null)
-						{
-							foreach (var item in Model)
-							{
-								<partial name="_ServiceUserListItem" model="item" />
-							}
-						}
-					</tbody>
-					<!--end::Body-->
-				</table>
-				<!--end::Table-->
-			</div>
-			<!--end::Table container-->
-		</div>
-		<!--end::Card body-->
-	</div>
-	<!--end::Card-->
+    <!--begin::Card-->
+    <div class="card card-flush">
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <!--begin::Table container-->
+            <div class="table-responsive">
+                <!--begin::Table-->
+                <table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
+                    <!--begin::Head-->
+                    <thead class="fs-7 text-gray-400 text-uppercase">
+                        <tr>
+                            <th class="min-w-250px">Name</th>
+                            <th class="min-w-150px">Date of Admission</th>
+                            <th class="min-w-90px">Residence</th>
+                            <th class="min-w-50px text-end">Details</th>
+                        </tr>
+                    </thead>
+                    <!--end::Head-->
+                    <!--begin::Body-->
+                    <tbody class="fs-6">
+                        @if (Model.ServiceUser != null)
+                        {
+                            foreach (var item in Model.ServiceUser)
+                            {
+                                <partial name="_ServiceUserListItem" model="item" />
+                            }
+                        }
+                    </tbody>
+                    <!--end::Body-->
+                </table>
+                <!--end::Table-->
+            </div>
+            <!--end::Table container-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
 </div>
 <!--end::Tab pane-->
 <!--end::Tab Content-->
