@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,8 @@ namespace teamcare.web.app.Controllers
         private readonly AzureStorageSettings _azureStorageOptions;
 
 
-        public ResidenceController(IServiceUserService serviceUserService, IResidenceService residenceService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
+        public ResidenceController(IServiceUserService serviceUserService, IResidenceService residenceService, IFileUploadService fileUploadService,
+                                    IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
         {
             _serviceUserService = serviceUserService;
             _residenceService = residenceService;
@@ -42,11 +44,11 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, string.Empty),
             });
-
-            ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-
             var listOfResidence = await _residenceService.ListAllAsync();
-            return View(listOfResidence);
+            ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();            
+            ReturnResidenceModel.Residences = listOfResidence;
+            foreach (var item in ReturnResidenceModel.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
+            return View(ReturnResidenceModel);
 
         }
 
@@ -58,7 +60,39 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
-            return View(listOfResidence);
+            listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
+            return View(listOfResidence);            
+
+        }
+
+        public async Task<IActionResult> SetCurrentTab(string tabName, string Id)
+        {
+            switch (tabName)
+            {
+                case "Overview": return await ResidenceDetail(new Guid(Id)); 
+                case "Service_User": return await ServiceUserDetails(Id);
+            }
+            return null;
+        }
+
+        public async Task<IActionResult> ResidenceDetail(Guid Id)
+        {            
+            var listOfResidence = await _residenceService.GetByIdAsync(Id);        
+            listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
+            return PartialView("_ResidenceUpdate", listOfResidence);
+        }
+
+        public async Task<IActionResult> ServiceUserDetails(string Id)
+        {
+            ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();
+            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id));
+            if (listOfResidence != null)
+            {
+                listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
+                ReturnResidenceModel.Residence = listOfResidence;
+                foreach (var item in ReturnResidenceModel.Residence.ServiceUsers) { item.PrePath = "/" + _azureStorageOptions.Container; }
+            }
+            return PartialView("_ResidenceServiceUserCard", ReturnResidenceModel);
         }
 
         [HttpPost]

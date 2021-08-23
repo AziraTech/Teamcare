@@ -31,7 +31,7 @@ namespace teamcare.business.Models
 
         public ResidenceModel Residence { get; set; }
         public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
-
         public DocumentUploadModel ProfilePhoto => DocumentUploads?.FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
+        public string PrePath { get; set; }
     }
 }

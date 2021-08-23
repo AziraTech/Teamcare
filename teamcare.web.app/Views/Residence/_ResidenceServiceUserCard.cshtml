@@ -1,33 +1,85 @@
 ﻿
-@model List<teamcare.business.Models.ServiceUserModel>
-@if (Model != null)
-{
-    foreach (var item in Model)
-    {
-        <!--begin::Col-->
-        <div class="col-md-6 col-xxl-3">
-            <!--begin::Card-->
-            <a href="@Url.Action("Detail","ServiceUsers", new { id = item.Id })" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">
-                <div class="card">
-                    <!--begin::Card body-->
-                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
-                        <!--begin::Avatar-->
-                        <div class="symbol symbol-65px symbol-circle mb-5">
-                            <img src="@(item.ProfilePhoto !=null ? ViewBag.PrePath+"/"+item.ProfilePhoto.BlobName+"?width=200":"" )" alt="image" />
-                        </div>
-                        <!--end::Avatar-->
-                        <!--begin::Name-->
-                        @item.Title @item.FirstName @item.LastName
-                        <!--end::Name-->
-                        <!--begin::Position-->
-                        <div class="fw-bold text-gray-400 mb-6">@(item.Residence != null? item.Residence.Name:"")</div>
-                        <!--end::Position-->
-                    </div>
-                    <!--end::Card body-->
-                </div>
-                <!--end::Card-->
-            </a>
+@model teamcare.web.app.ViewModels.ResidenceListViewModel
+
+<div id="ServiceUsers" class="tab-pane fade show active" role="tabpanel">
+    <!--begin::details View-->
+    <div class="card mb-5 mb-xl-10">
+        <!--begin::Card header-->
+        <div class="card-header cursor-pointer">
+            <!--begin::Card title-->
+            <div class="card-title m-0">
+                <h3 class="fw-bolder m-0">Service Users</h3>
+            </div>
+            <!--end::Card title-->
+            <!--begin::Action-->
+            @*<a href="../../demo2/dist/account/settings.html" class="btn btn-primary align-self-center">Edit Service Users</a>*@
+            <!--end::Action-->
         </div>
-        <!--end::Col-->
-    }
-}
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0 pb-5">
+            <!--begin::Table-->
+            <table class="table align-middle table-row-dashed gy-5" id="kt_table_customers_payment">
+                <!--begin::Table head-->
+                <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
+                    <!--begin::Table row-->
+                    <tr>
+                        <th class="min-w-250px">Name</th>
+                        <th class="min-w-150px">Date of Admission</th>
+                        <th class="min-w-90px">Residence</th>
+                        <th class="min-w-50px text-end">Details</th>
+                    </tr>
+                    <!--end::Table row-->
+                </thead>
+                <!--end::Table head-->
+                <!--begin::Table body-->
+                <tbody class="fs-6 fw-bold text-gray-600">
+                    <!--begin::Table row-->
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.Residence.ServiceUsers)
+                        {
+                            <tr>
+                                <td>
+                                    <!--begin::User-->
+                                    <div class="d-flex align-items-center">
+                                        <!--begin::Wrapper-->
+                                        <div class="me-5 position-relative">
+                                            <!--begin::Avatar-->
+                                            <div class="symbol symbol-35px symbol-circle">
+                                                <img src="@(item.ProfilePhoto !=null ? item.PrePath+"/"+item.ProfilePhoto.BlobName+"?width=200" :"../../media/avatars/blank.png" )" alt="image" />
+                                            </div>
+                                            <!--end::Avatar-->
+                                        </div>
+                                        <!--end::Wrapper-->
+                                        <!--begin::Info-->
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <a href="@Url.Action("Detail","ServiceUsers", new { id = item.Id })" class="mb-1 text-gray-800 text-hover-primary">@item.Title @item.FirstName @item.LastName</a>
+                                            <div class="fw-bold fs-6 text-gray-400">
+                                                @(item.KnownAs)
+                                            </div>
+                                        </div>
+                                        <!--end::Info-->
+                                    </div>
+                                    <!--end::User-->
+                                </td>
+                                <td>@(item.DateOfAdmission.ToString("MMM, dd yyyy"))</td>
+                                <td>@(item.Residence != null?item.Residence.Name:"")</td>
+                                <td class="text-end">
+                                    <a href="@Url.Action("Detail","ServiceUsers", new { id = item.Id })" class="btn btn-light btn-sm">View</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    <!--end::Table row-->
+                </tbody>
+            </table>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::details View-->
+</div>
+
+
+

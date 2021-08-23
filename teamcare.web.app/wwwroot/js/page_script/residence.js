@@ -92,6 +92,33 @@ const resupd = FormValidation
         }
     );
 
+async function setCurrentTab(tabName, id) {
+    await $.ajax({
+        type: "POST",
+        url: '/Residence/SetCurrentTab',
+        data: { tabName: tabName, id: id },
+        success: function (data) {
+            if (data) {
+
+                switch (tabName) {
+                    case 'Overview':
+                        $('#tbLnkOverview').addClass('active');
+                        $('#tbLnkServiceUser').removeClass('active');
+                        break;
+                    case 'Service_User':
+                        $('#tbLnkOverview').removeClass('active');
+                        $('#tbLnkServiceUser').addClass('active');
+                        break;
+
+                }
+
+                $('#ShowCurrentTab').html('');
+                $('#ShowCurrentTab').html(data);
+            } else { }
+        }
+    });
+}
+
 $(document).ready(function () {
 
     $('#new_card_residence_submit').click(function (e) {
