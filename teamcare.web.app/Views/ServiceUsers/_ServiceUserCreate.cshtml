@@ -1,5 +1,9 @@
-﻿@model teamcare.web.app.ViewModels.ServiceUsersViewModel
+﻿@using teamcare.common.Helpers
+@model teamcare.web.app.ViewModels.ServiceUsersViewModel
 <!--begin::Stepper-->
+
+<input type="hidden" id="selectedId" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.Id; }" />
+
 <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="su-profile-stepper">
     <!--begin::Aside-->
     <div class="d-flex justify-content-center justify-content-xl-start flex-row-auto w-100 w-xl-300px">
@@ -82,10 +86,24 @@
                         <div>
                             <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" id="su-title">
                                 <option></option>
-                                <option value="Dr.">Dr.</option>
-                                <option value="Er.">Er.</option>
-                                <option value="Mr." selected>Mr.</option>
-                                <option value="Miss">Miss</option>
+                                @foreach (var group in Model.CreateViewModel.Title)
+                                {
+                                    if (Model.ServiceUserByID != null && group.Value == (int)Model.ServiceUserByID.Title)
+                                    {
+                                        <option value="@group.Value" selected>@group.Text</option>
+                                    }
+                                    else
+                                    {
+                                        @if (group.Text == "Mr.")
+                                        {
+                                            <option value="@group.Value" selected>@group.Text</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@group.Value">@group.Text</option>
+                                        }
+                                    }
+                                }
                             </select>
                         </div>
                         <!--end::Input-->
@@ -99,7 +117,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="first_name" placeholder="" value="" id="su-first_name" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="first_name" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.FirstName; }" id="su-first_name" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -110,7 +128,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="last_name" placeholder="" value="" id="su-last_name" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="last_name" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.LastName; }" id="su-last_name" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -121,34 +139,49 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="known_as" placeholder="" value="" id="su-known_as" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="known_as" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.KnownAs; }" id="su-known_as" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
                         <!--begin::Dropzone-->
                         <div class="dropzone" id="sv-profile-photo">
-                            <!--begin::Message-->
-                            <div class="dz-message needsclick">
-                                <!--begin::Icon-->
-                                <!--begin::Svg Icon | path: icons/duotone/Files/Uploaded-file.svg-->
-                                <span class="svg-icon svg-icon-3hx svg-icon-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <polygon points="0 0 24 0 24 24 0 24" />
-                                            <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                            <path d="M8.95128003,13.8153448 L10.9077535,13.8153448 L10.9077535,15.8230161 C10.9077535,16.0991584 11.1316112,16.3230161 11.4077535,16.3230161 L12.4310522,16.3230161 C12.7071946,16.3230161 12.9310522,16.0991584 12.9310522,15.8230161 L12.9310522,13.8153448 L14.8875257,13.8153448 C15.1636681,13.8153448 15.3875257,13.5914871 15.3875257,13.3153448 C15.3875257,13.1970331 15.345572,13.0825545 15.2691225,12.9922598 L12.3009997,9.48659872 C12.1225648,9.27584861 11.8070681,9.24965194 11.596318,9.42808682 C11.5752308,9.44594059 11.5556598,9.46551156 11.5378061,9.48659872 L8.56968321,12.9922598 C8.39124833,13.2030099 8.417445,13.5185067 8.62819511,13.6969416 C8.71848979,13.773391 8.8329684,13.8153448 8.95128003,13.8153448 Z" fill="#000000" />
-                                        </g>
-                                    </svg>
-                                </span>
-                                <!--end::Svg Icon-->
-                                <!--end::Icon-->
-                                <!--begin::Info-->
-                                <div class="ms-4">
-                                    <h3 class="dfs-3 fw-bolder text-gray-900 mb-1">Drop file here or click to upload.</h3>
-                                    <span class="fw-bold fs-4 text-muted">Upload single file at a time</span>
+                            @if (Model.ServiceUserByID == null)
+                            {
+
+                                <!--begin::Message-->
+                                <div class="dz-message needsclick">
+                                    <!--begin::Icon-->
+                                    <!--begin::Svg Icon | path: icons/duotone/Files/Uploaded-file.svg-->
+                                    <span class="svg-icon svg-icon-3hx svg-icon-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <polygon points="0 0 24 0 24 24 0 24" />
+                                                <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                <path d="M8.95128003,13.8153448 L10.9077535,13.8153448 L10.9077535,15.8230161 C10.9077535,16.0991584 11.1316112,16.3230161 11.4077535,16.3230161 L12.4310522,16.3230161 C12.7071946,16.3230161 12.9310522,16.0991584 12.9310522,15.8230161 L12.9310522,13.8153448 L14.8875257,13.8153448 C15.1636681,13.8153448 15.3875257,13.5914871 15.3875257,13.3153448 C15.3875257,13.1970331 15.345572,13.0825545 15.2691225,12.9922598 L12.3009997,9.48659872 C12.1225648,9.27584861 11.8070681,9.24965194 11.596318,9.42808682 C11.5752308,9.44594059 11.5556598,9.46551156 11.5378061,9.48659872 L8.56968321,12.9922598 C8.39124833,13.2030099 8.417445,13.5185067 8.62819511,13.6969416 C8.71848979,13.773391 8.8329684,13.8153448 8.95128003,13.8153448 Z" fill="#000000" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                    <!--end::Icon-->
+                                    <!--begin::Info-->
+                                    <div class="ms-4">
+                                        <h3 class="dfs-3 fw-bolder text-gray-900 mb-1">Drop file here or click to upload.</h3>
+                                        <span class="fw-bold fs-4 text-muted">Upload single file at a time</span>
+                                    </div>
+                                    <!--end::Info-->
                                 </div>
-                                <!--end::Info-->
-                            </div>
+                            }
+                            else
+                            {
+                               
+                                <div class="dz-preview dz-file-preview" id="OldProfile">
+                                    <div class="dz-image">
+                                        <img data-dz-thumbnail src="@(Model.ServiceUserByID.ProfilePhoto !=null ? Model.ServiceUserByID.PrePath+"/"+Model.ServiceUserByID.ProfilePhoto.BlobName+"?width=200":"../../media/avatars/blank.png" )" alt="Click me to remove the file."/>
+                                    </div>                                  
+                                    <a class="dz-remove" href="javascript:undefined;" onclick="RemoveProfile()">Remove file</a>
+                                </div>
+                            }
+
                         </div>
                         <!--end::Dropzone-->
                     </div>
@@ -176,7 +209,7 @@
                             </div>
                             <!--end::Icon-->
                             <!--begin::Input-->
-                            <input class="form-control form-control-solid ps-12 date-dob" placeholder="Pick date range" name="su-date_of_birth" id="su-date_of_birth" />
+                            <input class="form-control form-control-solid ps-12 date-dob" placeholder="Pick date range" name="su-date_of_birth" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.DateOfBirth; }" id="su-date_of_birth" />
                             <!--end::Input-->
                         </div>
                         <!--end::Wrapper-->
@@ -189,7 +222,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-legal_status" placeholder="" value="" id="su-legal_status" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-legal_status" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.LegalStatus; }" id="su-legal_status" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -200,7 +233,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-nhs_id" placeholder="" value="" id="su-nhs_id" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-nhs_id" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.NHSIdNumber; }" id="su-nhs_id" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -211,7 +244,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-national_insuarance" placeholder="" value="" id="su-national_insuarance" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-national_insuarance" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.NationalInsuranceNo; }" id="su-national_insuarance" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -238,7 +271,7 @@
                             </div>
                             <!--end::Icon-->
                             <!--begin::Input-->
-                            <input class="form-control form-control-solid ps-12 date-admission" placeholder="Pick date range" name="su-date_of_admission" id="su-date_of_admission" />
+                            <input class="form-control form-control-solid ps-12 date-admission" placeholder="Pick date range" name="su-date_of_admission" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.DateOfAdmission; }" id="su-date_of_admission" />
                             <!--end::Input-->
                         </div>
                         <!--end::Wrapper-->
@@ -251,7 +284,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="tel" class="form-control form-control-lg form-control-solid" name="personal_tel_no" placeholder="" value="" id="su-personal_tel_no" />
+                        <input type="tel" class="form-control form-control-lg form-control-solid" name="personal_tel_no" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.PersonalTelNo; }" id="su-personal_tel_no" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -267,7 +300,14 @@
                                 <option selected></option>
                                 @foreach (var group in Model.ResidenceList)
                                 {
-                                    <option value="@group.Value">@group.Text</option>
+                                    if (Model.ServiceUserByID != null && group.Value == Model.ServiceUserByID.ResidenceId.ToString())
+                                    {
+                                        <option value="@group.Value" selected>@group.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@group.Value">@group.Text</option>
+                                    }
                                 }
                             </select>
                         </div>
@@ -292,8 +332,17 @@
                         <div>
                             <select class="form-select form-select-solid" name="marital_status" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" id="su-marital_status">
                                 <option selected></option>
-                                <option value="1">Single</option>
-                                <option value="2">Married</option>
+                                @foreach (var group in Model.CreateViewModel.Marital)
+                                {
+                                    if (Model.ServiceUserByID != null && group.Value == (int)Model.ServiceUserByID.MaritalStatus)
+                                    {
+                                        <option value="@group.Value" selected>@group.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@group.Value">@group.Text</option>
+                                    }
+                                }
                             </select>
                         </div>
                         <!--end::Input-->
@@ -309,8 +358,17 @@
                         <div>
                             <select class="form-select form-select-solid" data-kt-select2="true" name="religion" data-placeholder="Select option" data-allow-clear="true" id="su-religion">
                                 <option selected></option>
-                                <option value="1">Roman Cathelic</option>
-                                <option value="2">Cathelic</option>
+                                @foreach (var group in Model.CreateViewModel.Religion)
+                                {
+                                    if (Model.ServiceUserByID != null && group.Value == (int)Model.ServiceUserByID.Religion)
+                                    {
+                                        <option value="@group.Value" selected>@group.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@group.Value">@group.Text</option>
+                                    }
+                                }
                             </select>
                         </div>
                         <!--end::Input-->
@@ -326,8 +384,17 @@
                         <div>
                             <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" name="ethnicity" data-allow-clear="true" id="su-ethnicity">
                                 <option selected></option>
-                                <option value="1">White British</option>
-                                <option value="2">Black British</option>
+                                @foreach (var group in Model.CreateViewModel.Ethnicity)
+                                {
+                                    if (Model.ServiceUserByID != null && group.Value == (int)Model.ServiceUserByID.Ethnicity)
+                                    {
+                                        <option value="@group.Value" selected>@group.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@group.Value">@group.Text</option>
+                                    }
+                                }
                             </select>
                         </div>
                         <!--end::Input-->
@@ -344,11 +411,17 @@
                         <div>
                             <select class="form-select form-select-solid" name="first_language" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" id="su-language">
                                 <option selected></option>
-                                <option value="1">English</option>
-                                <option value="2">French</option>
-                                <option value="3">Japanese</option>
-                                <option value="4">German</option>
-                                <option value="5">Spanis</option>
+                                @foreach (var group in Model.CreateViewModel.PrefLanguage)
+                                {
+                                    if (Model.ServiceUserByID != null && group.Text == Model.ServiceUserByID.PreferredFirstLanguage.ToString())
+                                    {
+                                        <option value="@group.Value" selected>@group.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@group.Value">@group.Text</option>
+                                    }
+                                }
                             </select>
                         </div>
                         <!--end::Input-->
@@ -361,7 +434,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="name" placeholder="" value="" id="su-occupation" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="name" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.CurrentPreviousOccupation; }" id="su-occupation" />
                         <!--end::Input-->
                     </div>
                     <!--end::Input group-->
@@ -380,7 +453,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="next_of_kin" placeholder="" value="" id="su-next_of_kin" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="next_of_kin" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.NextOfKin; }" id="su-next_of_kin" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -391,7 +464,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-related_person" placeholder="" value="" id="su-related_person" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-related_person" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.RelationshipToPerson; }" id="su-related_person" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -402,7 +475,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-address" placeholder="" value="" id="su-address" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-address" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.Address; }" id="su-address" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -413,7 +486,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-contact_detail" placeholder="" value="" id="su-contact_detail" />
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-contact_detail" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.ContactDetails; }" id="su-contact_detail" />
                         <!--end::Input-->
                     </div>
                     <!--end::Input group-->

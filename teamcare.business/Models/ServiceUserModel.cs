@@ -7,7 +7,7 @@ namespace teamcare.business.Models
 {
     public class ServiceUserModel : BaseModel
     {
-        public string Title { get; set; }
+        public NameTitle Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string KnownAs { get; set; }
@@ -19,10 +19,10 @@ namespace teamcare.business.Models
         public DateTime DateOfAdmission { get; set; }
         public Guid ResidenceId { get; set; }
         public string PersonalTelNo { get; set; }
-        public string MaritalStatus { get; set; }
-        public string Religion { get; set; }
-        public string Ethnicity { get; set; }
-        public string PreferredFirstLanguage { get; set; }
+        public MaritalStatus MaritalStatus { get; set; }
+        public Religion Religion { get; set; }
+        public Ethnicity Ethnicity { get; set; }
+        public Language PreferredFirstLanguage { get; set; }
         public string CurrentPreviousOccupation { get; set; }
         public string NextOfKin { get; set; }
         public string RelationshipToPerson { get; set; }

@@ -10,6 +10,7 @@ using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
+using teamcare.common.Helpers;
 using teamcare.common.ReferenceData;
 using teamcare.web.app.Helpers;
 using teamcare.web.app.ViewModels;
@@ -50,6 +51,14 @@ namespace teamcare.web.app.Controllers
             var model = new ServiceUsersViewModel
             {
                 ResidenceList =distinctResidence,
+                CreateViewModel = new ServiceUserCreateViewModel
+                {
+                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                    Marital=EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                    Religion = EnumExtensions.GetEnumListItems<Religion>(),
+                    Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
+                    PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
+                }
             };
 
             return View(model);
@@ -65,9 +74,27 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.ServiceUsers, Url.Action("Index", "ServiceUsers")),
                 new BreadcrumbItem(listOfUser.Title+" "+ listOfUser.FirstName+" "+listOfUser.LastName, null) //TODO: Replace with correct service user name
 			});
+
+            var listOfResidence = await _residenceService.ListAllAsync();
+            var distinctResidence = listOfResidence.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(y => y.Text).ToList();
+
             var model = new ServiceUsersViewModel
             {
-                ServiceUserByID = listOfUser
+                ServiceUserByID = listOfUser,
+                ResidenceList = distinctResidence,
+                CreateViewModel = new ServiceUserCreateViewModel
+                {
+                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                    Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                    Religion = EnumExtensions.GetEnumListItems<Religion>(),
+                    Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
+                    PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
+                }
+
             };
             return View(model);
         }
@@ -103,7 +130,16 @@ namespace teamcare.web.app.Controllers
             {
                 if (serviceUserCreateViewModel?.ServiceUser != null)
                 {
-                    var createdServiceUser = await _serviceUserService.AddAsync(serviceUserCreateViewModel.ServiceUser);
+                    var createdServiceUser = new ServiceUserModel();
+
+                    if (serviceUserCreateViewModel.ServiceUser.Id.ToString() == "")
+                    {
+                        createdServiceUser = await _serviceUserService.AddAsync(serviceUserCreateViewModel.ServiceUser);
+                    }
+                    else
+                    {
+                        createdServiceUser = await _serviceUserService.UpdateAsync(serviceUserCreateViewModel.ServiceUser);
+                    }
 
                     if (createdServiceUser != null && !string.IsNullOrWhiteSpace(serviceUserCreateViewModel.ServiceUser.TempFileId))
                     {

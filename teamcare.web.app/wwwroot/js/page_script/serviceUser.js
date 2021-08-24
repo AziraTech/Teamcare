@@ -28,7 +28,7 @@ var myDropzone = new Dropzone("#sv-profile-photo", {
 	maxFilesize: 10, // MB
 	addRemoveLinks: true,
 	acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
-	success: function (file, response) {
+	success: function (file, response) {		
 		tempFileId = response;
 		fileName = file.name;
 		fileType = file.type;
@@ -44,6 +44,7 @@ var myDropzone = new Dropzone("#sv-profile-photo", {
 
 
 // Stepper lement
+var serviceUserId = $('#selectedId').val();
 var element = document.querySelector("#su-profile-stepper");
 var r = document.querySelector("#su-profile-form");
 var step1 = document.querySelector('#su-step-pi');
@@ -64,7 +65,7 @@ submit.addEventListener("click", function (e) {
 
 				//ajax call for the submit;
 				var ServiceUser = {
-					Id: 0,
+					Id: serviceUserId,
 					Title: $('#su-title').val(),
 					FirstName: $('#su-first_name').val(),
 					LastName: $('#su-last_name').val(),
@@ -311,6 +312,11 @@ async function doSortFilterBy() {
 	});
 }
 
+function RemoveProfile() {
+	$('#OldProfile').remove();
+}
+
 $(document).ready(function() {
-    doSortFilterBy();
+	doSortFilterBy();
+
 });

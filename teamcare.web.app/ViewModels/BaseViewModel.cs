@@ -21,6 +21,6 @@ namespace teamcare.web.app.ViewModels
             _azureStorageOptions = azureStorageOptions.Value;
         }
 
-        public string PrePath => $"/{_azureStorageOptions.Container}";
+        public string PrePath => $"/{_azureStorageOptions?.Container}";
     }
 }
