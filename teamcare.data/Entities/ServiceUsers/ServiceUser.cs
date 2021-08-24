@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using teamcare.common.Enumerations;
 using teamcare.data.Entities;
 using teamcare.data.Entities.Documents;
 
@@ -10,7 +11,7 @@ namespace teamcare.data.Entities
 	public class ServiceUser : BaseEntity
 	{
 		[Column("title")]
-		public string Title { get; set; }
+		public NameTitle Title { get; set; }
 
 		[Column("first_name")]
 		public string FirstName { get; set; }
@@ -43,16 +44,16 @@ namespace teamcare.data.Entities
 		public string PersonalTelNo { get; set; }
 
 		[Column("marital_status")]
-		public string MaritalStatus { get; set; }
+		public MaritalStatus MaritalStatus { get; set; }
 
 		[Column("religion")]
-		public string Religion { get; set; }
+		public Religion Religion { get; set; }
 
 		[Column("ethnicity")]
-		public string Ethnicity { get; set; }
+		public Ethnicity Ethnicity { get; set; }
 
 		[Column("preferred_first_language")]
-		public string PreferredFirstLanguage { get; set; }
+		public Language PreferredFirstLanguage { get; set; }
 
 		[Column("current_previous_occupation")]
 		public string CurrentPreviousOccupation { get; set; }
