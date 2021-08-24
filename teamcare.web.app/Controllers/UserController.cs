@@ -34,16 +34,18 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Index()
         {
-            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>() {
+            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>() 
+            {                
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.User, string.Empty),
             });
 
-            ViewBag.PrePath = "/" + _azureStorageOptions.Container;
-
+            var usersDetail = await _userService.ListAllAsync();
+            foreach (var item in usersDetail) { item.PrePath = "/" + _azureStorageOptions.Container; }
             var model = new UserListViewModel
             {
-                Users = await _userService.ListAllAsync(),
+                Users = usersDetail,
+                PrePath = "/" + _azureStorageOptions.Container,
                 CreateViewModel = new UserCreateViewModel
                 {
                     UserRoles = EnumExtensions.GetEnumListItems<UserRoles>()
@@ -51,6 +53,28 @@ namespace teamcare.web.app.Controllers
             };
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Detail(Guid Id)
+        {
+            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>() 
+            {
+                new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
+                new BreadcrumbItem(PageTitles.User, Url.Action("Index", "User"))
+            });
+            var listOfUser = await _userService.GetByIdAsync(Id);
+            listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+            var model = new UserListViewModel
+            {
+                User = listOfUser,
+                PrePath = "/" + _azureStorageOptions.Container,
+                CreateViewModel = new UserCreateViewModel
+                {
+                    UserRoles = EnumExtensions.GetEnumListItems<UserRoles>()
+                }
+            };
+            return View(model);
+
         }
 
         [HttpPost]
