@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using teamcare.data.Entities.ServiceUsers;
 
 namespace teamcare.data.Entities.Documents
 {
@@ -22,6 +23,11 @@ namespace teamcare.data.Entities.Documents
         [Column("user_id")]
         public Guid? UserId { get; set; }
         public virtual User User { get; set; }
+
+        [ForeignKey("Contact")]
+        [Column("contact_id")]
+        public Guid? ContactId { get; set; }
+        public virtual Contact Contact { get; set; }
 
         [Column("file_extension")]
         public string FileExtension { get; set; }

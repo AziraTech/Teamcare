@@ -23,8 +23,4 @@
     <ProjectReference Include="..\teamcare.common\teamcare.common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\ServiceUsers\" />
-  </ItemGroup>
-
 </Project>
