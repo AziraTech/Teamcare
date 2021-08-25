@@ -11,6 +11,7 @@ namespace teamcare.business.Models
         public Guid? ResidenceId { get; set; }
 
         public Guid? UserId { get; set; }
+        public Guid? ContactId { get; set; }
 
         public string FileExtension { get; set; }
 

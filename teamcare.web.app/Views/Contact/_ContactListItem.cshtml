@@ -1,0 +1,32 @@
+﻿@using teamcare.common.Helpers
+@model teamcare.business.Models.ContactModel
+<tr>
+    <td>
+        <!--begin::User-->
+        <div class="d-flex align-items-center">
+            <!--begin::Wrapper-->
+            <div class="me-5 position-relative">
+                <!--begin::Avatar-->
+                <div class="symbol symbol-35px symbol-circle">
+                    <img src="@(Model.ProfilePhoto !=null ? Model.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200" :"../../media/avatars/blank.png" )" alt="image" />
+                </div>
+                <!--end::Avatar-->
+            </div>
+            <!--end::Wrapper-->
+            <!--begin::Info-->
+            <div class="d-flex flex-column justify-content-center">
+                <a href="#" class="mb-1 text-gray-800 text-hover-primary">@Model.Title.GetEnumDescription() @Model.FirstName @Model.MiddleName @Model.LastName  </a>
+                <div class="fw-bold fs-6 text-gray-400">
+                    @(Model.Relationship)
+                </div>
+            </div>
+            <!--end::Info-->
+        </div>
+        <!--end::User-->
+    </td>
+    <td>@(Model.Email)</td>
+    <td>@(Model.Mobile)</td>
+    <td class="text-end">
+        <a href="#" class="btn btn-light btn-sm">View</a>
+    </td>
+</tr>

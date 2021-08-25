@@ -17,7 +17,7 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
+    //[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
     public class ServiceUsersController : BaseController
     {
         private readonly IServiceUserService _serviceUserService;
@@ -26,13 +26,15 @@ namespace teamcare.web.app.Controllers
         private readonly IDocumentUploadService _documentUploadService;
         private readonly IFavouriteServiceUserService _favouriteServiceUserService;
         private readonly AzureStorageSettings _azureStorageOptions;
-        
+        private readonly IContactService _contactService;
+
         public ServiceUsersController(IServiceUserService serviceUserService, 
                                       IResidenceService residenceService, 
                                       IFileUploadService fileUploadService, 
                                       IDocumentUploadService documentUploadService,
                                       IFavouriteServiceUserService favouriteServiceUserService,
-                                      IOptions<AzureStorageSettings> azureStorageOptions)
+                                      IOptions<AzureStorageSettings> azureStorageOptions,
+                                      IContactService contactService)
         {
             _serviceUserService = serviceUserService;
             _residenceService = residenceService;
@@ -40,6 +42,8 @@ namespace teamcare.web.app.Controllers
             _documentUploadService = documentUploadService;
             _favouriteServiceUserService = favouriteServiceUserService;
             _azureStorageOptions = azureStorageOptions.Value;
+            _contactService = contactService;
+
         }
 
         public async Task<IActionResult> Index()
@@ -86,6 +90,13 @@ namespace teamcare.web.app.Controllers
             if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
 
+            foreach (var item in listOfUser.Contacts)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+                item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
+            }
+
+
             SetPageMetadata(PageTitles.ServiceUsers, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.ServiceUsers, Url.Action("Index", "ServiceUsers")),
@@ -113,7 +124,11 @@ namespace teamcare.web.app.Controllers
                     Religion = EnumExtensions.GetEnumListItems<Religion>(),
                     Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
                     PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
-                }
+                    Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
+
+                },
+                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+
 
             };
             return View(model);

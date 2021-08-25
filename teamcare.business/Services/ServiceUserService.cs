@@ -31,7 +31,8 @@ namespace teamcare.business.Services
         {
             var serviceUser = await _serviceUserRepository.GetByIdAsync(id);            
             var residence = serviceUser.Residence;
-            var documents = serviceUser.DocumentUploads;            
+            var documents = serviceUser.DocumentUploads;
+            var contacts = serviceUser.Contacts;
             return _mapper.Map<ServiceUser, ServiceUserModel>(serviceUser);
         }
 

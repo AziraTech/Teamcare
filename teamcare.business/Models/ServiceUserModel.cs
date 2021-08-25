@@ -33,5 +33,7 @@ namespace teamcare.business.Models
         public DocumentUploadModel ProfilePhoto => DocumentUploads?.FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
         public string PrePath { get; set; }
         public bool Favourite { get; set; }
+        public ICollection<ContactModel> Contacts { get; set; }
+
     }
 }
