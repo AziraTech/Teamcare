@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using teamcare.data.Entities;
 using teamcare.data.Entities.Documents;
+using teamcare.data.Entities.ServiceUsers;
+using teamcare.data.Entities.Users;
 
 namespace teamcare.data.Data
 {
@@ -16,6 +18,8 @@ namespace teamcare.data.Data
         public DbSet<MedicalHistory> MedicalHistories { get; set; }
         public DbSet<Residence> Residences { get; set; }
         public DbSet<DocumentUpload> DocumentUploads { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<FavouriteServiceUser> FavouriteServiceUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
