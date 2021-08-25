@@ -13,7 +13,7 @@
             <!--begin: Pic-->
             <div class="me-7 mb-4">
                 <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                    <img src="@(Model.ServiceUserByID.ProfilePhoto !=null ? Model.ServiceUserByID.PrePath+"/"+Model.ServiceUserByID.ProfilePhoto.BlobName+"?width=200":"../../media/avatars/blank.png")" alt="image" />
+                    <img src="@(Model.ServiceUserByID.ProfilePhoto != null ? Model.ServiceUserByID.PrePath + "/" + Model.ServiceUserByID.ProfilePhoto.BlobName + "?width=200" : "../../media/avatars/blank.png")" alt="image" />
                     <div class="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px"></div>
                 </div>
             </div>
@@ -37,6 +37,10 @@
                                 </span>
                                 <!--end::Svg Icon-->
                             </a>
+                            &nbsp; &nbsp;
+                            
+                            <img id="su-favourite" src="@( !Model.ServiceUserByID.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )" class="h-20px align-self-center" alt="" />
+
                         </div>
                         <!--end::Name-->
                         <!--begin::Info-->
@@ -93,6 +97,13 @@
                                     <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Payments</div>
                                 </div>
                                 <!--end::Heading-->
+
+                                <div class="menu-item px-3">
+                                    <a href="#AddFavourite" onclick="setAsFavourite('e1563089-ea2f-47c7-bbd9-a92d01059cf1', '@Model.ServiceUserByID.Id', 'su-favourite', 'd')" class="menu-link px-3">Add Favourite</a>
+                                </div>
+
+                                
+
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
                                     <a href="#" class="menu-link px-3">Create Invoice</a>

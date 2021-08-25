@@ -27,11 +27,11 @@ namespace teamcare.business.Models
         public string NextOfKin { get; set; }
         public string RelationshipToPerson { get; set; }
         public string Address { get; set; }
-        public string ContactDetails { get; set; }
-
-        public ResidenceModel Residence { get; set; }
+        public string ContactDetails { get; set; }        
+        public ResidenceModel Residence { get; set; }        
         public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
         public DocumentUploadModel ProfilePhoto => DocumentUploads?.FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
         public string PrePath { get; set; }
+        public bool Favourite { get; set; }
     }
 }

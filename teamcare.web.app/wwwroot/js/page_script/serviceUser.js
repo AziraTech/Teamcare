@@ -312,6 +312,23 @@ async function doSortFilterBy() {
 	});
 }
 
+async function setAsFavourite(vCurrentUser, vFavauriteUser, imageId, ltype) {
+	await $.ajax({
+		type: "POST",
+		url: '/ServiceUsers/SetAsFavouriteUser',
+		data: { CurrentUser: vCurrentUser, FavauriteUser: vFavauriteUser.replace(imageId, "") },
+		success: function (data)
+		{
+			if (data)
+			{
+				$("#" + ltype == 'd' ? imageId : vFavauriteUser).attr("src", "/media/svg/files/on_favourite_star.svg");
+			} else {
+				$("#" + ltype == 'd' ? imageId : vFavauriteUser).attr("src", "/media/svg/files/off_favourite_star.svg");
+			}							
+		}
+	});
+}
+
 function RemoveProfile() {
 	$('#OldProfile').remove();
 }

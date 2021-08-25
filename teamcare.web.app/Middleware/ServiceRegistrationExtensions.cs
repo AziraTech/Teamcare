@@ -16,8 +16,15 @@ namespace teamcare.web.app.Middleware
             services.AddScoped<IResidenceService, ResidenceService>();
             services.AddScoped<IDocumentUploadService, DocumentUploadService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
+            services.AddScoped<IFavouriteServiceUserService, FavouriteServiceUserService>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IResidenceRepository, ResidenceRepository>();
+
+            
+            services.AddScoped<IFavouriteServiceUserRepository, FavouriteServiceUserRepository>();
+
+
             services.AddScoped<IResidenceRepository, ResidenceRepository>();
 
             services.AddScoped<IAuditRepository, AuditRepository>();
