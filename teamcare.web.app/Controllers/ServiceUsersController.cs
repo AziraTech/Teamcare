@@ -17,7 +17,7 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-    //[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
+    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
     public class ServiceUsersController : BaseController
     {
         private readonly IServiceUserService _serviceUserService;
