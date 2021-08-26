@@ -1,10 +1,10 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Patients View";
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model teamcare.web.app.ViewModels.ServiceUsersViewModel
-
+    
 }
-
 <!--begin::Navbar-->
 <div class="card mb-5 mb-xxl-8">
     <div class="card-body pt-9 pb-0">
@@ -36,11 +36,11 @@
                                     </svg>
                                 </span>
                                 <!--end::Svg Icon-->
-                            </a>
-                            &nbsp; &nbsp;
-                            
-                            <img id="su-favourite" src="@( !Model.ServiceUserByID.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )" class="h-20px align-self-center" alt="" />
-
+                            </a>&nbsp; &nbsp;
+                            @if (Model.ServiceUserByID.Favourite)
+                            {
+                                <img id="su-favourite" src="@( !Model.ServiceUserByID.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )" class="h-20px align-self-center" alt="" />
+                            }
                         </div>
                         <!--end::Name-->
                         <!--begin::Info-->
@@ -97,13 +97,18 @@
                                     <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Payments</div>
                                 </div>
                                 <!--end::Heading-->
-
-                                <div class="menu-item px-3">
-                                    <a href="#AddFavourite" onclick="setAsFavourite('e1563089-ea2f-47c7-bbd9-a92d01059cf1', '@Model.ServiceUserByID.Id', 'su-favourite', 'd')" class="menu-link px-3">Add Favourite</a>
-                                </div>
-
-                                
-
+                                @if (!@Model.ServiceUserByID.Favourite)
+                                {
+                                    <div class="menu-item px-3">
+                                        <a href="#AddFavourite" onclick="setAsFavourite('@Model.ServiceUserByID.Id', 'su-favourite', 'd')" class="menu-link px-3">Add Favourite</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="menu-item px-3">
+                                        <a href="#RemoveFavourite" onclick="setAsFavourite('@Model.ServiceUserByID.Id', 'su-favourite', 'd')" class="menu-link px-3">Remove Favourite</a>
+                                    </div>
+                                }
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
                                     <a href="#" class="menu-link px-3">Create Invoice</a>

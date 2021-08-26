@@ -2,16 +2,16 @@
 @model teamcare.business.Models.ServiceUserModel
 <!--begin::Col-->
 <div class="col-md-6 col-xxl-3">
-    <!--begin::Card-->    
+    <!--begin::Card-->   
+    <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">
         <div class="card">
             <!--begin::Card body-->
             <div class="card-body d-flex flex-center flex-column pt-12 p-9">
                 <!--begin::Avatar-->
-                <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">
-                    <div class="symbol symbol-65px symbol-circle mb-5">
-                        <img src="@(Model.ProfilePhoto !=null ? Model.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200":"../../media/avatars/blank.png" )" alt="image" />
-                    </div>
-                </a>
+
+                <div class="symbol symbol-65px symbol-circle mb-5">
+                    <img src="@(Model.ProfilePhoto !=null ? Model.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200":"../../media/avatars/blank.png" )" alt="image" />
+                </div>
                 <!--end::Avatar-->
                 <!--begin::Name-->
                 @Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName
@@ -28,6 +28,6 @@
             <!--end::Card body-->
         </div>
         <!--end::Card-->
-    
+    </a>    
 </div>
 <!--end::Col-->

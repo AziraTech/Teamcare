@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
@@ -26,9 +27,11 @@ namespace teamcare.web.app.Controllers
         private readonly IDocumentUploadService _documentUploadService;
         private readonly IFavouriteServiceUserService _favouriteServiceUserService;
         private readonly AzureStorageSettings _azureStorageOptions;
-        
+        private readonly IUserService _userService;
+        public Guid userName;
         public ServiceUsersController(IServiceUserService serviceUserService, 
                                       IResidenceService residenceService, 
+                                      IUserService userService,
                                       IFileUploadService fileUploadService, 
                                       IDocumentUploadService documentUploadService,
                                       IFavouriteServiceUserService favouriteServiceUserService,
@@ -40,6 +43,7 @@ namespace teamcare.web.app.Controllers
             _documentUploadService = documentUploadService;
             _favouriteServiceUserService = favouriteServiceUserService;
             _azureStorageOptions = azureStorageOptions.Value;
+            _userService = userService;
         }
 
         public async Task<IActionResult> Index()
@@ -49,6 +53,9 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.ServiceUsers, string.Empty),
             });
 
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
             var listOfResidence = await _residenceService.ListAllAsync();
             var distinctResidence = listOfResidence.Select(x => new SelectListItem
             {
@@ -57,7 +64,7 @@ namespace teamcare.web.app.Controllers
             }).OrderBy(y => y.Text).ToList();
 
             var model = new ServiceUsersViewModel
-            {
+            {                
                 ResidenceList =distinctResidence,                
                 CreateViewModel = new ServiceUserCreateViewModel
                 {
@@ -73,7 +80,7 @@ namespace teamcare.web.app.Controllers
                 var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
                 foreach (ServiceUserModel serviceUser in model.ServiceUser)
                 {
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id && x.UserId == userName).FirstOrDefault();
                     serviceUser.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
@@ -82,6 +89,9 @@ namespace teamcare.web.app.Controllers
                 
         public async Task<IActionResult> Detail(string id)
         {
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
             var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
             if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
@@ -120,7 +130,10 @@ namespace teamcare.web.app.Controllers
         }
 
         public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
-        {            
+        {
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
             //Sorting List
             var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
             if (listOfUser != null)
@@ -129,7 +142,7 @@ namespace teamcare.web.app.Controllers
                 foreach (var item in listOfUser)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == userName).FirstOrDefault();
                     item.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
@@ -201,18 +214,20 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetAsFavouriteUser(string CurrentUser, string FavauriteUser)
+        public async Task<IActionResult> SetAsFavouriteUser(string FavauriteUser)
         {
             try
             {
-                if(CurrentUser.Trim() != "" && FavauriteUser.Trim() != "")
+                var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+                userName = await _userService.GetUserGuidAsync(tempUser);
+                if (userName != null && FavauriteUser.Trim() != "")
                 {                    
-                    var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(FavauriteUser)).FirstOrDefault();                    
+                    var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();                    
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(FavauriteUser) && x.UserId == userName).FirstOrDefault(); 
                     if (valueOfFavourite == null )
                     {
                         var createdFavouriteServiceUser = new FavouriteServiceUserModel();
-                        createdFavouriteServiceUser.UserId = new Guid(CurrentUser);
+                        createdFavouriteServiceUser.UserId = userName;
                         createdFavouriteServiceUser.ServiceUserId = new Guid(FavauriteUser);
                         createdFavouriteServiceUser = await _favouriteServiceUserService.AddAsync(createdFavouriteServiceUser);
                         return Json(true);

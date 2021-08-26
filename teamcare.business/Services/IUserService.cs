@@ -8,5 +8,6 @@ namespace teamcare.business.Services
 {
     public interface IUserService: IService<UserModel>
     {
+        Task<Guid> GetUserGuidAsync(string PreferredUsername);
     }
 }
