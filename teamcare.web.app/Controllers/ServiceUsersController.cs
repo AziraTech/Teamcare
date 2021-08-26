@@ -29,13 +29,16 @@ namespace teamcare.web.app.Controllers
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IUserService _userService;
         public Guid userName;
+        private readonly IContactService _contactService;
+
         public ServiceUsersController(IServiceUserService serviceUserService, 
                                       IResidenceService residenceService, 
                                       IUserService userService,
                                       IFileUploadService fileUploadService, 
                                       IDocumentUploadService documentUploadService,
                                       IFavouriteServiceUserService favouriteServiceUserService,
-                                      IOptions<AzureStorageSettings> azureStorageOptions)
+                                      IOptions<AzureStorageSettings> azureStorageOptions,
+                                      IContactService contactService)
         {
             _serviceUserService = serviceUserService;
             _residenceService = residenceService;
@@ -43,6 +46,7 @@ namespace teamcare.web.app.Controllers
             _documentUploadService = documentUploadService;
             _favouriteServiceUserService = favouriteServiceUserService;
             _azureStorageOptions = azureStorageOptions.Value;
+            _contactService = contactService;
             _userService = userService;
         }
 
@@ -96,6 +100,13 @@ namespace teamcare.web.app.Controllers
             if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
 
+            foreach (var item in listOfUser.Contacts)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+                item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
+            }
+
+
             SetPageMetadata(PageTitles.ServiceUsers, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.ServiceUsers, Url.Action("Index", "ServiceUsers")),
@@ -123,7 +134,11 @@ namespace teamcare.web.app.Controllers
                     Religion = EnumExtensions.GetEnumListItems<Religion>(),
                     Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
                     PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
-                }
+                    Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
+
+                },
+                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+
 
             };
             return View(model);

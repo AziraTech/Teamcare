@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using teamcare.common.Enumerations;
 using teamcare.data.Entities;
 using teamcare.data.Entities.Documents;
+using teamcare.data.Entities.ServiceUsers;
 
 namespace teamcare.data.Entities
 {	
@@ -77,6 +78,7 @@ namespace teamcare.data.Entities
 		public string ArchivedReason { get; set; }
 
 		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
+		public virtual ICollection<Contact> Contacts { get; set; }
 
         public virtual Residence Residence { get; set; }
 	}

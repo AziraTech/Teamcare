@@ -26,6 +26,7 @@ namespace teamcare.web.app.ViewModels
         public IEnumerable<EnumListItem> Religion { get; set; }
         public IEnumerable<EnumListItem> Ethnicity { get; set; }
         public IEnumerable<EnumListItem> PrefLanguage { get; set; }
+        public IEnumerable<EnumListItem> Relationship { get; set; }
 
     }
 }
