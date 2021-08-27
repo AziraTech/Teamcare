@@ -312,38 +312,6 @@ async function doSortFilterBy() {
 	});
 }
 
-async function setAsFavourite(vFavauriteUser, imageId, ltype) {
-	await $.ajax({
-		type: "POST",
-		url: '/ServiceUsers/SetAsFavouriteUser',
-		data: { FavauriteUser: vFavauriteUser.replace(imageId, "") },
-		success: function (data)
-		{
-			var showMessage = "";
-			var icon = "";
-			if (data)
-			{
-				showMessage = "Add Favourite Successful.";
-				icon = 'success';
-				$("#" + ltype == 'd' ? imageId : vFavauriteUser).attr("src", "/media/svg/files/on_favourite_star.svg");
-			} else {
-				showMessage = "Remove Favourite Successful.";
-				icon = 'success';
-				$("#" + ltype == 'd' ? imageId : vFavauriteUser).attr("src", "/media/svg/files/off_favourite_star.svg");
-			}
-			Swal.fire({
-				text: showMessage,
-				icon: icon,
-				buttonsStyling: !1,
-				confirmButtonText: "Ok",
-				customClass: {
-					confirmButton: "btn btn-light"
-				}
-			});
-		}
-	});
-}
-
 function RemoveProfile() {
 	$('#OldProfile').remove();
 }
