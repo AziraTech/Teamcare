@@ -1,9 +1,0 @@
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\bin\Debug\netcoreapp3.1\teamcare.common.deps.json
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\bin\Debug\netcoreapp3.1\teamcare.common.dll
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\bin\Debug\netcoreapp3.1\teamcare.common.pdb
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\obj\Debug\netcoreapp3.1\teamcare.common.AssemblyInfoInputs.cache
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\obj\Debug\netcoreapp3.1\teamcare.common.AssemblyInfo.cs
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\obj\Debug\netcoreapp3.1\teamcare.common.csproj.CoreCompileInputs.cache
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\obj\Debug\netcoreapp3.1\teamcare.common.dll
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\obj\Debug\netcoreapp3.1\teamcare.common.pdb
-C:\Users\NK\source\repos\teamcare.web.app\src\teamcare.common\obj\Debug\netcoreapp3.1\teamcare.common.csproj.AssemblyReference.cache
