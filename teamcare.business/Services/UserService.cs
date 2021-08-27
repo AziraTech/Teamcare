@@ -33,7 +33,7 @@ namespace teamcare.business.Services
 
             var listUsers = await _userRepository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(listUsers);
-            return mapperlist = mapperlist.OrderBy(r => r.FirstName).ThenBy(p => p.LastName);
+            return mapperlist = mapperlist.OrderBy(r => r.FirstName).ThenBy(p => p.LastName).ToList();
         }
 
         public async Task<UserModel> AddAsync(UserModel model)
@@ -60,11 +60,5 @@ namespace teamcare.business.Services
             var result = _mapper.Map<UserModel, User>(model);
 			await _userRepository.DeleteAsync(result);
 		}
-
-        public async Task<Guid> GetUserGuidAsync(string PreferredUsername)
-        {
-            var tempList = await ListAllAsync();            
-            return new Guid(tempList.Where(x => x.Email == PreferredUsername.ToString().Trim()).FirstOrDefault().Id.ToString());
-        }
     }
 }

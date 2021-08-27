@@ -1,0 +1,107 @@
+﻿@model teamcare.web.app.ViewModels.ServiceUsersViewModel
+<!--begin::Tab Content-->
+<div class="tab-content">
+    <!--begin::Tab pane-->
+    <div id="kt_project_contact_card_pane" class="tab-pane fade show active">
+        <!--begin::Row-->
+        <div class="row g-6 g-xl-9">
+            @if (Model != null)
+            {            
+                    <partial name="../Contact/_ContactCard" model="Model" />               
+            }
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Tab pane-->
+    <!--begin::Tab pane-->
+    <div id="kt_project_contact_table_pane" class="tab-pane fade">
+        <!--begin::Card-->
+        <div class="card card-flush">
+            <!--begin::Card body-->
+            <div class="card-body pt-0">
+                <!--begin::Table container-->
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    <table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
+                        <!--begin::Head-->
+                        <thead class="fs-7 text-gray-400 text-uppercase">
+                            <tr>
+                                <th class="min-w-250px">Name</th>
+                                <th class="min-w-250px">Email</th>
+                                <th class="min-w-250px">Mobile No.</th>
+                                <th class="min-w-50px text-end">Details</th>
+                            </tr>
+                        </thead>
+                        <!--end::Head-->
+                        <!--begin::Body-->
+                        <tbody class="fs-6">
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model.ContactList)
+                                {
+                                    <partial name="../Contact/_ContactListItem" model="item" />
+                                }
+                            }
+                        </tbody>
+                        <!--end::Body-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+                <!--end::Table container-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+    </div>
+    <!--end::Tab pane-->
+</div>
+<!--end::Tab Content-->
+<!-- ------------------------------------- Model Portion ------------------------------------- -->
+<!--begin::Modals-->
+<!--begin::Modal - Create Service Users-->
+<div class="modal fade" id="kt_modal_create_contact" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-900px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2>Create Contact's Information</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y py-lg-10 px-lg-10">
+                <partial name="../Contact/_ContactCreate" model="Model" />
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - Create Service Users-->
+<!--end::Modals-->
+
+
+
+<script src="~/js/page_script/contact.js"></script>
+
+
+
+

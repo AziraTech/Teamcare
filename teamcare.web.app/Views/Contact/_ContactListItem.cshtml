@@ -1,5 +1,5 @@
 ﻿@using teamcare.common.Helpers
-@model teamcare.business.Models.ServiceUserModel
+@model teamcare.business.Models.ContactModel
 <tr>
     <td>
         <!--begin::User-->
@@ -15,18 +15,18 @@
             <!--end::Wrapper-->
             <!--begin::Info-->
             <div class="d-flex flex-column justify-content-center">
-                <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName  </a>
+                <a href="#" class="mb-1 text-gray-800 text-hover-primary">@Model.Title.GetEnumDescription() @Model.FirstName @Model.MiddleName @Model.LastName  </a>
                 <div class="fw-bold fs-6 text-gray-400">
-                    @(Model.KnownAs)
+                    @(Model.Relationship)
                 </div>
             </div>
             <!--end::Info-->
         </div>
         <!--end::User-->
     </td>
-    <td>@(Model.DateOfAdmission.ToString("MMM, dd yyyy"))</td>
-    <td>@(Model.Residence != null?Model.Residence.Name:"")</td>
+    <td>@(Model.Email)</td>
+    <td>@(Model.Mobile)</td>
     <td class="text-end">
-        <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="btn btn-light btn-sm">View</a>
+        <a href="#" class="btn btn-light btn-sm">View</a>
     </td>
 </tr>
