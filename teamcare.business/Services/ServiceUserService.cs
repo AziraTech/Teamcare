@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using teamcare.business.Models;
 using teamcare.data.Entities;
-using teamcare.data.Entities.Users;
 using teamcare.data.Repositories;
 
 namespace teamcare.business.Services
@@ -15,16 +14,16 @@ namespace teamcare.business.Services
 		private readonly IMapper _mapper;
 		private readonly IServiceUserRepository _serviceUserRepository;
 		private readonly IAuditService _auditService;
-
+		private readonly IFavouriteServiceUserService _favouriteServiceUserService;
 
 		public ServiceUserService(IAuditService auditService, IMapper mapper,
-			IServiceUserRepository serviceUserRepository)
+			IServiceUserRepository serviceUserRepository,
+			IFavouriteServiceUserService favouriteServiceUserService)
              : base(auditService)
-
 		{
 			_mapper = mapper;
 			_serviceUserRepository = serviceUserRepository;
-
+			_favouriteServiceUserService = favouriteServiceUserService;
 			_auditService = auditService;
 		}
 
@@ -43,8 +42,6 @@ namespace teamcare.business.Services
 			var listUsers = await _serviceUserRepository.ListAllAsync();
 			return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
 		}
-
-
 
 		public async Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy)
 		{
@@ -66,13 +63,10 @@ namespace teamcare.business.Services
 
 		public async Task<ServiceUserModel> AddAsync(ServiceUserModel model)
 		{
-
 			var result = _mapper.Map<ServiceUserModel, ServiceUser>(model);
 			var user = await _serviceUserRepository.AddAsync(result);
 			return _mapper.Map<ServiceUser, ServiceUserModel>(user);
 		}
-
-
 
 		public async Task<ServiceUserModel> UpdateAsync(ServiceUserModel model)
 		{

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
@@ -24,13 +24,18 @@ namespace teamcare.web.app.Controllers
         private readonly IResidenceService _residenceService;
         private readonly IFileUploadService _fileUploadService;
         private readonly IDocumentUploadService _documentUploadService;
+        private readonly IFavouriteServiceUserService _favouriteServiceUserService;
         private readonly AzureStorageSettings _azureStorageOptions;
+        private readonly IUserService _userService;
+        public Guid userName;
         private readonly IContactService _contactService;
 
-        public ServiceUsersController(IServiceUserService serviceUserService, 
-                                      IResidenceService residenceService, 
-                                      IFileUploadService fileUploadService, 
+        public ServiceUsersController(IServiceUserService serviceUserService,
+                                      IResidenceService residenceService,
+                                      IUserService userService,
+                                      IFileUploadService fileUploadService,
                                       IDocumentUploadService documentUploadService,
+                                      IFavouriteServiceUserService favouriteServiceUserService,
                                       IOptions<AzureStorageSettings> azureStorageOptions,
                                       IContactService contactService)
         {
@@ -38,8 +43,10 @@ namespace teamcare.web.app.Controllers
             _residenceService = residenceService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
+            _favouriteServiceUserService = favouriteServiceUserService;
             _azureStorageOptions = azureStorageOptions.Value;
             _contactService = contactService;
+            _userService = userService;
 
         }
 
@@ -50,6 +57,9 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.ServiceUsers, string.Empty),
             });
 
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
             var listOfResidence = await _residenceService.ListAllAsync();
             var distinctResidence = listOfResidence.Select(x => new SelectListItem
             {
@@ -59,11 +69,11 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUsersViewModel
             {
-                ResidenceList =distinctResidence,                
+                ResidenceList = distinctResidence,
                 CreateViewModel = new ServiceUserCreateViewModel
                 {
                     Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-                    Marital=EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                    Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
                     Religion = EnumExtensions.GetEnumListItems<Religion>(),
                     Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
                     PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
@@ -71,13 +81,21 @@ namespace teamcare.web.app.Controllers
             };
             if (model.ServiceUser != null)
             {
-                
+                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
+                foreach (ServiceUserModel serviceUser in model.ServiceUser)
+                {
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id && x.UserId == userName).FirstOrDefault();
+                    serviceUser.Favourite = valueOfFavourite == null ? false : true;
+                }
             }
             return View(model);
         }
                 
         public async Task<IActionResult> Detail(string id)
         {
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
             var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
             if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
@@ -95,7 +113,9 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(listOfUser.Title+" "+ listOfUser.FirstName+" "+listOfUser.LastName, null) //TODO: Replace with correct service user name
 			});
 
-                       
+            var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
+            var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(id)).FirstOrDefault();
+            listOfUser.Favourite = valueOfFavourite == null ? false : true;
             var listOfResidence = await _residenceService.ListAllAsync();
             var distinctResidence = listOfResidence.Select(x => new SelectListItem
             {
@@ -125,14 +145,20 @@ namespace teamcare.web.app.Controllers
         }
 
         public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
-        {            
+        {
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
             //Sorting List
             var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
             if (listOfUser != null)
             {
+                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
                 foreach (var item in listOfUser)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == userName).FirstOrDefault();
+                    item.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
             //Residence List
@@ -202,6 +228,37 @@ namespace teamcare.web.app.Controllers
             return Json(1);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SetAsFavouriteUser(string FavauriteUser)
+        {
+            try
+            {
+                var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+                userName = await _userService.GetUserGuidAsync(tempUser);
+                if (userName != null && FavauriteUser.Trim() != "")
+                {
+                    var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(FavauriteUser) && x.UserId == userName).FirstOrDefault();
+                    if (valueOfFavourite == null)
+                    {
+                        var createdFavouriteServiceUser = new FavouriteServiceUserModel();
+                        createdFavouriteServiceUser.UserId = userName;
+                        createdFavouriteServiceUser.ServiceUserId = new Guid(FavauriteUser);
+                        createdFavouriteServiceUser = await _favouriteServiceUserService.AddAsync(createdFavouriteServiceUser);
+                        return Json(true);
+                    }
+                    else
+                    {
+                        await _favouriteServiceUserService.DeleteAsync(valueOfFavourite);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return Json(false);
+        }
 
     }
 }

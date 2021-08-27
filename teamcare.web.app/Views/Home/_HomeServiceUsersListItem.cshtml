@@ -1,9 +1,9 @@
 ﻿@model teamcare.business.Models.ServiceUserModel
 <tr>
     <td>
-        <div class="form-check form-check-sm form-check-custom form-check-solid">
-            <input class="form-check-input widget-9-check" type="checkbox" value="1" />
-        </div>
+        @{ var idName =  @Model.Id; }
+        <img id="@idName" src="@( !Model.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
+             onclick="setAsFavourite('@Model.Id', '@idName');" class="h-20px align-self-center cursor-pointer" alt="" />
     </td>
     <td>
         <div class="d-flex align-items-center">
@@ -11,7 +11,7 @@
                 <img src="@(Model.ProfilePhoto !=null ? Model.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200" :"../media/avatars/blank.png" )" alt="image" />
             </div>
             <div class="d-flex justify-content-start flex-column">
-                <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="text-dark fw-bolder text-hover-primary fs-6">@Model.Title @Model.FirstName @Model.LastName</a>
+                <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id });" class="text-dark fw-bolder text-hover-primary fs-6">@Model.Title @Model.FirstName @Model.LastName</a>
                 <span class="text-muted fw-bold text-muted d-block fs-7">@Model.KnownAs</span>
             </div>
         </div>
@@ -19,10 +19,10 @@
     <td>
         <a href="#" class="text-dark fw-bolder text-hover-primary d-block fs-6">@Model.Address</a>
         <span class="text-muted fw-bold text-muted d-block fs-7">Admission from @Model.DateOfAdmission.ToString("MMM, dd yyyy")</span>
-    </td> 
+    </td>
     <td>
         <div class="d-flex justify-content-end flex-shrink-0">
-            <a href="#RemoveFavourite" 
+            <a href="#RemoveFavourite"
                onclick="setAsFavourite('@Model.Id', 'su-favourite', 'd')"
                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                 <!--begin::Svg Icon | path: icons/duotone/General/Trash.svg-->

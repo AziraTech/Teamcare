@@ -60,5 +60,10 @@ namespace teamcare.business.Services
             var result = _mapper.Map<UserModel, User>(model);
 			await _userRepository.DeleteAsync(result);
 		}
+        public async Task<Guid> GetUserGuidAsync(string PreferredUsername)
+        {
+            var tempList = await ListAllAsync();
+            return new Guid(tempList.Where(x => x.Email == PreferredUsername.ToString().Trim()).FirstOrDefault().Id.ToString());
+        }
     }
 }

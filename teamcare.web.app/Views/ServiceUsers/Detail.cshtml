@@ -2,9 +2,7 @@
     ViewData["Title"] = "Patients View";
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model teamcare.web.app.ViewModels.ServiceUsersViewModel
-
 }
-
 <!--begin::Navbar-->
 <div class="card mb-5 mb-xxl-8">
     <div class="card-body pt-9 pb-0">
@@ -26,7 +24,9 @@
                     <div class="d-flex flex-column">
                         <!--begin::Name-->
                         <div class="d-flex align-items-center mb-2">
-                            <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1">@Model.ServiceUserByID.Title  @Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName</a>
+                            <img id="su-favourite" src="@( !Model.ServiceUserByID.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
+                                 onclick="setAsFavourite('@Model.ServiceUserByID.Id', 'su-favourite');" class="h-20px align-self-center mx-2" alt="" />
+                            <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1 cursor-pointer">@Model.ServiceUserByID.Title  @Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName</a>
                             <a href="#">
                                 <!--begin::Svg Icon | path: icons/duotone/Design/Verified.svg-->
                                 <span class="svg-icon svg-icon-1 svg-icon-primary">
@@ -37,10 +37,6 @@
                                 </span>
                                 <!--end::Svg Icon-->
                             </a>
-                            &nbsp; &nbsp;
-
-                           @* <img id="su-favourite" src="@( !Model.ServiceUserByID.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )" class="h-20px align-self-center" alt="" />*@
-
                         </div>
                         <!--end::Name-->
                         <!--begin::Info-->
