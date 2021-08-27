@@ -43,6 +43,8 @@ namespace teamcare.business.Services
 
         public async Task<FileUploadModel> AddAsync(FileUploadModel model)
         {
+            await RecordAuditEntry(new AuditModel { Action = "AddFile", Details = "service call for add file", UserReference = "" });
+
             try
             {
                 var containerClient = new BlobContainerClient(_azureStorageOptions.ConnectionString, _azureStorageOptions.Container);
@@ -91,6 +93,8 @@ namespace teamcare.business.Services
 
         public async Task<FileUploadModel> MoveBlobAsync(FileUploadModel model)
         {
+            await RecordAuditEntry(new AuditModel { Action = "MoveBlobFile for "+ model.BlobName, Details = "service call for move blob file", UserReference = "" });
+
             try
             {
                 var containerClient = new BlobContainerClient(_azureStorageOptions.ConnectionString, _azureStorageOptions.Container);
@@ -123,6 +127,8 @@ namespace teamcare.business.Services
 
         public async Task<byte[]> GetBlobAsync(FileUploadModel model)
         {
+            await RecordAuditEntry(new AuditModel { Action = "GetBlob for " + model.BlobName, Details = "service call for get blob", UserReference = "" });
+
             try
             {
                 var destinationFolder = string.IsNullOrWhiteSpace(model.DestinationFolder) ? string.Empty : $"{model.DestinationFolder}/";

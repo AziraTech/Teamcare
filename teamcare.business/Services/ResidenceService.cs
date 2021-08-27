@@ -22,12 +22,16 @@ namespace teamcare.business.Services
 
         public async Task<ResidenceModel> GetByIdAsync(Guid id)
         {
+            await RecordAuditEntry(new AuditModel { Action = "GetResidence for " + id, Details = "service call for get details residence", UserReference = "" });
+
             var result = await _repository.GetByIdAsync(id);
             return _mapper.Map<Residence, ResidenceModel>(result);
         }
 
         public async Task<IEnumerable<ResidenceModel>> ListAllAsync()
         {
+            await RecordAuditEntry(new AuditModel { Action = "GetAllResidence", Details = "service call for get all residence", UserReference = "" });
+
             var listresidence = await _repository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);
             mapperlist = mapperlist.OrderBy(r => r.Name).ToList();
@@ -36,6 +40,8 @@ namespace teamcare.business.Services
 
         public async Task<ResidenceModel> AddAsync(ResidenceModel model)
         {
+            await RecordAuditEntry(new AuditModel { Action = "AddResidence", Details = "service call for add residence", UserReference = "" });
+
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.AddAsync(mapped);
             return _mapper.Map<Residence, ResidenceModel>(result);
@@ -43,13 +49,17 @@ namespace teamcare.business.Services
 
         public async Task<ResidenceModel> UpdateAsync(ResidenceModel model)
         {
+            await RecordAuditEntry(new AuditModel { Action = "UpdateResidence", Details = "service call for update residence", UserReference = "" });
+
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.UpdateAsync(mapped);
             return _mapper.Map<Residence, ResidenceModel>(result);
         }
 
-        public Task DeleteAsync(ResidenceModel entity)
+        public async Task DeleteAsync(ResidenceModel model)
         {
+            await RecordAuditEntry(new AuditModel { Action = "DeleteResidence for" + model.Id, Details = "service call for delete residence", UserReference = "" });
+
             throw new NotImplementedException();
         }
     }
