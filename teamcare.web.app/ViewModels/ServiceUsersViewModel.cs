@@ -10,11 +10,11 @@ namespace teamcare.web.app.ViewModels
     {
         public ServiceUsersViewModel()
         {
-            
+
         }
         public ServiceUsersViewModel(IOptions<AzureStorageSettings> azureStorageOptions) : base(azureStorageOptions)
         {
-            
+
         }
         public IEnumerable<business.Models.ServiceUserModel> ServiceUser { get; set; }
         public business.Models.ServiceUserModel ServiceUserByID { get; set; }

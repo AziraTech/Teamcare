@@ -13,10 +13,15 @@
                 </div>
                 <!--end::Avatar-->
                 <!--begin::Name-->
-                @Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName
+                <div class="flex-row flex-center">
+                    @{ var idName = @Model.Id; }
+                    <img  id="@idName" src="@( !Model.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
+                         onclick="setAsFavourite('@Model.Id', '@idName');" class="h-15px align-self-center mx-1 cursor-pointer" alt="" />
+                    &nbsp;@Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName
+                </div>                
                 <!--end::Name-->
                 <!--begin::Position-->
-                <div class="fw-bold text-gray-400 mb-6">@(Model.Residence != null?Model.Residence.Name:"")</div>
+                <div class="fw-bold text-gray-400 mb-6">@(Model.Residence != null ? Model.Residence.Name : "")</div>
                 <!--end::Position-->
             </div>
             <!--end::Card body-->
