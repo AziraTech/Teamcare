@@ -17,7 +17,7 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ContactController : BaseController
     {
         private readonly IContactService _contactService;
