@@ -529,6 +529,60 @@ namespace teamcare.data.Migrations
                     b.ToTable("Contacts");
                 });
 
+            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("deleted_by");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_on");
+
+                    b.Property<Guid>("LogCreatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("log_created_by");
+
+                    b.Property<Guid>("LogCreatedFor")
+                        .HasColumnType("uuid")
+                        .HasColumnName("log_created_for");
+
+                    b.Property<string>("LogMessage")
+                        .HasColumnType("text")
+                        .HasColumnName("log_message");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("last_updated_by");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated_on");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("LogCreatedBy");
+
+                    b.HasIndex("LogCreatedFor");
+
+                    b.ToTable("ServiceUserLog");
+                });
+
             modelBuilder.Entity("teamcare.data.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -609,8 +663,8 @@ namespace teamcare.data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e95c64b3-fc98-4942-a6a1-7e7448487e83"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 25, 6, 32, 34, 71, DateTimeKind.Unspecified).AddTicks(6239), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("48609336-f3a1-4f5a-9ded-905974f91293"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 31, 10, 40, 5, 957, DateTimeKind.Unspecified).AddTicks(8442), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "hans.doyekee@gmail.com",
                             FirstName = "Teamcare",
                             IsActive = true,
@@ -619,8 +673,8 @@ namespace teamcare.data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9878048d-ff7d-47e6-bec5-9d5fb4ade7e5"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 25, 6, 32, 34, 71, DateTimeKind.Unspecified).AddTicks(7349), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("177d00f9-874b-4334-981f-9087dc7364fa"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2021, 8, 31, 10, 40, 5, 958, DateTimeKind.Unspecified).AddTicks(504), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "nish.kagathara0791@gmail.com",
                             FirstName = "Nishidh",
                             IsActive = true,
@@ -771,7 +825,7 @@ namespace teamcare.data.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
-                        .WithMany()
+                        .WithMany("Contacts")
                         .HasForeignKey("ServiceUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -779,6 +833,31 @@ namespace teamcare.data.Migrations
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("ServiceUser");
+                });
+
+            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserLog", b =>
+                {
+                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy");
+
+                    b.HasOne("teamcare.data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("LogCreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                        .WithMany()
+                        .HasForeignKey("LogCreatedFor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ServiceUser");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.User", b =>
@@ -822,6 +901,8 @@ namespace teamcare.data.Migrations
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUser", b =>
                 {
+                    b.Navigation("Contacts");
+
                     b.Navigation("DocumentUploads");
                 });
 

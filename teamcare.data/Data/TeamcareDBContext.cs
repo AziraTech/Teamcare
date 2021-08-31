@@ -20,6 +20,7 @@ namespace teamcare.data.Data
         public DbSet<DocumentUpload> DocumentUploads { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<FavouriteServiceUser> FavouriteServiceUsers { get; set; }
+        public DbSet<ServiceUserLog> ServiceUserLog { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
