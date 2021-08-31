@@ -25,6 +25,8 @@ namespace teamcare.web.app.Controllers
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
         public Guid userName;
+        public UserModel um = new UserModel();
+        public DocumentUploadModel dum = new DocumentUploadModel();
 
         public UserController( IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
         {
@@ -44,8 +46,9 @@ namespace teamcare.web.app.Controllers
 
             var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
             userName = await _userService.GetUserGuidAsync(tempUser);
+            um.CreatedBy = userName;
 
-            var usersDetail = await _userService.ListAllAsync(new Guid(userName.ToString()));
+            var usersDetail = await _userService.ListAllAsync(um);
             foreach (var item in usersDetail) { item.PrePath = "/" + _azureStorageOptions.Container; }
             var model = new UserListViewModel
             {
@@ -67,7 +70,9 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.User, Url.Action("Index", "User"))
             });
-            var listOfUser = await _userService.GetByIdAsync(Id, new Guid(userName.ToString()));
+            um.CreatedBy = userName;
+
+            var listOfUser = await _userService.GetByIdAsync(Id,um);
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
             var model = new UserListViewModel
             {
@@ -89,7 +94,9 @@ namespace teamcare.web.app.Controllers
             {
                 if (userCreateViewModel?.User != null)
                 {
-                    var listOfUser = await _userService.ListAllAsync(new Guid(userName.ToString()));
+                    um.CreatedBy = userName;
+
+                    var listOfUser = await _userService.ListAllAsync(um);
                     // check IfEmail already exists
                     var user = listOfUser.FirstOrDefault(u => u.Email == userCreateViewModel.User.Email);
                     if (user != null)
@@ -97,19 +104,21 @@ namespace teamcare.web.app.Controllers
                         return Json(2);
                     }
 
-                    var createdUser = await _userService.AddAsync(userCreateViewModel.User, new Guid(userName.ToString()));
+                    var createdUser = await _userService.AddAsync(userCreateViewModel.User);
 
                     if (createdUser != null && !string.IsNullOrWhiteSpace(userCreateViewModel.TempFileId))
                     {
+                        dum.CreatedBy = userName;
+
                         //	Get the temporary document
                         var document =
-                            await _documentUploadService.GetByIdAsync(Guid.Parse(userCreateViewModel.TempFileId), new Guid(userName.ToString()));
+                            await _documentUploadService.GetByIdAsync(Guid.Parse(userCreateViewModel.TempFileId),dum);
 
                         var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
                         {
                             BlobName = document.BlobName,
                             DestinationFolder = createdUser.Id.ToString()
-                        }, new Guid(userName.ToString()));
+                        });
 
                         if (relocateFile != null)
                         {
@@ -118,10 +127,10 @@ namespace teamcare.web.app.Controllers
                             document.UserId = createdUser.Id;
                             document.BlobName = relocateFile.BlobName;
 
-                            await _documentUploadService.UpdateAsync(document, new Guid(userName.ToString()));
+                            await _documentUploadService.UpdateAsync(document);
                         }
 
-                        var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value, new Guid(userName.ToString()));
+                        var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value,um);
                     }
                 }
             }

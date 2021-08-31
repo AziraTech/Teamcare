@@ -87,7 +87,7 @@ namespace teamcare.web.app
 						OnTokenValidated = async ctx =>
                         {
                             var userService = ctx.HttpContext.RequestServices.GetService<IUserService>();
-                            var allUsers = await userService.ListAllAsync(new Guid());
+                            var allUsers = await userService.ListAllAsync(null);
                             var loggedInEmail = ctx.Principal.Claims.FirstOrDefault(i =>
                                 i.Type.Equals(teamcare.common.ReferenceData.ClaimTypes.PreferredUsername,
                                     StringComparison.OrdinalIgnoreCase))?.Value;

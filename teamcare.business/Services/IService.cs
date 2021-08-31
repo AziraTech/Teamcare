@@ -7,10 +7,10 @@ namespace teamcare.business.Services
 {
     public interface IService<T> where T : BaseModel
     {
-        Task<T> GetByIdAsync(Guid id,Guid uid);
-        Task<IEnumerable<T>> ListAllAsync(Guid id);
-        Task<T> AddAsync(T model,Guid id);
-        Task<T> UpdateAsync(T model,Guid id);
-        Task DeleteAsync(T model,Guid id);
+        Task<T> GetByIdAsync(Guid id,T model);
+        Task<IEnumerable<T>> ListAllAsync(T model);
+        Task<T> AddAsync(T model);
+        Task<T> UpdateAsync(T model);
+        Task DeleteAsync(T model);
     }
 }

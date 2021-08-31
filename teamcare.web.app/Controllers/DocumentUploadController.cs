@@ -45,7 +45,7 @@ namespace teamcare.web.app.Controllers
 					FileSizeInBytes = req.Files[0].Length,
 					ContentType = req.Files[0].ContentType,
 					IsTemporary = true
-				},new Guid(userName.ToString()));
+				});
             }
 			return Json(documentResult?.Id);
 		}

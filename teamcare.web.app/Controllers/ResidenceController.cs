@@ -27,8 +27,9 @@ namespace teamcare.web.app.Controllers
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IUserService _userService;
-
         public Guid userName;
+        public ResidenceModel rm = new ResidenceModel();
+        public DocumentUploadModel dum = new DocumentUploadModel();
 
 
         public ResidenceController(IServiceUserService serviceUserService, IResidenceService residenceService, IFileUploadService fileUploadService,
@@ -53,7 +54,9 @@ namespace teamcare.web.app.Controllers
             var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
             userName = await _userService.GetUserGuidAsync(tempUser);
 
-            var listOfResidence = await _residenceService.ListAllAsync(new Guid(userName.ToString()));
+            rm.CreatedBy = userName;
+
+            var listOfResidence = await _residenceService.ListAllAsync(rm);
             ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();            
             ReturnResidenceModel.Residences = listOfResidence;
             foreach (var item in ReturnResidenceModel.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
@@ -68,8 +71,8 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
-        
-            var listOfResidence = await _residenceService.GetByIdAsync(Id,new Guid(userName.ToString()));
+            rm.CreatedBy = userName;
+            var listOfResidence = await _residenceService.GetByIdAsync(Id,rm);
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return View(listOfResidence);            
 
@@ -86,16 +89,20 @@ namespace teamcare.web.app.Controllers
         }
 
         public async Task<IActionResult> ResidenceDetail(Guid Id)
-        {            
-            var listOfResidence = await _residenceService.GetByIdAsync(Id, new Guid(userName.ToString()));        
+        {
+            rm.CreatedBy = userName;
+
+            var listOfResidence = await _residenceService.GetByIdAsync(Id,rm);        
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return PartialView("_ResidenceUpdate", listOfResidence);
         }
 
         public async Task<IActionResult> ServiceUserDetails(string Id)
         {
+            rm.CreatedBy = userName;
+
             ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();
-            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id), new Guid(userName.ToString()));
+            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id),rm);
             if (listOfResidence != null)
             {
                 listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
@@ -112,19 +119,22 @@ namespace teamcare.web.app.Controllers
             {
                 if (residenceCreateViewModel?.Residence != null)
                 {
-                    var createdResidence = await _residenceService.AddAsync(residenceCreateViewModel.Residence,new Guid(userName.ToString()));
+                    rm.CreatedBy = userName;
+
+                    var createdResidence = await _residenceService.AddAsync(residenceCreateViewModel.Residence);
 
                     if (createdResidence != null && !string.IsNullOrWhiteSpace(residenceCreateViewModel.TempFileId))
                     {
+                        dum.CreatedBy = userName;
                         //	Get the temporary document
                         var document =
-                            await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId), new Guid(userName.ToString()));
+                            await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId),dum);
 
                         var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
                         {
                             BlobName = document.BlobName,
                             DestinationFolder = createdResidence.Id.ToString()
-                        }, new Guid(userName.ToString()));
+                        });
 
                         if (relocateFile != null)
                         {
@@ -133,10 +143,10 @@ namespace teamcare.web.app.Controllers
                             document.ResidenceId = createdResidence.Id;
                             document.BlobName = relocateFile.BlobName;
 
-                            await _documentUploadService.UpdateAsync(document, new Guid(userName.ToString()));
+                            await _documentUploadService.UpdateAsync(document);
                         }
 
-                        var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value, new Guid(userName.ToString()));
+                        var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value,rm);
                     }
                 }
             }

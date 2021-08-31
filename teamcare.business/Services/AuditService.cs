@@ -18,30 +18,30 @@ namespace teamcare.business.Services
             _mapper = mapper;
         }
         
-        public Task<AuditModel> GetByIdAsync(Guid id,Guid uid)
+        public Task<AuditModel> GetByIdAsync(Guid id,AuditModel model)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<AuditModel>> ListAllAsync(Guid id)
+        public async Task<IEnumerable<AuditModel>> ListAllAsync(AuditModel model)
         {
             var result = await _auditRepository.GetAllAudit();
             return _mapper.Map<List<Audit>, List<AuditModel>>(result);
         }
 
-        public async Task<AuditModel> AddAsync(AuditModel model,Guid id)
+        public async Task<AuditModel> AddAsync(AuditModel model)
         {
             var mapped = _mapper.Map<AuditModel, Audit>(model);
             var result = await _auditRepository.AddAsync(mapped);
             return _mapper.Map<Audit, AuditModel>(result);
         }
 
-        public Task<AuditModel> UpdateAsync(AuditModel model,Guid id)
+        public Task<AuditModel> UpdateAsync(AuditModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(AuditModel model,Guid id)
+        public Task DeleteAsync(AuditModel model)
         {
             throw new NotImplementedException();
         }

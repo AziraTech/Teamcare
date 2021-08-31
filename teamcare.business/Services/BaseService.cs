@@ -17,7 +17,7 @@ namespace teamcare.business.Services
 
         public async Task<AuditModel> RecordAuditEntry(AuditModel audit)
         {       
-            return await _auditService.AddAsync(audit,new Guid());
+            return await _auditService.AddAsync(audit);
         }
     }
 }

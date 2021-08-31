@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
+using teamcare.business.Models;
 
 namespace teamcare.web.app.Controllers
 {
@@ -51,10 +52,15 @@ namespace teamcare.web.app.Controllers
             var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
             userName = await _userService.GetUserGuidAsync(tempUser);
 
-            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null, new Guid(userName.ToString()));
+            ServiceUserModel um = new ServiceUserModel();
+            um.CreatedBy = userName;
+            FavouriteServiceUserModel fsum = new FavouriteServiceUserModel();
+            fsum.CreatedBy = userName;
+
+            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null,um);
             if (listOfUsers != null)
             {
-                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync(new Guid(userName.ToString()));
+                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync(fsum);
                 foreach (var item in listOfUsers)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;
