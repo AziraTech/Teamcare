@@ -40,6 +40,9 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
             //SetPageMetadata(PageTitles.Contact, SiteSection.Contacts, new List<BreadcrumbItem>() 
             //{                
             //    new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
@@ -62,7 +65,7 @@ namespace teamcare.web.app.Controllers
         }
 
         public async Task<IActionResult> Detail(string id)
-        {
+        {        
             var contactData = await _contactService.GetByIdAsync(new Guid(id), new Guid(userName.ToString()));
             contactData.PrePath = "/" + _azureStorageOptions.Container;
             return Json(contactData);
@@ -75,10 +78,7 @@ namespace teamcare.web.app.Controllers
             try
             {
                 if (contactCreateViewModel?.Contact != null)
-                {
-                    var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-                    userName = await _userService.GetUserGuidAsync(tempUser);
-
+                {                
                     var createdContact = new ContactModel();
 
                     if (contactCreateViewModel.Contact.Id.ToString() == "")

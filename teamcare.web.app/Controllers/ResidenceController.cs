@@ -68,10 +68,7 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
-
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
-
+        
             var listOfResidence = await _residenceService.GetByIdAsync(Id,new Guid(userName.ToString()));
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return View(listOfResidence);            

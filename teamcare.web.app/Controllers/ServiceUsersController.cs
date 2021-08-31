@@ -92,10 +92,7 @@ namespace teamcare.web.app.Controllers
         }
                 
         public async Task<IActionResult> Detail(string id)
-        {
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
-
+        {         
             var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id), new Guid(userName.ToString()));
             if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
@@ -146,9 +143,6 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
         {
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
-
             //Sorting List
             var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy, new Guid(userName.ToString()));
             if (listOfUser != null)
