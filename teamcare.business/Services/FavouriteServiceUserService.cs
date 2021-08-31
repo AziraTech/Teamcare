@@ -20,16 +20,16 @@ namespace teamcare.business.Services
             _repository = repository;
         }
 
-        public async Task<FavouriteServiceUserModel> GetByIdAsync(Guid id)
+        public async Task<FavouriteServiceUserModel> GetByIdAsync(Guid id, Guid uid)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetFavouriteServiceUser for " + id, Details = "service call for get details for favourite service user", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetFavouriteServiceUser for " + id, Details = "service call for get details for favourite service user", UserReference = "",CreatedBy=uid });
             var result = await _repository.GetByIdAsync(id);
             return _mapper.Map<FavouriteServiceUser, FavouriteServiceUserModel>(result);
         }
 
-        public async Task<IEnumerable<FavouriteServiceUserModel>> ListAllAsync()
+        public async Task<IEnumerable<FavouriteServiceUserModel>> ListAllAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllFavouriteServiceUsers", Details = "service call for get all favourite service user", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetAllFavouriteServiceUsers", Details = "service call for get all favourite service user", UserReference = "",CreatedBy=id });
             var listFavouriteServiceUser = await _repository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<FavouriteServiceUser>, IEnumerable<FavouriteServiceUserModel>>(listFavouriteServiceUser);
             mapperlist = mapperlist.OrderBy(r => r.UserId).ToList();
@@ -37,7 +37,7 @@ namespace teamcare.business.Services
         }
 
 
-        public async Task<FavouriteServiceUserModel> AddAsync(FavouriteServiceUserModel model)
+        public async Task<FavouriteServiceUserModel> AddAsync(FavouriteServiceUserModel model,Guid id)
         {
             await RecordAuditEntry(new AuditModel { Action = "AddFavouriteServiceUser", Details = "service call for add favourite service user", UserReference = "" });
             var mapped = _mapper.Map<FavouriteServiceUserModel, FavouriteServiceUser>(model);
@@ -45,7 +45,7 @@ namespace teamcare.business.Services
             return _mapper.Map<FavouriteServiceUser, FavouriteServiceUserModel>(result);
         }
 
-        public async Task<FavouriteServiceUserModel> UpdateAsync(FavouriteServiceUserModel model)
+        public async Task<FavouriteServiceUserModel> UpdateAsync(FavouriteServiceUserModel model, Guid id)
         {
             await RecordAuditEntry(new AuditModel { Action = "UpdateFavouriteServiceUser", Details = "service call for update favourite service user", UserReference = "" });
             var mapped = _mapper.Map<FavouriteServiceUserModel, FavouriteServiceUser>(model);
@@ -53,7 +53,7 @@ namespace teamcare.business.Services
             return _mapper.Map<FavouriteServiceUser, FavouriteServiceUserModel>(result);
         }
 
-        public async Task DeleteAsync(FavouriteServiceUserModel model)
+        public async Task DeleteAsync(FavouriteServiceUserModel model, Guid id)
         {
             await RecordAuditEntry(new AuditModel { Action = "DeleteFavouriteServiceUser for" + model.Id, Details = "service call for remove favourite service user", UserReference = "" });
             var result = _mapper.Map<FavouriteServiceUserModel, FavouriteServiceUser>(model);

@@ -8,6 +8,6 @@ namespace teamcare.business.Services
 {
     public interface IServiceUserService : IService<ServiceUserModel>
     {
-        Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy);
+        Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy,Guid id);
     }
 }

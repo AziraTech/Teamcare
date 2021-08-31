@@ -27,9 +27,9 @@ namespace teamcare.business.Services
 			_auditService = auditService;
 		}
 
-		public async Task<ServiceUserModel> GetByIdAsync(Guid id)
+		public async Task<ServiceUserModel> GetByIdAsync(Guid id, Guid uid)
 		{
-			await RecordAuditEntry(new AuditModel { Action = "GetServiceUser for " + id, Details = "service call for get details serviceuser", UserReference = "" });
+			await RecordAuditEntry(new AuditModel { Action = "GetServiceUser for " + id, Details = "service call for get details serviceuser", UserReference = "",CreatedBy=uid });
 
 			var serviceUser = await _serviceUserRepository.GetByIdAsync(id);
 			var residence = serviceUser.Residence;
@@ -38,16 +38,16 @@ namespace teamcare.business.Services
 			return _mapper.Map<ServiceUser, ServiceUserModel>(serviceUser);
 		}
 
-		public async Task<IEnumerable<ServiceUserModel>> ListAllAsync()
+		public async Task<IEnumerable<ServiceUserModel>> ListAllAsync(Guid id)
 		{
-			await RecordAuditEntry(new AuditModel { Action = "GetAllServiceUsers", Details = "service call for get all serviceuser", UserReference = "" });
+			await RecordAuditEntry(new AuditModel { Action = "GetAllServiceUsers", Details = "service call for get all serviceuser", UserReference = "",CreatedBy=id });
 			var listUsers = await _serviceUserRepository.ListAllAsync();
 			return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
 		}
 
-		public async Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy)
+		public async Task<IEnumerable<ServiceUserModel>> ListAllSortedFiltered(int sortBy, string filterBy,Guid id)
 		{
-			await RecordAuditEntry(new AuditModel { Action = "GetServiceUserFilter", Details = "service call for filter serviceuser", UserReference = "" });
+			await RecordAuditEntry(new AuditModel { Action = "GetServiceUserFilter", Details = "service call for filter serviceuser", UserReference = "",CreatedBy=id });
 
 			var listUsers = await _serviceUserRepository.ListAllAsync();
 			var mappedUsers = _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
@@ -65,27 +65,27 @@ namespace teamcare.business.Services
 			return mappedUsers;
 		}
 
-		public async Task<ServiceUserModel> AddAsync(ServiceUserModel model)
+		public async Task<ServiceUserModel> AddAsync(ServiceUserModel model, Guid id)
 		{
-			await RecordAuditEntry(new AuditModel { Action = "AddServiceUser", Details = "service call for add serviceuser", UserReference = "" });
+			await RecordAuditEntry(new AuditModel { Action = "AddServiceUser", Details = "service call for add serviceuser", UserReference = "",CreatedBy=id });
 
 			var result = _mapper.Map<ServiceUserModel, ServiceUser>(model);
 			var user = await _serviceUserRepository.AddAsync(result);
 			return _mapper.Map<ServiceUser, ServiceUserModel>(user);
 		}
 
-		public async Task<ServiceUserModel> UpdateAsync(ServiceUserModel model)
+		public async Task<ServiceUserModel> UpdateAsync(ServiceUserModel model, Guid id)
 		{
-			await RecordAuditEntry(new AuditModel { Action = "UpdateServiceUser", Details = "service call for update serviceuser", UserReference = "" });
+			await RecordAuditEntry(new AuditModel { Action = "UpdateServiceUser", Details = "service call for update serviceuser", UserReference = "",CreatedBy=id });
 
 			var result = _mapper.Map<ServiceUserModel, ServiceUser>(model);
 			var serviceUser = await _serviceUserRepository.UpdateAsync(result);
 			return _mapper.Map<ServiceUser, ServiceUserModel>(serviceUser);
 		}
 
-		public async Task DeleteAsync(ServiceUserModel model)
+		public async Task DeleteAsync(ServiceUserModel model, Guid id)
 		{
-			await RecordAuditEntry(new AuditModel { Action = "DeleteServiceUser for" + model.Id, Details = "service call for delete serviceuser", UserReference = "" });
+			await RecordAuditEntry(new AuditModel { Action = "DeleteServiceUser for" + model.Id, Details = "service call for delete serviceuser", UserReference = "",CreatedBy=id });
 
 			throw new NotImplementedException();
 		}

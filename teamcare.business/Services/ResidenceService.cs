@@ -20,17 +20,17 @@ namespace teamcare.business.Services
             _repository = repository;
         }
 
-        public async Task<ResidenceModel> GetByIdAsync(Guid id)
+        public async Task<ResidenceModel> GetByIdAsync(Guid id, Guid uid)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetResidence for " + id, Details = "service call for get details residence", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetResidence for " + id, Details = "service call for get details residence", UserReference = "",CreatedBy=uid });
 
             var result = await _repository.GetByIdAsync(id);
             return _mapper.Map<Residence, ResidenceModel>(result);
         }
 
-        public async Task<IEnumerable<ResidenceModel>> ListAllAsync()
+        public async Task<IEnumerable<ResidenceModel>> ListAllAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllResidence", Details = "service call for get all residence", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetAllResidence", Details = "service call for get all residence", UserReference = "",CreatedBy=id });
 
             var listresidence = await _repository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);
@@ -38,27 +38,27 @@ namespace teamcare.business.Services
             return mapperlist;
         }
 
-        public async Task<ResidenceModel> AddAsync(ResidenceModel model)
+        public async Task<ResidenceModel> AddAsync(ResidenceModel model, Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddResidence", Details = "service call for add residence", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "AddResidence", Details = "service call for add residence", UserReference = "",CreatedBy=id });
 
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.AddAsync(mapped);
             return _mapper.Map<Residence, ResidenceModel>(result);
         }
 
-        public async Task<ResidenceModel> UpdateAsync(ResidenceModel model)
+        public async Task<ResidenceModel> UpdateAsync(ResidenceModel model, Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateResidence", Details = "service call for update residence", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "UpdateResidence", Details = "service call for update residence", UserReference = "",CreatedBy=id });
 
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.UpdateAsync(mapped);
             return _mapper.Map<Residence, ResidenceModel>(result);
         }
 
-        public async Task DeleteAsync(ResidenceModel model)
+        public async Task DeleteAsync(ResidenceModel model, Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteResidence for" + model.Id, Details = "service call for delete residence", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "DeleteResidence for" + model.Id, Details = "service call for delete residence", UserReference = "",CreatedBy=id });
 
             throw new NotImplementedException();
         }

@@ -51,10 +51,10 @@ namespace teamcare.web.app.Controllers
             var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
             userName = await _userService.GetUserGuidAsync(tempUser);
 
-            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null);
+            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null, new Guid(userName.ToString()));
             if (listOfUsers != null)
             {
-                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
+                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync(new Guid(userName.ToString()));
                 foreach (var item in listOfUsers)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;

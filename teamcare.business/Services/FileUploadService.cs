@@ -31,19 +31,19 @@ namespace teamcare.business.Services
             _auditService = auditService;
         }
 
-        public Task<FileUploadModel> GetByIdAsync(Guid id)
+        public Task<FileUploadModel> GetByIdAsync(Guid id, Guid uid)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<FileUploadModel>> ListAllAsync()
+        public async Task<IEnumerable<FileUploadModel>> ListAllAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<FileUploadModel> AddAsync(FileUploadModel model)
+        public async Task<FileUploadModel> AddAsync(FileUploadModel model, Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddFile", Details = "service call for add file", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "AddFile", Details = "service call for add file", UserReference = "",CreatedBy=id });
 
             try
             {
@@ -81,19 +81,19 @@ namespace teamcare.business.Services
             return null;
         }
 
-        public async Task<FileUploadModel> UpdateAsync(FileUploadModel model)
+        public async Task<FileUploadModel> UpdateAsync(FileUploadModel model, Guid id)
         {
-            return await AddAsync(model);
+            return await AddAsync(model,id);
         }
 
-        public Task DeleteAsync(FileUploadModel model)
+        public Task DeleteAsync(FileUploadModel model,Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<FileUploadModel> MoveBlobAsync(FileUploadModel model)
+        public async Task<FileUploadModel> MoveBlobAsync(FileUploadModel model, Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "MoveBlobFile for "+ model.BlobName, Details = "service call for move blob file", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "MoveBlobFile for "+ model.BlobName, Details = "service call for move blob file", UserReference = "",CreatedBy=id });
 
             try
             {
@@ -125,9 +125,9 @@ namespace teamcare.business.Services
             return null;
         }
 
-        public async Task<byte[]> GetBlobAsync(FileUploadModel model)
+        public async Task<byte[]> GetBlobAsync(FileUploadModel model, Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetBlob for " + model.BlobName, Details = "service call for get blob", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetBlob for " + model.BlobName, Details = "service call for get blob", UserReference = "",CreatedBy=id });
 
             try
             {
