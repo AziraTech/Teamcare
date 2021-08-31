@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
@@ -25,16 +26,20 @@ namespace teamcare.web.app.Controllers
         private readonly IFileUploadService _fileUploadService;
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
+        private readonly IUserService _userService;
+
+        public Guid userName;
 
 
         public ResidenceController(IServiceUserService serviceUserService, IResidenceService residenceService, IFileUploadService fileUploadService,
-                                    IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
+                                    IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IUserService userService)
         {
             _serviceUserService = serviceUserService;
             _residenceService = residenceService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
             _azureStorageOptions = azureStorageOptions.Value;
+            _userService = userService;
 
         }
 
@@ -44,7 +49,11 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, string.Empty),
             });
-            var listOfResidence = await _residenceService.ListAllAsync();
+
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
+            var listOfResidence = await _residenceService.ListAllAsync(new Guid(userName.ToString()));
             ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();            
             ReturnResidenceModel.Residences = listOfResidence;
             foreach (var item in ReturnResidenceModel.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
@@ -59,7 +68,11 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
-            var listOfResidence = await _residenceService.GetByIdAsync(Id);
+
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userName = await _userService.GetUserGuidAsync(tempUser);
+
+            var listOfResidence = await _residenceService.GetByIdAsync(Id,new Guid(userName.ToString()));
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return View(listOfResidence);            
 
@@ -77,7 +90,7 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> ResidenceDetail(Guid Id)
         {            
-            var listOfResidence = await _residenceService.GetByIdAsync(Id);        
+            var listOfResidence = await _residenceService.GetByIdAsync(Id, new Guid(userName.ToString()));        
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return PartialView("_ResidenceUpdate", listOfResidence);
         }
@@ -85,7 +98,7 @@ namespace teamcare.web.app.Controllers
         public async Task<IActionResult> ServiceUserDetails(string Id)
         {
             ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();
-            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id));
+            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id), new Guid(userName.ToString()));
             if (listOfResidence != null)
             {
                 listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
@@ -102,19 +115,19 @@ namespace teamcare.web.app.Controllers
             {
                 if (residenceCreateViewModel?.Residence != null)
                 {
-                    var createdResidence = await _residenceService.AddAsync(residenceCreateViewModel.Residence);
+                    var createdResidence = await _residenceService.AddAsync(residenceCreateViewModel.Residence,new Guid(userName.ToString()));
 
                     if (createdResidence != null && !string.IsNullOrWhiteSpace(residenceCreateViewModel.TempFileId))
                     {
                         //	Get the temporary document
                         var document =
-                            await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId));
+                            await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId), new Guid(userName.ToString()));
 
                         var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
                         {
                             BlobName = document.BlobName,
                             DestinationFolder = createdResidence.Id.ToString()
-                        });
+                        }, new Guid(userName.ToString()));
 
                         if (relocateFile != null)
                         {
@@ -123,10 +136,10 @@ namespace teamcare.web.app.Controllers
                             document.ResidenceId = createdResidence.Id;
                             document.BlobName = relocateFile.BlobName;
 
-                            await _documentUploadService.UpdateAsync(document);
+                            await _documentUploadService.UpdateAsync(document, new Guid(userName.ToString()));
                         }
 
-                        var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value);
+                        var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value, new Guid(userName.ToString()));
                     }
                 }
             }

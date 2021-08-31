@@ -27,43 +27,43 @@ namespace teamcare.business.Services
             _auditService = auditService;
         }
 
-        public async Task<DocumentUploadModel> GetByIdAsync(Guid id)
+        public async Task<DocumentUploadModel> GetByIdAsync(Guid id, Guid uid)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetDocument for " + id, Details = "service call for get details document", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetDocument for " + id, Details = "service call for get details document", UserReference = "",CreatedBy=uid });
 
             var document = await _documentUploadRepository.GetByIdAsync(id);
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
         }
 
-        public async Task<IEnumerable<DocumentUploadModel>> ListAllAsync()
+        public async Task<IEnumerable<DocumentUploadModel>> ListAllAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllDocuments", Details = "service call for get all document", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetAllDocuments", Details = "service call for get all document", UserReference = "",CreatedBy=id });
 
             var listUsers = await _documentUploadRepository.ListAllAsync();
             return _mapper.Map<IEnumerable<DocumentUpload>, IEnumerable<DocumentUploadModel>>(listUsers);
         }
 
-        public async Task<DocumentUploadModel> AddAsync(DocumentUploadModel model)
+        public async Task<DocumentUploadModel> AddAsync(DocumentUploadModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddDocuments", Details = "service call for add document", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "AddDocuments", Details = "service call for add document", UserReference = "",CreatedBy=id });
 
             var result = _mapper.Map<DocumentUploadModel, DocumentUpload>(model);
             var document = await _documentUploadRepository.AddAsync(result);
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
         }
 
-        public async Task<DocumentUploadModel> UpdateAsync(DocumentUploadModel model)
+        public async Task<DocumentUploadModel> UpdateAsync(DocumentUploadModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateDocuments", Details = "service call for update document", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "UpdateDocuments", Details = "service call for update document", UserReference = "",CreatedBy=id });
 
             var result = _mapper.Map<DocumentUploadModel, DocumentUpload>(model);
             var document = await _documentUploadRepository.UpdateAsync(result);
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
         }
 
-        public async Task DeleteAsync(DocumentUploadModel model)
+        public async Task DeleteAsync(DocumentUploadModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteDocuments for" + model.Id, Details = "service call for delete document", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "DeleteDocuments for" + model.Id, Details = "service call for delete document", UserReference = "",CreatedBy=id });
 
             throw new NotImplementedException();
         }

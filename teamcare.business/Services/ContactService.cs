@@ -24,27 +24,27 @@ namespace teamcare.business.Services
             _auditService = auditService;
         }
 
-        public async Task<ContactModel> GetByIdAsync(Guid id)
+        public async Task<ContactModel> GetByIdAsync(Guid id, Guid uid)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetContact for " + id, Details = "service call for get details contact", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetContact for " + id, Details = "service call for get details contact", UserReference = "",CreatedBy=uid });
 
             var contact = await _contactRepository.GetByIdAsync(id);
             var documents = contact.DocumentUploads;
             return _mapper.Map<Contact, ContactModel>(contact);
         }
 
-        public async Task<IEnumerable<ContactModel>> ListAllAsync()
+        public async Task<IEnumerable<ContactModel>> ListAllAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllContact", Details = "service call for get all contact", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetAllContact", Details = "service call for get all contact", UserReference = "",CreatedBy=id });
 
             var listUsers = await _contactRepository.ListAllAsync();
             return _mapper.Map<IEnumerable<Contact>, IEnumerable<ContactModel>>(listUsers);
         }
 
 
-        public async Task<ContactModel> AddAsync(ContactModel model)
+        public async Task<ContactModel> AddAsync(ContactModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddContact", Details = "service call for add contact", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "AddContact", Details = "service call for add contact", UserReference = "",CreatedBy=id });
 
             var result = _mapper.Map<ContactModel, Contact>(model);
             var user = await _contactRepository.AddAsync(result);
@@ -53,18 +53,18 @@ namespace teamcare.business.Services
 
 
 
-        public async Task<ContactModel> UpdateAsync(ContactModel model)
+        public async Task<ContactModel> UpdateAsync(ContactModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateContact", Details = "service call for update contact", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "UpdateContact", Details = "service call for update contact", UserReference = "",CreatedBy=id });
 
             var result = _mapper.Map<ContactModel, Contact>(model);
             var contact = await _contactRepository.UpdateAsync(result);
             return _mapper.Map<Contact, ContactModel>(contact);
         }
 
-        public async Task DeleteAsync(ContactModel model)
+        public async Task DeleteAsync(ContactModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteContact for" + model.Id, Details = "service call for delete contact", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "DeleteContact for" + model.Id, Details = "service call for delete contact", UserReference = "",CreatedBy=id });
             var result = _mapper.Map<ContactModel, Contact>(model);
              await _contactRepository.DeleteAsync(result);
 

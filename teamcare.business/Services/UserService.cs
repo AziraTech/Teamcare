@@ -19,52 +19,51 @@ namespace teamcare.business.Services
             _mapper = mapper;
         }
 
-        public async Task<UserModel> GetByIdAsync(Guid id)
+        public async Task<UserModel> GetByIdAsync(Guid id, Guid uid)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetUser for " + id, Details = "service call for get details user", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetUser for " + id, Details = "service call for get details user", UserReference = "",CreatedBy=uid });
 
             var user = await _userRepository.GetByIdAsync(id);
             return _mapper.Map<User, UserModel>(user);
         }
 
-        public async Task<IEnumerable<UserModel>> ListAllAsync()
+        public async Task<IEnumerable<UserModel>> ListAllAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllUsers", Details = "service call for get all user", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "GetAllUsers", Details = "service call for get all user", UserReference = "",CreatedBy=id });
 
             var listUsers = await _userRepository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(listUsers);
             return mapperlist = mapperlist.OrderBy(r => r.FirstName).ThenBy(p => p.LastName).ToList();
         }
 
-        public async Task<UserModel> AddAsync(UserModel model)
+        public async Task<UserModel> AddAsync(UserModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddUser", Details = "service call for add user", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "AddUser", Details = "service call for add user", UserReference = "",CreatedBy=id });
 
             var result = _mapper.Map<UserModel, User>(model);
             var user = await _userRepository.AddAsync(result);
             return _mapper.Map<User, UserModel>(user);
         }
 
-        public async Task<UserModel> UpdateAsync(UserModel model)
+        public async Task<UserModel> UpdateAsync(UserModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateUser", Details = "service call for update user", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "UpdateUser", Details = "service call for update user", UserReference = "",CreatedBy=id });
 
             var result = _mapper.Map<UserModel, User>(model);
             var user = await _userRepository.UpdateAsync(result);
             return _mapper.Map<User, UserModel>(user);
         }
 
-        public async Task DeleteAsync(UserModel model)
+        public async Task DeleteAsync(UserModel model,Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteUser for" + model.Id, Details = "service call for delete user", UserReference = "" });
+            await RecordAuditEntry(new AuditModel { Action = "DeleteUser for" + model.Id, Details = "service call for delete user", UserReference = "",CreatedBy=id });
             var result = _mapper.Map<UserModel, User>(model);
             await _userRepository.DeleteAsync(result);
         }
         public async Task<Guid> GetUserGuidAsync(string PreferredUsername)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetUserGuiD", Details = "service call for get user guid", UserReference = "" });
 
-            var tempList = await ListAllAsync();
+            var tempList = await ListAllAsync(new Guid());
             if (tempList != null)
             {
                 var userid = tempList.Where(x => x.Email == PreferredUsername.ToString().Trim()).FirstOrDefault();
