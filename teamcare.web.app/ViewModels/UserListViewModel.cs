@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using teamcare.common.Configuration;
-using teamcare.common.Models;
 
 namespace teamcare.web.app.ViewModels
 {
@@ -18,6 +17,6 @@ namespace teamcare.web.app.ViewModels
         public IEnumerable<business.Models.UserModel> Users { get; set; }
         public business.Models.UserModel User { get; set; }
         public UserCreateViewModel CreateViewModel { get; set; }
-        public string PrePath { get; set; }
+        public new string PrePath { get; set; }
     }
 }

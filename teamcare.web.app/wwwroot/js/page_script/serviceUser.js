@@ -141,7 +141,8 @@ var stepper = new KTStepper(element);
 
 var stepIndex = 0;
 // Handle next step
-stepper.on("kt.stepper.next", function (stepper) {
+stepper.on("kt.stepper.next", function (stepper)
+{
 	stepIndex = stepper.getCurrentStepIndex();
 	switch (stepIndex) {
 		case 1:
@@ -180,7 +181,6 @@ stepper.on("kt.stepper.next", function (stepper) {
 stepper.on("kt.stepper.previous", function (stepper) {
 	stepper.goPrevious(); // go previous step
 });
-
 
 const fv1 = FormValidation
 	.formValidation(
@@ -297,7 +297,6 @@ const fv3 = FormValidation
 async function doSortFilterBy() {
 	var optFilterBy = $("#filterBy").val();
 	var optSortBy = $("#sortBy").val();
-
 	await $.ajax({
 		type: "POST",
 		url: '/ServiceUsers/SortFilterOption',
@@ -340,6 +339,7 @@ async function setAsFavourite(vFavauriteUser, imageId) {
 	});
 }
 
+
 function RemoveProfile() {
 	$('#OldProfile').remove();
 }
@@ -348,3 +348,73 @@ $(document).ready(function() {
 	doSortFilterBy();
 
 });
+
+//var sreviceUserLogSubmit = document.querySelector('[data-action="submit"]');
+//var validate1 = document.querySelector('#kt_modal_todays_log');
+//const fv4 = FormValidation
+//	.formValidation(
+//		validate1,
+//		{
+//			fields: {
+//				sul-log_message: {
+//					validators: {
+//						notEmpty: {
+//							message: "Please Insert Log Message"
+//						}
+//					}
+//				}
+//			},
+//			plugins: {
+//				trigger: new FormValidation.plugins.Trigger(),
+//				bootstrap: new FormValidation.plugins.Bootstrap5({
+//					rowSelector: ".fv-row",
+//					eleInvalidClass: "",
+//					eleValidClass: ""
+//				})
+//			}
+//		}
+//	);
+//sreviceUserLogSubmit.addEventListener("click", function (e) {
+//	e.preventDefault();
+
+//}
+
+async function sendServiceUserLog(serviceUserId, logMessageId, dbType, logId)
+{
+	var logMessage = '';
+	if (dbType == 'I' || dbType == 'U') { logMessage = $('#' + logMessageId).val(); }
+	await $.ajax({
+		type: "POST",
+		url: '/ServiceUsers/saveLog',
+		data: { logId: logId, dbType: dbType, serviceUserId: serviceUserId, logMessage: logMessage },
+		success: function (data) {
+			var showMessage = ""; var icon = "";
+			if (data)
+			{
+				if (data.success)
+				{
+					switch (dbType) {
+						case "I": showMessage = "Log Added Successful."; break;
+						case "U": showMessage = "Log Updated Successful."; break;
+						case "D": showMessage = "Log Removed Successful."; break;
+                    } icon = 'success';
+				} else {
+					icon = 'info';
+					showMessage = 'Please Check, There may be some error to save log.';
+				}
+			}
+			else {
+				icon = 'error';
+				showMessage = 'Please Check, There may be some error to save log.';
+            }
+			Swal.fire({
+				text: showMessage,
+				icon: icon,
+				buttonsStyling: !1,
+				confirmButtonText: "Ok",
+				customClass: { confirmButton: "btn btn-light" }
+			});
+		}
+	});
+}
+

@@ -78,8 +78,8 @@ namespace teamcare.data.Entities
 		public string ArchivedReason { get; set; }
 
 		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
-		public virtual ICollection<Contact> Contacts { get; set; }
-
+		public virtual ICollection<Contact> Contacts { get; set; }		
         public virtual Residence Residence { get; set; }
+		public virtual ICollection<ServiceUserLog> ServiceUserLog { get; set; }
 	}
 }

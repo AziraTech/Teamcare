@@ -21,7 +21,8 @@ namespace teamcare.web.app.Middleware
 			CreateMap<Residence, ResidenceModel>().ReverseMap();
 			CreateMap<DocumentUpload, DocumentUploadModel>().ReverseMap();
 			CreateMap<FavouriteServiceUser, FavouriteServiceUserModel>().ReverseMap();
-			CreateMap<Contact, ContactModel>().ReverseMap();
+			CreateMap<Contact, ContactModel>().ReverseMap();			
+			CreateMap<ServiceUserLog, ServiceUserLogModel>().ReverseMap();
 		}
 	}
 }

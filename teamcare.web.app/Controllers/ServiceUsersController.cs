@@ -12,7 +12,6 @@ using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
 using teamcare.common.Helpers;
 using teamcare.common.ReferenceData;
-using teamcare.web.app.Helpers;
 using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
@@ -27,7 +26,9 @@ namespace teamcare.web.app.Controllers
         private readonly IFavouriteServiceUserService _favouriteServiceUserService;
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IUserService _userService;
-        public Guid userName;
+        private readonly IServiceUserLogService _serviceUserLogService;
+        public Guid userID;
+        public UserModel userData;
         private readonly IContactService _contactService;
 
         public ServiceUserModel sum = new ServiceUserModel();
@@ -42,6 +43,7 @@ namespace teamcare.web.app.Controllers
                                       IDocumentUploadService documentUploadService,
                                       IFavouriteServiceUserService favouriteServiceUserService,
                                       IOptions<AzureStorageSettings> azureStorageOptions,
+                                      IServiceUserLogService serviceUserLogService,
                                       IContactService contactService)
         {
             _serviceUserService = serviceUserService;
@@ -52,6 +54,7 @@ namespace teamcare.web.app.Controllers
             _azureStorageOptions = azureStorageOptions.Value;
             _contactService = contactService;
             _userService = userService;
+            _serviceUserLogService = serviceUserLogService;
 
         }
 
@@ -61,14 +64,15 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.ServiceUsers, string.Empty),
             });
+            sum.CreatedBy = userID;
+            rm.CreatedBy = userID;
+            fsum.CreatedBy = userID;
+            dum.CreatedBy = userID;
+
 
             var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
-
-            sum.CreatedBy = userName;
-            rm.CreatedBy = userName;
-            fsum.CreatedBy = userName;
-            dum.CreatedBy = userName;
+            userID = await _userService.GetUserGuidAsync(tempUser);
+            userData = await _userService.GetUserNameAsync(tempUser);
 
             var listOfResidence = await _residenceService.ListAllAsync(rm);
             var distinctResidence = listOfResidence.Select(x => new SelectListItem
@@ -79,6 +83,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUsersViewModel
             {
+                UserName = userData.Title + " " + userData.FirstName + " " + userData.LastName,                
                 ResidenceList = distinctResidence,
                 CreateViewModel = new ServiceUserCreateViewModel
                 {
@@ -94,7 +99,7 @@ namespace teamcare.web.app.Controllers
                 var listOfFavourite = await _favouriteServiceUserService.ListAllAsync(fsum);
                 foreach (ServiceUserModel serviceUser in model.ServiceUser)
                 {
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id && x.UserId == userName).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id && x.UserId == userID).FirstOrDefault();
                     serviceUser.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
@@ -103,9 +108,13 @@ namespace teamcare.web.app.Controllers
                 
         public async Task<IActionResult> Detail(string id)
         {
-            sum.CreatedBy = userName;
-            fsum.CreatedBy = userName;
-            rm.CreatedBy = userName;
+            sum.CreatedBy = userID;
+            fsum.CreatedBy = userID;
+            rm.CreatedBy = userID;
+
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userID = await _userService.GetUserGuidAsync(tempUser);
+            userData = await _userService.GetUserNameAsync(tempUser);
 
             var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id),sum);
             if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
@@ -134,8 +143,12 @@ namespace teamcare.web.app.Controllers
                 Text = x.Name
             }).OrderBy(y => y.Text).ToList();
 
+            ServiceUserLogModel serviceUserLogModel = new ServiceUserLogModel();
+            var sreviceUserLog = await _serviceUserLogService.ListAllAsync(serviceUserLogModel);
+            
             var model = new ServiceUsersViewModel
             {
+                UserName = userData.Title + " " + userData.FirstName + " " + userData.LastName,                
                 ServiceUserByID = listOfUser,
                 ResidenceList = distinctResidence,
                 CreateViewModel = new ServiceUserCreateViewModel
@@ -157,8 +170,12 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
         {
-            sum.CreatedBy = userName;
-            rm.CreatedBy = userName;
+            sum.CreatedBy = userID;
+            rm.CreatedBy = userID;
+
+            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+            userID = await _userService.GetUserGuidAsync(tempUser);
+            userData = await _userService.GetUserNameAsync(tempUser);
 
             //Sorting List
             var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy,sum);
@@ -168,7 +185,7 @@ namespace teamcare.web.app.Controllers
                 foreach (var item in listOfUser)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == userName).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == userID).FirstOrDefault();
                     item.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
@@ -182,6 +199,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUsersViewModel
             {
+                UserName = userData.Title + " " + userData.FirstName + " " + userData.LastName,                
                 ServiceUser = listOfUser,
                 ResidenceList = distinctResidence,
             };
@@ -208,8 +226,8 @@ namespace teamcare.web.app.Controllers
 
                     if (createdServiceUser != null && !string.IsNullOrWhiteSpace(serviceUserCreateViewModel.ServiceUser.TempFileId))
                     {
-                        dum.CreatedBy = userName;
-                        sum.CreatedBy = userName;
+                        dum.CreatedBy = userID;
+                        sum.CreatedBy = userID;
                         //	Get the temporary document
                         var document =
                             await _documentUploadService.GetByIdAsync(Guid.Parse(serviceUserCreateViewModel.ServiceUser.TempFileId),dum);
@@ -234,7 +252,7 @@ namespace teamcare.web.app.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
             }
             return Json(1);
@@ -245,17 +263,17 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
-                fsum.CreatedBy = userName;
+                fsum.CreatedBy = userID;
                 var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-                userName = await _userService.GetUserGuidAsync(tempUser);
-                if (userName != null && FavauriteUser.Trim() != "")
+                userID = await _userService.GetUserGuidAsync(tempUser);
+                if (userID != null && FavauriteUser.Trim() != "")
                 {
                     var listOfFavourite = await _favouriteServiceUserService.ListAllAsync(fsum);
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(FavauriteUser) && x.UserId == userName).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(FavauriteUser) && x.UserId == userID).FirstOrDefault();
                     if (valueOfFavourite == null)
                     {
                         var createdFavouriteServiceUser = new FavouriteServiceUserModel();
-                        createdFavouriteServiceUser.UserId = userName;
+                        createdFavouriteServiceUser.UserId = userID;
                         createdFavouriteServiceUser.ServiceUserId = new Guid(FavauriteUser);
                         createdFavouriteServiceUser = await _favouriteServiceUserService.AddAsync(createdFavouriteServiceUser);
                         return Json(true);
@@ -267,10 +285,57 @@ namespace teamcare.web.app.Controllers
 
                 }
             }
-            catch (Exception ex)
+            catch 
             {
             }
             return Json(false);
+        }
+
+
+        
+        [HttpPost]
+        public async Task<JsonResult> saveLog(string logId, string dbType,  string serviceUserId, string logMessage)
+        {
+            bool blSuccess = false;
+            try
+            {
+                var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
+                userID = await _userService.GetUserGuidAsync(tempUser);                                
+                if (userID != null)
+                {
+                    fsum.CreatedBy = userID;
+                    ServiceUserLogModel serviceUserLog = new ServiceUserLogModel();
+                    if (logId == null && dbType == "I")
+                    {
+                        serviceUserLog.LogCreatedBy = userID;
+                        serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
+                        serviceUserLog.LogMessage = logMessage;
+                        serviceUserLog = await _serviceUserLogService.AddAsync(serviceUserLog);
+                    }
+                    else if (logId != null && dbType == "U")
+                    {
+                        serviceUserLog.Id = new Guid(logId);
+                        serviceUserLog.LogCreatedBy = userID;
+                        serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
+                        serviceUserLog.LogMessage = logMessage;
+                        serviceUserLog = await _serviceUserLogService.UpdateAsync(serviceUserLog);
+                    }
+                    else if (logId != null && dbType == "D")
+                    {
+                        serviceUserLog.Id = new Guid(logId);
+                        serviceUserLog.LogCreatedBy = userID;
+                        serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
+                        serviceUserLog.LogMessage = logMessage;
+                        await _serviceUserLogService.DeleteAsync(serviceUserLog);
+                    }
+                    blSuccess = true;
+                }
+            }
+            catch
+            {
+                blSuccess = false;
+            }
+            return Json(new { success = blSuccess, dbType = dbType});
         }
 
     }

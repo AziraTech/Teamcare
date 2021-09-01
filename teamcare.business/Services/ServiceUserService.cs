@@ -35,6 +35,7 @@ namespace teamcare.business.Services
 			var residence = serviceUser.Residence;
 			var documents = serviceUser.DocumentUploads;
 			var contacts = serviceUser.Contacts;
+			var serviceUserLog = serviceUser.ServiceUserLog;
 			return _mapper.Map<ServiceUser, ServiceUserModel>(serviceUser);
 		}
 

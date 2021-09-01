@@ -34,6 +34,7 @@ namespace teamcare.business.Models
         public string PrePath { get; set; }
         public bool Favourite { get; set; }
         public ICollection<ContactModel> Contacts { get; set; }
+        public ICollection<ServiceUserLogModel> ServiceUserLog { get; set; }
 
     }
 }

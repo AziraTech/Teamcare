@@ -61,6 +61,7 @@ namespace teamcare.business.Services
             var result = _mapper.Map<UserModel, User>(model);
             await _userRepository.DeleteAsync(result);
         }
+
         public async Task<Guid> GetUserGuidAsync(string PreferredUsername)
         {
             UserModel um = new UserModel();
@@ -74,6 +75,23 @@ namespace teamcare.business.Services
                 }
                 else { return new Guid(); }
             } else { return new Guid(); }
+        }
+
+        public async Task<UserModel> GetUserNameAsync(string PreferredUsername)
+        {
+            UserModel um = new UserModel();
+            var tempList = await ListAllAsync(um);
+            if (tempList != null)
+            {
+                var userData = tempList.Where(x => x.Email == PreferredUsername.ToString().Trim()).FirstOrDefault();
+                if (userData != null)
+                {
+                    if (userData != null) { return userData; }
+                }
+                else { return null; }
+            }
+            else { return null; }
+            return null;
         }
     }
 }

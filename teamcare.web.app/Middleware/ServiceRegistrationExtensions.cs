@@ -27,6 +27,9 @@ namespace teamcare.web.app.Middleware
             services.AddScoped<IDocumentUploadRepository, DocumentUploadRepository>();
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<IServiceUserLogService, ServiceUserLogService>();
+            services.AddScoped<IServiceUserLogRepository, ServiceUserLogRepository>();
+
 
             return services;
         }
