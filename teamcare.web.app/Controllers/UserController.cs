@@ -133,10 +133,7 @@ namespace teamcare.web.app.Controllers
                         var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value,um);
                     }
                 }
-            }
-            catch
-            {
-            }
+            } catch { }
             return Json(1);
         }
     }
