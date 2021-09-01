@@ -17,7 +17,7 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
+    //[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
     public class ServiceUsersController : BaseController
     {
         private readonly IServiceUserService _serviceUserService;
@@ -159,6 +159,7 @@ namespace teamcare.web.app.Controllers
         {
             sum.CreatedBy = userName;
             rm.CreatedBy = userName;
+            fsum.CreatedBy = userName;
 
             //Sorting List
             var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy,sum);
@@ -236,6 +237,7 @@ namespace teamcare.web.app.Controllers
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             return Json(1);
         }
@@ -269,6 +271,7 @@ namespace teamcare.web.app.Controllers
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             return Json(false);
         }

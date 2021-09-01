@@ -36,7 +36,7 @@ namespace teamcare.business.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<FileUploadModel>> ListAllAsync(FileUploadModel model)
+        public Task<IEnumerable<FileUploadModel>> ListAllAsync(FileUploadModel model)
         {
             throw new NotImplementedException();
         }
@@ -74,7 +74,7 @@ namespace teamcare.business.Services
 
                 return model;
             }
-            catch (Exception ex)
+            catch
             {
             }
 
@@ -117,7 +117,7 @@ namespace teamcare.business.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
             }
@@ -153,7 +153,7 @@ namespace teamcare.business.Services
                     return dataArray;
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
             }

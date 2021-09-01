@@ -136,6 +136,7 @@ namespace teamcare.web.app.Controllers
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             return Json(1);
         }

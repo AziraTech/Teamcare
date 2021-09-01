@@ -35,9 +35,8 @@ namespace teamcare.data.Repositories
                 _dbContext.Set<T>().Add(entity);
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch
             {
-
             }
             return entity;
         }

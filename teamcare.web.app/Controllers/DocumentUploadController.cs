@@ -14,14 +14,10 @@ namespace teamcare.web.app.Controllers
 	public class DocumentUploadController : BaseController
 	{
 		private readonly IFileUploadService _fileUploadService;
-		private readonly IUserService _userService;
-		public Guid userName;
 
-
-		public DocumentUploadController(IFileUploadService fileUploadService, IUserService userService)
+		public DocumentUploadController(IFileUploadService fileUploadService)
 		{
 			_fileUploadService = fileUploadService;
-			_userService = userService;
 
 		}
 
@@ -31,10 +27,7 @@ namespace teamcare.web.app.Controllers
 			var req = HttpContext.Request.Form;
             FileUploadModel documentResult = null;
 			if (req.Files != null && req.Files.Count > 0)
-            {
-				var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-				userName = await _userService.GetUserGuidAsync(tempUser);
-
+            {				
 				await using var ms = new MemoryStream();
                 await req.Files[0].CopyToAsync(ms);
                 var fileBytes = ms.ToArray();

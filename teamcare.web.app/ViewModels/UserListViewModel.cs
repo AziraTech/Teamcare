@@ -18,6 +18,6 @@ namespace teamcare.web.app.ViewModels
         public IEnumerable<business.Models.UserModel> Users { get; set; }
         public business.Models.UserModel User { get; set; }
         public UserCreateViewModel CreateViewModel { get; set; }
-        public string PrePath { get; set; }
+        public new string PrePath { get; set; }
     }
 }
