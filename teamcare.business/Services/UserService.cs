@@ -88,10 +88,10 @@ namespace teamcare.business.Services
                 {
                     if (userData != null) { return userData; }
                 }
-                else { return null; }
+                else { return um; }
             }
-            else { return null; }
-            return null;
+            else { return um; }
+            return um;
         }
     }
 }

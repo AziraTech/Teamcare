@@ -78,11 +78,13 @@ namespace teamcare.web.app
                     opts.TokenValidationParameters.IssuerValidator = ValidateIssuerWithPlaceholder;
                     opts.Events = new OpenIdConnectEvents
 					{
-						OnAuthorizationCodeReceived = async ctx =>
+						OnAuthorizationCodeReceived = ctx =>
 						{
+							return System.Threading.Tasks.Task.CompletedTask;
 						},
-						OnTicketReceived = async ctx =>
+						OnTicketReceived = ctx =>
 						{
+							return System.Threading.Tasks.Task.CompletedTask;
 						},
 						OnTokenValidated = async ctx =>
                         {

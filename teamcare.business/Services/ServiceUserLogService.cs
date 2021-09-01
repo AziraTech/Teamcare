@@ -52,7 +52,7 @@ namespace teamcare.business.Services
 
             var listresidence = await _repository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<ServiceUserLog>, IEnumerable<ServiceUserLogModel>>(listresidence);
-            mapperlist = mapperlist.OrderBy(r => r.CreatedOn).ToList();
+            mapperlist = mapperlist.OrderByDescending(r => r.CreatedOn).ToList();
             return mapperlist;
         }
 

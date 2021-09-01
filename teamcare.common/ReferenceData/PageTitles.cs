@@ -6,5 +6,6 @@
         public const string ServiceUsers = "Service Users";
         public const string Residence = "Residence";
         public const string User = "User";
+        public const string ServiceUserLog = "Approve Log Entry";
     }
 }

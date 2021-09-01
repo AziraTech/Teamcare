@@ -133,6 +133,7 @@ namespace teamcare.web.app.Controllers
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             return Json(1);
         }
@@ -146,11 +147,10 @@ namespace teamcare.web.app.Controllers
                 cm.CreatedBy = userName;
                 await _contactService.DeleteAsync(cm);
 
-                return Json(1);
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
             return Json(1);
         }

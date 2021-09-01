@@ -49,11 +49,11 @@
         <div class="page d-flex flex-row flex-column-fluid">
             <!--begin::Wrapper-->
             <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-                <!--begin::Header-->
-                @{Html.RenderPartial("header.cshtml");}
+                <!--begin::Header-->               
+               <partial name="header.cshtml" />           
                 <!--end::Header-->
                 <!--begin::Toolbar-->
-                @{Html.RenderPartial("toolbar.cshtml");}
+               <partial name="toolbar.cshtml" />           
                 <!--end::Toolbar-->
                 <!--begin::Container-->
                 <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container">
@@ -64,7 +64,7 @@
                     <!--end::Post-->
                 </div>
                 <!--end::Container-->
-                @{Html.RenderPartial("footer.cshtml");}
+               <partial name="footer.cshtml" />
             </div>
             <!--end::Wrapper-->
         </div>

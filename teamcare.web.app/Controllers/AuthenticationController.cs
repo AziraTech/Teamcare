@@ -11,7 +11,7 @@ namespace teamcare.web.app.Controllers
 {
     public class AuthenticationController : Controller
     {
-        public async Task<IActionResult> SignOut()
+        public IActionResult SignOut()
         {
             /*
             await Microsoft.AspNetCore.Authentication.AuthenticationHttpContextExtensions.SignOutAsync(HttpContext, CookieAuthenticationDefaults.AuthenticationScheme);

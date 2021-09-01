@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using teamcare.common.Configuration;
 
@@ -16,7 +17,8 @@ namespace teamcare.web.app.ViewModels
         }
         public IEnumerable<business.Models.ServiceUserLogModel> ServiceUserLog { get; set; }
         public business.Models.ServiceUserModel ServiceUserLogByID { get; set; }
-
         public ServiceUserLogCreateViewModel CreateViewModel { get; set; }
+        public List<SelectListItem> ServcieUsersList { get; set; }
+
     }
 }
