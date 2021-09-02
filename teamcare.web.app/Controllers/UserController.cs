@@ -4,14 +4,12 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
 using teamcare.common.Helpers;
-using teamcare.common.Models;
 using teamcare.common.ReferenceData;
 using teamcare.web.app.ViewModels;
 
@@ -43,10 +41,6 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.User, string.Empty),
             });
-
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
-            um.CreatedBy = userName;
 
             var usersDetail = await _userService.ListAllAsync(um);
             foreach (var item in usersDetail) { item.PrePath = "/" + _azureStorageOptions.Container; }
@@ -133,7 +127,10 @@ namespace teamcare.web.app.Controllers
                         var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value,um);
                     }
                 }
-            } catch { }
+            }
+            catch (Exception ex)
+            {
+            }
             return Json(1);
         }
     }

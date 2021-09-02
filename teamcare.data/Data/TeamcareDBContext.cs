@@ -22,6 +22,7 @@ namespace teamcare.data.Data
         public DbSet<FavouriteServiceUser> FavouriteServiceUsers { get; set; }
         public DbSet<ServiceUserLog> ServiceUserLog { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DocumentUpload>().HasOne(i => i.User).WithMany(u => u.DocumentUploads)

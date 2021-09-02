@@ -49,13 +49,9 @@ namespace teamcare.web.app.Controllers
                     new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home"))
                     });
 
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
 
-            ServiceUserModel um = new ServiceUserModel();
-            um.CreatedBy = userName;
-            FavouriteServiceUserModel fsum = new FavouriteServiceUserModel();
-            fsum.CreatedBy = userName;
+            var um = new ServiceUserModel();
+            var fsum = new FavouriteServiceUserModel();
 
             var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null,um);
             if (listOfUsers != null)

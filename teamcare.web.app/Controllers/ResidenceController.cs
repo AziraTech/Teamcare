@@ -51,14 +51,11 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Residence, string.Empty),
             });
 
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
-
-            rm.CreatedBy = userName;
-
             var listOfResidence = await _residenceService.ListAllAsync(rm);
-            ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();            
-            ReturnResidenceModel.Residences = listOfResidence;
+            var ReturnResidenceModel = new ResidenceListViewModel
+            {
+                Residences = listOfResidence
+            };
             foreach (var item in ReturnResidenceModel.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
             return View(ReturnResidenceModel);
 
@@ -152,7 +149,6 @@ namespace teamcare.web.app.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
             }
             return Json(1);
         }

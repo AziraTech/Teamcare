@@ -44,11 +44,6 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.ServiceUserLog, string.Empty),
             });
 
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userID = await _userService.GetUserGuidAsync(tempUser);
-            sulm.CreatedBy = userID;
-            sum.CreatedBy = userID;
-
             var listOfLog = await _serviceUserLogService.ListAllAsync(sulm);
 
             var listOfServiceUsers = await _serviceUserService.ListAllAsync(sum);

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using teamcare.business.Services;
 using teamcare.data.Data;
 using teamcare.data.Entities;
@@ -10,6 +12,14 @@ namespace teamcare.web.app.Middleware
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient(s =>
+            {
+                var contextAccessor = s.GetService<IHttpContextAccessor>();
+                var user = contextAccessor?.HttpContext?.User;
+                return user ?? throw new System.Exception("User not resolved");
+            });
+
             services.AddScoped<IAuditService, AuditService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IServiceUserService, ServiceUserService>();
@@ -29,7 +39,7 @@ namespace teamcare.web.app.Middleware
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IServiceUserLogService, ServiceUserLogService>();
             services.AddScoped<IServiceUserLogRepository, ServiceUserLogRepository>();
-
+            services.AddScoped(typeof(IFireForgetRepositoryHandler<>), typeof(FireForgetRepositoryHandler<>));
 
             return services;
         }

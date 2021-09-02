@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using teamcare.data.Data;
@@ -11,7 +12,7 @@ namespace teamcare.data.Repositories
 	public class AuditRepository : Repository<Audit>, IAuditRepository
 	{
 		private readonly TeamcareDbContext _context;
-		public AuditRepository(TeamcareDbContext dbContext) : base(dbContext)
+		public AuditRepository(TeamcareDbContext dbContext, ClaimsPrincipal user) : base(dbContext, user)
 		{
 			_context = dbContext;
 		}
@@ -23,7 +24,7 @@ namespace teamcare.data.Repositories
 				await _context.SaveChangesAsync();
 				return true;
 			}
-			catch
+			catch (Exception ex)
 			{
 				return false;
 			}

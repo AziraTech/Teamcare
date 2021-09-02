@@ -32,9 +32,6 @@ namespace teamcare.web.app.Controllers
             FileUploadModel documentResult = null;
 			if (req.Files != null && req.Files.Count > 0)
             {
-				var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-				userName = await _userService.GetUserGuidAsync(tempUser);
-
 				await using var ms = new MemoryStream();
                 await req.Files[0].CopyToAsync(ms);
                 var fileBytes = ms.ToArray();

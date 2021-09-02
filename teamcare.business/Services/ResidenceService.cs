@@ -14,7 +14,6 @@ namespace teamcare.business.Services
         private readonly IMapper _mapper;
         private readonly IResidenceRepository _repository;
 
-
         public ResidenceService(IMapper mapper, IAuditService auditService, IResidenceRepository repository) : base(auditService)
         {
             _mapper = mapper;

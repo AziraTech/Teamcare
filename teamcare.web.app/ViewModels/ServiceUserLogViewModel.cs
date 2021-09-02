@@ -19,6 +19,5 @@ namespace teamcare.web.app.ViewModels
         public business.Models.ServiceUserModel ServiceUserLogByID { get; set; }
         public ServiceUserLogCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ServcieUsersList { get; set; }
-
     }
 }

@@ -69,7 +69,7 @@ namespace teamcare.web.app
 			})
 				.AddCookie(o =>
                 {
-                    o.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
+                    o.Cookie.SameSite = SameSiteMode.None;
                 })
 				.AddOpenIdConnect(opts =>
 				{
@@ -78,20 +78,18 @@ namespace teamcare.web.app
                     opts.TokenValidationParameters.IssuerValidator = ValidateIssuerWithPlaceholder;
                     opts.Events = new OpenIdConnectEvents
 					{
-						OnAuthorizationCodeReceived = ctx =>
+						OnAuthorizationCodeReceived = async ctx =>
 						{
-							return System.Threading.Tasks.Task.CompletedTask;
 						},
-						OnTicketReceived = ctx =>
+						OnTicketReceived = async ctx =>
 						{
-							return System.Threading.Tasks.Task.CompletedTask;
 						},
 						OnTokenValidated = async ctx =>
                         {
                             var userService = ctx.HttpContext.RequestServices.GetService<IUserService>();
                             var allUsers = await userService.ListAllAsync(null);
                             var loggedInEmail = ctx.Principal.Claims.FirstOrDefault(i =>
-                                i.Type.Equals(teamcare.common.ReferenceData.ClaimTypes.PreferredUsername,
+                                i.Type.Equals(common.ReferenceData.ClaimTypes.UserEmail,
                                     StringComparison.OrdinalIgnoreCase))?.Value;
 
                             if (string.IsNullOrWhiteSpace(loggedInEmail))
@@ -106,7 +104,9 @@ namespace teamcare.web.app
                                 {
                                     var claims = new List<Claim>
                                     {
-                                        new Claim(ClaimTypes.Role, currentUser.UserRole.ToString())
+                                        new Claim(ClaimTypes.Role, currentUser.UserRole.ToString()),
+                                        new Claim(common.ReferenceData.ClaimTypes.UserId, currentUser.Id.ToString()),
+                                        new Claim(common.ReferenceData.ClaimTypes.UserEmail, currentUser.Email)
                                     };
                                     var appIdentity = new ClaimsIdentity(claims);
 

@@ -48,24 +48,25 @@
         <!--begin::Page-->
         <div class="page d-flex flex-row flex-column-fluid">
             <!--begin::Wrapper-->
-            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-                <!--begin::Header-->               
-               <partial name="header.cshtml" />           
-                <!--end::Header-->
-                <!--begin::Toolbar-->
-               <partial name="toolbar.cshtml" />           
-                <!--end::Toolbar-->
-                <!--begin::Container-->
-                <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container">
-                    <!--begin::Post-->
-                    <div class="content flex-row-fluid" id="kt_content">
-                        @RenderBody()
-                    </div>
-                    <!--end::Post-->
-                </div>
-                <!--end::Container-->
-               <partial name="footer.cshtml" />
-            </div>
+			<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+				<!--begin::Header-->
+				
+				<partial name="header.cshtml" />
+				<!--end::Header-->
+				<!--begin::Toolbar-->
+				<partial name="toolbar.cshtml" />
+				<!--end::Toolbar-->
+				<!--begin::Container-->
+				<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container">
+					<!--begin::Post-->
+					<div class="content flex-row-fluid" id="kt_content">
+						@RenderBody()
+					</div>
+					<!--end::Post-->
+				</div>
+				<!--end::Container-->
+				<partial name="footer.cshtml" />
+			</div>
             <!--end::Wrapper-->
         </div>
         <!--end::Page-->

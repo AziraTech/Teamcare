@@ -41,10 +41,6 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var tempUser = User.FindFirstValue(common.ReferenceData.ClaimTypes.PreferredUsername);
-            userName = await _userService.GetUserGuidAsync(tempUser);
-
-            cm.CreatedBy = userName;
             //SetPageMetadata(PageTitles.Contact, SiteSection.Contacts, new List<BreadcrumbItem>() 
             //{                
             //    new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
@@ -147,6 +143,7 @@ namespace teamcare.web.app.Controllers
                 cm.CreatedBy = userName;
                 await _contactService.DeleteAsync(cm);
 
+                return Json(1);
             }
             catch (Exception ex)
             {
