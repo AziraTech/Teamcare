@@ -1,0 +1,35 @@
+﻿@model teamcare.business.Models.ServiceUserLogModel
+<!--begin::Table row-->
+<tr>
+    <td class="w-40px">
+        <!--begin::User-->
+        <div class="d-flex align-items-center">
+            <!--begin::Wrapper-->
+            <div class="me-5 position-relative">
+                <!--begin::Avatar-->
+                <div class="symbol symbol-35px symbol-circle">
+                    <img src="@(Model.ProfilePhoto != null ? Model.PrePath + "/" + Model.ProfilePhoto.BlobName + "?width=200" : "../../media/avatars/blank.png" )" alt="image" />
+                </div>
+                <!--end::Avatar-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::User-->
+    </td>
+    <td>
+        <label>@Model.ServiceUser.Title @Model.ServiceUser.FirstName @Model.ServiceUser.LastName</label><br />
+        <span>@Model.CreatedOn.ToString("dd MMMM yyyy, hh:mm")</span>
+    </td>
+    <td></td>
+</tr>
+<!--end::Table row-->
+<!--begin::Table row-->
+<tr>
+    <td colspan="2">       
+        @Model.LogMessage
+    </td>
+    <td>
+
+    </td>
+</tr>
+<!--end::Table row-->

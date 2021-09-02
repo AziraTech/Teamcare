@@ -21,6 +21,6 @@ namespace teamcare.web.app.ViewModels
         public ServiceUserCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ResidenceList { get; set; }
         public IEnumerable<business.Models.ContactModel> ContactList { get; set; }
-        public string UserName { get; set; }
+        public string UserName { get; set; }        
     }
 }
