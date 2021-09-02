@@ -30,8 +30,8 @@ namespace teamcare.data.Entities.ServiceUsers
 
 		[ForeignKey("ActionByAdmin")]
 		[Column("action_by_admin_id")]
-		public Guid ActionByAdminId { get; set; }
-		public virtual User ActionByAdmin { get; set; }
+		public Guid? ActionByAdminId { get; set; }
+		public virtual User? ActionByAdmin { get; set; }
 
 		[Column("admin_action_on")]
 		public DateTimeOffset? AdminActionOn { get; set; }
