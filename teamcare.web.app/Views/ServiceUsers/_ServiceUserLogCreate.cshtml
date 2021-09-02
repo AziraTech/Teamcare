@@ -1,27 +1,21 @@
 ﻿@model teamcare.web.app.ViewModels.ServiceUsersViewModel
 <input type="hidden" id="selectedId" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.Id; }" />
-<!--begin::Input group-->
-<div class="d-flex flex-column mb-7 fv-row">
-    <!--begin::Label-->
-    <label class=" fs-6 fw-bold mb-2"><span class="mb-1">Service User : </span>@Model.ServiceUserByID.Title @Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName</label>
-    <!--end::Label-->    
-</div>
+<!--<div class="d-flex flex-column">-->
+    <!--begin::Name-->
+    <!--<div class="d-flex align-items-center mb-2">        
+        <span class="mb-1 m-1">Add Log Entry for </span><a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1 cursor-pointer">@Model.ServiceUserByID.Title  @Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName</a>        
+    </div>
+</div>-->
 <div class="d-flex flex-column mb-7 fv-row">
     <!--begin::Label-->
     <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2"><span class="required">Log Message</span></label>
     <!--end::Label-->
-    <textarea type="text" class="form-control form-control-solid" rows="3" cols="10" name="sul-log_message" id="sul-log_message"></textarea>
+    <textarea type="text" class="form-control form-control-solid" rows="2" cols="150" name="sul-log_message" id="sul-log_message"></textarea>
 </div>
-<div class="d-flex flex-column mb-7 fv-row">
-    <!--begin::Label-->
-    <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2"><span class="mb-1">Login Person : </span> @Model.UserName</label>
-    <!--end::Label-->    
-</div>
-<!--end::Input group-->
-<!--begin::Actions-->
-<div class="text-center pt-15">    
-    <button type="submit" data-action="actionServiceUserLog" id="new_card_service_user_log_submit" 
-            class="btn btn-primary" onclick="sendServiceUserLog('@Model.ServiceUserByID.Id', 'sul-log_message', 'I', null)" >
+<!--begin::Actions--><br />
+<div class="pt-15 right">
+    <button type="submit" data-action="actionServiceUserLog" id="new_card_service_user_log_submit"
+            class="btn btn-primary" onclick="sendServiceUserLog('@Model.ServiceUserByID.Id', 'sul-log_message', 'I', null)">
         <span class="indicator-label">Send</span>
         <span class="indicator-progress">Please wait...<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
     </button>

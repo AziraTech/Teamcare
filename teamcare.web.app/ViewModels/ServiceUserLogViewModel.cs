@@ -15,8 +15,12 @@ namespace teamcare.web.app.ViewModels
         {
 
         }
+
+        public IEnumerable<business.Models.ServiceUserModel> ServiceUser { get; set; }
+        public business.Models.ServiceUserModel ServiceUserByID { get; set; }
+
         public IEnumerable<business.Models.ServiceUserLogModel> ServiceUserLog { get; set; }
-        public business.Models.ServiceUserModel ServiceUserLogByID { get; set; }
+        public business.Models.ServiceUserLogModel ServiceUserLogByID { get; set; }
         public ServiceUserLogCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ServcieUsersList { get; set; }
     }
