@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using teamcare.data.Data;
@@ -9,9 +10,10 @@ using teamcare.data.Data;
 namespace teamcare.data.Migrations
 {
     [DbContext(typeof(TeamcareDbContext))]
-    partial class TeamcareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210902061047_AdminActionFieldsForServiceUserLog")]
+    partial class AdminActionFieldsForServiceUserLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
