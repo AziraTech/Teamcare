@@ -280,7 +280,7 @@ namespace teamcare.web.app.Controllers
 				ServiceUserLogModel serviceUserLog = new ServiceUserLogModel();
 				if (logId == null && dbType == "I")
 				{
-					serviceUserLog.LogCreatedBy = (Guid)base.UserId;
+					serviceUserLog.ActionByAdminId = (Guid)base.UserId;
 					serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
 					serviceUserLog.LogMessage = logMessage;
 					serviceUserLog = await _serviceUserLogService.AddAsync(serviceUserLog);
@@ -288,7 +288,7 @@ namespace teamcare.web.app.Controllers
 				else if (logId != null && dbType == "U")
 				{
 					serviceUserLog.Id = new Guid(logId);
-					serviceUserLog.LogCreatedBy = (Guid)base.UserId;
+					serviceUserLog.ActionByAdminId = (Guid)base.UserId;
 					serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
 					serviceUserLog.LogMessage = logMessage;
 					serviceUserLog = await _serviceUserLogService.UpdateAsync(serviceUserLog);
@@ -296,7 +296,7 @@ namespace teamcare.web.app.Controllers
 				else if (logId != null && dbType == "D")
 				{
 					serviceUserLog.Id = new Guid(logId);
-					serviceUserLog.LogCreatedBy = (Guid)base.UserId;
+					serviceUserLog.ActionByAdminId = (Guid)base.UserId;
 					serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
 					serviceUserLog.LogMessage = logMessage;
 					await _serviceUserLogService.DeleteAsync(serviceUserLog);

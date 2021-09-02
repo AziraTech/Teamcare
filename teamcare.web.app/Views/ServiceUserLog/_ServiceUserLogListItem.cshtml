@@ -17,7 +17,7 @@
             <!--end::Wrapper-->
             <!--begin::Info-->
             <div class="d-flex flex-column justify-content-center">
-              @Model.User.FirstName @Model.User.LastName
+              @Model.ActionByAdmin.FirstName @Model.ActionByAdmin.LastName
             </div>
             <!--end::Info-->
         </div>
@@ -25,6 +25,16 @@
     </td>
     <td>
       @Model.LogMessage
+    </td>
+    <td class="approvestatus">
+        @if (Model.IsApproved == false)
+        {
+            <span class="badge badge-light-info">Pending</span>
+        }
+        else
+        {
+            <span class="badge badge-light-success">Approved</span>
+        }
     </td>
     <td>
         <div class="me-0">
@@ -40,12 +50,12 @@
                 <!--end::Heading-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-3">
-                    <a href="#" class="menu-link px-3">Approve Log</a>
+                    <a href="#" class="menu-link px-3" onclick="IsApproveLog(this)" id="@Model.Id" >Approve Log</a>
                 </div>
                 <!--end::Menu item-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-3">
-                    <a href="#" class="menu-link flex-stack px-3">
+                    <a href="#" class="menu-link flex-stack px-3" onclick="IsInVisibleLog(this)" id="@Model.Id">
                         Hide Log
                     </a>
                 </div>

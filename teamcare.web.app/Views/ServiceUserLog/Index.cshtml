@@ -144,10 +144,11 @@
                         <!--begin::Head-->
                         <thead class="fs-7 text-gray-400 text-uppercase">
                             <tr>
-                                <th class="min-w-200px">Service User Name</th>
-                                <th class="min-w-150px">Log Created Date</th>
-                                <th class="min-w-100px">Created User</th>
-                                <th class="min-w-90px">Log Text</th>
+                                <th class="min-w-150px">Service User Name</th>
+                                <th class="min-w-100px">Log Created Date</th>
+                                <th class="min-w-150px">Created User</th>
+                                <th class="min-w-200px">Log Text</th>
+                                <th class="min-w-90px">IsApprove</th>
                                 <th class="min-w-90px">Action</th>
                             </tr>
                         </thead>
@@ -175,14 +176,4 @@
     <!--end::Tab pane-->
 </div>
 <!--end::Tab Content-->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".date-dob").daterangepicker({
-            showDropdowns: true,
-            minYear: 1981,
-            maxYear: parseInt(moment().format("YYYY"), 10)
-        }, function (start, end, label) {
-        });
-    });
-
-</script>
+<script src="~/js/page_script/serviceUserLog.js"></script>

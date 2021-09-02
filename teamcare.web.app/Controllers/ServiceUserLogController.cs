@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Enumerations;
+using teamcare.common.Helpers;
 using teamcare.common.ReferenceData;
+using teamcare.web.app.Helpers;
 using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-    [Authorize]
-
+	[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
     public class ServiceUserLogController : BaseController
     {
         private readonly IServiceUserService _serviceUserService;
@@ -32,7 +33,7 @@ namespace teamcare.web.app.Controllers
                                     IUserService userService,
                                     IServiceUserLogService serviceUserLogService)
         {
-            _serviceUserService = serviceUserService;        
+            _serviceUserService = serviceUserService;
             _userService = userService;
             _serviceUserLogService = serviceUserLogService;
 
@@ -50,7 +51,7 @@ namespace teamcare.web.app.Controllers
             var distinctServiceUsers = listOfServiceUsers.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.FirstName+" "+x.LastName
+                Text = x.FirstName + " " + x.LastName
             }).OrderBy(y => y.Text).ToList();
 
             var model = new ServiceUserLogViewModel
@@ -60,6 +61,46 @@ namespace teamcare.web.app.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IsApprove(Guid id)
+        {
+            try
+            {
+
+                sulm.Id = id;
+                sulm.IsApproved = true;
+                sulm.ActionByAdminId = null; //(Guid)base.UserId;
+                sulm.AdminActionOn = DateTimeOffset.UtcNow;
+               var servicelog = await _serviceUserLogService.UpdateAsync(sulm);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Json(1);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IsInVisible(Guid id)
+        {
+            try
+            {
+
+                sulm.Id = id;
+                sulm.IsVisible = false;
+                sulm.ActionByAdminId = null; //(Guid)base.UserId;
+                sulm.AdminActionOn = DateTimeOffset.UtcNow;
+                var servicelog = await _serviceUserLogService.UpdateAsync(sulm);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Json(1);
         }
     }
 }
