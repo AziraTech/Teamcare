@@ -89,7 +89,7 @@ namespace teamcare.web.app
                             var userService = ctx.HttpContext.RequestServices.GetService<IUserService>();
                             var allUsers = await userService.ListAllAsync(null);
                             var loggedInEmail = ctx.Principal.Claims.FirstOrDefault(i =>
-                                i.Type.Equals(common.ReferenceData.ClaimTypes.UserEmail,
+                                i.Type.Equals(common.ReferenceData.ClaimTypes.PreferredUsername,
                                     StringComparison.OrdinalIgnoreCase))?.Value;
 
                             if (string.IsNullOrWhiteSpace(loggedInEmail))

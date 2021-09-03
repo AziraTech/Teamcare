@@ -16,7 +16,7 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-	[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
+    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
     public class ServiceUserLogController : BaseController
     {
         private readonly IServiceUserService _serviceUserService;
@@ -68,12 +68,11 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
-
                 sulm.Id = id;
                 sulm.IsApproved = true;
-                sulm.ActionByAdminId = null; //(Guid)base.UserId;
+                sulm.ActionByAdminId = (Guid)base.UserId;
                 sulm.AdminActionOn = DateTimeOffset.UtcNow;
-               var servicelog = await _serviceUserLogService.UpdateAsync(sulm);
+                var servicelog = await _serviceUserLogService.UpdateAsync(sulm);
 
             }
             catch (Exception ex)
@@ -91,7 +90,7 @@ namespace teamcare.web.app.Controllers
 
                 sulm.Id = id;
                 sulm.IsVisible = false;
-                sulm.ActionByAdminId = null; //(Guid)base.UserId;
+                sulm.ActionByAdminId = (Guid)base.UserId;
                 sulm.AdminActionOn = DateTimeOffset.UtcNow;
                 var servicelog = await _serviceUserLogService.UpdateAsync(sulm);
 
