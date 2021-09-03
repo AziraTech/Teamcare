@@ -2,11 +2,11 @@
 <input type="hidden" id="selectedId" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.Id; }" />
 <input type="hidden" id="editOrDelete" value="I" />
 <input type="hidden" id="editOrDeleteId" value="" />
-<div class="d-flex flex-column">        
+@*<div class="d-flex flex-column">        
     <div class="d-flex align-items-center mb-2">        
         <span class="mb-1 m-1">Add Log Entry for </span><a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1 cursor-pointer">@Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName</a>        
     </div>
-</div>
+</div>*@
 <div class="d-flex flex-column mb-7 fv-row">
     <!--begin::Label-->
     <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2"><span class="required">Log Message</span></label>
