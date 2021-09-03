@@ -349,72 +349,111 @@ $(document).ready(function() {
 
 });
 
-//var sreviceUserLogSubmit = document.querySelector('[data-action="submit"]');
-//var validate1 = document.querySelector('#kt_modal_todays_log');
-//const fv4 = FormValidation
-//	.formValidation(
-//		validate1,
-//		{
-//			fields: {
-//				sul-log_message: {
-//					validators: {
-//						notEmpty: {
-//							message: "Please Insert Log Message"
-//						}
-//					}
-//				}
-//			},
-//			plugins: {
-//				trigger: new FormValidation.plugins.Trigger(),
-//				bootstrap: new FormValidation.plugins.Bootstrap5({
-//					rowSelector: ".fv-row",
-//					eleInvalidClass: "",
-//					eleValidClass: ""
-//				})
-//			}
-//		}
-//	);
-//sreviceUserLogSubmit.addEventListener("click", function (e) {
-//	e.preventDefault();
+var rServiceUserLogSubmit = document.querySelector("#su-service_user_log_form");
+const fv4 = FormValidation
+	.formValidation(
+		rServiceUserLogSubmit,
+		{
+			fields:
+			{
+				'sul-log_message': 
+				{
+					validators: {
+						notEmpty: {
+							message: "Please Insert Log Message"
+						}
+					}
+				}
+			},
+			plugins: {
+				trigger: new FormValidation.plugins.Trigger(),
+				bootstrap: new FormValidation.plugins.Bootstrap5({
+					rowSelector: ".fv-row",
+					eleInvalidClass: "",
+					eleValidClass: ""
+				})
+			}
+		}
+	);
 
-//}
 
 async function sendServiceUserLog(serviceUserId, logMessageId, dbType, logId)
 {
-	var logMessage = '';
-	if (dbType == 'I' || dbType == 'U') { logMessage = $('#' + logMessageId).val(); }
-	await $.ajax({
-		type: "POST",
-		url: '/ServiceUsers/saveLog',
-		data: { logId: logId, dbType: dbType, serviceUserId: serviceUserId, logMessage: logMessage },
-		success: function (data) {
-			var showMessage = ""; var icon = "";
-			if (data)
-			{
-				if (data.success)
-				{
-					switch (dbType) {
-						case "I": showMessage = "Log Added Successful."; break;
-						case "U": showMessage = "Log Updated Successful."; break;
-						case "D": showMessage = "Log Removed Successful."; break;
-                    } icon = 'success';
-				} else {
-					icon = 'info';
-					showMessage = 'Please Check, There may be some error to save log.';
+	await fv4.validate().then(async function (s)
+	{		
+		if ("Valid" == s || dbType == 'D')
+		{
+			var opType = $('#editOrDelete').val();
+			var DelLogId = $('#editOrDeleteId').val();
+			dbType = opType != 'I' ? opType : dbType;
+			logId = DelLogId != '' ? DelLogId : logId;
+			var logMessage = '';
+			if (dbType == 'I' || dbType == 'U') { logMessage = $('#' + logMessageId).val(); }
+			await $.ajax({
+				type: "POST",
+				url: '/ServiceUsers/saveLog',
+				data: { logId: logId, dbType: dbType, serviceUserId: serviceUserId, logMessage: logMessage },
+				success: function (data) {
+					var showMessage = ""; var icon = "";
+					if (data) {
+						if (data.success) {
+							switch (dbType) {
+								case "I":
+									showMessage = "Log Added Successful.";
+									$('#' +lstServiceUserLogList).html = "";
+									$('#' + lstServiceUserLogList).html = data.pview;
+									break;
+								case "U": showMessage = "Log Updated Successful."; break;
+								case "D": showMessage = "Log Removed Successful."; break;
+							} icon = 'success';
+							$('#editOrDelete').val('I');
+							$('#editOrDeleteId').val('');
+							$('#' + logMessageId).val('');
+						} else {
+							icon = 'info';
+							showMessage = 'Please Check, There may be some error to save log.';
+						}
+					} else {
+						icon = 'error';
+						showMessage = 'Please Check, There may be some error to save log.';
+					}
+					Swal.fire({
+						text: showMessage,
+						icon: icon,
+						buttonsStyling: !1,
+						confirmButtonText: "Ok",
+						customClass: { confirmButton: "btn btn-light" }
+					}); return;
 				}
-			}
-			else {
-				icon = 'error';
-				showMessage = 'Please Check, There may be some error to save log.';
-            }
+			});
+		} else {
 			Swal.fire({
-				text: showMessage,
-				icon: icon,
+				text: "Sorry, Please type Log Message first.",
+				icon: "error",
 				buttonsStyling: !1,
-				confirmButtonText: "Ok",
-				customClass: { confirmButton: "btn btn-light" }
+				confirmButtonText: "Ok, got it!",
+				customClass: {
+					confirmButton: "btn btn-light"
+				}
 			});
 		}
+		$('#editOrDelete').val('I');
+		$('#editOrDeleteId').val('');
 	});
 }
 
+async function fncEditOrDelete(opType, logId, logMessage, msgAreaId)
+{
+	if (opType == 'D')
+	{
+		$('#' + msgAreaId).remove();
+		await sendServiceUserLog(serviceUserId, 'sul-log_message', opType, logId);		
+	}
+	else {
+		$('#editOrDelete').val(opType);
+		$('#editOrDeleteId').val(logId);
+		$('#sul-log_message').val(logMessage);
+		$('#' + msgAreaId).html = '';
+		$('#' + msgAreaId).html = logMessage;
+	}
+}

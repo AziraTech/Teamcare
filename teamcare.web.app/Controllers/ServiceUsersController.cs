@@ -17,7 +17,7 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-	//[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin, UserRoles.StaffMember)]
+	[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin, UserRoles.StaffMember)]
 	public class ServiceUsersController : BaseController
 	{
 		private readonly IServiceUserService _serviceUserService;
@@ -273,6 +273,7 @@ namespace teamcare.web.app.Controllers
 		[HttpPost]
 		public async Task<JsonResult> saveLog(string logId, string dbType, string serviceUserId, string logMessage)
 		{
+			//IActionResult returnValue = null;
 			bool blSuccess = false;
 			try
 			{
@@ -280,7 +281,7 @@ namespace teamcare.web.app.Controllers
 				ServiceUserLogModel serviceUserLog = new ServiceUserLogModel();
 				if (logId == null && dbType == "I")
 				{
-					serviceUserLog.ActionByAdminId = (Guid)base.UserId;
+					//serviceUserLog.ActionByAdminId = (Guid)base.UserId;
 					serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
 					serviceUserLog.LogMessage = logMessage;
 					serviceUserLog = await _serviceUserLogService.AddAsync(serviceUserLog);
@@ -288,7 +289,7 @@ namespace teamcare.web.app.Controllers
 				else if (logId != null && dbType == "U")
 				{
 					serviceUserLog.Id = new Guid(logId);
-					serviceUserLog.ActionByAdminId = (Guid)base.UserId;
+					//serviceUserLog.ActionByAdminId = (Guid)base.UserId;
 					serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
 					serviceUserLog.LogMessage = logMessage;
 					serviceUserLog = await _serviceUserLogService.UpdateAsync(serviceUserLog);
@@ -296,19 +297,19 @@ namespace teamcare.web.app.Controllers
 				else if (logId != null && dbType == "D")
 				{
 					serviceUserLog.Id = new Guid(logId);
-					serviceUserLog.ActionByAdminId = (Guid)base.UserId;
+					//serviceUserLog.ActionByAdminId = (Guid)base.UserId;
 					serviceUserLog.LogCreatedFor = new Guid(serviceUserId);
 					serviceUserLog.LogMessage = logMessage;
 					await _serviceUserLogService.DeleteAsync(serviceUserLog);
 				}
 				blSuccess = true;
-
+				//returnValue = PartialView("_ServiceUserLogList", serviceUserLog);
 			}
 			catch
 			{
 				blSuccess = false;
 			}
-			return Json(new { success = blSuccess, dbType = dbType });
+			return Json(new { success = blSuccess, dbType = dbType}); //, pview = returnValue 
 		}
 	}
 }

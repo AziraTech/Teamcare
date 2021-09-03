@@ -1,4 +1,4 @@
-﻿@using teamcare.business.Models 
+﻿@using teamcare.business.Models
 @{
     ViewData["Title"] = "Patients View";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -84,13 +84,13 @@
                     <div class="d-flex my-4">
 
                         <!--begin::Controls-->
-                        <div class="d-flex flex-wrap my-1">
+                        @*<div class="d-flex flex-wrap my-1">
                             <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
-                                <li class="nav-item m-0">                                    
-                                    <a href="#AddTodayLog" id="linkAddTodaysLog"class="btn btn-sm btn-primary align-self-center me-3" >Add Log</a>
+                                <li class="nav-item m-0">
+                                    <a href="#AddTodayLog" id="linkAddTodaysLog" class="btn btn-sm btn-primary align-self-center me-3">Add Log</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div>*@
                         <!--end::Controls-->
                         <div class="me-0">
                             <button class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
@@ -104,8 +104,8 @@
                                 </div>
                                 <!--end::Heading-->
                                 @*<div class="menu-item px-3">
-                                    <a href="#AddTodayLog" id="linkAddTodaysLog" class="menu-link px-3">Add Today's Log</a>
-                                </div>*@
+                                        <a href="#AddTodayLog" id="linkAddTodaysLog" class="menu-link px-3">Add Today's Log</a>
+                                    </div>*@
 
 
 
@@ -183,8 +183,8 @@
                         </div>
                         <!--end::Menu-->
                     </div>
-                        <!--end::Actions-->
-                    </div>
+                    <!--end::Actions-->
+                </div>
                 <!--end::Title-->
                 <!--begin::Stats-->
 
@@ -1014,29 +1014,24 @@
     <div id="kt_project_service_user_log" class="tab-pane fade" role="tabpanel">
         <div class="card pt-4 mb-6 mb-xl-9">
             <!--begin::Card header-->
-            <div class="card-header border-0">
-                <partial name="_ServiceUserLogCreate" model="Model" />
-            </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body pt-0 pb-5">
-                <!--begin::Table-->
-                <table class="table align-middle table-row-dashed gy-5" id="kt_table_customers_payment">                    
-                    <!--begin::Table body-->
-                    <tbody class="fs-6 fw-bold text-gray-600">
-                        @if (Model.ServiceUserByID.ServiceUserLog != null)
-                        {
-                            foreach (ServiceUserLogModel row in Model.ServiceUserByID.ServiceUserLog)
-                            {
-                                <partial name="_ServiceUserLogList" model="row" />
-                            }
-                        }
-                    </tbody>
-                    <!--end::Table body-->
-                </table>
-                <!--end::Table-->
-            </div>
-            <!--end::Card body-->
+            <form class="form" novalidate="novalidate" id="su-service_user_log_form">
+                <div class="card-header border-0">
+                    <partial name="_ServiceUserLogCreate" model="Model" />
+                </div>
+            </form>
+                <!--end::Card header-->
+        </div>   
+        <div id="lstServiceUserLogList">
+            @if (Model.ServiceUserByID.ServiceUserLog != null)
+            {
+                int logCnt = 0; 
+                @foreach (ServiceUserLogModel row in Model.ServiceUserByID.ServiceUserLog)
+                {
+                    row.recCount = logCnt;
+                    <partial name="_ServiceUserLogList" model="row" />
+                    logCnt = logCnt + 1;
+                }
+            }
         </div>
     </div>
 
