@@ -11,14 +11,14 @@ namespace teamcare.business.Services
 {
 
     public class ServiceUserLogService : BaseService, IServiceUserLogService
-    {        
+    {
         private readonly IServiceUserLogRepository _repository;
         private readonly IMapper _mapper;
 
         public ServiceUserLogService(IAuditService auditService,
-                                     IServiceUserLogRepository repository, 
+                                     IServiceUserLogRepository repository,
                                      IMapper mapper) : base(auditService)
-        {            
+        {
             _repository = repository;
             _mapper = mapper;
         }
@@ -34,7 +34,7 @@ namespace teamcare.business.Services
 
         public async Task DeleteAsync(ServiceUserLogModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteServiceUserLog for" + model.Id, Details = "service call for delete service user log", UserReference = "", CreatedBy = model.CreatedBy });            
+            await RecordAuditEntry(new AuditModel { Action = "DeleteServiceUserLog for" + model.Id, Details = "service call for delete service user log", UserReference = "", CreatedBy = model.CreatedBy });
             var result = _mapper.Map<ServiceUserLogModel, ServiceUserLog>(model);
             await _repository.DeleteAsync(result);
         }
@@ -63,6 +63,64 @@ namespace teamcare.business.Services
             var mapped = _mapper.Map<ServiceUserLogModel, ServiceUserLog>(model);
             var result = await _repository.UpdateAsync(mapped);
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
+        }
+
+        public async Task<ServiceUserLogModel> UpdateLogByParam(int type, Guid id, bool Status, String logtext, Guid UserId, ServiceUserLogModel model)
+        {
+            await RecordAuditEntry(new AuditModel { Action = "UpdateServiceUserLogAdmin", Details = "service call for update service user log by admin", UserReference = "", CreatedBy = model.CreatedBy });
+
+            var logdata = await GetByIdAsync(id, model);
+            logdata.ActionByAdminId = UserId;
+            if (type == 1)
+            {
+                logdata.IsApproved = !Status;
+            }
+            else if (type == 2)
+            {
+                logdata.IsVisible = !Status;
+            }
+            else if (type == 3)
+            {
+                logdata.LogMessageUpdated = logtext;
+            }
+
+            logdata.Id = id;
+            logdata.AdminActionOn = DateTimeOffset.UtcNow;
+
+            var mapped = _mapper.Map<ServiceUserLogModel, ServiceUserLog>(logdata);
+            var result = await _repository.UpdateAsync(mapped);
+            return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
+        }
+
+        public async Task<IEnumerable<ServiceUserLogModel>> ListAllSortedFiltered(Guid? sortBy, bool filterBy, string daterange, ServiceUserLogModel model)
+        {
+
+            await RecordAuditEntry(new AuditModel { Action = "GetServiceUserLogFilter", Details = "service call for filter serviceuserlog", UserReference = "", CreatedBy = model.CreatedBy });
+
+            var listLogs = await ListAllAsync(model);
+            if (filterBy == true)
+            {
+                listLogs = listLogs.ToList();
+            }
+            else
+            {
+                listLogs = listLogs.Where(y => y.IsApproved == false).ToList();
+            }
+            if (sortBy != null)
+            {
+                listLogs = listLogs.Where(y => y.ServiceUser.Id == sortBy).ToList();
+            }
+            
+            if(daterange != null)
+            {
+                string[] date = daterange.Split('-');
+
+                listLogs = listLogs.Where(r => r.CreatedOn.Date >= Convert.ToDateTime(date[0]) && r.CreatedOn.Date <= Convert.ToDateTime(date[1])).ToList();
+
+            }
+
+            return listLogs;
+
         }
     }
 }

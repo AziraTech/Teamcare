@@ -50,7 +50,7 @@
                             <!--end::Label-->
                             <!--begin::Input-->
                             <div>
-                                <select class="form-select form-select-solid" id="sortBy" data-kt-select2="true" data-placeholder="select user" data-allow-clear="true">
+                                <select class="form-select form-select-solid" id="sortByUser" data-kt-select2="true" data-placeholder="select user" data-allow-clear="true">
                                     <option></option>
                                     @if (Model.ServcieUsersList != null)
                                     {
@@ -89,7 +89,7 @@
                                     </div>
                                     <!--end::Icon-->
                                     <!--begin::Input-->
-                                    <input class="form-control form-control-solid ps-12 date-dob" placeholder="Pick date range" name="su-date_of_birth" id="su-date_of_birth" />
+                                    <input class="form-control form-control-solid ps-12 date-filter" placeholder="Pick date range" name="su-date_of_birth" id="txtdaterange" />
                                     <!--end::Input-->
                                 </div>
                             </div>
@@ -110,8 +110,8 @@
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">Reset</button>
-                            <button type="button" onclick="doSortFilterBy();" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
+                            <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" onclick="ResetFilter();" data-kt-menu-dismiss="true">Reset</button>
+                            <button type="button" onclick="doFilter();" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
                         </div>
                         <!--end::Actions-->
                     </div>
@@ -128,52 +128,91 @@
     <!--end::Controls-->
 </div>
 <!--end::Toolbar-->
-<!--begin::Tab Content-->
-<div class="tab-content">
 
-    <!--begin::Tab pane-->
-    <div id="kt_project_users_table_pane" class="tab-pane fade show active">
-        <!--begin::Card-->
-        <div class="card card-flush">
-            <!--begin::Card body-->
-            <div class="card-body pt-0">
-                <!--begin::Table container-->
-                <div class="table-responsive">
-                    <!--begin::Table-->
-                    <table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
-                        <!--begin::Head-->
-                        <thead class="fs-7 text-gray-400 text-uppercase">
-                            <tr>
-                                <th class="min-w-150px">Service User Name</th>
-                                <th class="min-w-100px">Log Created Date</th>
-                                <th class="min-w-150px">Created User</th>
-                                <th class="min-w-200px">Log Text</th>
-                                <th class="min-w-90px">IsApprove</th>
-                                <th class="min-w-90px">Action</th>
-                            </tr>
-                        </thead>
-                        <!--end::Head-->
-                        <!--begin::Body-->
-                        <tbody class="fs-6">
-                            @if (Model != null)
-                            {
-                                foreach (var item in Model.ServiceUserLog)
-                                {
-                                    <partial name="_ServiceUserLogListItem" model="item" />
-                                }
-                            }
-                        </tbody>
-                        <!--end::Body-->
-                    </table>
-                    <!--end::Table-->
-                </div>
-                <!--end::Table container-->
-            </div>
-            <!--end::Card body-->
-        </div>
-        <!--end::Card-->
-    </div>
-    <!--end::Tab pane-->
+<div class="tab-content" id="partialViewDataContent">
 </div>
-<!--end::Tab Content-->
+
+<!-- ------------------------------------- Model Portion ------------------------------------- -->
+<!--begin::Modals-->
+<!--begin::Modal - Create Service Users-->
+<div class="modal fade" id="kt_modal_update_log" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-900px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2>Update Log Text</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y py-lg-10 px-lg-10">
+                <form id="kt_modal_updatelog" class="form" novalidate="novalidate">
+                    <input type="hidden" id="hdnlogid" />
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-bold text-muted">Service User :</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <span class="fw-bolder fs-6 text-gray-800" id="lblname"></span>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="d-flex flex-column mb-5 fv-row">
+                        <!--begin::Label-->
+                        <label class="form-label fw-bold">
+                            <span class="required">Log Text :</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <textarea id="txtlogtext" class="form-control" name="logtext"></textarea>
+                        <!--end::Input-->
+                    </div>
+                    <div class="text-center pt-15">
+                        <button type="submit" id="btn_log_send" class="btn btn-primary">
+                            <span class="indicator-label">
+                                Send
+                                <span class="svg-icon svg-icon-3 ms-2 me-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <polygon points="0 0 24 0 24 24 0 24" />
+                                            <rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />
+                                            <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                        </g>
+                                    </svg>
+                                </span>
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - Create Service Users-->
+<!--end::Modals-->
 <script src="~/js/page_script/serviceUserLog.js"></script>

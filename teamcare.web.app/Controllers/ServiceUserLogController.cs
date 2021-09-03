@@ -44,9 +44,7 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.ServiceUserLog, string.Empty),
             });
-
-            var listOfLog = await _serviceUserLogService.ListAllAsync(sulm);
-
+         
             var listOfServiceUsers = await _serviceUserService.ListAllAsync(sum);
             var distinctServiceUsers = listOfServiceUsers.Select(x => new SelectListItem
             {
@@ -56,7 +54,6 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUserLogViewModel
             {
-                ServiceUserLog = listOfLog,
                 ServcieUsersList = distinctServiceUsers
             };
 
@@ -64,16 +61,11 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IsApprove(Guid id)
+        public async Task<IActionResult> IsApprove(Guid id,bool status)
         {
             try
-            {
-                sulm.Id = id;
-                sulm.IsApproved = true;
-                sulm.ActionByAdminId = (Guid)base.UserId;
-                sulm.AdminActionOn = DateTimeOffset.UtcNow;
-                var servicelog = await _serviceUserLogService.UpdateAsync(sulm);
-
+            {              
+                var servicelog = await _serviceUserLogService.UpdateLogByParam(1,id,status,null,(Guid)base.UserId,sulm);
             }
             catch (Exception ex)
             {
@@ -83,16 +75,25 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IsInVisible(Guid id)
+        public async Task<IActionResult> IsInVisible(Guid id, bool status)
+        {
+            try
+            {   
+                var servicelog = await _serviceUserLogService.UpdateLogByParam(2,id, status, null,(Guid)base.UserId, sulm);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Json(1);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateLog(Guid id,String logtext)
         {
             try
             {
-
-                sulm.Id = id;
-                sulm.IsVisible = false;
-                sulm.ActionByAdminId = (Guid)base.UserId;
-                sulm.AdminActionOn = DateTimeOffset.UtcNow;
-                var servicelog = await _serviceUserLogService.UpdateAsync(sulm);
+                var servicelog = await _serviceUserLogService.UpdateLogByParam(3, id,false, logtext,(Guid)base.UserId, sulm);
 
             }
             catch (Exception ex)
@@ -100,6 +101,32 @@ namespace teamcare.web.app.Controllers
                 throw ex;
             }
             return Json(1);
+
+        }
+
+        [HttpPost]
+        //
+        public async Task<IActionResult> SortFilterOptionList(Guid? sortBy, bool filterBy,string daterange)
+        {
+           
+            //Sorting List
+            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(sortBy, filterBy,daterange, sulm);
+
+            //ServiceUser List
+            //var listOfServiceUsers = await _serviceUserService.ListAllAsync(sum);
+            //var distinctServiceUsers = listOfServiceUsers.Select(x => new SelectListItem
+            //{
+            //    Value = x.Id.ToString(),
+            //    Text = x.FirstName + " " + x.LastName
+            //}).OrderBy(y => y.Text).ToList();
+
+            var model = new ServiceUserLogViewModel
+            {
+                ServiceUserLog = listOfLog,
+                //ServcieUsersList = distinctServiceUsers
+            };
+
+            return PartialView("_DataContent", model);
         }
     }
 }
