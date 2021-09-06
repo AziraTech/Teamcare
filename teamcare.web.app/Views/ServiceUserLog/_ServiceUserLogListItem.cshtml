@@ -75,7 +75,7 @@
                 </span>
                 <!--end::Svg Icon-->
             </a>
-            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="Update Log" onclick="AdminUpdateLog(this)" id="@Model.Id" name="@Model.ServiceUser.FirstName @Model.ServiceUser.LastName">
+            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="Update Log" onclick="AdminUpdateLog(this)" id="@Model.Id" name="@Model.ServiceUser.FirstName @Model.ServiceUser.LastName" logtext="@(Model.LogMessageUpdated !=null? Model.LogMessageUpdated : Model.LogMessage)">
                 <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
                 <span class="svg-icon svg-icon-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" version="1.1">

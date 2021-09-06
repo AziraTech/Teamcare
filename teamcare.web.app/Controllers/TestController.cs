@@ -20,7 +20,7 @@ namespace teamcare.web.app.Controllers
 		}
         public async Task<IActionResult> Index()
         {
-            var returnDoc = await _serviceUserService.GetByIdAsync(Guid.Parse("2afade13-c93c-4c90-9cdc-fee6f0b95f71"),null);
+            var returnDoc = await _serviceUserService.GetByIdAsync(Guid.Parse("2afade13-c93c-4c90-9cdc-fee6f0b95f71"));
             returnDoc.KnownAs = DateTime.Now.Ticks.ToString();
             FileUploadModel model = new FileUploadModel();
             model.BlobName = returnDoc.DocumentUploads.FirstOrDefault().BlobName;

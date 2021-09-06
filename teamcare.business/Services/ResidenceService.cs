@@ -20,17 +20,15 @@ namespace teamcare.business.Services
             _repository = repository;
         }
 
-        public async Task<ResidenceModel> GetByIdAsync(Guid id,ResidenceModel model)
+        public async Task<ResidenceModel> GetByIdAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetResidence for " + id, Details = "service call for get details residence", UserReference = "",CreatedBy=model.CreatedBy });
 
             var result = await _repository.GetByIdAsync(id);
             return _mapper.Map<Residence, ResidenceModel>(result);
         }
 
-        public async Task<IEnumerable<ResidenceModel>> ListAllAsync(ResidenceModel model)
+        public async Task<IEnumerable<ResidenceModel>> ListAllAsync()
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllResidence", Details = "service call for get all residence", UserReference = "",CreatedBy= model.CreatedBy });
 
             var listresidence = await _repository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);
@@ -40,7 +38,6 @@ namespace teamcare.business.Services
 
         public async Task<ResidenceModel> AddAsync(ResidenceModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddResidence", Details = "service call for add residence", UserReference = "",CreatedBy= model.CreatedBy });
 
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.AddAsync(mapped);
@@ -49,7 +46,6 @@ namespace teamcare.business.Services
 
         public async Task<ResidenceModel> UpdateAsync(ResidenceModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateResidence", Details = "service call for update residence", UserReference = "",CreatedBy= model.CreatedBy });
 
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.UpdateAsync(mapped);
@@ -58,8 +54,6 @@ namespace teamcare.business.Services
 
         public async Task DeleteAsync(ResidenceModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteResidence for" + model.Id, Details = "service call for delete residence", UserReference = "",CreatedBy= model.CreatedBy });
-
             throw new NotImplementedException();
         }
     }

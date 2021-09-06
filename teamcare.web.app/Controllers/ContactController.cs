@@ -26,9 +26,7 @@ namespace teamcare.web.app.Controllers
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IUserService _userService;
         public Guid userName;
-        public ContactModel cm = new ContactModel();
-        public DocumentUploadModel dum = new DocumentUploadModel();
-
+      
         public ContactController(IContactService contactService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IUserService userService)
         {
             _contactService = contactService;
@@ -64,8 +62,7 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Detail(string id)
         {
-            cm.CreatedBy = userName;
-            var contactData = await _contactService.GetByIdAsync(new Guid(id), cm);
+            var contactData = await _contactService.GetByIdAsync(new Guid(id));
             contactData.PrePath = "/" + _azureStorageOptions.Container;
             return Json(contactData);
         }
@@ -78,13 +75,12 @@ namespace teamcare.web.app.Controllers
             {
                 if (contactCreateViewModel?.Contact != null)
                 {
-                    cm.CreatedBy = userName;
 
                     var createdContact = new ContactModel();
 
                     if (contactCreateViewModel.Contact.Id.ToString() == "")
                     {
-                        var listOfContact = await _contactService.ListAllAsync(cm);
+                        var listOfContact = await _contactService.ListAllAsync();
                         // check IfEmail already exists
                         var contact = listOfContact.FirstOrDefault(u => u.Email == contactCreateViewModel.Contact.Email);
                         if (contact != null)
@@ -102,10 +98,9 @@ namespace teamcare.web.app.Controllers
 
                     if (createdContact != null && !string.IsNullOrWhiteSpace(contactCreateViewModel.TempFileId))
                     {
-                        dum.CreatedBy = userName;
                         //	Get the temporary document
                         var document =
-                            await _documentUploadService.GetByIdAsync(Guid.Parse(contactCreateViewModel.TempFileId), dum);
+                            await _documentUploadService.GetByIdAsync(Guid.Parse(contactCreateViewModel.TempFileId));
 
                         var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
                         {
@@ -123,7 +118,7 @@ namespace teamcare.web.app.Controllers
                             await _documentUploadService.UpdateAsync(document);
                         }
 
-                        var returnDoc = await _contactService.GetByIdAsync(createdContact.Id.Value, cm);
+                        var returnDoc = await _contactService.GetByIdAsync(createdContact.Id.Value);
                     }
                 }
             }
@@ -139,11 +134,11 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
+                ContactModel cm = new ContactModel();
                 cm.Id = id;
                 cm.CreatedBy = userName;
                 await _contactService.DeleteAsync(cm);
 
-                return Json(1);
             }
             catch (Exception ex)
             {

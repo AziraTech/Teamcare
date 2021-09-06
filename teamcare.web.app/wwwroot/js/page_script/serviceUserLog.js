@@ -186,6 +186,7 @@ function AdminUpdateLog(ctrl) {
     $('#kt_modal_update_log').modal('show');
     var id = $(ctrl).attr('id');
     $('#lblname').text($(ctrl).attr('name'));
+    $('#txtlogtext').val($(ctrl).attr('logtext'));
     $('#hdnlogid').val(id);
 }
 

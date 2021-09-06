@@ -28,9 +28,7 @@ namespace teamcare.web.app.Controllers
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IUserService _userService;
         public Guid userName;
-        public ResidenceModel rm = new ResidenceModel();
-        public DocumentUploadModel dum = new DocumentUploadModel();
-
+       
 
         public ResidenceController(IServiceUserService serviceUserService, IResidenceService residenceService, IFileUploadService fileUploadService,
                                     IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IUserService userService)
@@ -51,7 +49,7 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Residence, string.Empty),
             });
 
-            var listOfResidence = await _residenceService.ListAllAsync(rm);
+            var listOfResidence = await _residenceService.ListAllAsync();
             var ReturnResidenceModel = new ResidenceListViewModel
             {
                 Residences = listOfResidence
@@ -68,8 +66,7 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
-            rm.CreatedBy = userName;
-            var listOfResidence = await _residenceService.GetByIdAsync(Id,rm);
+            var listOfResidence = await _residenceService.GetByIdAsync(Id);
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return View(listOfResidence);            
 
@@ -87,19 +84,15 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> ResidenceDetail(Guid Id)
         {
-            rm.CreatedBy = userName;
-
-            var listOfResidence = await _residenceService.GetByIdAsync(Id,rm);        
+            var listOfResidence = await _residenceService.GetByIdAsync(Id);        
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return PartialView("_ResidenceUpdate", listOfResidence);
         }
 
         public async Task<IActionResult> ServiceUserDetails(string Id)
         {
-            rm.CreatedBy = userName;
-
             ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();
-            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id),rm);
+            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id));
             if (listOfResidence != null)
             {
                 listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
@@ -116,16 +109,13 @@ namespace teamcare.web.app.Controllers
             {
                 if (residenceCreateViewModel?.Residence != null)
                 {
-                    rm.CreatedBy = userName;
-
                     var createdResidence = await _residenceService.AddAsync(residenceCreateViewModel.Residence);
 
                     if (createdResidence != null && !string.IsNullOrWhiteSpace(residenceCreateViewModel.TempFileId))
                     {
-                        dum.CreatedBy = userName;
                         //	Get the temporary document
                         var document =
-                            await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId),dum);
+                            await _documentUploadService.GetByIdAsync(Guid.Parse(residenceCreateViewModel.TempFileId));
 
                         var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
                         {
@@ -143,7 +133,7 @@ namespace teamcare.web.app.Controllers
                             await _documentUploadService.UpdateAsync(document);
                         }
 
-                        var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value,rm);
+                        var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value);
                     }
                 }
             }

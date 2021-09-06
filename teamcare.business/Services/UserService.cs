@@ -19,17 +19,15 @@ namespace teamcare.business.Services
             _mapper = mapper;
         }
 
-        public async Task<UserModel> GetByIdAsync(Guid id,UserModel model)
+        public async Task<UserModel> GetByIdAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetUser for " + id, Details = "service call for get details user", UserReference = "",CreatedBy=model.CreatedBy });
 
             var user = await _userRepository.GetByIdAsync(id);
             return _mapper.Map<User, UserModel>(user);
         }
 
-        public async Task<IEnumerable<UserModel>> ListAllAsync(UserModel model)
+        public async Task<IEnumerable<UserModel>> ListAllAsync()
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllUsers", Details = "service call for get all user", UserReference = ""});
 
             var listUsers = await _userRepository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<User>, IEnumerable<UserModel>>(listUsers);
@@ -38,7 +36,6 @@ namespace teamcare.business.Services
 
         public async Task<UserModel> AddAsync(UserModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddUser", Details = "service call for add user", UserReference = "",CreatedBy= model.CreatedBy });
 
             var result = _mapper.Map<UserModel, User>(model);
             var user = await _userRepository.AddAsync(result);
@@ -47,7 +44,6 @@ namespace teamcare.business.Services
 
         public async Task<UserModel> UpdateAsync(UserModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateUser", Details = "service call for update user", UserReference = "",CreatedBy= model.CreatedBy });
 
             var result = _mapper.Map<UserModel, User>(model);
             var user = await _userRepository.UpdateAsync(result);
@@ -56,7 +52,6 @@ namespace teamcare.business.Services
 
         public async Task DeleteAsync(UserModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteUser for" + model.Id, Details = "service call for delete user", UserReference = "",CreatedBy=model.CreatedBy });
             var result = _mapper.Map<UserModel, User>(model);
             await _userRepository.DeleteAsync(result);
         }

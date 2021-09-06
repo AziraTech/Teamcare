@@ -31,19 +31,18 @@ namespace teamcare.business.Services
             _auditService = auditService;
         }
 
-        public Task<FileUploadModel> GetByIdAsync(Guid id,FileUploadModel model)
+        public Task<FileUploadModel> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<FileUploadModel>> ListAllAsync(FileUploadModel model)
+        public async Task<IEnumerable<FileUploadModel>> ListAllAsync()
         {
             throw new NotImplementedException();
         }
 
         public async Task<FileUploadModel> AddAsync(FileUploadModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddFile", Details = "service call for add file", UserReference = "",CreatedBy=model.CreatedBy });
 
             try
             {
@@ -76,6 +75,7 @@ namespace teamcare.business.Services
             }
             catch (Exception ex)
             {
+                throw ex;
             }
 
             return null;
@@ -93,7 +93,6 @@ namespace teamcare.business.Services
 
         public async Task<FileUploadModel> MoveBlobAsync(FileUploadModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "MoveBlobFile for "+ model.BlobName, Details = "service call for move blob file", UserReference = "",CreatedBy= model.CreatedBy });
 
             try
             {
@@ -119,7 +118,7 @@ namespace teamcare.business.Services
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
 
             return null;
@@ -127,7 +126,6 @@ namespace teamcare.business.Services
 
         public async Task<byte[]> GetBlobAsync(FileUploadModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetBlob for " + model.BlobName, Details = "service call for get blob", UserReference = "",CreatedBy= model.CreatedBy });
 
             try
             {
@@ -155,7 +153,7 @@ namespace teamcare.business.Services
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
 
             return null;

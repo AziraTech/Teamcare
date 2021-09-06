@@ -48,15 +48,11 @@ namespace teamcare.web.app.Controllers
             SetPageMetadata(PageTitles.Dashboard, SiteSection.Dashboard, new List<BreadcrumbItem>() {
                     new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home"))
                     });
-
-
-            var um = new ServiceUserModel();
-            var fsum = new FavouriteServiceUserModel();
-
-            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null,um);
+    
+            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null);
             if (listOfUsers != null)
             {
-                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync(fsum);
+                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
                 foreach (var item in listOfUsers)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;

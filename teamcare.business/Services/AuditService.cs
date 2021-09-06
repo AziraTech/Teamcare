@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,18 +13,22 @@ namespace teamcare.business.Services
 	{
         private readonly IAuditRepository _auditRepository;
         private readonly IMapper _mapper;
-		public AuditService(IAuditRepository auditRepository, IMapper mapper)
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+
+        public AuditService(IAuditRepository auditRepository, IMapper mapper, IServiceScopeFactory serviceScopeFactory)
         {
             _auditRepository = auditRepository;
             _mapper = mapper;
+            _serviceScopeFactory = serviceScopeFactory;
+
         }
-        
-        public Task<AuditModel> GetByIdAsync(Guid id,AuditModel model)
+
+        public Task<AuditModel> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<AuditModel>> ListAllAsync(AuditModel model)
+        public async Task<IEnumerable<AuditModel>> ListAllAsync()
         {
             var result = await _auditRepository.GetAllAudit();
             return _mapper.Map<List<Audit>, List<AuditModel>>(result);
@@ -44,6 +49,25 @@ namespace teamcare.business.Services
         public Task DeleteAsync(AuditModel model)
         {
             throw new NotImplementedException();
+        }
+
+        public void Execute(Func<IAuditRepository, Task> databaseWork)
+        {
+            // Fire off the task, but don't await the result
+            Task.Run(async () =>
+            {
+                // Exceptions must be caught
+                try
+                {
+                    using var scope = _serviceScopeFactory.CreateScope();
+                    var repository = scope.ServiceProvider.GetRequiredService<IAuditRepository>();
+                    await databaseWork(repository);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            });
         }
     }
 }

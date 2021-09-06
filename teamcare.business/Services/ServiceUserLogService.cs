@@ -25,8 +25,6 @@ namespace teamcare.business.Services
 
         public async Task<ServiceUserLogModel> AddAsync(ServiceUserLogModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "AddServiceUserLog", Details = "service call for add service user log", UserReference = "", CreatedBy = model.CreatedBy });
-
             var mapped = _mapper.Map<ServiceUserLogModel, ServiceUserLog>(model);
             var result = await _repository.AddAsync(mapped);
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
@@ -34,22 +32,18 @@ namespace teamcare.business.Services
 
         public async Task DeleteAsync(ServiceUserLogModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "DeleteServiceUserLog for" + model.Id, Details = "service call for delete service user log", UserReference = "", CreatedBy = model.CreatedBy });
             var result = _mapper.Map<ServiceUserLogModel, ServiceUserLog>(model);
             await _repository.DeleteAsync(result);
         }
 
-        public async Task<ServiceUserLogModel> GetByIdAsync(Guid id, ServiceUserLogModel model)
+        public async Task<ServiceUserLogModel> GetByIdAsync(Guid id)
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetServiceUserLog for " + id, Details = "service call for get details service user log", UserReference = "", CreatedBy = model.CreatedBy });
             var result = await _repository.GetByIdAsync(id);
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
         }
 
-        public async Task<IEnumerable<ServiceUserLogModel>> ListAllAsync(ServiceUserLogModel model)
+        public async Task<IEnumerable<ServiceUserLogModel>> ListAllAsync()
         {
-            await RecordAuditEntry(new AuditModel { Action = "GetAllServiceUserLog", Details = "service call for get all service user log", UserReference = "", CreatedBy = model.CreatedBy });
-
             var listresidence = await _repository.ListAllAsync();
             var mapperlist = _mapper.Map<IEnumerable<ServiceUserLog>, IEnumerable<ServiceUserLogModel>>(listresidence);
             mapperlist = mapperlist.OrderByDescending(r => r.CreatedOn).ToList();
@@ -58,18 +52,16 @@ namespace teamcare.business.Services
 
         public async Task<ServiceUserLogModel> UpdateAsync(ServiceUserLogModel model)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateServiceUserLog", Details = "service call for update service user log", UserReference = "", CreatedBy = model.CreatedBy });
 
             var mapped = _mapper.Map<ServiceUserLogModel, ServiceUserLog>(model);
             var result = await _repository.UpdateAsync(mapped);
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
         }
 
-        public async Task<ServiceUserLogModel> UpdateLogByParam(int type, Guid id, bool Status, String logtext, Guid UserId, ServiceUserLogModel model)
+        public async Task<ServiceUserLogModel> UpdateLogByParam(int type, Guid id, bool Status, String logtext, Guid UserId)
         {
-            await RecordAuditEntry(new AuditModel { Action = "UpdateServiceUserLogAdmin", Details = "service call for update service user log by admin", UserReference = "", CreatedBy = model.CreatedBy });
 
-            var logdata = await GetByIdAsync(id, model);
+            var logdata = await GetByIdAsync(id);
             logdata.ActionByAdminId = UserId;
             if (type == 1)
             {
@@ -92,12 +84,11 @@ namespace teamcare.business.Services
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
         }
 
-        public async Task<IEnumerable<ServiceUserLogModel>> ListAllSortedFiltered(Guid? sortBy, bool filterBy, string daterange, ServiceUserLogModel model)
+        public async Task<IEnumerable<ServiceUserLogModel>> ListAllSortedFiltered(Guid? sortBy, bool filterBy, string daterange)
         {
 
-            await RecordAuditEntry(new AuditModel { Action = "GetServiceUserLogFilter", Details = "service call for filter serviceuserlog", UserReference = "", CreatedBy = model.CreatedBy });
 
-            var listLogs = await ListAllAsync(model);
+            var listLogs = await ListAllAsync();
             if (filterBy == true)
             {
                 listLogs = listLogs.ToList();
@@ -115,7 +106,7 @@ namespace teamcare.business.Services
             {
                 string[] date = daterange.Split('-');
 
-                listLogs = listLogs.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(),"MM/dd/yyyy",System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date).ToList();
+                listLogs = listLogs.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(),"MM/dd/yyyy",System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date || r.IsApproved==false).ToList();
 
             }
 

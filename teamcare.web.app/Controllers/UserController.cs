@@ -23,9 +23,7 @@ namespace teamcare.web.app.Controllers
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
         public Guid userName;
-        public UserModel um = new UserModel();
-        public DocumentUploadModel dum = new DocumentUploadModel();
-
+      
         public UserController( IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
         {
             _userService = userService;
@@ -42,7 +40,7 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.User, string.Empty),
             });
 
-            var usersDetail = await _userService.ListAllAsync(um);
+            var usersDetail = await _userService.ListAllAsync();
             foreach (var item in usersDetail) { item.PrePath = "/" + _azureStorageOptions.Container; }
             var model = new UserListViewModel
             {
@@ -64,9 +62,8 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.User, Url.Action("Index", "User"))
             });
-            um.CreatedBy = userName;
 
-            var listOfUser = await _userService.GetByIdAsync(Id,um);
+            var listOfUser = await _userService.GetByIdAsync(Id);
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
             var model = new UserListViewModel
             {
@@ -88,9 +85,8 @@ namespace teamcare.web.app.Controllers
             {
                 if (userCreateViewModel?.User != null)
                 {
-                    um.CreatedBy = userName;
 
-                    var listOfUser = await _userService.ListAllAsync(um);
+                    var listOfUser = await _userService.ListAllAsync();
                     // check IfEmail already exists
                     var user = listOfUser.FirstOrDefault(u => u.Email == userCreateViewModel.User.Email);
                     if (user != null)
@@ -102,11 +98,10 @@ namespace teamcare.web.app.Controllers
 
                     if (createdUser != null && !string.IsNullOrWhiteSpace(userCreateViewModel.TempFileId))
                     {
-                        dum.CreatedBy = userName;
 
                         //	Get the temporary document
                         var document =
-                            await _documentUploadService.GetByIdAsync(Guid.Parse(userCreateViewModel.TempFileId),dum);
+                            await _documentUploadService.GetByIdAsync(Guid.Parse(userCreateViewModel.TempFileId));
 
                         var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
                         {
@@ -124,7 +119,7 @@ namespace teamcare.web.app.Controllers
                             await _documentUploadService.UpdateAsync(document);
                         }
 
-                        var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value,um);
+                        var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value);
                     }
                 }
             }
