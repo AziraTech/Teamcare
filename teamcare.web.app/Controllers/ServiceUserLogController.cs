@@ -48,6 +48,11 @@ namespace teamcare.web.app.Controllers
                 ServcieUsersList = distinctServiceUsers
             };
 
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllLog", Details = "service call for get all log entry.", UserReference = "",CreatedBy=base.UserId,CreatedOn= DateTimeOffset.UtcNow});
+            });
+
             return View(model);
         }
 
@@ -60,7 +65,7 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log approve/Unapprove.", UserReference = "" });
+                    await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log approve/Unapprove.", UserReference = "", CreatedBy = base.UserId });
                 });
             }
             catch (Exception ex)
@@ -78,7 +83,7 @@ namespace teamcare.web.app.Controllers
                 var servicelog = await _serviceUserLogService.UpdateLogByParam(2,id, status, null,(Guid)base.UserId);
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log hide/show.", UserReference = "" });
+                    await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log hide/show.", UserReference = "", CreatedBy = base.UserId });
                 });
             }
             catch (Exception ex)
@@ -97,7 +102,7 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "UpdateLogEntry for " + id, Details = "service call for update log entry by admin.", UserReference = "" });
+                    await repository.CreateAuditRecord(new Audit { Action = "UpdateLogEntry for " + id, Details = "service call for update log entry by admin.", UserReference = "", CreatedBy = base.UserId });
                 });
             }
             catch (Exception ex)
@@ -120,11 +125,7 @@ namespace teamcare.web.app.Controllers
             {
                 ServiceUserLog = listOfLog,
             };
-
-            _auditService.Execute(async repository =>
-            {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllLog", Details = "service call for get all log entry.", UserReference = "" });
-            });
+       
             return PartialView("_DataContent", model);
         }
     }

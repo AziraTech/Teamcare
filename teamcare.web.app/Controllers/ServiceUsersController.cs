@@ -87,6 +87,11 @@ namespace teamcare.web.app.Controllers
                     serviceUser.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
+
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllServiceUsers", Details = "service call for get all serviceusers.", UserReference = "", CreatedBy = base.UserId });
+            });
             return View(model);
         }
 
@@ -173,11 +178,6 @@ namespace teamcare.web.app.Controllers
                 ResidenceList = distinctResidence,
             };
 
-            _auditService.Execute(async repository =>
-            {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllServiceUsers", Details = "service call for get all serviceusers.", UserReference = "" });
-            });
-
             return PartialView("_DataContent", model);
         }
 
@@ -195,7 +195,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddServiceUsers", Details = "service call for add new serviceusers.", UserReference = "" });
+                            await repository.CreateAuditRecord(new Audit { Action = "AddServiceUsers", Details = "service call for add new serviceusers.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
                     else
@@ -204,7 +204,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "UpdateServiceUsers", Details = "service call for update serviceusers.", UserReference = "" });
+                            await repository.CreateAuditRecord(new Audit { Action = "UpdateServiceUsers", Details = "service call for update serviceusers.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
 
@@ -261,7 +261,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddFavouriteServiceUsers", Details = "service call for add favourite serviceusers.", UserReference = "" });
+                            await repository.CreateAuditRecord(new Audit { Action = "AddFavouriteServiceUsers", Details = "service call for add favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
                         });
                         return Json(true);
                     }
@@ -270,7 +270,7 @@ namespace teamcare.web.app.Controllers
                         await _favouriteServiceUserService.DeleteAsync(valueOfFavourite);
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "DeleteFavouriteServiceUsers", Details = "service call for remove favourite serviceusers.", UserReference = "" });
+                            await repository.CreateAuditRecord(new Audit { Action = "DeleteFavouriteServiceUsers", Details = "service call for remove favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
 
@@ -335,7 +335,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "AddLogForServiceUsers", Details = "service call for add new log for serviceusers.", UserReference = "" });
+                await repository.CreateAuditRecord(new Audit { Action = "AddLogForServiceUsers", Details = "service call for add new log for serviceusers.", UserReference = "", CreatedBy = base.UserId });
             });
 
             return PartialView("_ServiceUserLogList", model);

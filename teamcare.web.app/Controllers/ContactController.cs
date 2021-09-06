@@ -73,7 +73,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddContact", Details = "service call for add new contact.", UserReference = "" });
+                            await repository.CreateAuditRecord(new Audit { Action = "AddContact", Details = "service call for add new contact.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
                     else
@@ -82,7 +82,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "UpdateContact", Details = "service call for update contact.", UserReference = "" });
+                            await repository.CreateAuditRecord(new Audit { Action = "UpdateContact", Details = "service call for update contact.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
 
@@ -131,7 +131,7 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "DeleteContact", Details = "service call for delete contact.", UserReference = "" });
+                    await repository.CreateAuditRecord(new Audit { Action = "DeleteContact", Details = "service call for delete contact.", UserReference = "", CreatedBy = base.UserId });
                 });
             }
             catch (Exception ex)

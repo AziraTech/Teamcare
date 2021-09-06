@@ -58,7 +58,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllUser", Details = "service call for get all users.", UserReference = "" });
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllUser", Details = "service call for get all users.", UserReference = "",CreatedBy=base.UserId,CreatedOn=DateTimeOffset.UtcNow });
             });
             return View(model);
         }
@@ -132,7 +132,7 @@ namespace teamcare.web.app.Controllers
 
                     _auditService.Execute(async repository =>
                     {
-                        await repository.CreateAuditRecord(new Audit { Action = "AddUser", Details = "service call for add new user.", UserReference = "" });
+                        await repository.CreateAuditRecord(new Audit { Action = "AddUser", Details = "service call for add new user.", UserReference = "", CreatedBy = base.UserId });
                     });
                 }
             }
