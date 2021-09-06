@@ -1,5 +1,4 @@
-﻿@using teamcare.business.Models
-@{
+﻿@{
     ViewData["Title"] = "Patients View";
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model teamcare.web.app.ViewModels.ServiceUsersViewModel
@@ -1013,25 +1012,14 @@
 
     <div id="kt_project_service_user_log" class="tab-pane fade" role="tabpanel">
         <div class="card pt-4 mb-6 mb-xl-9">
-            <!--begin::Card header-->
-            <form class="form" novalidate="novalidate" id="su-service_user_log_form">
-                <div class="card-header border-0">
-                    <partial name="_ServiceUserLogCreate" model="Model" />
-                </div>
-            </form>
-                <!--end::Card header-->
+            <!--begin::Card header-->            
+            <div class="card-header border-0">
+                <partial name="_ServiceUserLogCreate" model="Model" />
+            </div>            
+            <!--end::Card header-->
         </div>   
-        <div id="lstServiceUserLogList">
-            @if (Model.ServiceUserByID.ServiceUserLog != null)
-            {
-                int logCnt = 0; 
-                @foreach (ServiceUserLogModel row in Model.ServiceUserByID.ServiceUserLog)
-                {
-                    row.recCount = logCnt;
-                    <partial name="_ServiceUserLogList" model="row" />
-                    logCnt = logCnt + 1;
-                }
-            }
+        <div id="lstServiceUserLogList">            
+             <partial name="_ServiceUserLogList" model="Model" />                    
         </div>
     </div>
 

@@ -258,8 +258,8 @@ namespace teamcare.web.app.Controllers
 			return Json(false);
 		}
 
-		[HttpPost]
-		public async Task<JsonResult> saveLog(string logId, string dbType, string serviceUserId, string logMessage)
+		 
+		public async Task<IActionResult> saveLog(string logId, string dbType, string serviceUserId, string logMessage)
 		{
 			//IActionResult returnValue = null;
 			bool blSuccess = false;
@@ -291,13 +291,22 @@ namespace teamcare.web.app.Controllers
 					await _serviceUserLogService.DeleteAsync(serviceUserLog);
 				}
 				blSuccess = true;
-				//returnValue = PartialView("_ServiceUserLogList", serviceUserLog);
+				
 			}
 			catch
 			{
 				blSuccess = false;
 			}
-			return Json(new { success = blSuccess, dbType = dbType}); //, pview = returnValue 
+			//Service User Detail for partial view 
+			var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(serviceUserId));			
+			listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+			listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
+			var model = new ServiceUsersViewModel
+			{
+				UserName = base.UserName,
+				ServiceUserByID = listOfUser,
+			};
+			return PartialView("_ServiceUserLogList", model);
 		}
 	}
 }

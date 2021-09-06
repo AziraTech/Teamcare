@@ -379,77 +379,80 @@ const fv4 = FormValidation
 
 async function sendServiceUserLog(serviceUserId, logMessageId, dbType, logId)
 {
-	await fv4.validate().then(async function (s)
-	{		
-		if ("Valid" == s || dbType == 'D')
-		{
-			var opType = $('#editOrDelete').val();
-			var DelLogId = $('#editOrDeleteId').val();
-			dbType = opType != 'I' ? opType : dbType;
-			logId = DelLogId != '' ? DelLogId : logId;
-			var logMessage = '';
-			if (dbType == 'I' || dbType == 'U') { logMessage = $('#' + logMessageId).val(); }
-			await $.ajax({
-				type: "POST",
-				url: '/ServiceUsers/saveLog',
-				data: { logId: logId, dbType: dbType, serviceUserId: serviceUserId, logMessage: logMessage },
-				success: function (data) {
-					var showMessage = ""; var icon = "";
-					if (data) {
-						if (data.success) {
-							switch (dbType) {
-								case "I":
-									showMessage = "Log Added Successful.";
-									$('#' +lstServiceUserLogList).html = "";
-									$('#' + lstServiceUserLogList).html = data.pview;
-									break;
-								case "U": showMessage = "Log Updated Successful."; break;
-								case "D": showMessage = "Log Removed Successful."; break;
-							} icon = 'success';
-							$('#editOrDelete').val('I');
-							$('#editOrDeleteId').val('');
-							$('#' + logMessageId).val('');
-						} else {
-							icon = 'info';
-							showMessage = 'Please Check, There may be some error to save log.';
-						}
-					} else {
-						icon = 'error';
-						showMessage = 'Please Check, There may be some error to save log.';
-					}
-					Swal.fire({
-						text: showMessage,
-						icon: icon,
-						buttonsStyling: !1,
-						confirmButtonText: "Ok",
-						customClass: { confirmButton: "btn btn-light" }
-					}); return;
-				}
-			});
-		} else {
+	if (dbType == 'I' || dbType == 'U') {
+		if ($('#' + logMessageId).val() == null || $('#' + logMessageId).val().trim() == "") {
 			Swal.fire({
-				text: "Sorry, Please type Log Message first.",
-				icon: "error",
+				text: "Please fill Log Message First.",
+				icon: "info",
 				buttonsStyling: !1,
-				confirmButtonText: "Ok, got it!",
-				customClass: {
-					confirmButton: "btn btn-light"
-				}
+				confirmButtonText: "Ok",
+				customClass: { confirmButton: "btn btn-light" }
 			});
+			return;
 		}
-		$('#editOrDelete').val('I');
-		$('#editOrDeleteId').val('');
+	} 
+	var opType = $('#editOrDelete').val();
+	var DelLogId = $('#editOrDeleteId').val();
+	dbType = opType != 'I' ? opType : dbType;
+	logId = DelLogId != '' ? DelLogId : logId;
+	var logMessage = '';
+	if (dbType == 'I' || dbType == 'U') { logMessage = $('#' + logMessageId).val(); }
+	await $.ajax({
+		type: "POST",
+		url: '/ServiceUsers/saveLog',
+		data: { logId: logId, dbType: dbType, serviceUserId: serviceUserId, logMessage: logMessage },
+		success: function (data) {
+			var showMessage = ""; var icon = "";
+			if (data)
+			{
+				switch (dbType)
+				{
+					case "I": showMessage = "Log Added Successful."; break;
+					case "U": showMessage = "Log Updated Successful."; break;
+					case "D": showMessage = "Log Removed Successful."; break;
+				} icon = 'success';
+				$('#editOrDelete').val('I');
+				$('#editOrDeleteId').val('');
+				$('#' + logMessageId).val('');
+
+				$('#lstServiceUserLogList').html('');
+				$('#lstServiceUserLogList').html(data);				
+
+			} else {
+				icon = 'error';
+				showMessage = 'Please Check, There may be some error to save log.';
+			}
+			Swal.fire({
+				text: showMessage,
+				icon: icon,
+				buttonsStyling: !1,
+				confirmButtonText: "Ok",
+				customClass: { confirmButton: "btn btn-light" }
+			}); //return;
+		}
 	});
+	$('#editOrDelete').val('I');
+	$('#editOrDeleteId').val('');
 }
 
 async function fncEditOrDelete(opType, logId, logMessage, msgAreaId)
 {
 	if (opType == 'D')
 	{
-		$('#' + msgAreaId).remove();
-		await sendServiceUserLog(serviceUserId, 'sul-log_message', opType, logId);		
+		await Swal.fire({
+			title: 'Are you sure?',
+			text: "You want to delete selected service user log.",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!',
+			showLoaderOnConfirm: true,
+			preConfirm: async function () {	 await sendServiceUserLog(serviceUserId, 'sul-log_message', opType, logId); }
+		});
 	}
-	else {
+	else
+	{
 		$('#editOrDelete').val(opType);
 		$('#editOrDeleteId').val(logId);
 		$('#sul-log_message').val(logMessage);
