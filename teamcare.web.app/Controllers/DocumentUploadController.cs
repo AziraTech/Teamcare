@@ -1,27 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
-using teamcare.common.Enumerations;
 
 namespace teamcare.web.app.Controllers
 {
 	public class DocumentUploadController : BaseController
 	{
 		private readonly IFileUploadService _fileUploadService;
-		private readonly IUserService _userService;
 		public Guid userName;
 
 
-		public DocumentUploadController(IFileUploadService fileUploadService, IUserService userService)
+		public DocumentUploadController(IFileUploadService fileUploadService)
 		{
 			_fileUploadService = fileUploadService;
-			_userService = userService;
 
 		}
 

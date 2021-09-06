@@ -435,7 +435,7 @@ async function sendServiceUserLog(serviceUserId, logMessageId, dbType, logId)
 	$('#editOrDeleteId').val('');
 }
 
-async function fncEditOrDelete(opType, logId, logMessage, msgAreaId)
+async function fncEditOrDelete(opType, logId, msgAreaId)
 {
 	if (opType == 'D')
 	{
@@ -455,8 +455,19 @@ async function fncEditOrDelete(opType, logId, logMessage, msgAreaId)
 	{
 		$('#editOrDelete').val(opType);
 		$('#editOrDeleteId').val(logId);
-		$('#sul-log_message').val(logMessage);
-		$('#' + msgAreaId).html = '';
-		$('#' + msgAreaId).html = logMessage;
+
+		 await $.ajax({
+			type: "POST",
+			url: '/ServiceUsers/GetByLogId',
+			data: { id: logId},
+			success: function (data) {
+				if (data !=null) {
+					$('#sul-log_message').val(data.logMessage);
+					$('#' + msgAreaId).html = '';
+					$('#' + msgAreaId).html = data.logMessage;
+				} else { }
+			}
+		});
+
 	}
 }

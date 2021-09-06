@@ -10,10 +10,8 @@ using teamcare.business.Services;
 using System;
 using teamcare.common.Configuration;
 using Microsoft.Extensions.Options;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
-using teamcare.business.Models;
 
 namespace teamcare.web.app.Controllers
 {
@@ -21,26 +19,20 @@ namespace teamcare.web.app.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IResidenceService _residenceService;
         private readonly IFavouriteServiceUserService _favouriteServiceUserService;
         private readonly IServiceUserService _serviceUserService;
         private readonly AzureStorageSettings _azureStorageOptions;
-        private readonly IUserService _userService;
         public Guid userName;
 
         public HomeController(ILogger<HomeController> logger,
-                              IUserService userService,
-                              IResidenceService residenceService,
                               IServiceUserService serviceUserService,
                               IFavouriteServiceUserService favouriteServiceUserService,
                               IOptions<AzureStorageSettings> azureStorageOptions)
         {
             _logger = logger;
-            _residenceService = residenceService;
             _favouriteServiceUserService = favouriteServiceUserService;
             _serviceUserService = serviceUserService;
             _azureStorageOptions = azureStorageOptions.Value;
-            _userService = userService;
         }
 
         public async Task<IActionResult> IndexAsync()

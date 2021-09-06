@@ -11,6 +11,7 @@ using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
 using teamcare.common.Helpers;
 using teamcare.common.ReferenceData;
+using teamcare.data.Entities;
 using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
@@ -22,14 +23,17 @@ namespace teamcare.web.app.Controllers
         private readonly IFileUploadService _fileUploadService;
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
+        private readonly IAuditService _auditService;
         public Guid userName;
       
-        public UserController( IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions)
+        public UserController( IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
         {
             _userService = userService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
             _azureStorageOptions = azureStorageOptions.Value;
+            _auditService = auditService;
+
         }
 
         public async Task<IActionResult> Index()
@@ -52,6 +56,10 @@ namespace teamcare.web.app.Controllers
                 }
             };
 
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllUser", Details = "service call for get all users.", UserReference = "" });
+            });
             return View(model);
         }
 
@@ -121,10 +129,16 @@ namespace teamcare.web.app.Controllers
 
                         var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value);
                     }
+
+                    _auditService.Execute(async repository =>
+                    {
+                        await repository.CreateAuditRecord(new Audit { Action = "AddUser", Details = "service call for add new user.", UserReference = "" });
+                    });
                 }
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             return Json(1);
         }

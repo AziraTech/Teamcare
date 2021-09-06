@@ -186,7 +186,24 @@ function AdminUpdateLog(ctrl) {
     $('#kt_modal_update_log').modal('show');
     var id = $(ctrl).attr('id');
     $('#lblname').text($(ctrl).attr('name'));
-    $('#txtlogtext').val($(ctrl).attr('logtext'));
+
+    $.ajax({
+        type: "POST",
+        url: '/ServiceUsers/GetByLogId',
+        data: { id: id },
+        success: function (data) {
+            if (data !=null) {
+                if (data.logMessageUpdated != null) {
+                    $('#txtlogtext').val(data.logMessageUpdated);
+
+                } else{
+                    $('#txtlogtext').val(data.logMessage);
+                }
+
+            } else { }
+        }
+    });
+
     $('#hdnlogid').val(id);
 }
 

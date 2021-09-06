@@ -84,12 +84,12 @@ namespace teamcare.business.Services
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
         }
 
-        public async Task<IEnumerable<ServiceUserLogModel>> ListAllSortedFiltered(Guid? sortBy, bool filterBy, string daterange)
+        public async Task<IEnumerable<ServiceUserLogModel>> ListAllSortedFiltered(Guid? filterByserviceuser, bool IsApprove, string daterange)
         {
 
 
             var listLogs = await ListAllAsync();
-            if (filterBy == true)
+            if (IsApprove == true)
             {
                 listLogs = listLogs.ToList();
             }
@@ -97,9 +97,9 @@ namespace teamcare.business.Services
             {
                 listLogs = listLogs.Where(y => y.IsApproved == false).ToList();
             }
-            if (sortBy != null)
+            if (filterByserviceuser != null)
             {
-                listLogs = listLogs.Where(y => y.ServiceUser.Id == sortBy).ToList();
+                listLogs = listLogs.Where(y => y.ServiceUser.Id == filterByserviceuser).ToList();
             }
             
             if(daterange != null)

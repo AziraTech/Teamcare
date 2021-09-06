@@ -45,7 +45,7 @@
                                 <div class="d-flex justify-content-end flex-shrink-0">
                                     @if (!row.IsApproved)
                                     {
-                                        <a href="#" onclick="fncEditOrDelete('U', '@row.Id', '@row.LogMessage', '@logDivId@logCnt')" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                        <a href="#" onclick="fncEditOrDelete('U', '@row.Id', '@logDivId@logCnt')" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
                                             <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -55,7 +55,7 @@
                                             </span>
                                             <!--end::Svg Icon-->
                                         </a>
-                                        <a href="#" onclick="fncEditOrDelete('D', '@row.Id', '','@logMsgId@logCnt')" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                        <a href="#" onclick="fncEditOrDelete('D', '@row.Id','@logMsgId@logCnt')" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                                             <!--begin::Svg Icon | path: icons/duotone/General/Trash.svg-->
                                             <span class="svg-icon svg-icon-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

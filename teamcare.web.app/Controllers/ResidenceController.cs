@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
 using teamcare.common.ReferenceData;
+using teamcare.data.Entities;
 using teamcare.web.app.ViewModels;
 
 
@@ -21,24 +19,23 @@ namespace teamcare.web.app.Controllers
 
     public class ResidenceController : BaseController
     {
-        private readonly IServiceUserService _serviceUserService;
         private readonly IResidenceService _residenceService;
         private readonly IFileUploadService _fileUploadService;
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
-        private readonly IUserService _userService;
+        private readonly IAuditService _auditService;
+
         public Guid userName;
        
 
-        public ResidenceController(IServiceUserService serviceUserService, IResidenceService residenceService, IFileUploadService fileUploadService,
-                                    IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IUserService userService)
+        public ResidenceController(IResidenceService residenceService, IFileUploadService fileUploadService,
+                                    IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
         {
-            _serviceUserService = serviceUserService;
             _residenceService = residenceService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
             _azureStorageOptions = azureStorageOptions.Value;
-            _userService = userService;
+            _auditService = auditService;
 
         }
 
@@ -55,6 +52,11 @@ namespace teamcare.web.app.Controllers
                 Residences = listOfResidence
             };
             foreach (var item in ReturnResidenceModel.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
+
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllResidence", Details = "service call for get all residence.", UserReference = "" });
+            });
             return View(ReturnResidenceModel);
 
         }
@@ -135,10 +137,16 @@ namespace teamcare.web.app.Controllers
 
                         var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value);
                     }
+
+                    _auditService.Execute(async repository =>
+                    {
+                        await repository.CreateAuditRecord(new Audit { Action = "AddResidence", Details = "service call for add new residence.", UserReference = "" });
+                    });
                 }
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             return Json(1);
         }
