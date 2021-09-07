@@ -10,7 +10,7 @@ namespace teamcare.data.Entities
 	public class User : BaseEntity
 	{
 		[Column("title")]
-		public string Title { get; set; }
+		public NameTitle Title { get; set; }
 
 		[Column("first_name")]
 		public string FirstName { get; set; }
