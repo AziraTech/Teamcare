@@ -39,7 +39,6 @@ namespace teamcare.web.app.Middleware
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IServiceUserLogService, ServiceUserLogService>();
             services.AddScoped<IServiceUserLogRepository, ServiceUserLogRepository>();
-            services.AddScoped(typeof(IFireForgetRepositoryHandler<>), typeof(FireForgetRepositoryHandler<>));
 
             return services;
         }
