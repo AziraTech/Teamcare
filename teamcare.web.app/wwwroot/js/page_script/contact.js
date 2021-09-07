@@ -172,7 +172,7 @@ $(document).ready(function () {
                         Address: $('#txtaddress').val(),
                         Email: $('#txtemail').val(),
                         Mobile: $('#txtmobileno').val(),
-                        TelephoneNo: $('#txttelephoneno').val(),
+                        Telephone: $('#txttelephoneno').val(),
                         Relationship: $('#ddlrelationship').val(),
                         IsNextOfKin: $('#chkIsNxtKin').prop('checked'),
                         IsEmergencyContact: $('#chkIsEmergContact').prop('checked'),
@@ -189,8 +189,23 @@ $(document).ready(function () {
                         type: "POST",
                         url: '/Contact/Save',
                         data: { contactCreateViewModel: contactCreateViewModel },
-                        success: function (data) {
-                            if (data == 1) {
+                        success: function (data)
+                        {                            
+                            if (data == 2)
+                            {
+                                Swal.fire({
+                                    text: "Sorry, user email already exists, please try again different email.",
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
+
+                            }
+                            else
+                            {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
                                     icon: "success",
@@ -203,20 +218,9 @@ $(document).ready(function () {
                                     Cleardata();
                                     q.isConfirmed && modalcontact.hide();
                                 });
-                            }
-                            else if (data == 2) {
-                                Swal.fire({
-                                    text: "Sorry, user email already exists, please try again different email.",
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-light"
-                                    }
-                                });
-
-                            } else {
-
+                                $('#kt_modal_create_contact').modal('hide');
+                                $('#contactIndexPage').html('');
+                                $('#contactIndexPage').html(data);
                             }
                         }
                     });
@@ -259,7 +263,7 @@ $(document).ready(function () {
                         Address: $('#txtuaddress').val(),
                         Email: $('#txtuemail').val(),
                         Mobile: $('#txtumobileno').val(),
-                        TelephoneNo: $('#txtutelephoneno').val(),
+                        Telephone: $('#txtutelephoneno').val(),
                         Relationship: $('#ddlurelationship').val(),
                         IsNextOfKin: $('#chkuIsNxtKin').prop('checked'),
                         IsEmergencyContact: $('#chkuIsEmergContact').prop('checked'),
@@ -276,22 +280,9 @@ $(document).ready(function () {
                         type: "POST",
                         url: '/Contact/Save',
                         data: { contactCreateViewModel: contactCreateViewModel },
-                        success: function (data) {
-                            if (data == 1) {
-                                Swal.fire({
-                                    text: "Form has been successfully submitted!",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                }).then(function (q) {
-                                    Cleardata();
-                                    q.isConfirmed && $('#kt_modal_edit_contact').modal('hide');
-                                });
-                            }
-                            else if (data == 2) {
+                        success: function (data)
+                        {
+                            if (data == 2) {
                                 Swal.fire({
                                     text: "Sorry, user email already exists, please try again different email.",
                                     icon: "error",
@@ -303,7 +294,21 @@ $(document).ready(function () {
                                 });
 
                             } else {
-
+                                Swal.fire({
+                                    text: "Form has been successfully submitted!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then(function (q) {
+                                    Cleardata();
+                                    q.isConfirmed && modalcontact.hide();
+                                });
+                                $('#kt_modal_edit_contact').modal('hide');
+                                $('#contactIndexPage').html('');
+                                $('#contactIndexPage').html(data);
                             }
                         }
                     });
@@ -369,7 +374,7 @@ function ContactDetilas(ctrl) {
                 $('#spnemail').html(data.email);
                 $('#spnaddress').html(data.address);
                 $('#spnmobile').html(data.mobile);
-                $('#spntelephone').html(data.telephoneNo);
+                $('#spntelephone').html(data.telephone);
                 $('#spnralationship').html(data.relationship == 1 ? "Sibling" : data.relationship == 2 ? "Spouse" : data.relationship == 3 ? "Parent" : data.relationship == 4 ? "Child" : data.relationship == 5 ? "Grand Parent" : "Others");
                 $('#spniskin').html(data.isNextOfKin == true ? "Yes" : "No");
                 $('#spnemergency').html(data.isEmergencyContact == true ? "Yes" : "No");
@@ -401,7 +406,7 @@ function EditContactModal(ctrl) {
                     $('#txtuemail').val(data.email);
                     $('#txtuaddress').val(data.address);
                     $('#txtumobileno').val(data.mobile);
-                    $('#txtutelephoneno').val(data.telephoneNo);
+                    $('#txtutelephoneno').val(data.telephone);
                     $('#ddlurelationship').val(data.relationship);
                     $('#ddlurelationship').select2().trigger('change');
 
@@ -448,8 +453,11 @@ function DeleteContact(ctrl) {
                     type: 'POST',
                     data: { id: id },
                     dataType: 'json'
-                }).done(function (response) {
-                    Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+                }).done(function (response) 
+                {
+                    $('#contactIndexPage').html('');
+                    $('#contactIndexPage').html(response);
+                    Swal.fire('Deleted!', 'Your contact has been deleted.', 'success')
                     $('#kt_modal_contact_details').modal('hide');
                 }).fail(function () {
                     Swal.fire('Oops...', 'Something went wrong with ajax !', 'error')

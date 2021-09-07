@@ -8,6 +8,7 @@ using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
+using teamcare.common.Helpers;
 using teamcare.data.Entities;
 using teamcare.web.app.ViewModels;
 
@@ -21,17 +22,23 @@ namespace teamcare.web.app.Controllers
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IAuditService _auditService;
+        private readonly IServiceUserService _serviceUserService;
 
         public Guid userName;
       
-        public ContactController(IContactService contactService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions,IAuditService auditService)
+        public ContactController(IContactService contactService, 
+                                 IFileUploadService fileUploadService, 
+                                 IDocumentUploadService documentUploadService,
+                                 IOptions<AzureStorageSettings> azureStorageOptions,
+                                 IAuditService auditService,
+                                 IServiceUserService serviceUserService)
         {
             _contactService = contactService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
             _azureStorageOptions = azureStorageOptions.Value;
             _auditService = auditService;
-
+            _serviceUserService = serviceUserService;
 
         }
 
@@ -63,14 +70,8 @@ namespace teamcare.web.app.Controllers
                         var listOfContact = await _contactService.ListAllAsync();
                         // check IfEmail already exists
                         var contact = listOfContact.FirstOrDefault(u => u.Email == contactCreateViewModel.Contact.Email);
-                        if (contact != null)
-                        {
-                            return Json(2);
-                        }
-
-
+                        if (contact != null) { return Json(2); }
                         createdContact = await _contactService.AddAsync(contactCreateViewModel.Contact);
-
                         _auditService.Execute(async repository =>
                         {
                             await repository.CreateAuditRecord(new Audit { Action = "AddContact", Details = "service call for add new contact.", UserReference = "", CreatedBy = base.UserId });
@@ -79,7 +80,6 @@ namespace teamcare.web.app.Controllers
                     else
                     {
                         createdContact = await _contactService.UpdateAsync(contactCreateViewModel.Contact);
-
                         _auditService.Execute(async repository =>
                         {
                             await repository.CreateAuditRecord(new Audit { Action = "UpdateContact", Details = "service call for update contact.", UserReference = "", CreatedBy = base.UserId });
@@ -116,7 +116,32 @@ namespace teamcare.web.app.Controllers
             {
                 throw ex;
             }
-            return Json(1);
+
+            //Service User Detail for partial view 
+            var listOfUser = await _serviceUserService.GetByIdAsync(contactCreateViewModel.Contact.ServiceUserId);
+            listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+            listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
+            foreach (var item in listOfUser.Contacts)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+                item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
+            }
+            var model = new ServiceUsersViewModel
+            {
+                UserName = base.UserName,
+                ServiceUserByID = listOfUser,
+                CreateViewModel = new ServiceUserCreateViewModel
+                {
+                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                    Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                    Religion = EnumExtensions.GetEnumListItems<Religion>(),
+                    Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
+                    PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
+                    Relationship = EnumExtensions.GetEnumListItems<Relationship>()
+                },
+                ContactList = listOfUser.Contacts.OrderByDescending(r => r.Sequence)
+            }; 
+            return PartialView("~/Views/Contact/Index.cshtml", model);
         }
 
         [HttpPost]
@@ -126,18 +151,48 @@ namespace teamcare.web.app.Controllers
             {
                 ContactModel cm = new ContactModel();
                 cm.Id = id;
-                cm.CreatedBy = userName;
+                cm.CreatedBy = (Guid)base.UserId;
                 await _contactService.DeleteAsync(cm);
 
                 _auditService.Execute(async repository =>
                 {
                     await repository.CreateAuditRecord(new Audit { Action = "DeleteContact", Details = "service call for delete contact.", UserReference = "", CreatedBy = base.UserId });
                 });
+
+                //Service User Detail for partial view 
+                var listOfUser = await _serviceUserService.GetByIdAsync((Guid)base.UserId);
+                listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+                listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
+                foreach (var item in listOfUser.Contacts)
+                {
+                    item.PrePath = "/" + _azureStorageOptions.Container;
+                    item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
+                }
+                var model = new ServiceUsersViewModel
+                {
+                    UserName = base.UserName,
+                    ServiceUserByID = listOfUser,
+                    CreateViewModel = new ServiceUserCreateViewModel
+                    {
+                        Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                        Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                        Religion = EnumExtensions.GetEnumListItems<Religion>(),
+                        Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
+                        PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
+                        Relationship = EnumExtensions.GetEnumListItems<Relationship>()
+                    },
+                    ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+                };
+                return PartialView("~/Views/Contact/Index.cshtml", model);
+
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
+            
+
             return Json(1);
         }
     }

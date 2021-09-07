@@ -15,7 +15,7 @@ namespace teamcare.business.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public string Mobile { get; set; }
-        public string TelephoneNo { get; set; }
+        public string Telephone { get; set; }
         public Relationship Relationship { get; set; }
         public bool IsNextOfKin { get; set; }
         public bool IsEmergencyContact { get; set; }
