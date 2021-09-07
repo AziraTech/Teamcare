@@ -6,7 +6,7 @@ namespace teamcare.business.Models
 {
 	public class UserModel : BaseModel
 	{
-		public string Title { get; set; }
+		public NameTitle Title { get; set; }
 
 		public string FirstName { get; set; }
 

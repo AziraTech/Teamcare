@@ -13,7 +13,7 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
+    //[AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin)]
     public class ServiceUserLogController : BaseController
     {
         private readonly IServiceUserService _serviceUserService;
@@ -50,7 +50,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllLog", Details = "service call for get all log entry.", UserReference = "",CreatedBy=base.UserId,CreatedOn= DateTimeOffset.UtcNow});
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllLog", Details = "service call for get all log entry.", UserReference = "",CreatedBy=base.UserId });
             });
 
             return View(model);

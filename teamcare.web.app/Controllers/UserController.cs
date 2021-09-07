@@ -25,8 +25,8 @@ namespace teamcare.web.app.Controllers
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IAuditService _auditService;
         public Guid userName;
-      
-        public UserController( IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
+
+        public UserController(IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
         {
             _userService = userService;
             _fileUploadService = fileUploadService;
@@ -38,8 +38,8 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Index()
         {
-            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>() 
-            {                
+            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>()
+            {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.User, string.Empty),
             });
@@ -52,20 +52,22 @@ namespace teamcare.web.app.Controllers
                 PrePath = "/" + _azureStorageOptions.Container,
                 CreateViewModel = new UserCreateViewModel
                 {
-                    UserRoles = EnumExtensions.GetEnumListItems<UserRoles>()
+                    UserRoles = EnumExtensions.GetEnumListItems<UserRoles>(),
+                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+
                 }
             };
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllUser", Details = "service call for get all users.", UserReference = "",CreatedBy=base.UserId,CreatedOn=DateTimeOffset.UtcNow });
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllUser", Details = "service call for get all users.", UserReference = "", CreatedBy = base.UserId, CreatedOn = DateTimeOffset.UtcNow });
             });
             return View(model);
         }
 
         public async Task<IActionResult> Detail(Guid Id)
         {
-            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>() 
+            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>()
             {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.User, Url.Action("Index", "User"))
@@ -79,7 +81,9 @@ namespace teamcare.web.app.Controllers
                 PrePath = "/" + _azureStorageOptions.Container,
                 CreateViewModel = new UserCreateViewModel
                 {
-                    UserRoles = EnumExtensions.GetEnumListItems<UserRoles>()
+                    UserRoles = EnumExtensions.GetEnumListItems<UserRoles>(),
+                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+
                 }
             };
             return View(model);
@@ -93,16 +97,35 @@ namespace teamcare.web.app.Controllers
             {
                 if (userCreateViewModel?.User != null)
                 {
+                    var createdUser = new UserModel();
 
-                    var listOfUser = await _userService.ListAllAsync();
-                    // check IfEmail already exists
-                    var user = listOfUser.FirstOrDefault(u => u.Email == userCreateViewModel.User.Email);
-                    if (user != null)
+                    if (userCreateViewModel.User.Id.ToString() == "")
                     {
-                        return Json(2);
+                        var listOfUser = await _userService.ListAllAsync();
+                        // check IfEmail already exists
+                        var user = listOfUser.FirstOrDefault(u => u.Email == userCreateViewModel.User.Email);
+                        if (user != null)
+                        {
+                            return Json(2);
+                        }
+
+                        createdUser = await _userService.AddAsync(userCreateViewModel.User);
+
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = "AddUser", Details = "service call for add new user.", UserReference = "", CreatedBy = base.UserId });
+                        });
+                    }
+                    else
+                    {
+                        createdUser = await _userService.UpdateAsync(userCreateViewModel.User);
+
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = "UpdateUser", Details = "service call for update user.", UserReference = "", CreatedBy = base.UserId });
+                        });
                     }
 
-                    var createdUser = await _userService.AddAsync(userCreateViewModel.User);
 
                     if (createdUser != null && !string.IsNullOrWhiteSpace(userCreateViewModel.TempFileId))
                     {
@@ -128,12 +151,7 @@ namespace teamcare.web.app.Controllers
                         }
 
                         var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value);
-                    }
-
-                    _auditService.Execute(async repository =>
-                    {
-                        await repository.CreateAuditRecord(new Audit { Action = "AddUser", Details = "service call for add new user.", UserReference = "", CreatedBy = base.UserId });
-                    });
+                    }               
                 }
             }
             catch (Exception ex)

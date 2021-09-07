@@ -15,7 +15,7 @@
             <!--end::Wrapper-->
             <!--begin::Info-->
             <div class="d-flex flex-column justify-content-center">
-                <a href="@Url.Action("Detail","User", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.Title @Model.FirstName @Model.LastName</a>
+                <a href="@Url.Action("Detail","User", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName</a>
             </div>
             <!--end::Info-->
         </div>

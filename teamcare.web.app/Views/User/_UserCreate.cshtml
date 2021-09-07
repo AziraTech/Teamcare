@@ -1,6 +1,8 @@
-﻿@model teamcare.web.app.ViewModels.UserCreateViewModel
+﻿@model teamcare.web.app.ViewModels.UserListViewModel
   <!--begin::Form-->
 <form id="kt_modal_new_userform" class="form" novalidate="novalidate">
+
+    <input type="hidden" id="selectedId" value="@if (Model.User != null) { @Model.User.Id; }" />
 
     <div class="d-flex flex-column mb-5 fv-row">
         <!--begin::Label-->
@@ -10,10 +12,24 @@
         <div>
             <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" name="usertitle" id="ddltitle">
                 <option></option>
-                <option value="Dr.">Dr.</option>
-                <option value="Er.">Er.</option>
-                <option value="Mr." selected>Mr.</option>
-                <option value="Miss">Miss</option>
+                @foreach (var group in Model.CreateViewModel.Title)
+                {
+                    if (Model.User != null && group.Value == (int)Model.User.Title)
+                    {
+                        <option value="@group.Value" selected>@group.Text</option>
+                    }
+                    else
+                    {
+                        @if (group.Text == "Mr.")
+                        {
+                            <option value="@group.Value" selected>@group.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@group.Value">@group.Text</option>
+                        }
+                    }
+                }
             </select>
         </div>
         <!--end::Input-->
@@ -27,7 +43,7 @@
         </label>
         <!--end::Label-->
         <!--begin::Input-->
-        <input type="text" class="form-control form-control-lg form-control-solid" name="first_name" placeholder="" id="txtfirstname" />
+        <input type="text" class="form-control form-control-lg form-control-solid" name="first_name" placeholder="" value="@if (Model.User != null) { @Model.User.FirstName; }" id="txtfirstname" />
         <!--end::Input-->
     </div>
     <div class="d-flex flex-column mb-5 fv-row">
@@ -38,7 +54,7 @@
         </label>
         <!--end::Label-->
         <!--begin::Input-->
-        <input type="text" class="form-control form-control-lg form-control-solid" name="last_name" placeholder="" id="txtlastname" />
+        <input type="text" class="form-control form-control-lg form-control-solid" name="last_name" placeholder="" value="@if (Model.User != null) { @Model.User.LastName; }" id="txtlastname" />
         <!--end::Input-->
     </div>
 
@@ -49,7 +65,7 @@
             <span class="required">Email</span>
         </label>
         <!--end::Label-->
-        <input type="text" class="form-control form-control-solid" placeholder="" name="email" id="txtemail" />
+        <input type="text" class="form-control form-control-solid" placeholder="" name="email" value="@if (Model.User != null) { @Model.User.Email; }" id="txtemail" />
     </div>
     <!--end::Input group-->
 
@@ -60,11 +76,19 @@
         </label>
         <!--end::Label-->
         <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select Role" data-allow-clear="true" name="userrole" id="txtrole">
-            <option></option>
-            @foreach (var item in Model.UserRoles)
+            <option selected></option>
+            @foreach (var group in Model.CreateViewModel.UserRoles)
             {
-                <option value="@item.Value">@item.Text</option>
+                if (Model.User != null && group.Value == (int)Model.User.UserRole)
+                {
+                    <option value="@group.Value" selected>@group.Text</option>
+                }
+                else
+                {
+                    <option value="@group.Value">@group.Text</option>
+                }
             }
+
         </select>
     </div>
     <div class="d-flex flex-column mb-7 fv-row">
@@ -73,7 +97,7 @@
             <span>Position</span>
         </label>
         <!--end::Label-->
-        <input type="text" class="form-control form-control-solid" placeholder="" name="position" id="txtposition" />
+        <input type="text" class="form-control form-control-solid" placeholder="" name="position" value="@if (Model.User != null) { @Model.User.Position; }" id="txtposition" />
     </div>
 
     <div class="d-flex flex-column mb-7 fv-row">
@@ -82,7 +106,7 @@
             <span>Mobile No</span>
         </label>
         <!--end::Label-->
-        <input type="text" class="form-control form-control-solid" placeholder="" name="mobile" id="txtmobileno" />
+        <input type="text" class="form-control form-control-solid" placeholder="" name="mobile" value="@if (Model.User != null) { @Model.User.Mobile_No; }" id="txtmobileno" />
     </div>
     <div class="d-flex flex-column mb-7 fv-row">
         <!--begin::Label-->
@@ -90,7 +114,7 @@
             <span>Phone No</span>
         </label>
         <!--end::Label-->
-        <input type="text" class="form-control form-control-solid" placeholder="" name="phone" id="txtphoneno" />
+        <input type="text" class="form-control form-control-solid" placeholder="" name="phone" value="@if (Model.User != null) { @Model.User.Phone_No; }" id="txtphoneno" />
     </div>
 
     <div class="d-flex flex-column mb-7 fv-row">
@@ -99,34 +123,49 @@
             <span>Address</span>
         </label>
         <!--end::Label-->
-        <textarea type="text" class="form-control form-control-solid" name="address" id="txtaddress"></textarea>
+        <textarea type="text" class="form-control form-control-solid" name="address" value="@if (Model.User != null) { @Model.User.Address; }" id="txtaddress"></textarea>
     </div>
 
     <div class="fv-row mb-10">
         <!--begin::Dropzone-->
         <div class="dropzone" id="sv-profile-photo">
-            <!--begin::Message-->
-            <div class="dz-message needsclick">
-                <!--begin::Icon-->
-                <!--begin::Svg Icon | path: icons/duotone/Files/Uploaded-file.svg-->
-                <span class="svg-icon svg-icon-3hx svg-icon-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <polygon points="0 0 24 0 24 24 0 24" />
-                            <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                            <path d="M8.95128003,13.8153448 L10.9077535,13.8153448 L10.9077535,15.8230161 C10.9077535,16.0991584 11.1316112,16.3230161 11.4077535,16.3230161 L12.4310522,16.3230161 C12.7071946,16.3230161 12.9310522,16.0991584 12.9310522,15.8230161 L12.9310522,13.8153448 L14.8875257,13.8153448 C15.1636681,13.8153448 15.3875257,13.5914871 15.3875257,13.3153448 C15.3875257,13.1970331 15.345572,13.0825545 15.2691225,12.9922598 L12.3009997,9.48659872 C12.1225648,9.27584861 11.8070681,9.24965194 11.596318,9.42808682 C11.5752308,9.44594059 11.5556598,9.46551156 11.5378061,9.48659872 L8.56968321,12.9922598 C8.39124833,13.2030099 8.417445,13.5185067 8.62819511,13.6969416 C8.71848979,13.773391 8.8329684,13.8153448 8.95128003,13.8153448 Z" fill="#000000" />
-                        </g>
-                    </svg>
-                </span>
-                <!--end::Svg Icon-->
-                <!--end::Icon-->
-                <!--begin::Info-->
-                <div class="ms-4">
-                    <h3 class="dfs-3 fw-bolder text-gray-900 mb-1">Drop file here or click to upload.</h3>
-                    <span class="fw-bold fs-4 text-muted">Upload single file at a time</span>
+            @if (Model.User == null)
+            {
+
+                <!--begin::Message-->
+                <div class="dz-message needsclick">
+                    <!--begin::Icon-->
+                    <!--begin::Svg Icon | path: icons/duotone/Files/Uploaded-file.svg-->
+                    <span class="svg-icon svg-icon-3hx svg-icon-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                <path d="M8.95128003,13.8153448 L10.9077535,13.8153448 L10.9077535,15.8230161 C10.9077535,16.0991584 11.1316112,16.3230161 11.4077535,16.3230161 L12.4310522,16.3230161 C12.7071946,16.3230161 12.9310522,16.0991584 12.9310522,15.8230161 L12.9310522,13.8153448 L14.8875257,13.8153448 C15.1636681,13.8153448 15.3875257,13.5914871 15.3875257,13.3153448 C15.3875257,13.1970331 15.345572,13.0825545 15.2691225,12.9922598 L12.3009997,9.48659872 C12.1225648,9.27584861 11.8070681,9.24965194 11.596318,9.42808682 C11.5752308,9.44594059 11.5556598,9.46551156 11.5378061,9.48659872 L8.56968321,12.9922598 C8.39124833,13.2030099 8.417445,13.5185067 8.62819511,13.6969416 C8.71848979,13.773391 8.8329684,13.8153448 8.95128003,13.8153448 Z" fill="#000000" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    <!--end::Icon-->
+                    <!--begin::Info-->
+                    <div class="ms-4">
+                        <h3 class="dfs-3 fw-bolder text-gray-900 mb-1">Drop file here or click to upload.</h3>
+                        <span class="fw-bold fs-4 text-muted">Upload single file at a time</span>
+                    </div>
+                    <!--end::Info-->
                 </div>
-                <!--end::Info-->
-            </div>
+            }
+            else
+            {
+
+                <div class="dz-preview dz-file-preview" id="OldProfile">
+                    <div class="dz-image">
+                        <img data-dz-thumbnail src="@(Model.User.ProfilePhoto !=null ? Model.User.PrePath+"/"+Model.User.ProfilePhoto.BlobName+"?width=200":"../../media/avatars/blank.png" )" alt="Click me to remove the file." />
+                    </div>
+                    <a class="dz-remove" href="javascript:undefined;" onclick="RemoveProfile()">Remove file</a>
+                </div>
+            }
+
         </div>
         <!--end::Dropzone-->
     </div>

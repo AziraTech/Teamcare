@@ -1,4 +1,4 @@
-﻿
+﻿var userId = $('#selectedId').val();
 var base64Image = null;
 var fileName = null;
 var fileType = null;
@@ -25,10 +25,10 @@ var myDropzone = new Dropzone("#sv-profile-photo", {
 });
 
 var modal = new bootstrap.Modal(document.querySelector('#kt_modal_create_app'));
-var r = document.querySelector("#kt_modal_new_userform");
+var userfrm = document.querySelector("#kt_modal_new_userform");
 
-const fv1 = FormValidation
-    .formValidation(r,
+const ufrm = FormValidation
+    .formValidation(userfrm,
         {
             fields: {
                 usertitle: {
@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     $('#new_card_user_submit').click(function (e) {
         e.preventDefault();
-        fv1.validate().then(function (s) {
+        ufrm.validate().then(function (s) {
             if ("Valid" == s) {
                 $('#new_card_user_submit').disabled = !0;
                 $('#new_card_user_submit').attr("data-kt-indicator", "on");
@@ -97,7 +97,7 @@ $(document).ready(function () {
 
                     //ajax call for the submit;
                     var User = {
-                        Id: 0,
+                        Id: userId,
                         Title: $('#ddltitle').val(),
                         FirstName: $('#txtfirstname').val(),
                         LastName: $('#txtlastname').val(),
@@ -135,6 +135,7 @@ $(document).ready(function () {
                                 }).then(function (q) {
                                     Cleardata();
                                     q.isConfirmed && modal.hide();
+                                    window.location.reload();
                                 });
                             }
                             else if (data == 2) {
@@ -171,16 +172,20 @@ $(document).ready(function () {
         });
     });
 
-    function Cleardata() {
-        $('#ddltitle').val('');
-        $('#txtfirstname').val('');
-        $('#txtlastname').val('');
-        $('#txtemail').val('');
-        $('#txtrole').val('');
-        $('#txtposition').val('');
-        $('#txtmobileno').val('');
-        $('#txtphoneno').val('');
-        $('#txtaddress').val('');
-    }
 });
 
+function Cleardata() {
+    $('#ddltitle').val('');
+    $('#txtfirstname').val('');
+    $('#txtlastname').val('');
+    $('#txtemail').val('');
+    $('#txtrole').val('');
+    $('#txtposition').val('');
+    $('#txtmobileno').val('');
+    $('#txtphoneno').val('');
+    $('#txtaddress').val('');
+}
+
+function RemoveProfile() {
+    $('#OldProfile').remove();
+}

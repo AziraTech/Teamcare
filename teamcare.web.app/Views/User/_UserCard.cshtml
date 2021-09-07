@@ -14,7 +14,7 @@
                 </div>
                 <!--end::Avatar-->
                 <!--begin::Name-->
-                @Model.Title @Model.FirstName @Model.LastName
+                @Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName
                 <!--end::Name-->
                 <!--begin::Position-->
                 <div class="fw-bold text-gray-400 mb-4">@Model.UserRole.GetEnumDescription()</div>

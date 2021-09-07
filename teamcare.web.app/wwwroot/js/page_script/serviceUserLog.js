@@ -214,12 +214,11 @@ async function doFilter() {
     await $.ajax({
         type: "POST",
         url: '/ServiceUserLog/SortFilterOptionList',
-        data: { sortBy: optSortBy, filterBy: optFilterByApprove, daterange: daterange },
+        data: { filterByserviceuser: optSortBy, IsApprove: optFilterByApprove, daterange: daterange },
         success: function (data) {
             if (data) {
                 $('#partialViewDataContent').html('');
                 $('#partialViewDataContent').html(data);
-                $('.btntogal').trigger('click');
             } else { }
         }
     });  
