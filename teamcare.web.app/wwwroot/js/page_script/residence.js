@@ -26,7 +26,7 @@ var myDropzone = new Dropzone("#sv-profile-photo", {
 
 var modal = new bootstrap.Modal(document.querySelector('#kt_modal_create_app'));
 var r = document.querySelector("#kt_modal_new_residenceform");
-var upd = document.querySelector("#kt_modal_residenceform_Update");
+//var upd = document.querySelector("#kt_modal_residenceform_Update");
 
 
 const fv1 = FormValidation
@@ -61,36 +61,36 @@ const fv1 = FormValidation
     );
 
 
-const resupd = FormValidation
-    .formValidation(r,
-        {
-            fields: {
-                res_name: {
-                    validators: {
-                        notEmpty: {
-                            message: "Name is required"
-                        }
-                    }
-                },
-                res_address: {
-                    validators: {
-                        notEmpty: {
-                            message: "Address is required"
-                        }
-                    }
-                },
+//const resupd = FormValidation
+//    .formValidation(upd,
+//        {
+//            fields: {
+//                res_name: {
+//                    validators: {
+//                        notEmpty: {
+//                            message: "Name is required"
+//                        }
+//                    }
+//                },
+//                res_address: {
+//                    validators: {
+//                        notEmpty: {
+//                            message: "Address is required"
+//                        }
+//                    }
+//                },
 
-            },
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                bootstrap: new FormValidation.plugins.Bootstrap5({
-                    rowSelector: ".fv-row",
-                    eleInvalidClass: "",
-                    eleValidClass: ""
-                })
-            }
-        }
-    );
+//            },
+//            plugins: {
+//                trigger: new FormValidation.plugins.Trigger(),
+//                bootstrap: new FormValidation.plugins.Bootstrap5({
+//                    rowSelector: ".fv-row",
+//                    eleInvalidClass: "",
+//                    eleValidClass: ""
+//                })
+//            }
+//        }
+//    );
 
 async function setCurrentTab(tabName, id) {
     await $.ajax({
@@ -154,7 +154,7 @@ $(document).ready(function () {
                         url: '/Residence/Save',
                         data: { residenceCreateViewModel: residenceCreateViewModel },
                         success: function (data) {
-                            if (data) {
+                            if (data.statuscode==1) {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
                                     icon: "success",
@@ -168,7 +168,17 @@ $(document).ready(function () {
                                     q.isConfirmed && modal.hide();
                                 });
                             }
-                            else { }
+                            else {
+                                Swal.fire({
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
+                            }
                         }
                     });
                     //on success show message

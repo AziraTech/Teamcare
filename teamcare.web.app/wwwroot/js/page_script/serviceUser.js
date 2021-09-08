@@ -101,7 +101,7 @@ submit.addEventListener("click", function (e) {
 					url: '/ServiceUsers/Save',
 					data: { serviceUserCreateViewModel: serviceUserCreateViewModel },
 					success: function (data) {
-						if (data) {
+						if (data.statuscode==1) {
 							Swal.fire({
 								text: "Form has been successfully submitted!",
 								icon: "success",
@@ -114,7 +114,17 @@ submit.addEventListener("click", function (e) {
 								q.isConfirmed && modal.hide();
 							});
 						}
-						else { }
+						else {
+							Swal.fire({
+								text: data.message,
+								icon: "error",
+								buttonsStyling: !1,
+								confirmButtonText: "Ok, got it!",
+								customClass: {
+									confirmButton: "btn btn-light"
+								}
+							});
+						}
 					}
 				});
 				//on success show message
@@ -124,7 +134,7 @@ submit.addEventListener("click", function (e) {
 		}
 		else {
 			Swal.fire({
-				text: "Sorry, looks like there are some errors detected, please try again.",
+				text: "Sorry, looks like there are some feilds is required, please try again.",
 				icon: "error",
 				buttonsStyling: !1,
 				confirmButtonText: "Ok, got it!",
@@ -319,15 +329,19 @@ async function setAsFavourite(vFavauriteUser, imageId) {
 		success: function (data) {
 			var showMessage = ""; var icon = "";
 			document.getElementById(imageId).src = "";
-			if (data) {
+			if (data.statuscode == 1) {
 				showMessage = "Add Favourite Successful.";
 				icon = 'success';
-				document.getElementById(imageId).src = "/media/svg/files/on_favourite_star.svg";				
-			} else {
+				document.getElementById(imageId).src = "/media/svg/files/on_favourite_star.svg";
+			} else if (data.statuscode == 2) {
 				showMessage = "Remove Favourite Successful.";
 				icon = 'success';
-				document.getElementById(imageId).src = "/media/svg/files/off_favourite_star.svg";				
+				document.getElementById(imageId).src = "/media/svg/files/off_favourite_star.svg";
 			}
+			else {
+				showMessage = data.message;
+				icon = 'error';
+            }
 			Swal.fire({
 					text: showMessage,
 					icon: icon,

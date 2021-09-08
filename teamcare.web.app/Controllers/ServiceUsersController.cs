@@ -162,7 +162,7 @@ namespace teamcare.web.app.Controllers
                     var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == (Guid)base.UserId).FirstOrDefault();
                     item.Favourite = valueOfFavourite == null ? false : true;
                 }
-            }            
+            }
 
             var model = new ServiceUsersViewModel
             {
@@ -226,12 +226,14 @@ namespace teamcare.web.app.Controllers
                         var returnDoc = await _serviceUserService.GetByIdAsync(createdServiceUser.Id.Value);
                     }
                 }
+
+                return Json(new { statuscode = 1 });
+
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
             }
-            return Json(1);
         }
 
         [HttpPost]
@@ -255,7 +257,7 @@ namespace teamcare.web.app.Controllers
                         {
                             await repository.CreateAuditRecord(new Audit { Action = "AddFavouriteServiceUsers", Details = "service call for add favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
                         });
-                        return Json(true);
+                        return Json(new { statuscode = 1 });
                     }
                     else
                     {
@@ -264,16 +266,15 @@ namespace teamcare.web.app.Controllers
                         {
                             await repository.CreateAuditRecord(new Audit { Action = "DeleteFavouriteServiceUsers", Details = "service call for remove favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
                         });
-                    }
 
+                    }
                 }
+                return Json(new { statuscode = 2});
             }
             catch (Exception ex)
             {
-                throw ex;
-
+                return Json(new { statuscode = 3, message = ex.Message });
             }
-            return Json(false);
         }
 
 

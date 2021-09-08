@@ -62,7 +62,7 @@ $(document).ready(function () {
                         url: '/ServiceUserLog/UpdateLog',
                         data: { id: $('#hdnlogid').val(), logtext: $('#txtlogtext').val() },
                         success: function (data) {
-                            if (data == 1) {
+                            if (data.statuscode == 1) {
                                 Swal.fire({
                                     text: "Data has been successfully submitted!",
                                     icon: "success",
@@ -78,7 +78,15 @@ $(document).ready(function () {
                                 });
                             }
                             else {
-
+                                Swal.fire({
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
                             }
                         }
                     });
@@ -88,8 +96,8 @@ $(document).ready(function () {
             }
             else {
                 Swal.fire({
-                    text: "Sorry, looks like there are some errors detected, please try again.",
-                    icon: "error",
+                    text: "Sorry, looks like there are some feilds is required, please try again.",
+                    icon: "info",
                     buttonsStyling: !1,
                     confirmButtonText: "Ok, got it!",
                     customClass: {
@@ -135,10 +143,8 @@ function IsApproveLog(ctrl) {
                     data: { id: id, status: status },
                     dataType: 'json'
                 }).done(function (response) {
-                    //$(ctrl).closest('tr').find('.approvestatus').html("<span class='badge badge-light-success'>Approved</span>");
                     Swal.fire('Changed!', 'Your log has been changed.', 'success');
                     window.location.reload();
-
                 }).fail(function () {
                     Swal.fire('Oops...', 'Something went wrong with ajax !', 'error')
                 });
@@ -192,11 +198,11 @@ function AdminUpdateLog(ctrl) {
         url: '/ServiceUsers/GetByLogId',
         data: { id: id },
         success: function (data) {
-            if (data !=null) {
+            if (data != null) {
                 if (data.logMessageUpdated != null) {
                     $('#txtlogtext').val(data.logMessageUpdated);
 
-                } else{
+                } else {
                     $('#txtlogtext').val(data.logMessage);
                 }
 
@@ -219,7 +225,35 @@ async function doFilter() {
             if (data) {
                 $('#partialViewDataContent').html('');
                 $('#partialViewDataContent').html(data);
+                morelesstext();
             } else { }
         }
-    });  
+    });
+}
+
+function morelesstext() {
+
+    var minimized_elements = $('p.minimize');
+
+    minimized_elements.each(function () {
+        var t = $(this).text();
+        if (t.length < 200) return;
+
+        $(this).html(
+            t.slice(0, 200) + '<span>... </span><a href="#" class="more">More</a>' +
+            '<span style="display:none;">' + t.slice(200, t.length) + ' <a href="#" class="less">Less</a></span>'
+        );
+
+    });
+
+    $('a.more', minimized_elements).click(function (event) {
+        event.preventDefault();
+        $(this).hide().prev().hide();
+        $(this).next().show();
+    });
+
+    $('a.less', minimized_elements).click(function (event) {
+        event.preventDefault();
+        $(this).parent().hide().prev().show().prev().show();
+    });
 }

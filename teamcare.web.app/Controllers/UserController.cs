@@ -106,7 +106,7 @@ namespace teamcare.web.app.Controllers
                         var user = listOfUser.FirstOrDefault(u => u.Email == userCreateViewModel.User.Email);
                         if (user != null)
                         {
-                            return Json(2);
+                            return Json(new { statuscode = 2 });
                         }
 
                         createdUser = await _userService.AddAsync(userCreateViewModel.User);
@@ -151,14 +151,14 @@ namespace teamcare.web.app.Controllers
                         }
 
                         var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value);
-                    }               
+                    }
                 }
+                return Json(new { statuscode = 1 });
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
             }
-            return Json(1);
         }
     }
 }

@@ -123,9 +123,9 @@ $(document).ready(function () {
                         url: '/User/Save',
                         data: { userCreateViewModel: userCreateViewModel },
                         success: function (data) {
-                            if (data == 1) {
+                            if (data.statuscode == 1) {
                                 Swal.fire({
-                                    text: "Form has been successfully submitted!",
+                                    text: "User has been successfully submitted!",
                                     icon: "success",
                                     buttonsStyling: !1,
                                     confirmButtonText: "Ok, got it!",
@@ -138,10 +138,10 @@ $(document).ready(function () {
                                     window.location.reload();
                                 });
                             }
-                            else if (data == 2) {
+                            else if (data.statuscode == 2) {
                                 Swal.fire({
                                     text: "Sorry, user email already exists, please try again different email.",
-                                    icon: "error",
+                                    icon: "info",
                                     buttonsStyling: !1,
                                     confirmButtonText: "Ok, got it!",
                                     customClass: {
@@ -150,18 +150,25 @@ $(document).ready(function () {
                                 });
 
                             } else {
-
+                                Swal.fire({
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
                             }
                         }
                     });
                     //on success show message
                 }, 2e3);
-
             }
             else {
                 Swal.fire({
-                    text: "Sorry, looks like there are some errors detected, please try again.",
-                    icon: "error",
+                    text: "Sorry, looks like there are some feilds is required, please try again.",
+                    icon: "info",
                     buttonsStyling: !1,
                     confirmButtonText: "Ok, got it!",
                     customClass: {

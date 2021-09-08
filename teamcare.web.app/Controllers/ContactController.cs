@@ -70,7 +70,10 @@ namespace teamcare.web.app.Controllers
                         var listOfContact = await _contactService.ListAllAsync();
                         // check IfEmail already exists
                         var contact = listOfContact.FirstOrDefault(u => u.Email == contactCreateViewModel.Contact.Email);
-                        if (contact != null) { return Json(2); }
+                        if (contact != null)
+                        {
+                            return Json(new { statuscode = 2 });
+                        }
                         createdContact = await _contactService.AddAsync(contactCreateViewModel.Contact);
                         _auditService.Execute(async repository =>
                         {
@@ -114,7 +117,7 @@ namespace teamcare.web.app.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
             }
 
             //Service User Detail for partial view 
@@ -192,12 +195,9 @@ namespace teamcare.web.app.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
             }
 
-            
-
-            return Json(1);
         }
     }
 }

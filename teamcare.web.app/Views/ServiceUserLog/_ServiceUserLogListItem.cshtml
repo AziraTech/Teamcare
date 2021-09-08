@@ -24,10 +24,14 @@
         <!--end::User-->
     </td>
     <td>
-      @Model.LogMessage
+        <p class="minimize">
+            @Model.LogMessage
+        </p>
     </td> 
     <td>
-      @Model.LogMessageUpdated
+        <p class="minimize">
+            @Model.LogMessageUpdated
+        </p>
     </td>
     <td class="approvestatus">
         @if (Model.IsApproved == false)

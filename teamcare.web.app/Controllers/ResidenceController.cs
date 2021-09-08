@@ -26,7 +26,7 @@ namespace teamcare.web.app.Controllers
         private readonly IAuditService _auditService;
 
         public Guid userName;
-       
+
 
         public ResidenceController(IResidenceService residenceService, IFileUploadService fileUploadService,
                                     IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
@@ -70,7 +70,7 @@ namespace teamcare.web.app.Controllers
             });
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
-            return View(listOfResidence);            
+            return View(listOfResidence);
 
         }
 
@@ -78,7 +78,7 @@ namespace teamcare.web.app.Controllers
         {
             switch (tabName)
             {
-                case "Overview": return await ResidenceDetail(new Guid(Id)); 
+                case "Overview": return await ResidenceDetail(new Guid(Id));
                 case "Service_User": return await ServiceUserDetails(Id);
             }
             return null;
@@ -86,7 +86,7 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> ResidenceDetail(Guid Id)
         {
-            var listOfResidence = await _residenceService.GetByIdAsync(Id);        
+            var listOfResidence = await _residenceService.GetByIdAsync(Id);
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
             return PartialView("_ResidenceUpdate", listOfResidence);
         }
@@ -142,13 +142,15 @@ namespace teamcare.web.app.Controllers
                     {
                         await repository.CreateAuditRecord(new Audit { Action = "AddResidence", Details = "service call for add new residence.", UserReference = "", CreatedBy = base.UserId });
                     });
+
                 }
+                return Json(new { statuscode = 1 });
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
+
             }
-            return Json(1);
         }
 
         //[HttpPost]

@@ -18,6 +18,7 @@ var myDropzoneContact = new Dropzone("#sv-contact-profile-photo", {
 
 
 var modalcontact = new bootstrap.Modal(document.querySelector('#kt_modal_create_contact'));
+var modalcontactdetail = new bootstrap.Modal(document.querySelector('#kt_modal_contact_details'));
 var frmcontact = document.querySelector("#kt_modal_new_contactform");
 
 const contactfrm = FormValidation
@@ -191,11 +192,10 @@ $(document).ready(function () {
                         data: { contactCreateViewModel: contactCreateViewModel },
                         success: function (data)
                         {                            
-                            if (data == 2)
-                            {
+                            if (data.statuscode == 2) {
                                 Swal.fire({
                                     text: "Sorry, user email already exists, please try again different email.",
-                                    icon: "error",
+                                    icon: "info",
                                     buttonsStyling: !1,
                                     confirmButtonText: "Ok, got it!",
                                     customClass: {
@@ -204,8 +204,7 @@ $(document).ready(function () {
                                 });
 
                             }
-                            else
-                            {
+                            else if (data.statuscode == 1) {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
                                     icon: "success",
@@ -221,6 +220,17 @@ $(document).ready(function () {
                                 $('#kt_modal_create_contact').modal('hide');
                                 $('#contactIndexPage').html('');
                                 $('#contactIndexPage').html(data);
+                            }
+                            else {
+                                Swal.fire({
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
                             }
                         }
                     });
@@ -282,9 +292,9 @@ $(document).ready(function () {
                         data: { contactCreateViewModel: contactCreateViewModel },
                         success: function (data)
                         {
-                            if (data == 2) {
+                            if (data.statuscode == 3) {
                                 Swal.fire({
-                                    text: "Sorry, user email already exists, please try again different email.",
+                                    text: data.message,
                                     icon: "error",
                                     buttonsStyling: !1,
                                     confirmButtonText: "Ok, got it!",
@@ -292,7 +302,6 @@ $(document).ready(function () {
                                         confirmButton: "btn btn-light"
                                     }
                                 });
-
                             } else {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
@@ -454,9 +463,9 @@ function DeleteContact(ctrl, serviceUserId) {
                     url: '/Contact/Delete',
                     data: { id: id, serviceUserId: serviceUserId },
                     success: function (data) {
-                        if (data == 1) {
+                        if (data.statuscode == 3) {
                             Swal.fire({
-                                text: "Sorry, There may be somekind of error, please try again.",
+                                text: data.message,
                                 icon: "error",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
@@ -476,27 +485,14 @@ function DeleteContact(ctrl, serviceUserId) {
                                 }
                             }).then(function (q) {
                                 Cleardata();
-                                q.isConfirmed && modalcontact.hide();
+                                q.isConfirmed && modalcontactdetail.hide();
                             });
                             $('#contactIndexPage').html('');
                             $('#contactIndexPage').html(data);                            
-                            $('#kt_modal_contact_details').modal('hide');
                         }
                     }
                 });
 
-
-                //$.ajax({
-                //    url: '/Contact/Delete',
-                //    type: 'POST',
-                //    data: { id: id, serviceUserId: serviceUserId },
-                //    dataType: 'json'
-                //}).done(function (response) 
-                //{
-                    
-                //}).fail(function () {
-                //    Swal.fire('Oops...', 'Something went wrong with ajax !', 'error')
-                //});
             });
         },
     });

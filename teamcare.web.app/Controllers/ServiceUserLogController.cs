@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using teamcare.business.Services;
 using teamcare.common.Enumerations;
@@ -35,7 +36,7 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.ServiceUserLog, string.Empty),
             });
-         
+
             var listOfServiceUsers = await _serviceUserService.ListAllAsync();
             var distinctServiceUsers = listOfServiceUsers.Select(x => new SelectListItem
             {
@@ -50,83 +51,85 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllLog", Details = "service call for get all log entry.", UserReference = "",CreatedBy=base.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = "GetAllLog", Details = "service call for get all log entry.", UserReference = "", CreatedBy = base.UserId });
             });
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> IsApprove(Guid id,bool status)
+        public async Task<IActionResult> IsApprove(Guid id, bool status)
         {
             try
-            {              
-                var servicelog = await _serviceUserLogService.UpdateLogByParam(1,id,status,null,(Guid)base.UserId);
+            {
+                var servicelog = await _serviceUserLogService.UpdateLogByParam(1, id, status, null, (Guid)base.UserId);
 
                 _auditService.Execute(async repository =>
                 {
                     await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log approve/Unapprove.", UserReference = "", CreatedBy = base.UserId });
                 });
+
+                return Json(new { statuscode = 1 });
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
             }
-            return Json(1);
         }
 
         [HttpPost]
         public async Task<IActionResult> IsInVisible(Guid id, bool status)
         {
             try
-            {   
-                var servicelog = await _serviceUserLogService.UpdateLogByParam(2,id, status, null,(Guid)base.UserId);
+            {
+                var servicelog = await _serviceUserLogService.UpdateLogByParam(2, id, status, null, (Guid)base.UserId);
                 _auditService.Execute(async repository =>
                 {
                     await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log hide/show.", UserReference = "", CreatedBy = base.UserId });
                 });
+
+                return Json(new { statuscode = 1 });
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
             }
-            return Json(1);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateLog(Guid id,String logtext)
+        public async Task<IActionResult> UpdateLog(Guid id, String logtext)
         {
             try
             {
-                var servicelog = await _serviceUserLogService.UpdateLogByParam(3, id,false, logtext,(Guid)base.UserId);
+                var servicelog = await _serviceUserLogService.UpdateLogByParam(3, id, false, logtext, (Guid)base.UserId);
 
                 _auditService.Execute(async repository =>
                 {
                     await repository.CreateAuditRecord(new Audit { Action = "UpdateLogEntry for " + id, Details = "service call for update log entry by admin.", UserReference = "", CreatedBy = base.UserId });
                 });
+
+                return Json(new { statuscode = 1 });
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Json(new { statuscode = 3, message = ex.Message });
             }
-            return Json(1);
 
         }
 
         [HttpPost]
-        //
-        public async Task<IActionResult> SortFilterOptionList(Guid? filterByserviceuser, bool IsApprove,string daterange)
+        public async Task<IActionResult> SortFilterOptionList(Guid? filterByserviceuser, bool IsApprove, string daterange)
         {
-           
-            //Sorting List
+
             var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(filterByserviceuser, IsApprove, daterange);
 
             var model = new ServiceUserLogViewModel
             {
                 ServiceUserLog = listOfLog,
             };
-       
+
             return PartialView("_DataContent", model);
         }
+
     }
 }
