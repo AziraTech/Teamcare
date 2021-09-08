@@ -55,7 +55,7 @@
                 <!--begin::Close-->
                 <div class="d-flex mb-4" style="padding-left:501px;">
                     <a href="#" class="btn btn-sm btn-primary me-3" id="btncreatecontact" title="Delete Contact" onclick="EditContactModal(this)"><i class="bi bi-pencil-square"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" id="btndeletecontact" title="Delete Contact" onclick="DeleteContact(this)"><i class="bi bi-trash"></i></a>
+                    <a href="#" class="btn btn-sm btn-danger" id="btndeletecontact" title="Delete Contact" onclick="DeleteContact(this, '@Model.ServiceUserByID.Id')"><i class="bi bi-trash"></i></a>
                 </div>
 
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">

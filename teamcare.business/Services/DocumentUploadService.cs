@@ -10,6 +10,7 @@ using teamcare.data.Entities.Documents;
 using teamcare.data.Repositories;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using System.Linq;
 
 namespace teamcare.business.Services
 {
@@ -34,6 +35,13 @@ namespace teamcare.business.Services
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
         }
 
+        public async Task<DocumentUploadModel> GetByContactIdAsync(Guid id)
+        {
+            var documents = await _documentUploadRepository.ListAllAsync();
+            var document = documents.ToList().FirstOrDefault(x => x.DocumentType == 1 && x.ContactId == id);
+            return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
+        }
+
         public async Task<IEnumerable<DocumentUploadModel>> ListAllAsync()
         {
 
@@ -43,7 +51,6 @@ namespace teamcare.business.Services
 
         public async Task<DocumentUploadModel> AddAsync(DocumentUploadModel model)
         {
-
             var result = _mapper.Map<DocumentUploadModel, DocumentUpload>(model);
             var document = await _documentUploadRepository.AddAsync(result);
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
@@ -51,7 +58,6 @@ namespace teamcare.business.Services
 
         public async Task<DocumentUploadModel> UpdateAsync(DocumentUploadModel model)
         {
-
             var result = _mapper.Map<DocumentUploadModel, DocumentUpload>(model);
             var document = await _documentUploadRepository.UpdateAsync(result);
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
@@ -59,7 +65,8 @@ namespace teamcare.business.Services
 
         public async Task DeleteAsync(DocumentUploadModel model)
         {
-            throw new NotImplementedException();
+            var result = _mapper.Map<DocumentUploadModel, DocumentUpload>(model);
+            await _documentUploadRepository.DeleteAsync(result);            
         }
     }
 }

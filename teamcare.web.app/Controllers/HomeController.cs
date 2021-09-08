@@ -48,7 +48,7 @@ namespace teamcare.web.app.Controllers
                 foreach (var item in listOfUsers)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == userName).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == (Guid)base.UserId).FirstOrDefault();
                     item.Favourite = valueOfFavourite == null ? false : true;
                 }
             }

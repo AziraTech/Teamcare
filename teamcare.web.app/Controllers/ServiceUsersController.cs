@@ -83,7 +83,7 @@ namespace teamcare.web.app.Controllers
                 var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
                 foreach (ServiceUserModel serviceUser in model.ServiceUser)
                 {
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id && x.UserId == userName).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id && x.UserId == (Guid)base.UserId).FirstOrDefault();
                     serviceUser.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
@@ -159,23 +159,15 @@ namespace teamcare.web.app.Controllers
                 foreach (var item in listOfUser)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == userName).FirstOrDefault();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == (Guid)base.UserId).FirstOrDefault();
                     item.Favourite = valueOfFavourite == null ? false : true;
                 }
-            }
-            //Residence List
-            var listOfResidence = await _residenceService.ListAllAsync();
-            var distinctResidence = listOfResidence.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name
-            }).OrderBy(y => y.Text).ToList();
+            }            
 
             var model = new ServiceUsersViewModel
             {
                 UserName = base.UserName,
-                ServiceUser = listOfUser,
-                ResidenceList = distinctResidence,
+                ServiceUser = listOfUser
             };
 
             return PartialView("_DataContent", model);

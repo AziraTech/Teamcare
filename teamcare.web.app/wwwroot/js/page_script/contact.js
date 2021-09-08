@@ -434,12 +434,12 @@ function EditContactModal(ctrl) {
     }
 }
 
-function DeleteContact(ctrl) {
+function DeleteContact(ctrl, serviceUserId) {
     var id = $('#hdncontactid').val();
 
     Swal.fire({
         title: 'Are you sure?',
-        text: "It will be deleted permanently!",
+        text: "It will be deleted permanently!, \r\nAlso remove related data of service users.",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -447,21 +447,56 @@ function DeleteContact(ctrl) {
         confirmButtonText: 'Yes, delete it!',
         showLoaderOnConfirm: true,
         preConfirm: function () {
-            return new Promise(function (resolve) {
+            return new Promise(function (resolve)
+            {
                 $.ajax({
+                    type: "POST",
                     url: '/Contact/Delete',
-                    type: 'POST',
-                    data: { id: id },
-                    dataType: 'json'
-                }).done(function (response) 
-                {
-                    $('#contactIndexPage').html('');
-                    $('#contactIndexPage').html(response);
-                    Swal.fire('Deleted!', 'Your contact has been deleted.', 'success')
-                    $('#kt_modal_contact_details').modal('hide');
-                }).fail(function () {
-                    Swal.fire('Oops...', 'Something went wrong with ajax !', 'error')
+                    data: { id: id, serviceUserId: serviceUserId },
+                    success: function (data) {
+                        if (data == 1) {
+                            Swal.fire({
+                                text: "Sorry, There may be somekind of error, please try again.",
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+
+                        } else {
+                            Swal.fire({
+                                text: "Contact Removed Successfully!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function (q) {
+                                Cleardata();
+                                q.isConfirmed && modalcontact.hide();
+                            });
+                            $('#contactIndexPage').html('');
+                            $('#contactIndexPage').html(data);                            
+                            $('#kt_modal_contact_details').modal('hide');
+                        }
+                    }
                 });
+
+
+                //$.ajax({
+                //    url: '/Contact/Delete',
+                //    type: 'POST',
+                //    data: { id: id, serviceUserId: serviceUserId },
+                //    dataType: 'json'
+                //}).done(function (response) 
+                //{
+                    
+                //}).fail(function () {
+                //    Swal.fire('Oops...', 'Something went wrong with ajax !', 'error')
+                //});
             });
         },
     });

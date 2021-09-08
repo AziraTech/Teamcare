@@ -145,13 +145,17 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, Guid serviceUserId)
         {
             try
             {
+
                 ContactModel cm = new ContactModel();
                 cm.Id = id;
-                cm.CreatedBy = (Guid)base.UserId;
+                cm.ServiceUserId = serviceUserId;
+                cm.CreatedBy = (Guid)base.UserId;                  
+                var dum = await _documentUploadService.GetByContactIdAsync(id);
+                if (dum != null) { await _documentUploadService.DeleteAsync(dum); }
                 await _contactService.DeleteAsync(cm);
 
                 _auditService.Execute(async repository =>
@@ -160,7 +164,7 @@ namespace teamcare.web.app.Controllers
                 });
 
                 //Service User Detail for partial view 
-                var listOfUser = await _serviceUserService.GetByIdAsync((Guid)base.UserId);
+                var listOfUser = await _serviceUserService.GetByIdAsync(serviceUserId);
                 listOfUser.PrePath = "/" + _azureStorageOptions.Container;
                 listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
                 foreach (var item in listOfUser.Contacts)
