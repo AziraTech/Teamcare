@@ -1,0 +1,47 @@
+﻿@model teamcare.web.app.ViewModels.AuditViewModel
+<!--begin::Tab Content-->
+<div class="tab-content">
+
+    <!--begin::Tab pane-->
+    <div id="kt_project_users_table_pane" class="tab-pane fade show active">
+        <!--begin::Card-->
+        <div class="card card-flush">
+            <!--begin::Card body-->
+            <div class="card-body pt-0">
+                <!--begin::Table container-->
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    <table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
+                        <!--begin::Head-->
+                        <thead class="fs-7 text-gray-400 text-uppercase">
+                            <tr>
+                                <th class="min-w-200px">User Name</th>
+                                <th class="min-w-150px">Action</th>
+                                <th class="min-w-150px">Details</th>
+                                <th class="min-w-200px">Created Date</th>            
+                            </tr>
+                        </thead>
+                        <!--end::Head-->
+                        <!--begin::Body-->
+                        <tbody class="fs-6">
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model.Audit)
+                                {
+                                    <partial name="_AuditListItem" model="item" />
+                                }
+                            }
+                        </tbody>
+                        <!--end::Body-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+                <!--end::Table container-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+    </div>
+    <!--end::Tab pane-->
+</div>
+<!--end::Tab Content-->

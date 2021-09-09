@@ -9,5 +9,6 @@ namespace teamcare.business.Models
 		public string Action { get; set; }
 		public string Details { get; set; }
 		public string UserReference { get; set; }
+		public string UserName { get; set; }
 	}
 }
