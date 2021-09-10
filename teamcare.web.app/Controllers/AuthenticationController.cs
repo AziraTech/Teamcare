@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using teamcare.business.Services;
+using teamcare.data.Entities;
+using teamcare.common.Helpers;
 
 namespace teamcare.web.app.Controllers
 {
     public class AuthenticationController : Controller
     {
+        private readonly IAuditService _auditService;
+
+        public AuthenticationController(IAuditService auditService)
+		{
+            _auditService = auditService;
+        }
         public IActionResult SignOut()
         {
             /*
@@ -21,6 +30,11 @@ namespace teamcare.web.app.Controllers
                     RedirectUri = "Account/SignedOut"
                 });
             */
+
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = "Signed out", Details = this.UserName+" has signed out.", UserReference = "", CreatedBy = this.UserId });
+            });
             return new SignOutResult(new[] { "OpenIdConnect", "Cookies" }, new AuthenticationProperties
             {
                 RedirectUri = "~/authentication/SignedOut"
@@ -30,6 +44,23 @@ namespace teamcare.web.app.Controllers
         public IActionResult SignedOut()
         {
             return View();
+        }
+
+        public Guid? UserId
+        {
+            get
+            {
+                var userId = User.GetClaimValue(common.ReferenceData.ClaimTypes.UserId);
+                return userId == null ? (Guid?)null : new Guid(userId);
+            }
+        }
+        public string UserName
+        {
+            get
+            {
+                var userName = User.GetClaimValue(common.ReferenceData.ClaimTypes.Name);
+                return userName == null ? "" : userName;
+            }
         }
     }
 }

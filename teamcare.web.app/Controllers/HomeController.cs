@@ -12,6 +12,7 @@ using teamcare.common.Configuration;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Linq;
+using teamcare.data.Entities;
 
 namespace teamcare.web.app.Controllers
 {
@@ -22,17 +23,18 @@ namespace teamcare.web.app.Controllers
         private readonly IFavouriteServiceUserService _favouriteServiceUserService;
         private readonly IServiceUserService _serviceUserService;
         private readonly AzureStorageSettings _azureStorageOptions;
-        public Guid userName;
+        private readonly IAuditService _auditService;
 
         public HomeController(ILogger<HomeController> logger,
                               IServiceUserService serviceUserService,
                               IFavouriteServiceUserService favouriteServiceUserService,
-                              IOptions<AzureStorageSettings> azureStorageOptions)
+                              IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
         {
             _logger = logger;
             _favouriteServiceUserService = favouriteServiceUserService;
             _serviceUserService = serviceUserService;
             _azureStorageOptions = azureStorageOptions.Value;
+            _auditService = auditService;
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -54,6 +56,10 @@ namespace teamcare.web.app.Controllers
             }
             var model = new HomeViewModel { ServiceUser = listOfUsers };
 
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = "Home page", Details = "User has accessed Home page", UserReference = "", CreatedBy = base.UserId });
+            });
             return View(model);
         }
 

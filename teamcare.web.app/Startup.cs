@@ -24,6 +24,7 @@ using SixLabors.ImageSharp.Web.DependencyInjection;
 using SixLabors.ImageSharp.Web.Caching;
 using SixLabors.ImageSharp.Web.Processors;
 using teamcare.business.Services;
+using teamcare.data.Entities;
 
 namespace teamcare.web.app
 {
@@ -92,7 +93,8 @@ namespace teamcare.web.app
                                 i.Type.Equals(common.ReferenceData.ClaimTypes.PreferredUsername,
                                     StringComparison.OrdinalIgnoreCase))?.Value;
 
-                            if (string.IsNullOrWhiteSpace(loggedInEmail))
+							
+							if (string.IsNullOrWhiteSpace(loggedInEmail))
                             {
 								// throw error here
                             }
@@ -102,7 +104,12 @@ namespace teamcare.web.app
                                     i.IsActive && i.Email!=null && i.Email.Equals(loggedInEmail, StringComparison.OrdinalIgnoreCase));
                                 if (currentUser != null)
                                 {
-                                    var claims = new List<Claim>
+									var _auditService = ctx.HttpContext.RequestServices.GetService<IAuditService>();
+									_auditService.Execute(async repository =>
+									{
+										await repository.CreateAuditRecord(new Audit { Action = "Sign In", Details =(currentUser.FirstName+" "+currentUser.LastName)+ " has signed in.", UserReference = "", CreatedBy =currentUser.Id  });
+									});
+									var claims = new List<Claim>
                                     {
                                         new Claim(ClaimTypes.Role, currentUser.UserRole.ToString()),
                                         new Claim(common.ReferenceData.ClaimTypes.UserId, currentUser.Id.ToString()),
