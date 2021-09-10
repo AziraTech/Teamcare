@@ -24,10 +24,12 @@ namespace teamcare.web.app.Controllers
         private readonly IServiceUserService _serviceUserService;
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IAuditService _auditService;
+        private readonly IServiceUserLogService _serviceUserLogService;
 
         public HomeController(ILogger<HomeController> logger,
                               IServiceUserService serviceUserService,
                               IFavouriteServiceUserService favouriteServiceUserService,
+                              IServiceUserLogService serviceUserLogService,
                               IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
         {
             _logger = logger;
@@ -35,13 +37,15 @@ namespace teamcare.web.app.Controllers
             _serviceUserService = serviceUserService;
             _azureStorageOptions = azureStorageOptions.Value;
             _auditService = auditService;
+            _serviceUserLogService = serviceUserLogService;
         }
 
         public async Task<IActionResult> IndexAsync()
         {
-            SetPageMetadata(PageTitles.Dashboard, SiteSection.Dashboard, new List<BreadcrumbItem>() {
+            SetPageMetadata(PageTitles.Dashboard, SiteSection.Dashboard, new List<BreadcrumbItem>()
+                {
                     new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home"))
-                    });
+                });
     
             var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null);
             if (listOfUsers != null)
@@ -54,8 +58,15 @@ namespace teamcare.web.app.Controllers
                     item.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
-            var model = new HomeViewModel { ServiceUser = listOfUsers };
 
+            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+            
+            var model = new HomeViewModel
+            { 
+                ServiceUser = listOfUsers,
+                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+            };
+            
             _auditService.Execute(async repository =>
             {
                 await repository.CreateAuditRecord(new Audit { Action = "Home page", Details = "User has accessed Home page", UserReference = "", CreatedBy = base.UserId });

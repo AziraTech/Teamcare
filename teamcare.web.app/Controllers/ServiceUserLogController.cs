@@ -44,9 +44,13 @@ namespace teamcare.web.app.Controllers
                 Text = x.FirstName + " " + x.LastName
             }).OrderBy(y => y.Text).ToList();
 
+
+            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+
             var model = new ServiceUserLogViewModel
             {
-                ServcieUsersList = distinctServiceUsers
+                ServcieUsersList = distinctServiceUsers,
+                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
             };
 
             _auditService.Execute(async repository =>
@@ -83,6 +87,7 @@ namespace teamcare.web.app.Controllers
             try
             {
                 var servicelog = await _serviceUserLogService.UpdateLogByParam(2, id, status, null, (Guid)base.UserId);
+                
                 _auditService.Execute(async repository =>
                 {
                     await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log hide/show.", UserReference = "", CreatedBy = base.UserId });
@@ -126,6 +131,7 @@ namespace teamcare.web.app.Controllers
             var model = new ServiceUserLogViewModel
             {
                 ServiceUserLog = listOfLog,
+                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
             };
 
             return PartialView("_DataContent", model);

@@ -88,6 +88,11 @@ namespace teamcare.web.app.Controllers
                 }
             }
 
+            int totalPendingActions = 0;
+            if (model.ServiceUser != null)
+                foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
+            model.totalPendingActions = totalPendingActions;
+
             _auditService.Execute(async repository =>
             {
                 await repository.CreateAuditRecord(new Audit { Action = "GetAllServiceUsers", Details = "service call for get all serviceusers.", UserReference = "", CreatedBy = base.UserId });
@@ -163,12 +168,17 @@ namespace teamcare.web.app.Controllers
                     item.Favourite = valueOfFavourite == null ? false : true;
                 }
             }
-
+            
             var model = new ServiceUsersViewModel
             {
                 UserName = base.UserName,
                 ServiceUser = listOfUser
             };
+
+            int totalPendingActions = 0;
+            if (model.ServiceUser != null)
+                foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
+            model.totalPendingActions = totalPendingActions;
 
             return PartialView("_DataContent", model);
         }
@@ -310,13 +320,15 @@ namespace teamcare.web.app.Controllers
                     await _serviceUserLogService.DeleteAsync(serviceUserLog);
                 }
                 blSuccess = true;
-
             }
             catch
             {
                 blSuccess = false;
             }
+
             //Service User Detail for partial view 
+            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+
             var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(serviceUserId));
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
             listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
@@ -324,6 +336,7 @@ namespace teamcare.web.app.Controllers
             {
                 UserName = base.UserName,
                 ServiceUserByID = listOfUser,
+                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
             };
 
             _auditService.Execute(async repository =>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
@@ -24,19 +25,22 @@ namespace teamcare.web.app.Controllers
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IAuditService _auditService;
+        private readonly IServiceUserLogService _serviceUserLogService;
 
         public Guid userName;
 
 
         public ResidenceController(IResidenceService residenceService, IFileUploadService fileUploadService,
-                                    IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
+                                    IServiceUserLogService serviceUserLogService,
+                                    IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, 
+                                    IAuditService auditService)
         {
             _residenceService = residenceService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
             _azureStorageOptions = azureStorageOptions.Value;
             _auditService = auditService;
-
+            _serviceUserLogService = serviceUserLogService;
         }
 
         public async Task<IActionResult> Index()
@@ -46,18 +50,21 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Residence, string.Empty),
             });
 
+            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+            
             var listOfResidence = await _residenceService.ListAllAsync();
-            var ReturnResidenceModel = new ResidenceListViewModel
+            var model = new ResidenceListViewModel
             {
-                Residences = listOfResidence
+                Residences = listOfResidence,
+                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
             };
-            foreach (var item in ReturnResidenceModel.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
+            foreach (var item in model.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
 
             _auditService.Execute(async repository =>
             {
                 await repository.CreateAuditRecord(new Audit { Action = "GetAllResidence", Details = "service call for get all residence.", UserReference = "", CreatedBy = base.UserId });
             });
-            return View(ReturnResidenceModel);
+            return View(model);
 
         }
 
@@ -70,6 +77,7 @@ namespace teamcare.web.app.Controllers
             });
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
             listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
+             
             return View(listOfResidence);
 
         }
@@ -103,7 +111,7 @@ namespace teamcare.web.app.Controllers
             }
             return PartialView("_ResidenceServiceUserCard", ReturnResidenceModel);
         }
-
+                
         [HttpPost]
         public async Task<IActionResult> Save(ResidenceCreateViewModel residenceCreateViewModel)
         {

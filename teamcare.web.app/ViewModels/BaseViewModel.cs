@@ -22,5 +22,8 @@ namespace teamcare.web.app.ViewModels
         }
 
         public string PrePath => $"/{_azureStorageOptions?.Container}";
+
+        public int totalPendingActions { get; set; }
+
     }
 }
