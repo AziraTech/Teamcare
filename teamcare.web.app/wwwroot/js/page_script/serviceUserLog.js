@@ -113,6 +113,7 @@ $(document).ready(function () {
 function ResetFilter() {
     $("#chkIsArchive").prop('checked', false);
     $("#sortByUser").val('');
+    $("#sortByUser").select2().trigger('change');
     $("#txtdaterange").val('');
     doFilter();
 }

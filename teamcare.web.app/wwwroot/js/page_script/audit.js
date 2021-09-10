@@ -13,6 +13,7 @@
 
 function ResetFilter() {
     $("#sortByUser").val('');
+    $("#sortByUser").select2().trigger('change');
     $("#txtdaterange").val('');
     doFilter();
 }

@@ -8,6 +8,7 @@ using teamcare.data.Entities;
 using teamcare.data.Entities.Users;
 using teamcare.data.Entities.Documents;
 using teamcare.data.Entities.ServiceUsers;
+using teamcare.data.Entities.SkillAssessments;
 
 namespace teamcare.web.app.Middleware
 {
@@ -23,6 +24,8 @@ namespace teamcare.web.app.Middleware
 			CreateMap<FavouriteServiceUser, FavouriteServiceUserModel>().ReverseMap();
 			CreateMap<Contact, ContactModel>().ReverseMap();
 			CreateMap<ServiceUserLog, ServiceUserLogModel>().ReverseMap();
+			CreateMap<SkillGroup, SkillGroupsModel>().ReverseMap();
+			CreateMap<LivingSkill, LivingSkillsModel>().ReverseMap();
 		}
 	}
 }

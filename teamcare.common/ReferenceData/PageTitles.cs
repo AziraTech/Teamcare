@@ -8,5 +8,6 @@
         public const string User = "User";
         public const string ServiceUserLog = "Approve Log Entry";
         public const string Audit = "Audit Entries";
+        public const string SkillAssest = "Skill Assessment";
     }
 }
