@@ -2,6 +2,7 @@
 using teamcare.data.Entities;
 using teamcare.data.Entities.Documents;
 using teamcare.data.Entities.ServiceUsers;
+using teamcare.data.Entities.SkillAssessments;
 using teamcare.data.Entities.Users;
 
 namespace teamcare.data.Data
@@ -21,6 +22,8 @@ namespace teamcare.data.Data
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<FavouriteServiceUser> FavouriteServiceUsers { get; set; }
         public DbSet<ServiceUserLog> ServiceUserLog { get; set; }
+        public DbSet<SkillGroup> SkillGroup { get; set; }
+        public DbSet<LivingSkill> LivingSkill { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
