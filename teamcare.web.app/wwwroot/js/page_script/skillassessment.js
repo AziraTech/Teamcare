@@ -359,3 +359,105 @@ function ViewLivingskill(ctrl) {
         }
     });
 }
+
+function DeleteSkillGroup(ctrl) {
+    var id = $(ctrl).attr('id');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "you want to delete this group? \r\nAll skills within this group will also be deleted.",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+            return new Promise(function (resolve) {
+                $.ajax({
+                    type: "POST",
+                    url: '/SkillsAssessment/DeleteSkillGroup',
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.statuscode == 3) {
+                            Swal.fire({
+                                text: data.message,
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+
+                        } else {
+                            Swal.fire({
+                                text: "Skill Group Removed Successfully!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function (q) {
+                                q.isConfirmed;
+                                window.location.reload();
+                            });
+                        }
+                    }
+                });
+            });
+        },
+    });
+}
+
+function DeleteLivingSkill(ctrl) {
+    var id = $(ctrl).attr('id');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "you want to delete this skill?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+            return new Promise(function (resolve) {
+                $.ajax({
+                    type: "POST",
+                    url: '/SkillsAssessment/DeleteLivingSkill',
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.statuscode == 3) {
+                            Swal.fire({
+                                text: data.message,
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+
+                        } else {
+                            Swal.fire({
+                                text: "Living Skill Removed Successfully!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function (q) {
+                                q.isConfirmed;
+                                window.location.reload();
+                            });
+                        }
+                    }
+                });
+            });
+        },
+    });
+}

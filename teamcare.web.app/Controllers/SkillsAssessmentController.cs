@@ -39,6 +39,13 @@ namespace teamcare.web.app.Controllers
 
             var listOfSkillGroup = await _skillGroupService.ListAllAsync();
 
+            foreach (var item in listOfSkillGroup)
+            {
+                var listOfSkill = await _livingskillService.ListByGroupId((Guid)item.Id);
+                int total = listOfSkill.Count();
+                item.TotalSkill = total;
+            }
+
             var model = new SkillAssessmentViewModel
             {
                 SkillGroups = listOfSkillGroup.ToList().OrderBy(p => p.Position),
@@ -108,6 +115,35 @@ namespace teamcare.web.app.Controllers
                     });
                 }
 
+
+                return Json(new { statuscode = 1 });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSkillGroup(Guid id)
+        {
+            try 
+            {
+                var listofLvingSkill = await _livingskillService.ListByGroupId(id);
+
+                foreach (var item in listofLvingSkill)
+                {
+                    await _livingskillService.DeleteAsync(item);
+                }
+
+                var groupskill = await _skillGroupService.GetByIdAsync(id);
+                await _skillGroupService.DeleteAsync(groupskill);
+
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = "Delete Skill Group", Details = "service call for delete skill group.", UserReference = "", CreatedBy = base.UserId });
+                });
 
                 return Json(new { statuscode = 1 });
 
@@ -201,6 +237,30 @@ namespace teamcare.web.app.Controllers
                 return Json(new { statuscode = 3, message = ex.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteLivingSkill(Guid id)
+        {
+            try
+            {
+               
+                var groupskill = await _livingskillService.GetByIdAsync(id);
+                await _livingskillService.DeleteAsync(groupskill);
+
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = "Delete Living Skill", Details = "service call for delete living skill.", UserReference = "", CreatedBy = base.UserId });
+                });
+
+                return Json(new { statuscode = 1 });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
+        }
+
     }
 
 

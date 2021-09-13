@@ -8,6 +8,7 @@ namespace teamcare.business.Models
     {
         public string GroupName { get; set; }
         public int Position { get; set; }
+        public int TotalSkill { get; set; }
 
     }
 }

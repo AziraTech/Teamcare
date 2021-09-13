@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.data.Entities.SkillAssessments;
 using teamcare.data.Repositories;
+using System.Linq;
 
 namespace teamcare.business.Services
 {
@@ -32,6 +33,14 @@ namespace teamcare.business.Services
             return _mapper.Map<List<LivingSkill>, List<LivingSkillsModel>>(result);
         }
 
+        public async Task<IEnumerable<LivingSkillsModel>> ListByGroupId(Guid id)
+        {
+            var listdata = await _livingSkillRepository.ListAllAsync();
+            var mappeddata = _mapper.Map<IEnumerable<LivingSkill>, IEnumerable<LivingSkillsModel>>(listdata);
+            var result = mappeddata.Where(r=>r.GroupId==id).ToList();
+            return result;
+        }
+
         public async Task<LivingSkillsModel> AddAsync(LivingSkillsModel model)
         {
             var mapped = _mapper.Map<LivingSkillsModel, LivingSkill>(model);
@@ -46,9 +55,10 @@ namespace teamcare.business.Services
             return _mapper.Map<LivingSkill, LivingSkillsModel>(result);
         }
 
-        public Task DeleteAsync(LivingSkillsModel model)
+        public async Task DeleteAsync(LivingSkillsModel model)
         {
-            throw new NotImplementedException();
+            var result = _mapper.Map<LivingSkillsModel, LivingSkill>(model);
+            await _livingSkillRepository.DeleteAsync(result);
         }
       
     }

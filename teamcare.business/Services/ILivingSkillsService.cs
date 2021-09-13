@@ -8,6 +8,7 @@ namespace teamcare.business.Services
 {
 	public interface ILivingSkillService : IService<LivingSkillsModel>
 	{
+        Task<IEnumerable<LivingSkillsModel>> ListByGroupId(Guid id);
 
     }
 }

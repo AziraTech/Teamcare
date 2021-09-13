@@ -46,9 +46,10 @@ namespace teamcare.business.Services
             return _mapper.Map<SkillGroup, SkillGroupsModel>(result);
         }
 
-        public Task DeleteAsync(SkillGroupsModel model)
+        public async Task DeleteAsync(SkillGroupsModel model)
         {
-            throw new NotImplementedException();
+            var result = _mapper.Map<SkillGroupsModel, SkillGroup>(model);
+            await _skillGroupsRepository.DeleteAsync(result);
         }
       
     }
