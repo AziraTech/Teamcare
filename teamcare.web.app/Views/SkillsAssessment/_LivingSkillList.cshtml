@@ -1,0 +1,25 @@
+﻿@model teamcare.web.app.ViewModels.SkillAssessmentViewModel
+
+<div class="card-body fs-6 py-5 px-5 py-lg-5 px-lg-5 text-gray-700">
+    <div class="row row-cols-lg-1 g-5" id="sortableliving">
+        <!--begin::Card-->
+        @if (Model.LivingSkills != null)
+        {
+            foreach (var item in Model.LivingSkills)
+            {
+                <div class="col" id="@item.Id">
+                    <div class="card card-bordered">
+                        <div class="card-header" style="min-height:0px !important;">
+                            <div class="card-title">
+                                <h3 class="card-label">@item.SkillName</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+        <!--end::Card-->
+
+    </div>
+</div>

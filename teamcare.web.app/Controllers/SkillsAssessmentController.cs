@@ -41,7 +41,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new SkillAssessmentViewModel
             {
-                SkillGroups = listOfSkillGroup.ToList().OrderBy(p=>p.Position),
+                SkillGroups = listOfSkillGroup.ToList().OrderBy(p => p.Position),
             };
 
             return View(model);
@@ -54,8 +54,20 @@ namespace teamcare.web.app.Controllers
             {
                 if (skillAssessmentCreateViewModel?.SkillGroup != null)
                 {
-                    var createdResidence = await _skillGroupService.AddAsync(skillAssessmentCreateViewModel.SkillGroup);
-                   
+
+                    var listOfSkillGroup = await _skillGroupService.ListAllAsync();
+                    if (listOfSkillGroup.Count() != 0)
+                    {
+                        int max = listOfSkillGroup.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;
+                        skillAssessmentCreateViewModel.SkillGroup.Position = max + 1;
+                    }
+                    else
+                    {
+                        skillAssessmentCreateViewModel.SkillGroup.Position = 0;
+                    }
+
+                    var created = await _skillGroupService.AddAsync(skillAssessmentCreateViewModel.SkillGroup);
+
                     _auditService.Execute(async repository =>
                     {
                         await repository.CreateAuditRecord(new Audit { Action = "AddSkillGroup", Details = "service call for add new skill group.", UserReference = "", CreatedBy = base.UserId });
@@ -71,23 +83,115 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MovePosition(Guid Id,int newposition)
+        public async Task<IActionResult> MovePosition(SkillAssessmentViewModel skillAssessmentCreateViewModel)
         {
             try
             {
-                var skilldata = await _skillGroupService.GetByIdAsync(Id);
-                if(skilldata != null)
+                if (skillAssessmentCreateViewModel?.SkillGroups != null)
                 {
-                    skilldata.Position = newposition;
+
+                    foreach (var item in skillAssessmentCreateViewModel.SkillGroups)
+                    {
+                        var skilldata = await _skillGroupService.GetByIdAsync((Guid)item.Id);
+                        if (skilldata != null)
+                        {
+                            skilldata.Position = item.Position;
+                        }
+
+                        var skillgroup = await _skillGroupService.UpdateAsync(skilldata);
+
+                    }
+
+                    _auditService.Execute(async repository =>
+                    {
+                        await repository.CreateAuditRecord(new Audit { Action = "Move SkillGroup Position", Details = "service call for move skill group position.", UserReference = "", CreatedBy = base.UserId });
+                    });
                 }
 
-                var skillgroup = await _skillGroupService.UpdateAsync(skilldata);
 
+                return Json(new { statuscode = 1 });
 
-                _auditService.Execute(async repository =>
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveLivingSkill(SkillAssessmentViewModel skillAssessmentCreateViewModel)
+        {
+            try
+            {
+                if (skillAssessmentCreateViewModel?.LivingSkill != null)
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "Move SkillGroup Position", Details = "service call for move skill group position.", UserReference = "", CreatedBy = base.UserId });
-                });
+
+                    var listOfSkill = await _livingskillService.ListAllAsync();
+                    if (listOfSkill.Count() != 0)
+                    {
+                        int max = listOfSkill.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;
+                        skillAssessmentCreateViewModel.LivingSkill.Position = max + 1;
+                    }
+                    else
+                    {
+                        skillAssessmentCreateViewModel.LivingSkill.Position = 0;
+                    }
+
+                    var created = await _livingskillService.AddAsync(skillAssessmentCreateViewModel.LivingSkill);
+
+                    _auditService.Execute(async repository =>
+                    {
+                        await repository.CreateAuditRecord(new Audit { Action = "AddLivingSkill", Details = "service call for add new living skill.", UserReference = "", CreatedBy = base.UserId });
+                    });
+
+                }
+                return Json(new { statuscode = 1 });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LivingList(Guid Id)
+        {
+            var listofSkill = await _livingskillService.ListAllAsync();
+            var finalskilllist = listofSkill.Where(r => r.GroupId == Id).OrderBy(p => p.Position).ToList();
+            var model = new SkillAssessmentViewModel
+            {
+                LivingSkills = finalskilllist,
+            };
+
+            return PartialView("~/Views/SkillsAssessment/_LivingSkillList.cshtml", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LivingMovePosition(SkillAssessmentViewModel skillAssessmentCreateViewModel)
+        {
+            try
+            {
+                if (skillAssessmentCreateViewModel?.LivingSkills != null)
+                {
+
+                    foreach (var item in skillAssessmentCreateViewModel.LivingSkills)
+                    {
+                        var skilldata = await _livingskillService.GetByIdAsync((Guid)item.Id);
+                        if (skilldata != null)
+                        {
+                            skilldata.Position = item.Position;
+                        }
+
+                        var skillgroup = await _livingskillService.UpdateAsync(skilldata);
+
+                    }
+
+                    _auditService.Execute(async repository =>
+                    {
+                        await repository.CreateAuditRecord(new Audit { Action = "Move LivingSkill Position", Details = "service call for move living skill position.", UserReference = "", CreatedBy = base.UserId });
+                    });
+                }
+
 
                 return Json(new { statuscode = 1 });
 
@@ -98,4 +202,6 @@ namespace teamcare.web.app.Controllers
             }
         }
     }
+
+
 }

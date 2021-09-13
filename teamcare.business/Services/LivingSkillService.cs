@@ -20,9 +20,10 @@ namespace teamcare.business.Services
 
         }
 
-        public Task<LivingSkillsModel> GetByIdAsync(Guid id)
+        public async Task<LivingSkillsModel> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _livingSkillRepository.GetByIdAsync(id);
+            return _mapper.Map<LivingSkill, LivingSkillsModel>(result);
         }
 
         public async Task<IEnumerable<LivingSkillsModel>> ListAllAsync()
@@ -38,9 +39,11 @@ namespace teamcare.business.Services
             return _mapper.Map<LivingSkill, LivingSkillsModel>(result);
         }
 
-        public Task<LivingSkillsModel> UpdateAsync(LivingSkillsModel model)
+        public async Task<LivingSkillsModel> UpdateAsync(LivingSkillsModel model)
         {
-            throw new NotImplementedException();
+            var mapped = _mapper.Map<LivingSkillsModel, LivingSkill>(model);
+            var result = await _livingSkillRepository.UpdateAsync(mapped);
+            return _mapper.Map<LivingSkill, LivingSkillsModel>(result);
         }
 
         public Task DeleteAsync(LivingSkillsModel model)

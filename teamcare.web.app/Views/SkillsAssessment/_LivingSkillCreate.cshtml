@@ -1,13 +1,17 @@
 ﻿  <!--begin::Form-->
-<form id="kt_modal_new_skillgroup" class="form" novalidate="novalidate">
-    <div class="d-flex flex-column mb-7 fv-row">
+<form id="kt_modal_new_livingskill" class="form" novalidate="novalidate">
+    <input type="hidden" id="hdngroupid" />
+    <div class="row mb-7">
         <!--begin::Label-->
-        <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
-            <span class="required">Group Name</span>
-        </label>
+        <label class="col-lg-2 fw-bold form-label">Group Name : </label>
         <!--end::Label-->
-        <input type="text" class="form-control form-control-solid" placeholder="" name="groupname" id="txtgroupname" />
+        <!--begin::Col-->
+        <div class="col-lg-8">
+            <span class="fw-bolder fs-6 text-gray-800" id="spngroupname"></span>
+        </div>
+        <!--end::Col-->
     </div>
+    
     <!--begin::Input group-->
     <div class="d-flex flex-column mb-7 fv-row">
         <!--begin::Label-->
@@ -15,24 +19,24 @@
             <span class="required">Name</span>
         </label>
         <!--end::Label-->
-        <input type="text" class="form-control form-control-solid" placeholder="" name="groupname" id="txtname" />
+        <input type="text" class="form-control form-control-solid" placeholder="" name="livingname" id="txtlivingname" />
     </div>
     <!--end::Input group-->
 
-    <div class="d-flex flex-column mb-7 fv-row">
+    <!--<div class="d-flex flex-column mb-7 fv-row">-->
         <!--begin::Label-->
-        <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+        <!--<label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
             <span class="required">Position</span>
-        </label>
+        </label>-->
         <!--end::Label-->
-        <input type="number" class="form-control form-control-solid" placeholder="" name="skillposition" id="txtposition" />
-    </div>
+        <!--<input type="number" class="form-control form-control-solid" placeholder="" name="skillposition" id="txtposition" />
+    </div>-->
 
 
     <!--begin::Actions-->
     <div class="text-center pt-15">
         @*<button type="reset" id="kt_modal_new_card_cancel" class="btn btn-light me-3">Discard</button>*@
-        <button type="submit" id="new_skillgroup_submit" class="btn btn-primary">
+        <button type="submit" id="new_livingskill_submit" class="btn btn-primary">
             <span class="indicator-label">
                 Submit
 
