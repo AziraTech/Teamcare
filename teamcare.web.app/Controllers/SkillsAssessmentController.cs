@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Enumerations;
 using teamcare.common.ReferenceData;
@@ -61,24 +62,38 @@ namespace teamcare.web.app.Controllers
             {
                 if (skillAssessmentCreateViewModel?.SkillGroup != null)
                 {
+                    var created = new SkillGroupsModel();
 
-                    var listOfSkillGroup = await _skillGroupService.ListAllAsync();
-                    if (listOfSkillGroup.Count() != 0)
+
+                    if (skillAssessmentCreateViewModel.SkillGroup.Id.ToString() == "")
                     {
-                        int max = listOfSkillGroup.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;
-                        skillAssessmentCreateViewModel.SkillGroup.Position = max + 1;
+                        var listOfSkillGroup = await _skillGroupService.ListAllAsync();
+                        if (listOfSkillGroup.Count() != 0)
+                        {
+                            int max = listOfSkillGroup.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;
+                            skillAssessmentCreateViewModel.SkillGroup.Position = max + 1;
+                        }
+                        else
+                        {
+                            skillAssessmentCreateViewModel.SkillGroup.Position = 0;
+                        }
+
+                        created = await _skillGroupService.AddAsync(skillAssessmentCreateViewModel.SkillGroup);
+
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = "AddSkillGroup", Details = "service call for add new skill group.", UserReference = "", CreatedBy = base.UserId });
+                        });
                     }
                     else
                     {
-                        skillAssessmentCreateViewModel.SkillGroup.Position = 0;
+                        created = await _skillGroupService.UpdateAsync(skillAssessmentCreateViewModel.SkillGroup);
+
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = "UpdateSkillGroup", Details = "service call for update skill group.", UserReference = "", CreatedBy = base.UserId });
+                        });
                     }
-
-                    var created = await _skillGroupService.AddAsync(skillAssessmentCreateViewModel.SkillGroup);
-
-                    _auditService.Execute(async repository =>
-                    {
-                        await repository.CreateAuditRecord(new Audit { Action = "AddSkillGroup", Details = "service call for add new skill group.", UserReference = "", CreatedBy = base.UserId });
-                    });
 
                 }
                 return Json(new { statuscode = 1 });
@@ -161,24 +176,38 @@ namespace teamcare.web.app.Controllers
             {
                 if (skillAssessmentCreateViewModel?.LivingSkill != null)
                 {
+                    var created = new LivingSkillsModel();
 
-                    var listOfSkill = await _livingskillService.ListAllAsync();
-                    if (listOfSkill.Count() != 0)
+                    if (skillAssessmentCreateViewModel.LivingSkill.Id.ToString() == "")
                     {
-                        int max = listOfSkill.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;
-                        skillAssessmentCreateViewModel.LivingSkill.Position = max + 1;
+                        var listOfSkill = await _livingskillService.ListAllAsync();
+                        if (listOfSkill.Count() != 0)
+                        {
+                            int max = listOfSkill.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;
+                            skillAssessmentCreateViewModel.LivingSkill.Position = max + 1;
+                        }
+                        else
+                        {
+                            skillAssessmentCreateViewModel.LivingSkill.Position = 0;
+                        }
+
+                        created = await _livingskillService.AddAsync(skillAssessmentCreateViewModel.LivingSkill);
+
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = "AddLivingSkill", Details = "service call for add new living skill.", UserReference = "", CreatedBy = base.UserId });
+                        });
                     }
                     else
                     {
-                        skillAssessmentCreateViewModel.LivingSkill.Position = 0;
+                        created = await _livingskillService.UpdateAsync(skillAssessmentCreateViewModel.LivingSkill);
+
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = "UpdateLivingSkill", Details = "service call for update living skill.", UserReference = "", CreatedBy = base.UserId });
+                        });
                     }
 
-                    var created = await _livingskillService.AddAsync(skillAssessmentCreateViewModel.LivingSkill);
-
-                    _auditService.Execute(async repository =>
-                    {
-                        await repository.CreateAuditRecord(new Audit { Action = "AddLivingSkill", Details = "service call for add new living skill.", UserReference = "", CreatedBy = base.UserId });
-                    });
 
                 }
                 return Json(new { statuscode = 1 });
@@ -259,6 +288,33 @@ namespace teamcare.web.app.Controllers
             {
                 return Json(new { statuscode = 3, message = ex.Message });
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSkillGroup(Guid Id)
+        {
+            var listofSkill = await _skillGroupService.GetByIdAsync(Id);
+            var model = new SkillAssessmentViewModel
+            {
+                SkillGroup = listofSkill,
+            };
+
+            return PartialView("~/Views/SkillsAssessment/_SkillGroupUpdate.cshtml", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditLivingSkill(Guid Id)
+        {
+            var listofliving = await _livingskillService.GetByIdAsync(Id);
+            var skillgroup = await _skillGroupService.GetByIdAsync(listofliving.GroupId);
+            listofliving.GroupName = skillgroup.GroupName;
+
+            var model = new SkillAssessmentViewModel
+            {
+                LivingSkill = listofliving,
+            };
+
+            return PartialView("~/Views/SkillsAssessment/_LivingSkillUpdate.cshtml", model);
         }
 
     }

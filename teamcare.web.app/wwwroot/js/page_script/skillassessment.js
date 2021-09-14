@@ -1,5 +1,4 @@
-﻿
-var modalskillgroup = new bootstrap.Modal(document.querySelector('#kt_modal_create_app'));
+﻿var modalskillgroup = new bootstrap.Modal(document.querySelector('#kt_modal_create_app'));
 var frmskillgroup = document.querySelector("#kt_modal_new_skillgroup");
 
 const skillgroupfrm = FormValidation
@@ -32,7 +31,6 @@ const skillgroupfrm = FormValidation
             }
         }
     );
-
 
 
 var modallivingskill = new bootstrap.Modal(document.querySelector('#kt_modal_livingskill'));
@@ -132,6 +130,7 @@ $(document).ready(function () {
         });
     });
 
+   
     $("#sortable").sortable({
         /*stop: function(event, ui) {
             alert("New position: " + ui.item.index());
@@ -460,4 +459,259 @@ function DeleteLivingSkill(ctrl) {
             });
         },
     });
+}
+
+function EditGroup(ctrl) {
+    var id = $(ctrl).attr('id');
+    $.ajax({
+        type: "POST",
+        url: '/SkillsAssessment/EditSkillGroup',
+        data: { Id: id },
+        success: function (data) {
+            if (data.statuscode == 3) {
+                Swal.fire({
+                    text: data.message,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn btn-light"
+                    }
+                });
+            } else {
+                $('#partialViewEditSkill').html('');
+                $('#partialViewEditSkill').html(data);
+
+                var selectedId = $('#selectedId').val();
+
+               var frmupdskillgroup = document.querySelector("#kt_modal_update_skillgroup");
+                const updskillgroupfrm = FormValidation
+                    .formValidation(frmupdskillgroup,
+                        {
+                            fields: {
+                                updgroupname: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "GroupName is required"
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                trigger: new FormValidation.plugins.Trigger(),
+                                bootstrap: new FormValidation.plugins.Bootstrap5({
+                                    rowSelector: ".fv-row",
+                                    eleInvalidClass: "",
+                                    eleValidClass: ""
+                                })
+                            }
+                        }
+                    );
+
+                $('#update_skillgroup_submit').click(function (e) {
+                    e.preventDefault();
+                    updskillgroupfrm.validate().then(function (s) {      
+                        if ("Valid" == s) {
+                            $('#update_skillgroup_submit').disabled = !0;
+                            $('#update_skillgroup_submit').attr("data-kt-indicator", "on");
+                            setTimeout(function () {
+                                $('#update_skillgroup_submit').removeAttr("data-kt-indicator");
+                                $('#update_skillgroup_submit').disabled = !1;
+                                //ajax call for the submit;
+                                var SkillGroup = {
+                                    Id: selectedId,
+                                    GroupName: $('#txtupdgroupname').val(),
+                                    Position: $('#txtupdposition').val() == "" ? 0 : $('#txtupdposition').val()
+                                }
+                                var skillAssessmentCreateViewModel = {
+                                    SkillGroup: SkillGroup,
+                                }
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/SkillsAssessment/Save',
+                                    data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
+                                    success: function (data) {
+                                        if (data.statuscode == 1) {
+                                            Swal.fire({
+                                                text: "Form has been successfully submitted!",
+                                                icon: "success",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "Ok, got it!",
+                                                customClass: {
+                                                    confirmButton: "btn btn-primary"
+                                                }
+                                            }).then(function (q) {
+                                                q.isConfirmed
+                                                window.location.reload();
+                                            });
+                                        }
+                                        else {
+                                            Swal.fire({
+                                                text: data.message,
+                                                icon: "error",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "Ok, got it!",
+                                                customClass: {
+                                                    confirmButton: "btn btn-light"
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                                //on success show message
+                            }, 2e3);
+                        }
+                        else {
+                            Swal.fire({
+                                text: "Sorry, looks like there are some feilds is required, please try again.",
+                                icon: "info",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+            $('#kt_modal_EditSkill').modal('show');
+        }
+    });
+
+}
+
+function EditLivingSkill(ctrl) {
+    if (ctrl != undefined) {
+        var id = $(ctrl).attr('id');
+        $.ajax({
+            type: "POST",
+            url: '/SkillsAssessment/EditLivingSkill',
+            data: { Id: id },
+            success: function (data) {
+                if (data.statuscode == 3) {
+                    Swal.fire({
+                        text: data.message,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn btn-light"
+                        }
+                    });
+                } else {
+
+                    $('#kt_modal_data_livingskill').modal('hide');
+
+                    $('#partialViewEditLiving').html('');
+                    $('#partialViewEditLiving').html(data);
+
+                    $('#kt_modal_edit_livingskill').modal('show');
+
+                    var selectedIdliving = $('#selectedIdliving').val();
+
+                    var frmupdlivingskill = document.querySelector("#kt_modal_update_livingskill");
+
+                    const updlivingskillfrm = FormValidation
+                        .formValidation(frmupdlivingskill,
+                            {
+                                fields: {
+                                    livingname: {
+                                        validators: {
+                                            notEmpty: {
+                                                message: "Name is required"
+                                            }
+                                        }
+                                    }
+                                },
+                                plugins: {
+                                    trigger: new FormValidation.plugins.Trigger(),
+                                    bootstrap: new FormValidation.plugins.Bootstrap5({
+                                        rowSelector: ".fv-row",
+                                        eleInvalidClass: "",
+                                        eleValidClass: ""
+                                    })
+                                }
+                            }
+                        );
+
+                    $('#update_livingskill_submit').click(function (e) {
+                        e.preventDefault();
+                        updlivingskillfrm.validate().then(function (s) {
+                            if ("Valid" == s) {
+                                $('#update_livingskill_submit').disabled = !0;
+                                $('#update_livingskill_submit').attr("data-kt-indicator", "on");
+                                setTimeout(function () {
+                                    $('#update_livingskill_submit').removeAttr("data-kt-indicator");
+                                    $('#update_livingskill_submit').disabled = !1;
+
+                                    //ajax call for the submit;
+                                    var LivingSkill = {
+                                        Id: selectedIdliving,
+                                        GroupId: $('#hdnupdgroupid').val(),
+                                        SKillName: $('#txtupdlivingname').val(),
+                                        Position: $('#txtupdposition').val() == "" ? 0 : $('#txtupdposition').val()
+                                    }
+                                    var skillAssessmentCreateViewModel = {
+                                        LivingSkill: LivingSkill,
+                                    }
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '/SkillsAssessment/SaveLivingSkill',
+                                        data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
+                                        success: function (data) {
+                                            if (data.statuscode == 1) {
+                                                Swal.fire({
+                                                    text: "Form has been successfully submitted!",
+                                                    icon: "success",
+                                                    buttonsStyling: !1,
+                                                    confirmButtonText: "Ok, got it!",
+                                                    customClass: {
+                                                        confirmButton: "btn btn-primary"
+                                                    }
+                                                }).then(function (q) {
+                                                    q.isConfirmed &&
+                                                    $('#kt_modal_edit_livingskill').modal('hide');
+
+                                                    window.location.reload();
+                                                });
+                                            }
+                                            else {
+                                                Swal.fire({
+                                                    text: data.message,
+                                                    icon: "error",
+                                                    buttonsStyling: !1,
+                                                    confirmButtonText: "Ok, got it!",
+                                                    customClass: {
+                                                        confirmButton: "btn btn-light"
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                    //on success show message
+                                }, 2e3);
+
+                            }
+                            else {
+                                Swal.fire({
+                                    text: "Sorry, looks like there are some feilds is required, please try again.",
+                                    icon: "info",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+
+                }
+            }
+        });
+
+    }
+   
 }
