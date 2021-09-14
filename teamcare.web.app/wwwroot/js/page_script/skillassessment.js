@@ -86,18 +86,8 @@ $(document).ready(function () {
                         data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
                         success: function (data) {
                             if (data.statuscode == 1) {
-                                Swal.fire({
-                                    text: "Form has been successfully submitted!",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                }).then(function (q) {
-                                    q.isConfirmed && modalskillgroup.hide();
-                                    window.location.reload();
-                                });
+                                modalskillgroup.hide();
+                                window.location.reload();
                             }
                             else {
                                 Swal.fire({
@@ -130,7 +120,7 @@ $(document).ready(function () {
         });
     });
 
-   
+
     $("#sortable").sortable({
         /*stop: function(event, ui) {
             alert("New position: " + ui.item.index());
@@ -214,18 +204,8 @@ $(document).ready(function () {
                         data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
                         success: function (data) {
                             if (data.statuscode == 1) {
-                                Swal.fire({
-                                    text: "Form has been successfully submitted!",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                }).then(function (q) {
-                                    q.isConfirmed && modallivingskill.hide();
-                                    window.location.reload();
-                                });
+                                modallivingskill.hide();
+                                window.location.reload();
                             }
                             else {
                                 Swal.fire({
@@ -484,7 +464,7 @@ function EditGroup(ctrl) {
 
                 var selectedId = $('#selectedId').val();
 
-               var frmupdskillgroup = document.querySelector("#kt_modal_update_skillgroup");
+                var frmupdskillgroup = document.querySelector("#kt_modal_update_skillgroup");
                 const updskillgroupfrm = FormValidation
                     .formValidation(frmupdskillgroup,
                         {
@@ -510,7 +490,7 @@ function EditGroup(ctrl) {
 
                 $('#update_skillgroup_submit').click(function (e) {
                     e.preventDefault();
-                    updskillgroupfrm.validate().then(function (s) {      
+                    updskillgroupfrm.validate().then(function (s) {
                         if ("Valid" == s) {
                             $('#update_skillgroup_submit').disabled = !0;
                             $('#update_skillgroup_submit').attr("data-kt-indicator", "on");
@@ -532,18 +512,7 @@ function EditGroup(ctrl) {
                                     data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
                                     success: function (data) {
                                         if (data.statuscode == 1) {
-                                            Swal.fire({
-                                                text: "Form has been successfully submitted!",
-                                                icon: "success",
-                                                buttonsStyling: !1,
-                                                confirmButtonText: "Ok, got it!",
-                                                customClass: {
-                                                    confirmButton: "btn btn-primary"
-                                                }
-                                            }).then(function (q) {
-                                                q.isConfirmed
-                                                window.location.reload();
-                                            });
+                                            window.location.reload();
                                         }
                                         else {
                                             Swal.fire({
@@ -661,20 +630,8 @@ function EditLivingSkill(ctrl) {
                                         data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
                                         success: function (data) {
                                             if (data.statuscode == 1) {
-                                                Swal.fire({
-                                                    text: "Form has been successfully submitted!",
-                                                    icon: "success",
-                                                    buttonsStyling: !1,
-                                                    confirmButtonText: "Ok, got it!",
-                                                    customClass: {
-                                                        confirmButton: "btn btn-primary"
-                                                    }
-                                                }).then(function (q) {
-                                                    q.isConfirmed &&
-                                                    $('#kt_modal_edit_livingskill').modal('hide');
-
-                                                    window.location.reload();
-                                                });
+                                                $('#kt_modal_edit_livingskill').modal('hide');
+                                                window.location.reload();
                                             }
                                             else {
                                                 Swal.fire({
@@ -706,12 +663,8 @@ function EditLivingSkill(ctrl) {
                             }
                         });
                     });
-
-
                 }
             }
         });
-
     }
-   
 }
