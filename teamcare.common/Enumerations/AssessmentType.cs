@@ -9,5 +9,7 @@ namespace teamcare.common.Enumerations
 	{
 		[Description("Living Skills")]
 		LivingSkill = 1,
+		[Description("Mental Health")]
+		MentalHealth = 2,
 	}
 }

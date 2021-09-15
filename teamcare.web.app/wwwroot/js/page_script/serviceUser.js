@@ -360,7 +360,7 @@ function RemoveProfile() {
 
 $(document).ready(function() {
 	doSortFilterBy();
-
+	setCurrentTabAssessment('LivingSkill','1');
 });
 
 var rServiceUserLogSubmit = document.querySelector("#su-service_user_log_form");
@@ -485,3 +485,42 @@ async function fncEditOrDelete(opType, logId, msgAreaId)
 
 	}
 }
+
+
+async function setCurrentTabAssessment(tabName, id) {
+	$.ajax({
+		type: "POST",
+		url: '/ServiceUsers/AssessmentGroupSkill',
+		data: { Id: id, TabName:tabName },
+		success: function (data) {
+			if (data.statuscode == 3) {
+				Swal.fire({
+					text: data.message,
+					icon: "error",
+					buttonsStyling: !1,
+					confirmButtonText: "Ok, got it!",
+					customClass: {
+						confirmButton: "btn btn-light"
+					}
+				});
+			} else {
+				$('#AssessmentTabContent').html('');
+				$('#AssessmentTabContent').html(data);		
+
+				$('#new_assessment_submit').click(function () {
+					$('#assessmentTbl tr').each(function () {
+
+						$('#assessmentTbl table.tr input:radio:checked').each(function () {
+							alert(this.value);
+						});
+						var customerId = $(this).find(".grpname").html();
+					});
+				});
+			}
+		}
+	});
+}
+
+
+
+

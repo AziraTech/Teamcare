@@ -112,24 +112,13 @@ namespace teamcare.web.app.Controllers
                 if (skillAssessmentCreateViewModel?.SkillGroups != null)
                 {
 
-                    foreach (var item in skillAssessmentCreateViewModel.SkillGroups)
-                    {
-                        var skilldata = await _skillGroupService.GetByIdAsync((Guid)item.Id);
-                        if (skilldata != null)
-                        {
-                            skilldata.Position = item.Position;
-                        }
-
-                        var skillgroup = await _skillGroupService.UpdateAsync(skilldata);
-
-                    }
-
+                     await _skillGroupService.ChangePositoin(skillAssessmentCreateViewModel.SkillGroups);
+                  
                     _auditService.Execute(async repository =>
                     {
                         await repository.CreateAuditRecord(new Audit { Action = "Move SkillGroup Position", Details = "service call for move skill group position.", UserReference = "", CreatedBy = base.UserId });
                     });
                 }
-
 
                 return Json(new { statuscode = 1 });
 
@@ -239,24 +228,13 @@ namespace teamcare.web.app.Controllers
                 if (skillAssessmentCreateViewModel?.LivingSkills != null)
                 {
 
-                    foreach (var item in skillAssessmentCreateViewModel.LivingSkills)
-                    {
-                        var skilldata = await _livingskillService.GetByIdAsync((Guid)item.Id);
-                        if (skilldata != null)
-                        {
-                            skilldata.Position = item.Position;
-                        }
-
-                        var skillgroup = await _livingskillService.UpdateAsync(skilldata);
-
-                    }
+                    await _livingskillService.ChangePositoin(skillAssessmentCreateViewModel.LivingSkills);
 
                     _auditService.Execute(async repository =>
                     {
                         await repository.CreateAuditRecord(new Audit { Action = "Move LivingSkill Position", Details = "service call for move living skill position.", UserReference = "", CreatedBy = base.UserId });
                     });
                 }
-
 
                 return Json(new { statuscode = 1 });
 

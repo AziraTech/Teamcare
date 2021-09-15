@@ -28,6 +28,8 @@ namespace teamcare.web.app.Controllers
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IServiceUserLogService _serviceUserLogService;
         private readonly IAuditService _auditService;
+        private readonly ISkillGroupsService _skillgroupService;
+        private readonly ILivingSkillService _livingskillService;
         public Guid userName;
 
         public ServiceUsersController(IServiceUserService serviceUserService,
@@ -37,7 +39,9 @@ namespace teamcare.web.app.Controllers
                                       IFavouriteServiceUserService favouriteServiceUserService,
                                       IOptions<AzureStorageSettings> azureStorageOptions,
                                       IServiceUserLogService serviceUserLogService,
-                                      IAuditService auditService
+                                      IAuditService auditService,
+                                      ISkillGroupsService skillgroupService,
+                                      ILivingSkillService livingSkillService
                                      )
         {
             _serviceUserService = serviceUserService;
@@ -48,6 +52,8 @@ namespace teamcare.web.app.Controllers
             _azureStorageOptions = azureStorageOptions.Value;
             _serviceUserLogService = serviceUserLogService;
             _auditService = auditService;
+            _skillgroupService = skillgroupService;
+            _livingskillService = livingSkillService;
 
         }
 
@@ -146,8 +152,8 @@ namespace teamcare.web.app.Controllers
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
 
                 },
-                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
-
+                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence),
+                AssessmentType=EnumExtensions.GetEnumListItems<AssessmentType>()
 
             };
             return View(model);
@@ -360,6 +366,33 @@ namespace teamcare.web.app.Controllers
 
 
             return Json(logtext);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssessmentGroupSkill(int Id,string TabName)
+        {
+            try
+            {
+                var SkillList = await _skillgroupService.ListAllAsync();
+
+                var LivingSkill = await _livingskillService.ListAllAsync();
+
+                var model = new SkillAssessmentViewModel
+                {
+                    SkillGroups = SkillList,
+                    LivingSkills=LivingSkill,
+                    AssessmentTypeId = Id,
+                    Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>()
+
+                };
+
+                return PartialView("_AssessmentCreate", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
+            }
         }
     }
 }

@@ -60,6 +60,19 @@ namespace teamcare.business.Services
             var result = _mapper.Map<LivingSkillsModel, LivingSkill>(model);
             await _livingSkillRepository.DeleteAsync(result);
         }
-      
+
+        public async Task ChangePositoin(IEnumerable<LivingSkillsModel> model)
+        {
+            foreach (var item in model)
+            {
+                var skilldata = await GetByIdAsync((Guid)item.Id);
+                if (skilldata != null)
+                {
+                    skilldata.Position = item.Position;
+                }
+
+                await UpdateAsync(skilldata);
+            }
+        }
     }
 }

@@ -20,8 +20,7 @@ namespace teamcare.web.app.ViewModels
 
         }
         public SkillGroupsModel SkillGroups { get; set; }
-        public LivingSkillsModel LivingSkills { get; set; }
-       
+        public LivingSkillsModel LivingSkills { get; set; }     
 
     }
 }

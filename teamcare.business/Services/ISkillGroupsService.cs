@@ -8,6 +8,7 @@ namespace teamcare.business.Services
 {
 	public interface ISkillGroupsService : IService<SkillGroupsModel>
 	{
+        Task ChangePositoin(IEnumerable<SkillGroupsModel> model);
 
     }
 }

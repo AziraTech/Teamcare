@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using teamcare.common.Configuration;
+using teamcare.common.Models;
 
 namespace teamcare.web.app.ViewModels
 {
@@ -20,5 +21,8 @@ namespace teamcare.web.app.ViewModels
         public business.Models.SkillGroupsModel SkillGroup { get; set; }
         public business.Models.LivingSkillsModel LivingSkill { get; set; }
         public SkillAssessmentCreateViewModel CreateViewModel { get; set; }
+        public IEnumerable<EnumListItem> Assessment { get; set; }
+        public int AssessmentTypeId { get; set; }
+
     }
 }
