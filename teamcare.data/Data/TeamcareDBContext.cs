@@ -21,9 +21,11 @@ namespace teamcare.data.Data
         public DbSet<DocumentUpload> DocumentUploads { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<FavouriteServiceUser> FavouriteServiceUsers { get; set; }
-        public DbSet<ServiceUserLog> ServiceUserLog { get; set; }
-        public DbSet<SkillGroup> SkillGroup { get; set; }
-        public DbSet<LivingSkill> LivingSkill { get; set; }
+        public DbSet<ServiceUserLog> ServiceUserLogs { get; set; }
+        public DbSet<SkillGroup> SkillGroups { get; set; }
+        public DbSet<LivingSkill> LivingSkills { get; set; }
+        public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<AssessmentSkill> AssessmentSkills { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
