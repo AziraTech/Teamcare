@@ -23,6 +23,7 @@ namespace teamcare.web.app.ViewModels
         public IEnumerable<business.Models.ContactModel> ContactList { get; set; }
         public string UserName { get; set; }
         public IEnumerable<EnumListItem> AssessmentType { get; set; }
+        public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkills { get; set; }
 
     }
 }

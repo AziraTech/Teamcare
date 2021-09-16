@@ -43,6 +43,10 @@ namespace teamcare.web.app.Middleware
             services.AddScoped<ISkillGroupsRepository, SkillGroupsRepository>();
             services.AddScoped<ILivingSkillService,LivingSkillService>();
             services.AddScoped<ILivingSkillRepository, LivingSkillRepository>();
+            services.AddScoped<IAssessmentService, AssessmentService>();
+            services.AddScoped<IAssessmentRepository, AssessmentRepository>();
+            services.AddScoped<IAssessmentSkillService, AssessmentSkillService>();
+            services.AddScoped<IAssessmentSkillRepository, AssessmentSkillRepository>();
 
             return services;
         }

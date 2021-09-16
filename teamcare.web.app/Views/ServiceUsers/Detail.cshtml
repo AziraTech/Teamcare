@@ -7,6 +7,7 @@
 <!--begin::Navbar-->
 <div class="card mb-5 mb-xxl-8">
     <div class="card-body pt-9 pb-0">
+        <input type="hidden" id="hdnserviceuserid" value="@Model.ServiceUserByID.Id" />
         <!--begin::Details-->
         <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
             <!--begin: Pic-->
@@ -1041,7 +1042,7 @@
                         @foreach (var item in Model.AssessmentType)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" href="#tab_@item.Text.Replace(" ","")" onclick="setCurrentTabAssessment('@item.Text.Replace(" ", "")','@item.Value')" >@item.Text</a>
+                                <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" id="@item.Text.Replace(" ","")" href="#tab_@item.Text.Replace(" ","")" onclick="setCurrentTabAssessment('@item.Text.Replace(" ", "")','@item.Value')" >@item.Text</a>
                             </li>
                         }
                         <!--end::Nav item-->
@@ -1050,7 +1051,7 @@
                 <!--end::Card title-->
             </div>
 
-            <div class="tab-content" id="AssessmentTabContent">
+            <div id="AssessmentTabContent">
             </div>
         </div>
         <!--end::details View-->

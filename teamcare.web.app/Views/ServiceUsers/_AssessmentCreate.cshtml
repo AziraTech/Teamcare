@@ -1,18 +1,59 @@
-﻿@model teamcare.web.app.ViewModels.SkillAssessmentViewModel
+﻿@using teamcare.common.Helpers
+@model teamcare.web.app.ViewModels.SkillAssessmentViewModel
 
 <div class="card-body p-9">
-    <div class="d-flex align-items-center py-3 py-md-1">
-        <!--begin::Wrapper-->
-        <div class="me-4">
-            <!--begin::Menu-->
-            <a href="#" class="btn btn-primary align-self-end" data-bs-toggle="modal" data-bs-target="#create_assessment" id="btncreate">Create</a>
-        </div>
+    <div class="py-3 py-md-1 mb-5">
+        <a href="#" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#create_assessment" id="btncreate">Create</a>
     </div>
+
+    <table class="table align-middle table-row-dashed gy-5" id="kt_table_customers_payment">
+        <!--begin::Table head-->
+        <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
+            <!--begin::Table row-->
+            <tr class="text-start text-muted text-uppercase gs-0">
+                <th class="min-w-100px">Skill Group</th>
+                <th>Skill Name</th>
+                <th>Skill Level</th>
+            </tr>
+            <!--end::Table row-->
+        </thead>
+        <!--end::Table head-->
+        <!--begin::Table body-->
+        <tbody class="fs-6 fw-bold text-gray-600">
+            <!--begin::Table row-->
+            @foreach (var item in Model.AssessmentSkill)
+            {
+                <tr>
+                    <!--begin::Invoice=-->
+                    <td>
+                        @item.SkillGroup
+                    </td>
+                    <!--end::Invoice=-->
+                    <!--begin::Status=-->
+                    <td>
+                        @item.SkillName
+                    </td>
+                    <!--end::Status=-->
+                    <!--begin::Amount=-->
+                    <td>
+                        @item.SkillLevel.GetEnumDescription()
+                    </td>
+                    <!--end::Amount=-->
+                </tr>
+            }
+
+            <!--end::Table row-->
+
+        </tbody>
+        <!--end::Table body-->
+    </table>
+
 </div>
 
 <div class="modal fade" id="create_assessment" tabindex="-1" aria-hidden="true">
     <!--begin::Modal dialog-->
-
+    <input type="hidden" id="hdnserviceuserid" value="@Model.ServiceUserId" />
+    <input type="hidden" id="hdnassessmenttype" value="@Model.AssessmentTypeId" />
     <div class="modal-dialog modal-dialog-centered mw-xl-1000px">
         <!--begin::Modal content-->
         <div class="modal-content">
@@ -59,24 +100,24 @@
                                 {
                                     @foreach (var livingitem in Model.LivingSkills.Where(r => r.GroupId == item.Id).ToList())
                                     {
-                                        <tr>
+                                        <tr class="checklisttr">
                                             <td>
                                                 <label class="form-label grpname">
                                                     @item.GroupName
                                                 </label>
                                             </td>
                                             <td>
-                                                <label class="form-label skillname" id="@livingitem.Id">
+                                                <label class="form-label skillname" lid="@livingitem.Id">
                                                     @livingitem.SkillName
                                                 </label>
                                             </td>
 
                                             @foreach (var asset in Model.Assessment)
                                             {
+                                                var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).FirstOrDefault()?.SkillLevel;
+
                                                 <td>
-                                                    <div class="form-check form-check-custom form-check-solid is-valid">
-                                                        <input class="form-check-input" type="radio" name="@item.GroupName" id="@asset.Text.Replace(" ", "")" value="@asset.Value">
-                                                    </div>
+                                                    <input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="@livingitem.SkillName.Trim().Replace(" ","")" id="@asset.Value" grpname="@item.GroupName" skillid="@livingitem.Id">
                                                 </td>
                                             }
                                         </tr>

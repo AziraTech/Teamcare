@@ -26,6 +26,8 @@ namespace teamcare.web.app.Middleware
 			CreateMap<ServiceUserLog, ServiceUserLogModel>().ReverseMap();
 			CreateMap<SkillGroup, SkillGroupsModel>().ReverseMap();
 			CreateMap<LivingSkill, LivingSkillsModel>().ReverseMap();
+			CreateMap<Assessment, AssessmentModel>().ReverseMap();
+			CreateMap<AssessmentSkill, AssessmentSkillModel>().ReverseMap();
 		}
 	}
 }

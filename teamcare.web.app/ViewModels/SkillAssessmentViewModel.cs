@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using teamcare.common.Configuration;
 using teamcare.common.Models;
@@ -23,6 +24,9 @@ namespace teamcare.web.app.ViewModels
         public SkillAssessmentCreateViewModel CreateViewModel { get; set; }
         public IEnumerable<EnumListItem> Assessment { get; set; }
         public int AssessmentTypeId { get; set; }
+        public Guid ServiceUserId { get; set; }
+        public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkill { get; set; }
+
 
     }
 }
