@@ -114,10 +114,15 @@
 
                                             @foreach (var asset in Model.Assessment)
                                             {
-                                                var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).FirstOrDefault()?.SkillLevel;
+                                                var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).FirstOrDefault();
+                                                var  aid = "";
+                                                if(level != null)
+                                                {
+                                                    aid = level.Id.ToString();
+                                                }
 
                                                 <td>
-                                                    <input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="@livingitem.SkillName.Trim().Replace(" ","")" id="@asset.Value" grpname="@item.GroupName" skillid="@livingitem.Id">
+                                                    <input class="form-check-input" type="radio" @(level != null && (int)level.SkillLevel == asset.Value ? "checked" : "") name="@livingitem.SkillName.Trim().Replace(" ","")" levelid="@asset.Value" id="@aid" grpname="@item.GroupName" skillid="@livingitem.Id">
                                                 </td>
                                             }
                                         </tr>

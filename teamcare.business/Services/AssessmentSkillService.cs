@@ -56,20 +56,21 @@ namespace teamcare.business.Services
         {
             foreach (var item in model)
             {
-                var oldassesstskill = await GetByIdAsync((Guid)item.Id);
-                if(oldassesstskill != null)
+                if (item.Id.ToString() != "")
                 {
-                    item.SkillLevel = item.SkillLevel;
-                    await UpdateAsync(item);
+                    var oldassesstskill = await GetByIdAsync((Guid)item.Id);
+                    if (oldassesstskill != null)
+                    {
+                        oldassesstskill.SkillLevel = item.SkillLevel;
+                        await UpdateAsync(oldassesstskill);
+                    }
                 }
                 else
                 {
                     item.AssessmentId = AssessmentId;
                     await AddAsync(item);
                 }
-              
             }
-
         }
 
     }

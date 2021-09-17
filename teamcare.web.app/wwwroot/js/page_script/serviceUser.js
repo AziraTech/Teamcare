@@ -481,7 +481,7 @@ async function fncEditOrDelete(opType, logId, msgAreaId) {
 
 
 async function setCurrentTabAssessment(tabName, id) {
-    if (tabName == "LivingSkill") {
+    if (tabName == "LivingSkills") {
         $('#LivingSkills').addClass('active');
     } else {
         $('#LivingSkills').removeClass('active');
@@ -517,8 +517,10 @@ async function setCurrentTabAssessment(tabName, id) {
                             var grpname = $(element).attr("grpname");
                             var skillname = $(element).attr("name");
                             var skillid = $(element).attr("skillid");
-                            var levelid = $(element).attr("id");
+                            var levelid = $(element).attr("levelid");
+                            var id = $(element).attr("id");
                             assessmsnedata.push({
+                                Id:id==""?"":id,
                                 SkillGroup: grpname,
                                 SkillName: skillname,
                                 SkillId: skillid,
@@ -561,7 +563,7 @@ async function setCurrentTabAssessment(tabName, id) {
                                         }
                                     }).then(function (q) {
                                         q.isConfirmed && $('#create_assessment').modal('hide');
-                                        window.location.reload();
+                                        setCurrentTabAssessment(tabName, id);
                                     });
                                 }
                             }
@@ -570,7 +572,7 @@ async function setCurrentTabAssessment(tabName, id) {
                     } else {
                         Swal.fire({
                             text: "Sorry, looks like there are some feilds is required, please try again.",
-                            icon: "error",
+                            icon: "info",
                             buttonsStyling: !1,
                             confirmButtonText: "Ok, got it!",
                             customClass: {
