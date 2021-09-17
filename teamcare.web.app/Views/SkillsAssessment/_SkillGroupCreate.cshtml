@@ -1,5 +1,16 @@
 ﻿  <!--begin::Form-->
 <form id="kt_modal_new_skillgroup" class="form" novalidate="novalidate">
+    <input type="hidden" id="hdnassessmenttype" />
+    <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-3 fw-bold form-label">Assessment Type : </label>
+        <!--end::Label-->
+        <!--begin::Col-->
+        <div class="col-lg-8">
+            <span class="fw-bolder fs-6 text-gray-800" id="spnassesstype"></span>
+        </div>
+        <!--end::Col-->
+    </div>
     <!--begin::Input group-->
     <div class="d-flex flex-column mb-7 fv-row">
         <!--begin::Label-->
@@ -10,17 +21,14 @@
         <input type="text" class="form-control form-control-solid" placeholder="" name="groupname" id="txtgroupname" />
     </div>
     <!--end::Input group-->
-
     <!--<div class="d-flex flex-column mb-7 fv-row">-->
-        <!--begin::Label-->
-        <!--<label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
-            <span class="required">Position</span>
-        </label>-->
-        <!--end::Label-->
-        <!--<input type="number" class="form-control form-control-solid" placeholder="" name="skillposition" id="txtposition" />
+    <!--begin::Label-->
+    <!--<label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+        <span class="required">Position</span>
+    </label>-->
+    <!--end::Label-->
+    <!--<input type="number" class="form-control form-control-solid" placeholder="" name="skillposition" id="txtposition" />
     </div>-->
-
-   
     <!--begin::Actions-->
     <div class="text-center pt-15">
         @*<button type="reset" id="kt_modal_new_card_cancel" class="btn btn-light me-3">Discard</button>*@

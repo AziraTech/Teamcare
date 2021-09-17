@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Enumerations;
+using teamcare.common.Helpers;
 using teamcare.common.ReferenceData;
 using teamcare.data.Entities;
 using teamcare.web.app.Helpers;
@@ -37,10 +38,23 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.SkillAssest, string.Empty),
             });
+    
+            var model = new SkillAssessmentViewModel
+            {
+                Assessment = EnumExtensions.GetEnumListItems<AssessmentType>()
 
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BindGroup(int TypeId)
+        {
             var listOfSkillGroup = await _skillGroupService.ListAllAsync();
+            var TypeWiseGroupList = listOfSkillGroup.Where(x => (int)x.AssessmentType == TypeId).ToList();
 
-            foreach (var item in listOfSkillGroup)
+            foreach (var item in TypeWiseGroupList)
             {
                 var listOfSkill = await _livingskillService.ListByGroupId((Guid)item.Id);
                 int total = listOfSkill.Count();
@@ -49,10 +63,10 @@ namespace teamcare.web.app.Controllers
 
             var model = new SkillAssessmentViewModel
             {
-                SkillGroups = listOfSkillGroup.ToList().OrderBy(p => p.Position),
+                SkillGroups = TypeWiseGroupList.ToList().OrderBy(p => p.Position),
             };
 
-            return View(model);
+            return PartialView("_SkillGroupList", model);
         }
 
         [HttpPost]
@@ -68,6 +82,14 @@ namespace teamcare.web.app.Controllers
                     if (skillAssessmentCreateViewModel.SkillGroup.Id.ToString() == "")
                     {
                         var listOfSkillGroup = await _skillGroupService.ListAllAsync();
+
+                        // check Group Name already exists
+                        var groupdata = listOfSkillGroup.FirstOrDefault(u => u.GroupName.ToLower() == skillAssessmentCreateViewModel.SkillGroup.GroupName.ToLower() && u.AssessmentType == skillAssessmentCreateViewModel.SkillGroup.AssessmentType);
+                        if (groupdata != null)
+                        {
+                            return Json(new { statuscode = 2 });
+                        }
+
                         if (listOfSkillGroup.Count() != 0)
                         {
                             int max = listOfSkillGroup.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;
@@ -77,6 +99,8 @@ namespace teamcare.web.app.Controllers
                         {
                             skillAssessmentCreateViewModel.SkillGroup.Position = 0;
                         }
+
+                       
 
                         created = await _skillGroupService.AddAsync(skillAssessmentCreateViewModel.SkillGroup);
 
@@ -170,6 +194,14 @@ namespace teamcare.web.app.Controllers
                     if (skillAssessmentCreateViewModel.LivingSkill.Id.ToString() == "")
                     {
                         var listOfSkill = await _livingskillService.ListAllAsync();
+
+                        // check Skill Name already exists
+                        var skilldata = listOfSkill.FirstOrDefault(u => u.SkillName.ToLower() == skillAssessmentCreateViewModel.LivingSkill.SkillName.ToLower() && u.GroupId == skillAssessmentCreateViewModel.LivingSkill.GroupId);
+                        if (skilldata != null)
+                        {
+                            return Json(new { statuscode = 2 });
+                        }
+
                         if (listOfSkill.Count() != 0)
                         {
                             int max = listOfSkill.ToList().OrderByDescending(p => p.Position).FirstOrDefault().Position;

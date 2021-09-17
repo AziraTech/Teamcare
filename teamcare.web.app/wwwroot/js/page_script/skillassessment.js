@@ -61,6 +61,13 @@ const livingskillfrm = FormValidation
 
 $(document).ready(function () {
 
+    BindGropTypeWise($("#ddlassessmenttype").val());
+
+    $('#kt_toolbar_primary_button').click(function () {
+        $('#spnassesstype').html($("#ddlassessmenttype :selected").text());
+        $('#hdnassessmenttype').val($("#ddlassessmenttype").val());
+    });
+
     $('#new_skillgroup_submit').click(function (e) {
         e.preventDefault();
         skillgroupfrm.validate().then(function (s) {
@@ -76,6 +83,7 @@ $(document).ready(function () {
                         Id: 0,
                         GroupName: $('#txtgroupname').val(),
                         Position: 0, //$('#txtposition').val()
+                        AssessmentType: $('#hdnassessmenttype').val()
                     }
                     var skillAssessmentCreateViewModel = {
                         SkillGroup: SkillGroup,
@@ -87,7 +95,20 @@ $(document).ready(function () {
                         success: function (data) {
                             if (data.statuscode == 1) {
                                 modalskillgroup.hide();
-                                window.location.reload();
+                                //window.location.reload();
+                                BindGropTypeWise($("#ddlassessmenttype").val());
+                                $('#txtgroupname').val('');
+
+                            } else if (data.statuscode == 2) {
+                                Swal.fire({
+                                    text: "Sorry, Group Name already exists, please try again different group name.",
+                                    icon: "info",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
                             }
                             else {
                                 Swal.fire({
@@ -120,63 +141,10 @@ $(document).ready(function () {
         });
     });
 
-
-    $("#sortable").sortable({
-        /*stop: function(event, ui) {
-            alert("New position: " + ui.item.index());
-        }*/
-        //start: function (e, ui) {
-        //    // creates a temporary attribute on the element with the old index
-        //    $(this).attr('data-previndex', ui.item.index());
-        //},
-        update: function (e, ui) {
-            var itemOrder = $('#sortable').sortable("toArray");
-            var SkillGroupS = new Array();
-            for (var i = 0; i < itemOrder.length; i++) {
-                var SkillGroup = {};
-                SkillGroup.Id = itemOrder[i];
-                SkillGroup.Position = i;
-                SkillGroupS.push(SkillGroup);
-            }
-
-            var skillAssessmentCreateViewModel = {
-                SkillGroups: SkillGroupS,
-            }
-
-            $.ajax({
-                type: "POST",
-                url: '/SkillsAssessment/MovePosition',
-                data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
-                success: function (data) {
-                    if (data.statuscode == 3) {
-                        Swal.fire({
-                            text: data.message,
-                            icon: "error",
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-light"
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            text: "Position Updated successfully.",
-                            icon: "success",
-                            buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        }).then(function (q) {
-                            q.isConfirmed
-                        });
-                    }
-                }
-            });
-
-        }
+    $("#ddlassessmenttype").on('change', function () {
+        var typeid = $(this).val();
+        BindGropTypeWise(typeid);
     });
-    $("#sortable").disableSelection();
 
     $('#new_livingskill_submit').click(function (e) {
         e.preventDefault();
@@ -205,7 +173,19 @@ $(document).ready(function () {
                         success: function (data) {
                             if (data.statuscode == 1) {
                                 modallivingskill.hide();
-                                window.location.reload();
+                                //window.location.reload();
+                                BindGropTypeWise($("#ddlassessmenttype").val());
+                                $('#txtlivingname').val('');
+                            } else if (data.statuscode == 2) {
+                                Swal.fire({
+                                    text: "Sorry, Skill Name already exists, please try again different skill name.",
+                                    icon: "info",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
                             }
                             else {
                                 Swal.fire({
@@ -239,6 +219,72 @@ $(document).ready(function () {
     });
 
 });
+
+
+function BindGropTypeWise(typeid) {
+    if (typeid) {
+        $.ajax({
+            type: 'POST',
+            url: '/SkillsAssessment/BindGroup',
+            data: { TypeId: typeid },
+            success: function (htmlresponse) {
+                if (htmlresponse != null) {
+                    $('#SkillGroupDataContent').html('');
+                    $('#SkillGroupDataContent').html(htmlresponse);
+
+                    $("#sortable").sortable({
+                        /*stop: function(event, ui) {
+                            alert("New position: " + ui.item.index());
+                        }*/
+                        //start: function (e, ui) {
+                        //    // creates a temporary attribute on the element with the old index
+                        //    $(this).attr('data-previndex', ui.item.index());
+                        //},
+                        update: function (e, ui) {
+                            var itemOrder = $('#sortable').sortable("toArray");
+                            var SkillGroupS = new Array();
+                            for (var i = 0; i < itemOrder.length; i++) {
+                                var SkillGroup = {};
+                                SkillGroup.Id = itemOrder[i];
+                                SkillGroup.Position = i;
+                                SkillGroupS.push(SkillGroup);
+                            }
+
+                            var skillAssessmentCreateViewModel = {
+                                SkillGroups: SkillGroupS,
+                            }
+
+                            $.ajax({
+                                type: "POST",
+                                url: '/SkillsAssessment/MovePosition',
+                                data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
+                                success: function (data) {
+                                    if (data.statuscode == 3) {
+                                        Swal.fire({
+                                            text: data.message,
+                                            icon: "error",
+                                            buttonsStyling: !1,
+                                            confirmButtonText: "Ok, got it!",
+                                            customClass: {
+                                                confirmButton: "btn btn-light"
+                                            }
+                                        });
+                                    } else {
+
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    $("#sortable").disableSelection();
+                }
+            }, error: function (e) {
+
+            }
+        });
+    }
+}
 
 function AddLivingskill(ctrl) {
     $('#hdngroupid').val('');
@@ -313,17 +359,7 @@ function ViewLivingskill(ctrl) {
                                         }
                                     });
                                 } else {
-                                    Swal.fire({
-                                        text: "Position Updated successfully.",
-                                        icon: "success",
-                                        buttonsStyling: !1,
-                                        confirmButtonText: "Ok, got it!",
-                                        customClass: {
-                                            confirmButton: "btn btn-primary"
-                                        }
-                                    }).then(function (q) {
-                                        q.isConfirmed
-                                    });
+
                                 }
                             }
                         });
@@ -501,7 +537,8 @@ function EditGroup(ctrl) {
                                 var SkillGroup = {
                                     Id: selectedId,
                                     GroupName: $('#txtupdgroupname').val(),
-                                    Position: $('#txtupdposition').val() == "" ? 0 : $('#txtupdposition').val()
+                                    Position: $('#txtupdposition').val() == "" ? 0 : $('#txtupdposition').val(),
+                                    AssessmentType: $('#hdnupdassessmenttype').val()
                                 }
                                 var skillAssessmentCreateViewModel = {
                                     SkillGroup: SkillGroup,
@@ -512,7 +549,9 @@ function EditGroup(ctrl) {
                                     data: { skillAssessmentCreateViewModel: skillAssessmentCreateViewModel },
                                     success: function (data) {
                                         if (data.statuscode == 1) {
-                                            window.location.reload();
+                                            //window.location.reload();
+                                            BindGropTypeWise($("#ddlassessmenttype").val());
+                                            $('#txtupdgroupname').val('');
                                         }
                                         else {
                                             Swal.fire({
@@ -631,7 +670,9 @@ function EditLivingSkill(ctrl) {
                                         success: function (data) {
                                             if (data.statuscode == 1) {
                                                 $('#kt_modal_edit_livingskill').modal('hide');
-                                                window.location.reload();
+                                                //window.location.reload();
+                                                BindGropTypeWise($("#ddlassessmenttype").val());
+                                                $('#txtlivingname').val('');
                                             }
                                             else {
                                                 Swal.fire({
@@ -668,3 +709,4 @@ function EditLivingSkill(ctrl) {
         });
     }
 }
+

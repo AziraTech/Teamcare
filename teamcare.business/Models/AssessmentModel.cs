@@ -9,5 +9,6 @@ namespace teamcare.business.Models
 	{	
 		public Guid ServiceUserId { get; set; }
 		public AssessmentType AssessmentType { get; set; }
+		public string UserName { get; set; }
 	}
 }

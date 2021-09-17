@@ -11,9 +11,13 @@
         <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
             <!--begin::Table row-->
             <tr class="text-start text-muted text-uppercase gs-0">
-                <th class="min-w-100px">Skill Group</th>
-                <th>Skill Name</th>
-                <th>Skill Level</th>
+                <th class="min-w-100px">
+                    Assessment Date
+                </th>
+                <th>
+                    Assessed By
+                </th>
+                <th>Action</th>
             </tr>
             <!--end::Table row-->
         </thead>
@@ -21,22 +25,31 @@
         <!--begin::Table body-->
         <tbody class="fs-6 fw-bold text-gray-600">
             <!--begin::Table row-->
-            @foreach (var item in Model.AssessmentSkill)
+            @foreach (var item in Model.AssessmentList)
             {
                 <tr>
                     <!--begin::Invoice=-->
                     <td>
-                        @item.SkillGroup
+                        @item.CreatedOn.ToString("dd MMMM yyyy, hh:mm")
                     </td>
                     <!--end::Invoice=-->
                     <!--begin::Status=-->
                     <td>
-                        @item.SkillName
+                        @item.CreatedByUser.Title @item.CreatedByUser.FirstName @item.CreatedByUser.LastName
                     </td>
                     <!--end::Status=-->
                     <!--begin::Amount=-->
                     <td>
-                        @item.SkillLevel.GetEnumDescription()
+                        <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="" id="@item.Id">
+                            <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
+                            <span class="svg-icon svg-icon-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </a>
                     </td>
                     <!--end::Amount=-->
                 </tr>
@@ -83,52 +96,53 @@
                 <div class="mh-500px scroll-y me-n7 pe-7">
                     <div class="table-responsive">
                         <table class="table table-row-dashed border-gray-300 align-middle gy-6" id="assessmentTbl">
+                            
                             <thead class="border-gray-200 fs-5 fw-bold bg-lighten">
-                                <tr>
-                                    <th class="min-w-150px">Skill Group</th>
-                                    <th class="min-w-150px">Living Skill</th>
-                                    @foreach (var asset in Model.Assessment)
+                                    <tr>
+                                        <th class="min-w-150px">Skill Group</th>
+                                        <th class="min-w-150px">Living Skill</th>
+                                        @foreach (var asset in Model.Assessment)
+                                        {
+                                            <th class="min-w-150px">
+                                                @asset.Text
+                                            </th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody class="fs-6">
+                                    @foreach (var item in Model.SkillGroups)
                                     {
-                                        <th class="min-w-150px">
-                                            @asset.Text
-                                        </th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody class="fs-6">
-                                @foreach (var item in Model.SkillGroups)
-                                {
-                                    @foreach (var livingitem in Model.LivingSkills.Where(r => r.GroupId == item.Id).ToList())
-                                    {
-                                        <tr class="checklisttr">
-                                            <td>
-                                                <label class="form-label grpname">
-                                                    @item.GroupName
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="form-label skillname" lid="@livingitem.Id">
-                                                    @livingitem.SkillName
-                                                </label>
-                                            </td>
-
-                                            @foreach (var asset in Model.Assessment)
-                                            {
-                                                var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).FirstOrDefault();
-                                                var  aid = "";
-                                                if(level != null)
-                                                {
-                                                    aid = level.Id.ToString();
-                                                }
-
+                                        @foreach (var livingitem in Model.LivingSkills.Where(r => r.GroupId == item.Id).ToList())
+                                        {
+                                            <tr class="checklisttr">
                                                 <td>
-                                                    <input class="form-check-input" type="radio" @(level != null && (int)level.SkillLevel == asset.Value ? "checked" : "") name="@livingitem.SkillName.Trim().Replace(" ","")" levelid="@asset.Value" id="@aid" grpname="@item.GroupName" skillid="@livingitem.Id">
+                                                    <label class="form-label grpname">
+                                                        @item.GroupName
+                                                    </label>
                                                 </td>
-                                            }
-                                        </tr>
+                                                <td>
+                                                    <label class="form-label skillname" lid="@livingitem.Id">
+                                                        @livingitem.SkillName
+                                                    </label>
+                                                </td>
+
+                                                @foreach (var asset in Model.Assessment)
+                                                {
+                                                    var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).FirstOrDefault();
+                                                    var  aid = "";
+                                                    if(level != null)
+                                                    {
+                                                        aid = level.Id.ToString();
+                                                    }
+
+                                                    <td>
+                                                        <input class="form-check-input" type="radio" @(level != null && (int)level.SkillLevel == asset.Value ? "checked" : "") name="@livingitem.SkillName.Trim().Replace(" ","")" levelid="@asset.Value" id="@aid" grpname="@item.GroupName" skillid="@livingitem.Id">
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
                                     }
-                                }
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>

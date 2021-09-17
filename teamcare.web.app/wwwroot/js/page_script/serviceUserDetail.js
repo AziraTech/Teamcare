@@ -303,22 +303,6 @@ const fv3 = FormValidation
         }
     );
 
-async function doSortFilterBy() {
-    var optFilterBy = $("#filterBy").val();
-    var optSortBy = $("#sortBy").val();
-    await $.ajax({
-        type: "POST",
-        url: '/ServiceUsers/SortFilterOption',
-        data: { sortBy: +optSortBy, filterBy: optFilterBy },
-        success: function (data) {
-            if (data) {
-                $('#partialViewDataContent').html('');
-                $('#partialViewDataContent').html(data);
-                $('#TotalServiceUser').text($('#hdnTotalServiceUser').val());
-            } else { }
-        }
-    });
-}
 
 async function setAsFavourite(vFavauriteUser, imageId) {
     await $.ajax({
@@ -358,7 +342,22 @@ function RemoveProfile() {
 }
 
 $(document).ready(function () {
-    doSortFilterBy();
+    
+    $('#tabassessments').click(function () {
+        $.ajax({
+            type: "GET",
+            url: '/ServiceUsers/AssessmentTabBind',
+            data: { },
+            success: function (data) {
+                if (data != null) {
+                    $('#AssessmentTabContentData').html('');
+                    $('#AssessmentTabContentData').html(data);
+
+                     setCurrentTabAssessment('LivingSkills', '1');
+                }
+            }
+        });
+    });
 });
 
 var rServiceUserLogSubmit = document.querySelector("#su-service_user_log_form");
@@ -477,3 +476,116 @@ async function fncEditOrDelete(opType, logId, msgAreaId) {
 
     }
 }
+
+
+async function setCurrentTabAssessment(tabName, id) {
+    if (tabName == "LivingSkills") {
+        $('#LivingSkills').addClass('active');
+    } else {
+        $('#LivingSkills').removeClass('active');
+    }
+
+    var serviceuserid = $('#hdnserviceuserid').val();
+    $.ajax({
+        type: "POST",
+        url: '/ServiceUsers/AssessmentGroupSkill',
+        data: { Id: id, TabName: tabName, ServiceUserId: serviceuserid },
+        success: function (data) {
+            if (data.statuscode == 3) {
+                Swal.fire({
+                    text: data.message,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn btn-light"
+                    }
+                });
+            } else {
+                $('#AssessmentTabContent').html('');
+                $('#AssessmentTabContent').html(data);
+
+                $('#new_assessment_submit').click(function () {
+
+                    var result = $("tr.checklisttr > td > input:radio:checked").get();
+                    if (result.length != 0) {
+
+                        var assessmsnedata = [];
+                        var columns = $.map(result, function (element) {
+                            var grpname = $(element).attr("grpname");
+                            var skillname = $(element).attr("name");
+                            var skillid = $(element).attr("skillid");
+                            var levelid = $(element).attr("levelid");
+                            var id = $(element).attr("id");
+                            assessmsnedata.push({
+                                Id: id == "" ? "" : id,
+                                SkillGroup: grpname,
+                                SkillName: skillname,
+                                SkillId: skillid,
+                                SkillLevel: levelid
+                            });
+                        });
+
+                        var Assessment = {
+                            ServiceUserId: $('#hdnserviceuserid').val(),
+                            AssessmentType: $('#hdnassessmenttype').val()
+                        }
+
+                        var assessmentCreateViewModel = {
+                            Assessment: Assessment,
+                            AssessmentSkills: assessmsnedata
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: '/ServiceUsers/AssessmentSave',
+                            data: { assessmentCreateViewModel: assessmentCreateViewModel },
+                            success: function (data) {
+                                if (data.statuscode == 3) {
+                                    Swal.fire({
+                                        text: data.message,
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-light"
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        text: "Form has been successfully submitted!",
+                                        icon: "success",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary"
+                                        }
+                                    }).then(function (q) {
+                                        q.isConfirmed && $('#create_assessment').modal('hide');
+                                        setCurrentTabAssessment(tabName, id);
+                                    });
+                                }
+                            }
+
+                        });
+                    } else {
+                        Swal.fire({
+                            text: "Sorry, looks like there are some feilds is required, please try again.",
+                            icon: "info",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-light"
+                            }
+                        });
+
+                    }
+
+                });
+            }
+        }
+    });
+}
+
+
+
+

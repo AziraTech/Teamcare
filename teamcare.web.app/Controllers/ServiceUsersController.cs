@@ -157,12 +157,21 @@ namespace teamcare.web.app.Controllers
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
 
                 },
-                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence),
-                AssessmentType = EnumExtensions.GetEnumListItems<AssessmentType>()
+                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
             };
             return View(model);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> AssessmentTabBind()
+        {
+            var model = new ServiceUsersViewModel
+            {
+                AssessmentType = EnumExtensions.GetEnumListItems<AssessmentType>()
+            };
+            return PartialView("_AssessmentDataContent", model);
+        }
         public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
         {
 
@@ -402,6 +411,7 @@ namespace teamcare.web.app.Controllers
                     AssessmentTypeId = Id,
                     Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
                     ServiceUserId = ServiceUserId,
+                    AssessmentList=serviceuserassessmentlist.OrderByDescending(r=>r.CreatedOn).ToList(),
                     AssessmentSkill = asm
                 };
 
@@ -421,34 +431,14 @@ namespace teamcare.web.app.Controllers
             {
                 if (assessmentCreateViewModel?.Assessment != null)
                 {
-                    AssessmentModel am = new AssessmentModel();
+                    var am = await _assessmentService.AddAsync(assessmentCreateViewModel.Assessment);
 
-                    var oldassessmentlist = await _assessmentService.ListAllAsync();
-                    am = oldassessmentlist.Where(r => r.ServiceUserId == assessmentCreateViewModel.Assessment.ServiceUserId && r.AssessmentType == assessmentCreateViewModel.Assessment.AssessmentType).FirstOrDefault();
-                    // check all ready entry exists.
-                    if (am == null)
+                    _auditService.Execute(async repository =>
                     {
-                        am = await _assessmentService.AddAsync(assessmentCreateViewModel.Assessment);
+                        await repository.CreateAuditRecord(new Audit { Action = "AddAssessmentType", Details = "service call for add serviceuser assessment type.", UserReference = "", CreatedBy = base.UserId });
+                    });
 
-                        _auditService.Execute(async repository =>
-                        {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddAssessmentType", Details = "service call for add serviceuser assessment type.", UserReference = "", CreatedBy = base.UserId });
-                        });
-
-                        if (am != null)
-                        {
-                            if (assessmentCreateViewModel?.AssessmentSkills != null)
-                            {
-                                await _assessmentkillService.SaveAssessmentSkillList((Guid)am.Id, assessmentCreateViewModel.AssessmentSkills);
-
-                                _auditService.Execute(async repository =>
-                                {
-                                    await repository.CreateAuditRecord(new Audit { Action = "AddAssessmentSkill", Details = "service call for add serviceuser assessment skill.", UserReference = "", CreatedBy = base.UserId });
-                                });
-                            }
-                        }
-                    }
-                    else
+                    if (am != null)
                     {
                         if (assessmentCreateViewModel?.AssessmentSkills != null)
                         {
@@ -460,7 +450,6 @@ namespace teamcare.web.app.Controllers
                             });
                         }
                     }
-
                 }
                 return Json(new { statuscode = 1 });
 

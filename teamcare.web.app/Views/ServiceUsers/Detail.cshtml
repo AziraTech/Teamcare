@@ -216,7 +216,7 @@
                 </li>
                 <!--end::Nav item-->
                 <li class="nav-item">
-                    <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" href="#kt_project_assessments">Assessments</a>
+                    <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" href="#kt_project_assessments" id="tabassessments">Assessments</a>
                 </li>
             </ul>
         </div>
@@ -1032,30 +1032,10 @@
 
     <div id="kt_project_assessments" class="tab-pane fade" role="tabpanel">
         <!--begin::details View-->
-
-        <div class="card mb-5 mb-xl-10">
-            <div class="card-header cursor-pointer">
-                <!--begin::Card title-->
-                <div class="card-title m-0">
-                    <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
-                        <!--begin::Nav item-->
-                        @foreach (var item in Model.AssessmentType)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" id="@item.Text.Replace(" ","")" href="#tab_@item.Text.Replace(" ","")" onclick="setCurrentTabAssessment('@item.Text.Replace(" ", "")','@item.Value')" >@item.Text</a>
-                            </li>
-                        }
-                        <!--end::Nav item-->
-                    </ul>
-                </div>
-                <!--end::Card title-->
-            </div>
-
-            <div id="AssessmentTabContent">
-            </div>
-        </div>
+        <div id="AssessmentTabContentData"></div>
         <!--end::details View-->
     </div>
+
 </div>
 
 <!-- ------------------------------------- Model Portion ------------------------------------- -->
@@ -1157,6 +1137,6 @@
 
     });
 </script>
-<script src="~/js/page_script/serviceUser.js"></script>
+<script src="~/js/page_script/serviceUserDetail.js"></script>
 
 <script src="~/js/page_script/contact.js"></script>

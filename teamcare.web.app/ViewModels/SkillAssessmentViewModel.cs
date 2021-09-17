@@ -26,6 +26,7 @@ namespace teamcare.web.app.ViewModels
         public int AssessmentTypeId { get; set; }
         public Guid ServiceUserId { get; set; }
         public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkill { get; set; }
+        public IEnumerable<business.Models.AssessmentModel> AssessmentList { get; set; }
 
 
     }
