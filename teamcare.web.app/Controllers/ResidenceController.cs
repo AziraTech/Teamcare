@@ -152,7 +152,23 @@ namespace teamcare.web.app.Controllers
                     });
 
                 }
-                return Json(new { statuscode = 1 });
+
+
+                var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+
+                var listOfResidence = await _residenceService.ListAllAsync();
+                var model = new ResidenceListViewModel
+                {
+                    Residences = listOfResidence,
+                    totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+                };
+                foreach (var item in model.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
+
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = "GetAllResidence", Details = "service call for get all residence.", UserReference = "", CreatedBy = base.UserId });
+                });
+                return View(model); 
             }
             catch (Exception ex)
             {

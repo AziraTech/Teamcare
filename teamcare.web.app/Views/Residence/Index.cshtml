@@ -66,65 +66,8 @@
 </div>
 <!--end::Toolbar-->
 <!--begin::Tab Content-->
-<div class="tab-content">
-    <!--begin::Tab pane-->
-    <div id="kt_project_users_card_pane" class="tab-pane fade show active">
-        <!--begin::Row-->
-        <div class="row g-6 g-xl-9">
-            @if (Model != null)
-            {
-                foreach (var item in Model.Residences)
-                {
-                    <partial name="_ResidenceCard" model="item" />
-                }
-            }
-        </div>
-        <!--end::Row-->
-    </div>
-    <!--end::Tab pane-->
-    <!--begin::Tab pane-->
-    <div id="kt_project_users_table_pane" class="tab-pane fade">
-        <!--begin::Card-->
-        <div class="card card-flush">
-            <!--begin::Card body-->
-            <div class="card-body pt-0">
-                <!--begin::Table container-->
-                <div class="table-responsive">
-                    <!--begin::Table-->
-                    <table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
-                        <!--begin::Head-->
-                        <thead class="fs-7 text-gray-400 text-uppercase">
-                            <tr>
-                                <th class="min-w-250px">Name</th>
-                                <th class="min-w-150px">Address</th>
-                                <th class="min-w-90px">Capacity</th>
-                                <th class="min-w-90px">No.of ServiceUsers</th>
-                                <th class="min-w-90px">Tel No</th>
-                                <th class="min-w-50px text-end">Details</th>
-                            </tr>
-                        </thead>
-                        <!--end::Head-->
-                        <!--begin::Body-->
-                        <tbody class="fs-6">
-                            @if (Model != null)
-                            {
-                                foreach (var item in Model.Residences)
-                                {
-                                    <partial name="_ResidenceListItem" model="item" />
-                                }
-                            }
-                        </tbody>
-                        <!--end::Body-->
-                    </table>
-                    <!--end::Table-->
-                </div>
-                <!--end::Table container-->
-            </div>
-            <!--end::Card body-->
-        </div>
-        <!--end::Card-->
-    </div>
-    <!--end::Tab pane-->
+<div class="tab-content" id="partialViewDataContent">
+    <partial name="_ShowAllRecrods" model="Model" />
 </div>
 <!--end::Tab Content-->
 <!-- ------------------------------------- Model Portion ------------------------------------- -->

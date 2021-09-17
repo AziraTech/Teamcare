@@ -10,11 +10,17 @@ namespace teamcare.web.app.ViewModels
 {
     public class ResidenceCreateViewModel : BaseViewModel
     {
+        public ResidenceCreateViewModel()
+        {
+
+        }
+
         public ResidenceCreateViewModel(IOptions<AzureStorageSettings> azureStorageOptions) : base(azureStorageOptions)
         {
             
         }
         public ResidenceModel Residence { get; set; }
         public string TempFileId { get; set; }
+        
     }
 }

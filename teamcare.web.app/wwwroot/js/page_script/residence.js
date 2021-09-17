@@ -154,7 +154,21 @@ $(document).ready(function () {
                         url: '/Residence/Save',
                         data: { residenceCreateViewModel: residenceCreateViewModel },
                         success: function (data) {
-                            if (data.statuscode==1) {
+
+                            if (data.statuscode == 3)
+                            {
+                                Swal.fire({
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
+                            }
+                            else
+                            {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
                                     icon: "success",
@@ -167,17 +181,9 @@ $(document).ready(function () {
                                     Cleardata();
                                     q.isConfirmed && modal.hide();
                                 });
-                            }
-                            else {
-                                Swal.fire({
-                                    text: data.message,
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-light"
-                                    }
-                                });
+
+                                $('#partialViewDataContent').html('');
+                                $('#partialViewDataContent').html(data);
                             }
                         }
                     });
