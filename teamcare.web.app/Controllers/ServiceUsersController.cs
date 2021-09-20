@@ -382,11 +382,13 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssessmentGroupSkill(int Id, string TabName, Guid ServiceUserId)
+        public async Task<IActionResult> AssessmentGroupSkill(int Id, Guid ServiceUserId)
         {
             try
             {
                 var SkillList = await _skillgroupService.ListAllAsync();
+                var finalskill = SkillList.Where(r => (int)r.AssessmentType == Id).ToList();
+
                 var LivingSkill = await _livingskillService.ListAllAsync();
 
                 var assessmentlist = await _assessmentService.ListAllAsync();
@@ -406,7 +408,7 @@ namespace teamcare.web.app.Controllers
 
                 var model = new SkillAssessmentViewModel
                 {
-                    SkillGroups = SkillList,
+                    SkillGroups = finalskill.OrderBy(r=>r.Position),
                     LivingSkills = LivingSkill,
                     AssessmentTypeId = Id,
                     Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
@@ -457,6 +459,29 @@ namespace teamcare.web.app.Controllers
             catch (Exception ex)
             {
                 return Json(new { statuscode = 3, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssessmentSkillDetails(Guid id)
+        {
+            try
+            {
+              
+                var assessmentskillist = await _assessmentkillService.ListAllAsync();
+                var finalresult = assessmentskillist.Where(p => p.AssessmentId == id).ToList();
+             
+                var model = new SkillAssessmentViewModel
+                {                  
+                    AssessmentSkill = finalresult
+                };
+
+                return PartialView("_AssessmentSkillDetails", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
             }
         }
     }

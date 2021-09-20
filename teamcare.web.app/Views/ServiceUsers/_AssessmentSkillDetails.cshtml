@@ -1,0 +1,48 @@
+﻿@using teamcare.common.Helpers
+@model teamcare.web.app.ViewModels.SkillAssessmentViewModel
+
+<table class="table align-middle table-row-dashed gy-5" id="kt_table_customers_payment">
+    <!--begin::Table head-->
+    <thead class="border-bottom border-gray-200 fw-bold text-gray-600 fs-7 fw-bolder">
+        <!--begin::Table row-->
+        <tr class="text-start text-uppercase gs-0">
+            <th class="min-w-100px">
+                Group Name
+            </th>
+            <th>
+                Skill Name
+            </th>
+            <th>
+                Level
+            </th>
+        </tr>
+        <!--end::Table row-->
+    </thead>
+    <!--end::Table head-->
+    <!--begin::Table body-->
+    <tbody class="fs-6">
+        <!--begin::Table row-->
+        @foreach (var item in Model.AssessmentSkill)
+        {
+            <tr>
+                <!--begin::Invoice=-->
+                <td>
+                    @item.SkillGroup
+                </td>
+                <!--end::Invoice=-->
+                <!--begin::Status=-->
+                <td>
+                    @item.SkillName
+                </td>
+                <!--end::Status=-->
+                <td>
+                    @item.SkillLevel.GetEnumDescription()
+                </td>
+            </tr>
+        }
+
+        <!--end::Table row-->
+
+    </tbody>
+    <!--end::Table body-->
+</table>

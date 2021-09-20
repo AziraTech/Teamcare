@@ -78,17 +78,17 @@ namespace teamcare.web.app.Controllers
                 {
                     var created = new SkillGroupsModel();
 
+                    var listOfSkillGroup = await _skillGroupService.ListAllAsync();
+
+                    // check Group Name already exists
+                    var groupdata = listOfSkillGroup.FirstOrDefault(u => u.Id != skillAssessmentCreateViewModel.SkillGroup.Id && u.GroupName.Trim().ToLower() == skillAssessmentCreateViewModel.SkillGroup.GroupName.Trim().ToLower() && u.AssessmentType == skillAssessmentCreateViewModel.SkillGroup.AssessmentType);
+                    if (groupdata != null)
+                    {
+                        return Json(new { statuscode = 2 });
+                    }
 
                     if (skillAssessmentCreateViewModel.SkillGroup.Id.ToString() == "")
                     {
-                        var listOfSkillGroup = await _skillGroupService.ListAllAsync();
-
-                        // check Group Name already exists
-                        var groupdata = listOfSkillGroup.FirstOrDefault(u => u.GroupName.ToLower() == skillAssessmentCreateViewModel.SkillGroup.GroupName.ToLower() && u.AssessmentType == skillAssessmentCreateViewModel.SkillGroup.AssessmentType);
-                        if (groupdata != null)
-                        {
-                            return Json(new { statuscode = 2 });
-                        }
 
                         if (listOfSkillGroup.Count() != 0)
                         {
@@ -98,9 +98,7 @@ namespace teamcare.web.app.Controllers
                         else
                         {
                             skillAssessmentCreateViewModel.SkillGroup.Position = 0;
-                        }
-
-                       
+                        }                      
 
                         created = await _skillGroupService.AddAsync(skillAssessmentCreateViewModel.SkillGroup);
 
@@ -191,16 +189,17 @@ namespace teamcare.web.app.Controllers
                 {
                     var created = new LivingSkillsModel();
 
+                    var listOfSkill = await _livingskillService.ListAllAsync();
+                    // check Skill Name already exists
+                    var skilldata = listOfSkill.FirstOrDefault(u => u.Id != skillAssessmentCreateViewModel.LivingSkill.Id && u.SkillName.Trim().ToLower() == skillAssessmentCreateViewModel.LivingSkill.SkillName.Trim().ToLower() && u.GroupId == skillAssessmentCreateViewModel.LivingSkill.GroupId);
+                    if (skilldata != null)
+                    {
+                        return Json(new { statuscode = 2 });
+                    }
+
                     if (skillAssessmentCreateViewModel.LivingSkill.Id.ToString() == "")
                     {
-                        var listOfSkill = await _livingskillService.ListAllAsync();
-
-                        // check Skill Name already exists
-                        var skilldata = listOfSkill.FirstOrDefault(u => u.SkillName.ToLower() == skillAssessmentCreateViewModel.LivingSkill.SkillName.ToLower() && u.GroupId == skillAssessmentCreateViewModel.LivingSkill.GroupId);
-                        if (skilldata != null)
-                        {
-                            return Json(new { statuscode = 2 });
-                        }
+                       
 
                         if (listOfSkill.Count() != 0)
                         {

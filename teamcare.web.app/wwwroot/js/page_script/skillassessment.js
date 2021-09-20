@@ -66,6 +66,7 @@ $(document).ready(function () {
     $('#kt_toolbar_primary_button').click(function () {
         $('#spnassesstype').html($("#ddlassessmenttype :selected").text());
         $('#hdnassessmenttype').val($("#ddlassessmenttype").val());
+        $('#txtgroupname').val('');
     });
 
     $('#new_skillgroup_submit').click(function (e) {
@@ -289,6 +290,7 @@ function BindGropTypeWise(typeid) {
 function AddLivingskill(ctrl) {
     $('#hdngroupid').val('');
     $('#spngroupname').text('');
+    $('#txtlivingname').val('');
     $('#kt_modal_livingskill').modal('show');
     var id = $(ctrl).attr('id');
     var name = $(ctrl).attr('name');
@@ -550,8 +552,19 @@ function EditGroup(ctrl) {
                                     success: function (data) {
                                         if (data.statuscode == 1) {
                                             //window.location.reload();
+                                            $('#kt_modal_EditSkill').modal('hide');
                                             BindGropTypeWise($("#ddlassessmenttype").val());
                                             $('#txtupdgroupname').val('');
+                                        } else if (data.statuscode == 2) {
+                                            Swal.fire({
+                                                text: "Sorry, Group Name already exists, please try again different group name.",
+                                                icon: "info",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "Ok, got it!",
+                                                customClass: {
+                                                    confirmButton: "btn btn-light"
+                                                }
+                                            });
                                         }
                                         else {
                                             Swal.fire({
@@ -673,6 +686,17 @@ function EditLivingSkill(ctrl) {
                                                 //window.location.reload();
                                                 BindGropTypeWise($("#ddlassessmenttype").val());
                                                 $('#txtlivingname').val('');
+                                            }
+                                            else if (data.statuscode == 2) {
+                                                Swal.fire({
+                                                    text: "Sorry, Skill Name already exists, please try again different skill name.",
+                                                    icon: "info",
+                                                    buttonsStyling: !1,
+                                                    confirmButtonText: "Ok, got it!",
+                                                    customClass: {
+                                                        confirmButton: "btn btn-light"
+                                                    }
+                                                });
                                             }
                                             else {
                                                 Swal.fire({
