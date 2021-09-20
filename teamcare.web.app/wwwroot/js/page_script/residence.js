@@ -118,7 +118,7 @@ async function setCurrentTab(tabName, id) {
         }
     });
 }
-
+var newResidenceID = 0;
 $(document).ready(function () {
 
     $('#new_card_residence_submit').click(function (e) {
@@ -131,10 +131,10 @@ $(document).ready(function () {
                 setTimeout(function () {
                     $('#new_card_residence_submit').removeAttr("data-kt-indicator");
                     $('#new_card_residence_submit').disabled = !1;
-
+                    if ($('#hdnresidenceid').val() != null) { newResidenceID = $('#hdnresidenceid').val(); }
                     //ajax call for the submit;
                     var Residence = {
-                        Id: 0,
+                        Id: newResidenceID,
                         Name: $('#txtname').val(),
                         Address: $('#txtaddress').val(),
                         Capacity: $('#txtcapacity').val(),
@@ -182,8 +182,8 @@ $(document).ready(function () {
                                     q.isConfirmed && modal.hide();
                                 });
 
-                                $('#partialViewDataContent').html('');
-                                $('#partialViewDataContent').html(data);
+                                $('#ShowCurrentTab').html('');
+                                $('#ShowCurrentTab').html(data);
                             }
                         }
                     });
@@ -203,6 +203,15 @@ $(document).ready(function () {
                 });
             }
         });
+    });
+
+    function RemoveProfile() {
+        $('#OldProfile').remove();
+    }
+
+    $('#editResidenceRecords').click(function (e) {
+        e.preventDefault();
+        $('#kt_modal_create_app').modal('show');
     });
 
     function Cleardata() {

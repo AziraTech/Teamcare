@@ -1,80 +1,79 @@
-﻿@model teamcare.business.Models.ResidenceModel
-
-    <div id="Overview" class="tab-pane fade show active" role="tabpanel">
-        <!--begin::details View-->
-        <div class="card mb-5 mb-xl-10">
-            <!--begin::Card header-->
-            <div class="card-header cursor-pointer">
-                <!--begin::Card title-->
-                <div class="card-title m-0">
-                    <h3 class="fw-bolder m-0">Residence Details</h3>
-                </div>
-                <!--end::Card title-->
-                <!--begin::Action-->
-                <a href="../../demo2/dist/account/settings.html" class="btn btn-primary align-self-center">Edit Residence</a>
-                <!--end::Action-->
+﻿@model teamcare.web.app.ViewModels.ResidenceListViewModel
+<div id="Overview" class="tab-pane fade show active" role="tabpanel">
+    <!--begin::details View-->
+    <div class="card mb-5 mb-xl-10">
+        <!--begin::Card header-->
+        <div class="card-header cursor-pointer">
+            <!--begin::Card title-->
+            <div class="card-title m-0">
+                <h3 class="fw-bolder m-0">Residence Details</h3>
             </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body p-9">
-                <!--begin::Row-->
-                <div class="row mb-7">
-                    <!--begin::Label-->
-                    <label class="col-lg-4 fw-bold text-muted">Residence Name</label>
-                    <!--end::Label-->
-                    <!--begin::Col-->
-                    <div class="col-lg-8">
-                        <span class="fw-bolder fs-6 text-gray-800"> @Model.Name</span>
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <div class="row mb-7">
-                    <!--begin::Label-->
-                    <label class="col-lg-4 fw-bold text-muted">Address</label>
-                    <!--end::Label-->
-                    <!--begin::Col-->
-                    <div class="col-lg-8">
-                        <span class="fw-bolder fs-6 text-gray-800"> @Model.Address</span>
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <div class="row mb-7">
-                    <!--begin::Label-->
-                    <label class="col-lg-4 fw-bold text-muted">Capacity</label>
-                    <!--end::Label-->
-                    <!--begin::Col-->
-                    <div class="col-lg-8">
-                        <span class="fw-bolder fs-6 text-gray-800"> @Model.Capacity</span>
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <div class="row mb-7">
-                    <!--begin::Label-->
-                    <label class="col-lg-4 fw-bold text-muted">Home Tel No</label>
-                    <!--end::Label-->
-                    <!--begin::Col-->
-                    <div class="col-lg-8">
-                        <span class="fw-bolder fs-6 text-gray-800"> @Model.Home_Tel_No</span>
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <div class="row mb-7">
-                    <!--begin::Label-->
-                    <label class="col-lg-4 fw-bold text-muted">Home Tel No</label>
-                    <!--end::Label-->
-                    <!--begin::Col-->                    
-                    <div class="col-lg-8 symbol symbol-65px symbol-rectangle mb-5">
-                        <img src="@(Model.ProfilePhoto !=null ? Model.PrePath +"/"+Model.ProfilePhoto.BlobName+"?width=200":"/media/avatars/blank.png" )" alt="image" />
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Row-->
-            </div>
-            <!--end::Card body-->
+            <!--end::Card title-->
+            <!--begin::Action-->
+            <a href="#EditRecords"  id="editResidenceRecords" class="btn btn-primary align-self-center">Edit Residence</a>
+            <!--end::Action-->
         </div>
-        <!--end::details View-->
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body p-9">
+            <!--begin::Row-->
+            <div class="row mb-7">
+                <!--begin::Label-->
+                <label class="col-lg-4 fw-bold text-muted">Residence Name</label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8">
+                    <span class="fw-bolder fs-6 text-gray-800"> @Model.Residence.Name</span>
+                </div>
+                <!--end::Col-->
+            </div>
+            <div class="row mb-7">
+                <!--begin::Label-->
+                <label class="col-lg-4 fw-bold text-muted">Address</label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8">
+                    <span class="fw-bolder fs-6 text-gray-800"> @Model.Residence.Address</span>
+                </div>
+                <!--end::Col-->
+            </div>
+            <div class="row mb-7">
+                <!--begin::Label-->
+                <label class="col-lg-4 fw-bold text-muted">Capacity</label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8">
+                    <span class="fw-bolder fs-6 text-gray-800"> @Model.Residence.Capacity</span>
+                </div>
+                <!--end::Col-->
+            </div>
+            <div class="row mb-7">
+                <!--begin::Label-->
+                <label class="col-lg-4 fw-bold text-muted">Home Tel No</label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8">
+                    <span class="fw-bolder fs-6 text-gray-800"> @Model.Residence.Home_Tel_No</span>
+                </div>
+                <!--end::Col-->
+            </div>
+            <div class="row mb-7">
+                <!--begin::Label-->
+                <label class="col-lg-4 fw-bold text-muted">Home Tel No</label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8 symbol symbol-65px symbol-rectangle mb-5">
+                    <img src="@(Model.Residence.ProfilePhoto !=null ? Model.Residence.PrePath +"/"+Model.Residence.ProfilePhoto.BlobName+"?width=200":"/media/avatars/blank.png" )" alt="image" />
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Row-->
+        </div>
+        <!--end::Card body-->
     </div>
+    <!--end::details View-->
+</div>
 
 
-    
-     
+
+

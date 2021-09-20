@@ -21,6 +21,10 @@ namespace teamcare.web.app.ViewModels
         }
         public ResidenceModel Residence { get; set; }
         public string TempFileId { get; set; }
-        
+
+        public static implicit operator ResidenceCreateViewModel(ResidenceModel v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
