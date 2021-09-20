@@ -40,52 +40,7 @@
 }
 
 <!-- ------------------------------------- Model Portion ------------------------------------- -->
-<!--begin::Modals-->
-<!--begin::Modal - Create Service Users-->
-<div class="modal fade" id="kt_modal_contact_details" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-900px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-            <!--begin::Modal header-->
-            <div class="modal-header">
-                <!--begin::Modal title-->
-                <h2>Contact Details</h2>
-                <!--end::Modal title-->
-                <!--begin::Close-->
-                <div class="d-flex mb-4" style="padding-left:501px;">
-                    <a href="#" class="btn btn-sm btn-primary me-3" id="btncreatecontact" title="Delete Contact" onclick="EditContactModal(this)"><i class="bi bi-pencil-square"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" id="btndeletecontact" title="Delete Contact" onclick="DeleteContact(this, '@Model.ServiceUserByID.Id')"><i class="bi bi-trash"></i></a>
-                </div>
 
-                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
-                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
-                            </g>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                </div>
-                <!--end::Close-->
-            </div>
-            <!--end::Modal header-->
-            <!--begin::Modal body-->
-            <div class="modal-body scroll-y py-lg-10 px-lg-10">
-                <input type="hidden" id="hdncontactid" />
-                <partial name="../Contact/_ContactDetails" />
-            </div>
-            <!--end::Modal body-->
-        </div>
-        <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
-</div>
-<!--end::Modal - Create Service Users-->
-<!--end::Modals-->
 <!--begin::Modals-->
 <!--begin::Modal - Create Service Users-->
 <div class="modal fade" id="kt_modal_edit_contact" tabindex="-1" aria-hidden="true">

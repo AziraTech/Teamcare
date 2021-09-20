@@ -15,7 +15,7 @@
             <!--end::Wrapper-->
             <!--begin::Info-->
             <div class="d-flex flex-column justify-content-center">
-                <a href="#" class="mb-1 text-gray-800 text-hover-primary">@Model.Title.GetEnumDescription() @Model.FirstName @Model.MiddleName @Model.LastName  </a>
+                <a href="#" class="mb-1 text-gray-800 text-hover-primary" onclick="ContactDetilas(this)" data-contact-id="@Model.Id">@Model.Title.GetEnumDescription() @Model.FirstName @Model.MiddleName @Model.LastName  </a>
                 <div class="fw-bold fs-6 text-gray-400">
                     @(Model.Relationship)
                 </div>
@@ -27,6 +27,8 @@
     <td>@(Model.Email)</td>
     <td>@(Model.Mobile)</td>
     <td class="text-end">
-        <a href="#" class="btn btn-light btn-sm">View</a>
-    </td>
+            <a href="#" class="btn btn-light btn-sm" onclick="ContactDetilas(this)" data-contact-id="@Model.Id">
+                View
+            </a>
+</td>
 </tr>

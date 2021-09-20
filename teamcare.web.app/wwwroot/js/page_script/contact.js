@@ -190,8 +190,7 @@ $(document).ready(function () {
                         type: "POST",
                         url: '/Contact/Save',
                         data: { contactCreateViewModel: contactCreateViewModel },
-                        success: function (data)
-                        {                            
+                        success: function (data) {
                             if (data.statuscode == 2) {
                                 Swal.fire({
                                     text: "Sorry, user email already exists, please try again different email.",
@@ -205,6 +204,17 @@ $(document).ready(function () {
 
                             }
                             else if (data.statuscode == 1) {
+                                Swal.fire({
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-light"
+                                    }
+                                });
+                            }
+                            else {
                                 Swal.fire({
                                     text: "Form has been successfully submitted!",
                                     icon: "success",
@@ -220,17 +230,6 @@ $(document).ready(function () {
                                 $('#kt_modal_create_contact').modal('hide');
                                 $('#contactIndexPage').html('');
                                 $('#contactIndexPage').html(data);
-                            }
-                            else {
-                                Swal.fire({
-                                    text: data.message,
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-light"
-                                    }
-                                });
                             }
                         }
                     });
@@ -290,8 +289,7 @@ $(document).ready(function () {
                         type: "POST",
                         url: '/Contact/Save',
                         data: { contactCreateViewModel: contactCreateViewModel },
-                        success: function (data)
-                        {
+                        success: function (data) {
                             if (data.statuscode == 3) {
                                 Swal.fire({
                                     text: data.message,
@@ -339,7 +337,7 @@ $(document).ready(function () {
         });
     });
 
-    
+
 });
 
 function Cleardata() {
@@ -374,7 +372,7 @@ function ContactDetilas(ctrl) {
     var id = $(ctrl).attr('data-contact-id');
 
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: '/Contact/Detail',
         data: { id: id },
         success: function (data) {
@@ -392,7 +390,10 @@ function ContactDetilas(ctrl) {
             else {
 
             }
+        }, error: function (xhr) {
+            console.log(xhr);
         }
+
     });
 }
 
@@ -456,8 +457,7 @@ function DeleteContact(ctrl, serviceUserId) {
         confirmButtonText: 'Yes, delete it!',
         showLoaderOnConfirm: true,
         preConfirm: function () {
-            return new Promise(function (resolve)
-            {
+            return new Promise(function (resolve) {
                 $.ajax({
                     type: "POST",
                     url: '/Contact/Delete',
@@ -488,7 +488,7 @@ function DeleteContact(ctrl, serviceUserId) {
                                 q.isConfirmed && modalcontactdetail.hide();
                             });
                             $('#contactIndexPage').html('');
-                            $('#contactIndexPage').html(data);                            
+                            $('#contactIndexPage').html(data);
                         }
                     }
                 });

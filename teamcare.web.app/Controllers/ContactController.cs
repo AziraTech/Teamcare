@@ -25,9 +25,9 @@ namespace teamcare.web.app.Controllers
         private readonly IServiceUserService _serviceUserService;
 
         public Guid userName;
-      
-        public ContactController(IContactService contactService, 
-                                 IFileUploadService fileUploadService, 
+
+        public ContactController(IContactService contactService,
+                                 IFileUploadService fileUploadService,
                                  IDocumentUploadService documentUploadService,
                                  IOptions<AzureStorageSettings> azureStorageOptions,
                                  IAuditService auditService,
@@ -43,15 +43,24 @@ namespace teamcare.web.app.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {        
+        {
             return View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> Detail(string id)
         {
-            var contactData = await _contactService.GetByIdAsync(new Guid(id));
-            contactData.PrePath = "/" + _azureStorageOptions.Container;
-            return Json(contactData);
+            try
+            {
+                var contactData = await _contactService.GetByIdAsync(new Guid(id));
+                contactData.PrePath = "/" + _azureStorageOptions.Container;
+
+                return Json(contactData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
@@ -143,7 +152,7 @@ namespace teamcare.web.app.Controllers
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>()
                 },
                 ContactList = listOfUser.Contacts.OrderByDescending(r => r.Sequence)
-            }; 
+            };
             return PartialView("~/Views/Contact/Index.cshtml", model);
         }
 
@@ -156,7 +165,7 @@ namespace teamcare.web.app.Controllers
                 ContactModel cm = new ContactModel();
                 cm.Id = id;
                 cm.ServiceUserId = serviceUserId;
-                cm.CreatedBy = (Guid)base.UserId;                  
+                cm.CreatedBy = (Guid)base.UserId;
                 var dum = await _documentUploadService.GetByContactIdAsync(id);
                 if (dum != null) { await _documentUploadService.DeleteAsync(dum); }
                 await _contactService.DeleteAsync(cm);
