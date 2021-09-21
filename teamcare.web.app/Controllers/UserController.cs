@@ -160,5 +160,31 @@ namespace teamcare.web.app.Controllers
                 return Json(new { statuscode = 3, message = ex.Message });
             }
         }
+
+
+        public async Task<IActionResult> MyProfile()
+        {
+            SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>()
+            {
+                new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
+                new BreadcrumbItem(PageTitles.MyProfile, string.Empty),
+            });
+
+            var listOfUser = await _userService.GetByIdAsync((Guid)base.UserId);
+            listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+            var model = new UserListViewModel
+            {
+                User = listOfUser,
+                PrePath = "/" + _azureStorageOptions.Container,
+                CreateViewModel = new UserCreateViewModel
+                {
+                    UserRoles = EnumExtensions.GetEnumListItems<UserRoles>(),
+                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+
+                }
+            };
+
+            return View(model);
+        }
     }
 }

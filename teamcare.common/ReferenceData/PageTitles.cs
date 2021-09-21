@@ -9,5 +9,6 @@
         public const string ServiceUserLog = "Approve Log Entry";
         public const string Audit = "Audit Entries";
         public const string SkillAssest = "Manage Assessments";
+        public const string MyProfile = "My Profile";
     }
 }
