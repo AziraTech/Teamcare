@@ -75,7 +75,7 @@ namespace teamcare.data.Entities
 		public DateTime? ArchivedOn { get; set; }
 
 		[Column("archived_reason")]
-		public string ArchivedReason { get; set; }
+		public ArchiveReason ArchivedReason { get; set; }
 
 		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
 		public virtual ICollection<Contact> Contacts { get; set; }		
