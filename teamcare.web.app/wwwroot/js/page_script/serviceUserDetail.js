@@ -342,21 +342,76 @@ function RemoveProfile() {
 }
 
 $(document).ready(function () {
-    
+
     $('#tabassessments').click(function () {
         $.ajax({
             type: "GET",
             url: '/ServiceUsers/AssessmentTabBind',
-            data: { },
+            data: {},
             success: function (data) {
                 if (data != null) {
                     $('#AssessmentTabContentData').html('');
                     $('#AssessmentTabContentData').html(data);
 
-                     setCurrentTabAssessment('LivingSkills', '1');
+                    setCurrentTabAssessment('LivingSkills', '1');
                 }
             }
         });
+    });
+
+    $('#archive_submit').click(function () {
+
+        if ($('#ddlreason').val() != "") {
+
+            $.ajax({
+                type: "POST",
+                url: '/ServiceUsers/ArchiveUserReason',
+                data: { ReasonId: $('#ddlreason').val(), Userid: $('#hdnserviceuserid').val() },
+                success: function (data) {
+                    if (data != null) {
+                        if (data.statuscode == 1) {
+                            Swal.fire({
+                                text: "Archive successfully submitted!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function (q) {
+                                q.isConfirmed
+                                $('#kt_modal_ArchiveReason').modal('hide');
+                                //window.location.href = "/ServiceUsers";
+                                window.location.reload();
+
+                            });
+
+                        } else {
+                            Swal.fire({
+                                text: data.message,
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+                        }
+
+                    }
+                }
+            });
+        } else {
+            Swal.fire({
+                text: "Sorry, looks like there are some feilds is required, please try again.",
+                icon: "info",
+                buttonsStyling: !1,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-light"
+                }
+            });
+        }
     });
 });
 
@@ -512,9 +567,9 @@ async function setCurrentTabAssessment(tabName, id) {
                     var skill = group.find('input[type="radio"]').get();
 
                     var skilldata = [];
-                    var totalskill = $.map(skill, function (element) {                  
-                        var skillid = $(element).attr("skillid");                  
-                        skilldata.push({                      
+                    var totalskill = $.map(skill, function (element) {
+                        var skillid = $(element).attr("skillid");
+                        skilldata.push({
                             SkillId: skillid,
                         });
                     });
@@ -525,67 +580,67 @@ async function setCurrentTabAssessment(tabName, id) {
 
                         var selectedresult = group.find('input[type="radio"]:checked').get();
 
-                            var assessmsnedata = [];
-                            var columns = $.map(selectedresult, function (element) {
-                                var grpname = $(element).attr("grpname");
-                                var skillname = $(element).attr("skillname");
-                                var skillid = $(element).attr("skillid");
-                                var levelid = $(element).attr("levelid");
-                                //var id = $(element).attr("id");
-                                assessmsnedata.push({
-                                    Id:0,
-                                    SkillGroup: grpname,
-                                    SkillName: skillname,
-                                    SkillId: skillid,
-                                    SkillLevel: levelid
-                                });
+                        var assessmsnedata = [];
+                        var columns = $.map(selectedresult, function (element) {
+                            var grpname = $(element).attr("grpname");
+                            var skillname = $(element).attr("skillname");
+                            var skillid = $(element).attr("skillid");
+                            var levelid = $(element).attr("levelid");
+                            //var id = $(element).attr("id");
+                            assessmsnedata.push({
+                                Id: 0,
+                                SkillGroup: grpname,
+                                SkillName: skillname,
+                                SkillId: skillid,
+                                SkillLevel: levelid
                             });
+                        });
 
-                            var Assessment = {
-                                ServiceUserId: $('#hdnserviceuserid').val(),
-                                AssessmentType: $('#hdnassessmenttype').val()
-                            }
+                        var Assessment = {
+                            ServiceUserId: $('#hdnserviceuserid').val(),
+                            AssessmentType: $('#hdnassessmenttype').val()
+                        }
 
-                            var assessmentCreateViewModel = {
-                                Assessment: Assessment,
-                                AssessmentSkills: assessmsnedata
-                            }
+                        var assessmentCreateViewModel = {
+                            Assessment: Assessment,
+                            AssessmentSkills: assessmsnedata
+                        }
 
-                            $.ajax({
-                                type: "POST",
-                                url: '/ServiceUsers/AssessmentSave',
-                                data: { assessmentCreateViewModel: assessmentCreateViewModel },
-                                success: function (data) {
-                                    if (data.statuscode == 3) {
-                                        Swal.fire({
-                                            text: data.message,
-                                            icon: "error",
-                                            buttonsStyling: !1,
-                                            confirmButtonText: "Ok, got it!",
-                                            customClass: {
-                                                confirmButton: "btn btn-light"
-                                            }
-                                        });
-                                    } else {
-                                        Swal.fire({
-                                            text: "Form has been successfully submitted!",
-                                            icon: "success",
-                                            buttonsStyling: !1,
-                                            confirmButtonText: "Ok, got it!",
-                                            customClass: {
-                                                confirmButton: "btn btn-primary"
-                                            }
-                                        }).then(function (q) {
-                                            q.isConfirmed && $('#create_assessment').modal('hide');
-                                            setCurrentTabAssessment(tabName, id);
-                                        });
-                                    }
+                        $.ajax({
+                            type: "POST",
+                            url: '/ServiceUsers/AssessmentSave',
+                            data: { assessmentCreateViewModel: assessmentCreateViewModel },
+                            success: function (data) {
+                                if (data.statuscode == 3) {
+                                    Swal.fire({
+                                        text: data.message,
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-light"
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        text: "Form has been successfully submitted!",
+                                        icon: "success",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary"
+                                        }
+                                    }).then(function (q) {
+                                        q.isConfirmed && $('#create_assessment').modal('hide');
+                                        setCurrentTabAssessment(tabName, id);
+                                    });
                                 }
+                            }
 
-                            });
-                        
-                    }               
-                   else {
+                        });
+
+                    }
+                    else {
                         Swal.fire({
                             text: "Sorry, Please select every skill at least one level, please try again.",
                             icon: "info",
@@ -633,6 +688,68 @@ function assessmentDetails(ctrl) {
     }
 }
 
+function ArchiveUserModal(ctrl) {
+    var id = $(ctrl).attr('id');
+    if (id != undefined) {
+        $('#kt_modal_ArchiveReason').modal('show');
+    }
+}
 
+function UnArchiveUser(ctrl) {
+    var id = $(ctrl).attr('id');
+    if (id != undefined) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "It will be Un-Archive permanently!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, do it!',
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/ServiceUsers/UnArchiveUser',
+                        data: { Userid: $('#hdnserviceuserid').val() },
+                        success: function (data) {
+                            if (data != null) {
+                                if (data.statuscode == 1) {
+                                    Swal.fire({
+                                        text: "Un-Archive successfully submitted!",
+                                        icon: "success",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary"
+                                        }
+                                    }).then(function (q) {
+                                        q.isConfirmed
+                                        //window.location.href = "/ServiceUsers";
+                                        window.location.reload();
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        text: data.message,
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-light"
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+
+                });
+            },
+        });     
+    }
+}
 
 

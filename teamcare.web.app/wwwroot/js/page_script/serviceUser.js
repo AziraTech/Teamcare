@@ -306,10 +306,11 @@ const fv3 = FormValidation
 async function doSortFilterBy() {
     var optFilterBy = $("#filterBy").val();
     var optSortBy = $("#sortBy").val();
+    var IsArchive = $("#chkIsArchive").prop('checked');
     await $.ajax({
         type: "POST",
         url: '/ServiceUsers/SortFilterOption',
-        data: { sortBy: +optSortBy, filterBy: optFilterBy },
+        data: { sortBy: optSortBy, filterBy: optFilterBy, isArchive: IsArchive },
         success: function (data) {
             if (data) {
                 $('#partialViewDataContent').html('');

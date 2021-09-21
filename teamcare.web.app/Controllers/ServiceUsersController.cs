@@ -155,7 +155,7 @@ namespace teamcare.web.app.Controllers
                     Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
                     PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
-
+                    ArchiveReason=EnumExtensions.GetEnumListItems<ArchiveReason>()
                 },
                 ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
             };
@@ -172,11 +172,11 @@ namespace teamcare.web.app.Controllers
             };
             return PartialView("_AssessmentDataContent", model);
         }
-        public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy)
+        public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy, bool isArchive)
         {
 
             //Sorting List
-            var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy);
+            var listOfUser = await _serviceUserService.ListAllSortedFiltered(sortBy, filterBy, isArchive);
             if (listOfUser != null)
             {
                 var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
@@ -305,7 +305,6 @@ namespace teamcare.web.app.Controllers
                 return Json(new { statuscode = 3, message = ex.Message });
             }
         }
-
 
         public async Task<IActionResult> saveLog(string logId, string dbType, string serviceUserId, string logMessage)
         {
@@ -477,6 +476,50 @@ namespace teamcare.web.app.Controllers
                 };
 
                 return PartialView("_AssessmentSkillDetails", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ArchiveUserReason(int ReasonId, Guid Userid)
+        {
+            try
+            {
+                var serviceuser =  await _serviceUserService.ArchiveUnArchiveUser(ReasonId,Userid,1);
+
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = "Add Archive ServiceUsers", Details = "service call for add archive serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                });
+
+                return Json(new { statuscode = 1 });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
+            }
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> UnArchiveUser(Guid Userid)
+        {
+            try
+            {
+               var serviceuser = await _serviceUserService.ArchiveUnArchiveUser(0,Userid,2);
+
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = "Un-Archive ServiceUsers", Details = "service call for un-archive serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                });
+
+                return Json(new { statuscode = 1 });
+
             }
             catch (Exception ex)
             {

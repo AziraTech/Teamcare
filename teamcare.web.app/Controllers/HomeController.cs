@@ -47,7 +47,7 @@ namespace teamcare.web.app.Controllers
                     new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home"))
                 });
     
-            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null);
+            var listOfUsers = await _serviceUserService.ListAllSortedFiltered(0, null,false);
             if (listOfUsers != null)
             {
                 var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
