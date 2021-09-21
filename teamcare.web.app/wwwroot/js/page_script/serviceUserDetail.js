@@ -371,7 +371,7 @@ $(document).ready(function () {
                     if (data != null) {
                         if (data.statuscode == 1) {
                             Swal.fire({
-                                text: "Archive successfully submitted!",
+                                text: "Service user has been archived successfully.",
                                 icon: "success",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
@@ -403,7 +403,7 @@ $(document).ready(function () {
             });
         } else {
             Swal.fire({
-                text: "Sorry, looks like there are some feilds is required, please try again.",
+                text: "Oops! It looks like a required field has not been set.",
                 icon: "info",
                 buttonsStyling: !1,
                 confirmButtonText: "Ok, got it!",
@@ -701,7 +701,7 @@ function UnArchiveUser(ctrl) {
 
         Swal.fire({
             title: 'Are you sure?',
-            text: "It will be Un-Archive permanently!",
+            text: "The service user will be unarchived.",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -718,7 +718,7 @@ function UnArchiveUser(ctrl) {
                             if (data != null) {
                                 if (data.statuscode == 1) {
                                     Swal.fire({
-                                        text: "Un-Archive successfully submitted!",
+                                        text: "Service user has been unarchived successfully.",
                                         icon: "success",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
