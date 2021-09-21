@@ -1,13 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Residence View";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";    
 }
 
 @model teamcare.web.app.ViewModels.ResidenceListViewModel
+@{ 
+
+    var hdResidenceId = (Model.Residence == null) ? Model.Residence.Id.ToString() : "0";
+}
 <!--begin::Navbar-->
 <div class="card mb-5 mb-xxl-8">
     <div class="card-body pt-9 pb-0">
-        <input type="hidden" id="hdnresidenceid" value="@Model.Residence.Id" />
+        <input type="hidden" id="hdnresidenceid" value="@hdResidenceId" />
         <!--begin::Details-->
         <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
             <!--begin: Pic-->
@@ -71,10 +75,12 @@
                                     <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Payments</div>
                                 </div>
                                 <!--end::Heading-->
-                                <div class="menu-item px-3">
+                                @*<div class="menu-item px-3">
                                     <a href="#" class="menu-link px-3" id="btnbindedit" data-bs-toggle="modal" data-bs-target="#kt_modal_new_card_residence">Edit Residence</a>
+                                </div>*@
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3" id="removeResidenceRecord" onclick="RemoveResidence('@Model.Residence.ServiceUsers.Count', '@Model.Residence.Id')" >Remove Residence</a>
                                 </div>
-
 
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">

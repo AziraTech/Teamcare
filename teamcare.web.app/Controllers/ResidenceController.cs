@@ -70,23 +70,19 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> Detail(Guid Id)
         {
-
             SetPageMetadata(PageTitles.Residence, SiteSection.Residence, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
-            listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
-           
+            if (listOfResidence != null) { listOfResidence.PrePath = "/" + _azureStorageOptions.Container; }           
             var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
             var model = new ResidenceListViewModel
             {
                 Residence = listOfResidence,
                 totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
             };
-             
             return View(model);
-
         }
 
         public async Task<IActionResult> SetCurrentTab(string tabName, string Id)
@@ -191,6 +187,35 @@ namespace teamcare.web.app.Controllers
             }
         }
 
-         
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string Id)
+        {
+            try
+            {
+                Guid id = new Guid(Id);
+                ResidenceModel rm = new ResidenceModel();
+                rm.Id = id;
+                rm.DeletedBy = (Guid)base.UserId;
+                var dum = await _documentUploadService.GetByResidenceIdAsync(id);
+                if (dum != null) { await _documentUploadService.DeleteAsync(dum); }
+                await _residenceService.DeleteAsync(rm);
+
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = "DeleteResidence", Details = "service call for delete residence.", UserReference = "", CreatedBy = base.UserId });
+                });
+
+
+                return Json(new { success = true, statuscode = 1, message = "Removed Successfully." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, statuscode = 2, message = ex.Message });
+            }
+        }
+
+        
+
     }
 }

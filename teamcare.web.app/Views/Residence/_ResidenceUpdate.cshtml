@@ -10,7 +10,13 @@
             </div>
             <!--end::Card title-->
             <!--begin::Action-->
-            <a href="#EditRecords"  id="editResidenceRecords" class="btn btn-primary align-self-center">Edit Residence</a>
+            <a href="#EditRecords" id="editResidenceRecords" class="btn btn-primary align-self-center">Edit Residence</a>
+
+            @*<div class="d-flex mb-4" style="padding-left:501px;">
+                <a href="#" class="btn btn-sm btn-primary me-3" id="editResidenceRecords" title="Remove Residence" ><i class="bi bi-pencil-square"></i></a>
+                <a href="#" class="btn btn-sm btn-danger" id="removeResidenceRecord" title="Delete Contact" onclick="RemoveResidence(this, '@Model.Residence.Id')"><i class="bi bi-trash"></i></a>
+            </div>*@
+
             <!--end::Action-->
         </div>
         <!--end::Card header-->

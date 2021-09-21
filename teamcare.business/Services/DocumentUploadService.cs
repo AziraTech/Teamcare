@@ -41,6 +41,12 @@ namespace teamcare.business.Services
             var document = documents.ToList().FirstOrDefault(x => x.DocumentType == 1 && x.ContactId == id);
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
         }
+        public async Task<DocumentUploadModel> GetByResidenceIdAsync(Guid id)
+        {
+            var documents = await _documentUploadRepository.ListAllAsync();
+            var document = documents.ToList().FirstOrDefault(x => x.DocumentType == 1 && x.ResidenceId == id);
+            return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
+        }
 
         public async Task<IEnumerable<DocumentUploadModel>> ListAllAsync()
         {

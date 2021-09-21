@@ -54,7 +54,8 @@ namespace teamcare.business.Services
 
         public async Task DeleteAsync(ResidenceModel model)
         {
-            throw new NotImplementedException();
+            var result = _mapper.Map<ResidenceModel, Residence>(model);
+            await _repository.DeleteAsync(result);
         }
     }
 }

@@ -165,7 +165,7 @@ namespace teamcare.web.app.Controllers
                 ContactModel cm = new ContactModel();
                 cm.Id = id;
                 cm.ServiceUserId = serviceUserId;
-                cm.CreatedBy = (Guid)base.UserId;
+                cm.DeletedBy = (Guid)base.UserId;
                 var dum = await _documentUploadService.GetByContactIdAsync(id);
                 if (dum != null) { await _documentUploadService.DeleteAsync(dum); }
                 await _contactService.DeleteAsync(cm);

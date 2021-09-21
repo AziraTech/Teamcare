@@ -118,6 +118,68 @@ async function setCurrentTab(tabName, id) {
         }
     });
 }
+
+function RemoveResidence(serviceUserCount, residenceId)
+{
+    if (+serviceUserCount > 0) {
+        Swal.fire({
+            text: 'There are service user available, please change their residence, then Remove.',
+            icon: "error",
+            buttonsStyling: !1,
+            confirmButtonText: "Ok, got it!",
+            customClass: { confirmButton: "btn btn-light" }
+        });
+    }
+    else {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "It will be deleted permanently!, \r\nAlso remove related data.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Residence/Delete',
+                        data: { id: residenceId },
+                        success: function (data) {
+                            if (data.success) {
+                                Swal.fire({
+                                    text: "Form has been successfully removed!",
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: { confirmButton: "btn btn-primary" }
+                                }).then(function (q) {
+                                    
+                                    var host = location.origin;
+                                    //window.location.href = 'http://' + host + '/Residence'
+                                    location.replace(host + '/Residence');
+                                    //https://localhost/Residence
+                                });
+                            } else {
+                                Swal.fire({
+                                    text: data.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: { confirmButton: "btn btn-light" }
+                                });
+                            }
+                        }
+                    });
+                });
+            },
+        });
+    }
+
+    
+}
+
 var newResidenceID = 0;
 $(document).ready(function () {
 
