@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     @using teamcare.common.Helpers
     @model teamcare.web.app.ViewModels.ServiceUsersViewModel
+
+    var userRole = User.GetClaimValue(System.Security.Claims.ClaimTypes.Role);
+
 }
 <!--begin::Navbar-->
 <div class="card mb-5 mb-xxl-8">
@@ -109,19 +112,22 @@
                                     </div>*@
                                 <!--begin::Menu item-->
 
-                                @if (Model.ServiceUserByID.ArchivedOn == null)
+                                @if (userRole == "GlobalAdmin" || userRole == "Admin")
                                 {
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3" onclick="ArchiveUserModal(this)" id="@Model.ServiceUserByID.Id">Archive</a>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3" onclick="UnArchiveUser(this)" id="@Model.ServiceUserByID.Id"> Un-Archive</a>
-                                    </div>
-                                }
 
+                                    @if (Model.ServiceUserByID.ArchivedOn == null)
+                                    {
+                                        <div class="menu-item px-3">
+                                            <a href="#" class="menu-link px-3" onclick="ArchiveUserModal(this)" id="@Model.ServiceUserByID.Id">Archive</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="menu-item px-3">
+                                            <a href="#" class="menu-link px-3" onclick="UnArchiveUser(this)" id="@Model.ServiceUserByID.Id"> Un-Archive</a>
+                                        </div>
+                                    }
+                                }
 
                                 <!--end::Menu item-->
 
