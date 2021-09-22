@@ -10,7 +10,7 @@ var myDropzoneContact = new Dropzone("#sv-contact-profile-photo", {
     addRemoveLinks: true,
     acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
     success: function (file, response) {
-        ctempFileId = response;
+        ctempFileId = response.id;
         cfileName = file.name;
         cfileType = file.type;
     }
@@ -88,7 +88,7 @@ var myDropzoneEditContact = new Dropzone("#sv-contact-profile-photo_edit", {
     addRemoveLinks: true,
     acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
     success: function (file, response) {
-        utempFileId = response;
+        utempFileId = response.id;
         ufileName = file.name;
         ufileType = file.type;
     }

@@ -11,7 +11,7 @@ var myDropzone = new Dropzone("#sv-profile-photo", {
     addRemoveLinks: true,
     acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
     success: function (file, response) {
-        tempFileId = response;
+        tempFileId = response.id;
         fileName = file.name;
         fileType = file.type;
     }
