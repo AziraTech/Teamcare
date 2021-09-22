@@ -150,12 +150,16 @@ const editcontactfrm = FormValidation
         }
     );
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
 
-    $('#new_card_contact_submit').click(function (e) {
+    $('#new_card_contact_submit').click(function (e)
+    {
         e.preventDefault();
-        contactfrm.validate().then(function (s) {
-            if ("Valid" == s) {
+        contactfrm.validate().then(function (s)
+        {
+            if ("Valid" == s)
+            {
                 $('#new_card_contact_submit').disabled = !0;
                 $('#new_card_contact_submit').attr("data-kt-indicator", "on");
                 setTimeout(function () {
@@ -251,90 +255,10 @@ $(document).ready(function () {
         });
     });
 
-    $('#edit_card_contact_submit').click(function (e) {
+    $('#edit_card_contact_submit').click(function (e)
+    {
         e.preventDefault();
-        editcontactfrm.validate().then(function (s) {
-            if ("Valid" == s) {
-                $('#edit_card_contact_submit').disabled = !0;
-                $('#edit_card_contact_submit').attr("data-kt-indicator", "on");
-                setTimeout(function () {
-                    $('#edit_card_contact_submit').removeAttr("data-kt-indicator");
-                    $('#edit_card_contact_submit').disabled = !1;
-
-                    //ajax call for the submit;
-                    var Contact = {
-                        Id: $('#hdncontactid').val(),
-                        ServiceUserId: $('#hdnsrvuserid').val(),
-                        Title: $('#ddlutitle').val(),
-                        FirstName: $('#txtufirstname').val(),
-                        MiddleName: $('#txtumiddlename').val(),
-                        LastName: $('#txtulastname').val(),
-                        Address: $('#txtuaddress').val(),
-                        Email: $('#txtuemail').val(),
-                        Mobile: $('#txtumobileno').val(),
-                        Telephone: $('#txtutelephoneno').val(),
-                        Relationship: $('#ddlurelationship').val(),
-                        IsNextOfKin: $('#chkuIsNxtKin').prop('checked'),
-                        IsEmergencyContact: $('#chkuIsEmergContact').prop('checked'),
-                        FileName: ufileName,
-                        FileType: ufileType,
-                        TempFileId: utempFileId
-
-                    }
-                    var contactCreateViewModel = {
-                        Contact: Contact,
-                        TempFileId: utempFileId
-                    }
-                    $.ajax({
-                        type: "POST",
-                        url: '/Contact/Save',
-                        data: { contactCreateViewModel: contactCreateViewModel },
-                        success: function (data) {
-                            if (data.statuscode == 3) {
-                                Swal.fire({
-                                    text: data.message,
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-light"
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    text: "Form has been successfully submitted!",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                }).then(function (q) {
-                                    Cleardata();
-                                    q.isConfirmed && modalcontact.hide();
-                                });
-                                $('#kt_modal_edit_contact').modal('hide');
-                                $('#contactIndexPage').html('');
-                                $('#contactIndexPage').html(data);
-                            }
-                        }
-                    });
-                    //on success show message
-                }, 2e3);
-
-            }
-            else {
-                Swal.fire({
-                    text: "Sorry, looks like there are some errors detected, please try again.",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn btn-light"
-                    }
-                });
-            }
-        });
+        saveContactDetails(this, e);
     });
 
 
@@ -403,7 +327,7 @@ function EditContactModal(ctrl) {
         $('#kt_modal_contact_details').modal('hide');
         Cleardata();
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: '/Contact/Detail',
             data: { id: id },
             success: function (data) {
@@ -435,6 +359,10 @@ function EditContactModal(ctrl) {
                         $('#OldProfile').hide();
                     }
                     $('#kt_modal_edit_contact').modal('show');
+                    $('#edit_card_contact_submit').click(function (e)
+                    {
+                        saveContactDetails(this, e);
+                    });
                 }
                 else {
 
@@ -442,6 +370,91 @@ function EditContactModal(ctrl) {
             }
         });
     }
+}
+
+function saveContactDetails(sender, event) {
+    editcontactfrm.validate().then(function (s) {
+        if ("Valid" == s) {
+            $('#edit_card_contact_submit').disabled = !0;
+            $('#edit_card_contact_submit').attr("data-kt-indicator", "on");
+            setTimeout(function () {
+                $('#edit_card_contact_submit').removeAttr("data-kt-indicator");
+                $('#edit_card_contact_submit').disabled = !1;
+
+                //ajax call for the submit;
+                var Contact = {
+                    Id: $('#hdncontactid').val(),
+                    ServiceUserId: $('#hdnsrvuserid').val(),
+                    Title: $('#ddlutitle').val(),
+                    FirstName: $('#txtufirstname').val(),
+                    MiddleName: $('#txtumiddlename').val(),
+                    LastName: $('#txtulastname').val(),
+                    Address: $('#txtuaddress').val(),
+                    Email: $('#txtuemail').val(),
+                    Mobile: $('#txtumobileno').val(),
+                    Telephone: $('#txtutelephoneno').val(),
+                    Relationship: $('#ddlurelationship').val(),
+                    IsNextOfKin: $('#chkuIsNxtKin').prop('checked'),
+                    IsEmergencyContact: $('#chkuIsEmergContact').prop('checked'),
+                    FileName: ufileName,
+                    FileType: ufileType,
+                    TempFileId: utempFileId
+
+                }
+                var contactCreateViewModel = {
+                    Contact: Contact,
+                    TempFileId: utempFileId
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '/Contact/Save',
+                    data: { contactCreateViewModel: contactCreateViewModel },
+                    success: function (data) {
+                        if (data.statuscode == 3) {
+                            Swal.fire({
+                                text: data.message,
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                text: "Form has been successfully submitted!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function (q) {
+                                Cleardata();
+                                q.isConfirmed && modalcontact.hide();
+                            });
+                            $('#kt_modal_edit_contact').modal('hide');
+                            $('#contactIndexPage').html('');
+                            $('#contactIndexPage').html(data);
+                        }
+                    }
+                });
+                //on success show message
+            }, 2e3);
+
+        }
+        else {
+            Swal.fire({
+                text: "Sorry, looks like there are some errors detected, please try again.",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-light"
+                }
+            });
+        }
+    });
 }
 
 function DeleteContact(ctrl, serviceUserId) {
@@ -456,8 +469,10 @@ function DeleteContact(ctrl, serviceUserId) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!',
         showLoaderOnConfirm: true,
-        preConfirm: function () {
-            return new Promise(function (resolve) {
+        preConfirm: function ()
+        {
+            return new Promise(function (resolve)
+            {
                 $.ajax({
                     type: "POST",
                     url: '/Contact/Delete',
@@ -489,6 +504,7 @@ function DeleteContact(ctrl, serviceUserId) {
                             });
                             $('#contactIndexPage').html('');
                             $('#contactIndexPage').html(data);
+                            $('#kt_modal_edit_contact').modal('hide');
                         }
                     }
                 });

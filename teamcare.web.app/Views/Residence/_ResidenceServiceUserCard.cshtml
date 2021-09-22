@@ -39,7 +39,8 @@
                     @if (Model != null)
                     {
                         foreach (var item in Model.Residence.ServiceUsers)
-                        {
+                        {   if (item.ArchivedOn == null)
+                            {
                             <tr>
                                 <td>
                                     <!--begin::User-->
@@ -48,14 +49,14 @@
                                         <div class="me-5 position-relative">
                                             <!--begin::Avatar-->
                                             <div class="symbol symbol-35px symbol-circle">
-                                                <img src="@(item.ProfilePhoto !=null ? item.PrePath+"/"+item.ProfilePhoto.BlobName+"?width=200" :"../../media/avatars/blank.png" )" alt="image" />
+                                                <img src="@(item.ProfilePhoto != null ? item.PrePath + "/" + item.ProfilePhoto.BlobName + "?width=200" : "../../media/avatars/blank.png" )" alt="image" />
                                             </div>
                                             <!--end::Avatar-->
                                         </div>
                                         <!--end::Wrapper-->
                                         <!--begin::Info-->
                                         <div class="d-flex flex-column justify-content-center">
-                                            <a href="@Url.Action("Detail","ServiceUsers", new { id = item.Id })" class="mb-1 text-gray-800 text-hover-primary">@item.Title @item.FirstName @item.LastName</a>
+                                            <a href="@Url.Action("Detail", "ServiceUsers", new { id = item.Id })" class="mb-1 text-gray-800 text-hover-primary">@item.Title @item.FirstName @item.LastName</a>
                                             <div class="fw-bold fs-6 text-gray-400">
                                                 @(item.KnownAs)
                                             </div>
@@ -65,11 +66,12 @@
                                     <!--end::User-->
                                 </td>
                                 <td>@(item.DateOfAdmission.ToString("MMM, dd yyyy"))</td>
-                                <td>@(item.Residence != null?item.Residence.Name:"")</td>
+                                <td>@(item.Residence != null ? item.Residence.Name : "")</td>
                                 <td class="text-end">
-                                    <a href="@Url.Action("Detail","ServiceUsers", new { id = item.Id })" class="btn btn-light btn-sm">View</a>
+                                    <a href="@Url.Action("Detail", "ServiceUsers", new { id = item.Id })" class="btn btn-light btn-sm">View</a>
                                 </td>
                             </tr>
+                            }
                         }
                     }
                     <!--end::Table row-->

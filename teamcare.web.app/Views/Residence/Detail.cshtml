@@ -6,7 +6,8 @@
 @model teamcare.web.app.ViewModels.ResidenceListViewModel
 @{ 
 
-    var hdResidenceId = (Model.Residence == null) ? Model.Residence.Id.ToString() : "0";
+    var hdResidenceId = (Model.Residence != null) ? Model.Residence.Id.ToString() : "0";
+    if (Model.Residence == null) { return;  }
 }
 <!--begin::Navbar-->
 <div class="card mb-5 mb-xxl-8">

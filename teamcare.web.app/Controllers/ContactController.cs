@@ -130,7 +130,7 @@ namespace teamcare.web.app.Controllers
             }
 
             //Service User Detail for partial view 
-            var listOfUser = await _serviceUserService.GetByIdAsync(contactCreateViewModel.Contact.ServiceUserId);
+            var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(contactCreateViewModel.Contact.ServiceUserId.ToString()));            
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
             listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
             foreach (var item in listOfUser.Contacts)
