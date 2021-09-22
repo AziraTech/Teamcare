@@ -25,6 +25,6 @@ namespace teamcare.business.Models
 		public string PrePath { get; set; }
 		public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
 
-		public DocumentUploadModel ProfilePhoto => DocumentUploads?.FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
+		public DocumentUploadModel ProfilePhoto => DocumentUploads?.OrderByDescending(x=>x.CreatedOn).FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
 	}
 }

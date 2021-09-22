@@ -34,7 +34,7 @@ namespace teamcare.web.app.Controllers
         {
             SetPageMetadata(PageTitles.ServiceUserLog, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
-                new BreadcrumbItem(PageTitles.ServiceUserLog, string.Empty),
+                new BreadcrumbItem(PageTitles.ServiceUserLog, "0"),
             });
 
             var listOfServiceUsers = await _serviceUserService.ListAllAsync();

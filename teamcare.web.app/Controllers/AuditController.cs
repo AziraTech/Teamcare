@@ -30,7 +30,7 @@ namespace teamcare.web.app.Controllers
         {
             SetPageMetadata(PageTitles.Audit, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
-                new BreadcrumbItem(PageTitles.Audit, string.Empty),
+                new BreadcrumbItem(PageTitles.Audit, "0"),
             });
 
             var listOfUsers = await _userService.ListAllAsync();

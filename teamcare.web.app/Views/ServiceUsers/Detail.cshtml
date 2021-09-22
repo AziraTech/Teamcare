@@ -112,7 +112,7 @@
                                     </div>*@
                                 <!--begin::Menu item-->
 
-                                @if (userRole == "GlobalAdmin" || userRole == "Admin")
+                                @if (userRole == teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString() || userRole == teamcare.common.Enumerations.UserRoles.Admin.ToString())
                                 {
 
                                     @if (Model.ServiceUserByID.ArchivedOn == null)

@@ -39,7 +39,7 @@ namespace teamcare.web.app.Controllers
 					IsTemporary = true
 				});
             }
-			return Json(documentResult?.Id);
+			return Json(documentResult);
 		}
 	}
 }

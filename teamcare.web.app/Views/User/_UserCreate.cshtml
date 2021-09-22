@@ -123,7 +123,7 @@
             <span>Address</span>
         </label>
         <!--end::Label-->
-        <textarea type="text" class="form-control form-control-solid" name="address" value="@if (Model.User != null) { @Model.User.Address; }" id="txtaddress"></textarea>
+        <textarea type="text" class="form-control form-control-solid" name="address" id="txtaddress">@if (Model.User != null) { @Model.User.Address.Trim(); }</textarea>
     </div>
 
     <div class="fv-row mb-10">

@@ -17,5 +17,6 @@ namespace teamcare.web.app.ViewModels
 
         public string FullName { get; set; }
         public string Email { get; set; }
+        public string ProfilePhoto { get; set; }
     }
 }

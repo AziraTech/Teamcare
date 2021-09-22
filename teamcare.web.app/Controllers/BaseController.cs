@@ -24,7 +24,8 @@ namespace teamcare.web.app.Controllers
                 ViewData[ViewDataKeys.UserProfile] = new UserProfile
                 {
                     FullName = loggedInUser.GetClaimValue(ClaimTypes.Name),
-                    Email = loggedInUser.GetClaimValue(ClaimTypes.UserEmail)
+                    Email = loggedInUser.GetClaimValue(ClaimTypes.UserEmail),
+                    ProfilePhoto=loggedInUser.GetClaimValue(ClaimTypes.UserPhoto)
                 };
             }
             return base.OnActionExecutionAsync(context, next);

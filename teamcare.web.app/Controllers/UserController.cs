@@ -167,7 +167,7 @@ namespace teamcare.web.app.Controllers
             SetPageMetadata(PageTitles.User, SiteSection.Users, new List<BreadcrumbItem>()
             {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
-                new BreadcrumbItem(PageTitles.MyProfile, string.Empty),
+                new BreadcrumbItem(PageTitles.MyProfile,"0"),
             });
 
             var listOfUser = await _userService.GetByIdAsync((Guid)base.UserId);
@@ -185,6 +185,71 @@ namespace teamcare.web.app.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MyProfileUpdate(UserCreateViewModel userCreateViewModel)
+        {
+            try
+            {
+                if (userCreateViewModel?.User != null)
+                {
+                    var createdUser = new UserModel();
+
+                    var userdata = await _userService.GetByIdAsync((Guid)userCreateViewModel.User.Id);
+
+                    if (userdata != null)
+                    {
+                        userdata.Title = userCreateViewModel.User.Title;
+                        userdata.FirstName = userCreateViewModel.User.FirstName;
+                        userdata.LastName = userCreateViewModel.User.LastName;
+                        userdata.Position = userCreateViewModel.User.Position;
+                        userdata.Phone_No = userCreateViewModel.User.Phone_No;
+                        userdata.Mobile_No = userCreateViewModel.User.Mobile_No;
+                        userdata.Address = userCreateViewModel.User.Address.Trim();
+
+                        createdUser = await _userService.UpdateAsync(userdata);
+
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = "MyProfile Update", Details = "service call for update myprofile.", UserReference = "", CreatedBy = base.UserId });
+                        });
+
+                    }
+
+
+                    if (createdUser != null && !string.IsNullOrWhiteSpace(userCreateViewModel.TempFileId))
+                    {
+
+                        //	Get the temporary document
+                        var document =
+                            await _documentUploadService.GetByIdAsync(Guid.Parse(userCreateViewModel.TempFileId));
+
+                        var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
+                        {
+                            BlobName = document.BlobName,
+                            DestinationFolder = createdUser.Id.ToString()
+                        });
+
+                        if (relocateFile != null)
+                        {
+                            document.DocumentType = (int)DocumentTypes.ProfilePhoto;
+                            document.IsTemporary = false;
+                            document.UserId = createdUser.Id;
+                            document.BlobName = relocateFile.BlobName;
+
+                            await _documentUploadService.UpdateAsync(document);
+                        }
+
+                        var returnDoc = await _userService.GetByIdAsync(createdUser.Id.Value);
+                    }
+                }
+                return Json(new { statuscode = 1 });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
         }
     }
 }

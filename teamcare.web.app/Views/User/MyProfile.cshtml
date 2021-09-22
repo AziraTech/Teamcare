@@ -109,7 +109,7 @@
                     </div>
                     <!--end::Card title-->
                     <!--begin::Action-->
-                    <a class="btn btn-primary align-self-center" data-bs-toggle="tab" href="#kt_profile_details_edit" >Edit Profile</a>
+                    <a class="btn btn-primary align-self-center" id="btntab">Edit Profile</a>
                     <!--end::Action-->
                 </div>
                 <!--begin::Card header-->
@@ -168,7 +168,7 @@
                         <!--end::Label-->
                         <!--begin::Col-->
                         <div class="col-lg-8 d-flex align-items-center">
-                            <span class="fw-bolder fs-6 text-gray-800 me-2">@Model.User.Mobile_No</span>
+                            <span class="fw-bold fs-6 text-gray-800 me-2">@Model.User.Mobile_No</span>
                         </div>
                         <!--end::Col-->
                     </div>
@@ -194,7 +194,7 @@
                         <!--end::Label-->
                         <!--begin::Col-->
                         <div class="col-lg-8">
-                            <span class="fw-bolder fs-6 text-gray-800">@Model.User.Address</span>
+                            <span class="fw-bold fs-6 text-gray-800">@Model.User.Address</span>
                         </div>
                         <!--end::Col-->
                     </div>
@@ -209,44 +209,45 @@
                 <div class="card-header border-0 cursor-pointer">
                     <!--begin::Card title-->
                     <div class="card-title m-0">
-                        <h3 class="fw-bolder m-0">Profile Details</h3>
+                        <h3 class="fw-bolder m-0">Edit Profile Details</h3>
                     </div>
                     <!--end::Card title-->
                 </div>
                 <!--begin::Card header-->
                 <!--begin::Content-->
                 <!--begin::Form-->
-                <form id="kt_account_profile_details_form" class="form">
+                <form id="kt_account_profile_details_update" class="form" novalidate="novalidate">
+                    <input type="hidden" id="hdnuserid" value="@Model.User.Id" />
                     <!--begin::Card body-->
                     <div class="card-body border-top p-9">
                         <!--begin::Input group-->
                         <div class="row mb-6">
                             <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-bold fs-6">Avatar</label>
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Profile Image</label>
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8">
                                 <!--begin::Image input-->
-                                <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(assets/media/avatars/blank.png)">
+                                <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(../media/avatars/blank.png)">
                                     <!--begin::Preview existing avatar-->
                                     <div class="image-input-wrapper w-125px h-125px" style="background-image: url(@(Model.User.PrePath+ '/' + Model.User.ProfilePhoto.BlobName))"></div>
                                     <!--end::Preview existing avatar-->
                                     <!--begin::Label-->
-                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change photo">
                                         <i class="bi bi-pencil-fill fs-7"></i>
                                         <!--begin::Inputs-->
-                                        <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                        <input type="file" name="avatar" accept=".png, .jpg, .jpeg" id="user-profile-photo-update" />
                                         <input type="hidden" name="avatar_remove" />
                                         <!--end::Inputs-->
                                     </label>
                                     <!--end::Label-->
                                     <!--begin::Cancel-->
-                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel photo">
                                         <i class="bi bi-x fs-2"></i>
                                     </span>
                                     <!--end::Cancel-->
                                     <!--begin::Remove-->
-                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove photo">
                                         <i class="bi bi-x fs-2"></i>
                                     </span>
                                     <!--end::Remove-->
@@ -259,6 +260,36 @@
                             <!--end::Col-->
                         </div>
                         <!--end::Input group-->
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label fw-bold fs-6 required">Title</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" name="mytitle" id="ddlmytitle">
+                                    <option></option>
+                                    @foreach (var group in Model.CreateViewModel.Title)
+                                    {
+                                        if (Model.User != null && group.Value == (int)Model.User.Title)
+                                        {
+                                            <option value="@group.Value" selected>@group.Text</option>
+                                        }
+                                        else
+                                        {
+                                            @if (group.Text == "Mr.")
+                                            {
+                                                <option value="@group.Value" selected>@group.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@group.Value">@group.Text</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <!--end::Col-->
+                        </div>
                         <!--begin::Input group-->
                         <div class="row mb-6">
                             <!--begin::Label-->
@@ -270,12 +301,12 @@
                                 <div class="row">
                                     <!--begin::Col-->
                                     <div class="col-lg-6 fv-row">
-                                        <input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="First name" value="@Model.User.FirstName" />
+                                        <input type="text" name="myfirst_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="First name" value="@Model.User.FirstName" id="myfirstname" />
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
                                     <div class="col-lg-6 fv-row">
-                                        <input type="text" name="lname" class="form-control form-control-lg form-control-solid" placeholder="Last name" value="@Model.User.LastName" />
+                                        <input type="text" name="mylast_name" class="form-control form-control-lg form-control-solid" placeholder="Last name" value="@Model.User.LastName" id="mylastname" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -291,7 +322,7 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="Company name" value="@Model.User.Email" disabled />
+                                <input type="text" name="myemail" class="form-control form-control-lg form-control-solid" placeholder="Company name" value="@Model.User.Email" disabled />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -300,12 +331,12 @@
                         <div class="row mb-6">
                             <!--begin::Label-->
                             <label class="col-lg-4 col-form-label fw-bold fs-6">
-                                <span class="required">Mobile</span>
+                                <span>Mobile</span>
                             </label>
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="tel" name="phone" class="form-control form-control-lg form-control-solid" placeholder="Mobile number" value="@Model.User.Mobile_No" />
+                                <input type="tel" name="phone" class="form-control form-control-lg form-control-solid" placeholder="Mobile number" value="@Model.User.Mobile_No" id="mymobileno" />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -317,7 +348,7 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="tel" name="website" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="@Model.User.Phone_No" />
+                                <input type="tel" name="website" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="@Model.User.Phone_No" id="myphoneno" />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -329,7 +360,17 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="tel" name="position" class="form-control form-control-lg form-control-solid" placeholder="Position" value="@Model.User.Position" />
+                                <input type="tel" name="position" class="form-control form-control-lg form-control-solid" placeholder="Position" value="@Model.User.Position" id="myposition" />
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Address</label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div class="col-lg-8 fv-row">
+                                <textarea type="text" class="form-control form-control-solid" name="address" id="myaddress">@Model.User.Address.Trim()</textarea>
                             </div>
                             <!--end::Col-->
                         </div>
@@ -337,8 +378,8 @@
                     <!--end::Card body-->
                     <!--begin::Actions-->
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
-                        <button type="reset" class="btn btn-light btn-active-light-primary me-2">Discard</button>
-                        <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">Save Changes</button>
+                         <button type="submit" class="btn btn-light btn-active-light-primary me-2" id="btndiscard">Discard</button>
+                        <button type="submit" class="btn btn-primary" id="account_profile_Update_submit">Save Changes</button>
                     </div>
                     <!--end::Actions-->
                 </form>
@@ -349,3 +390,5 @@
     </div>
     <!--end::Post-->
 </div>
+
+<script src="~/js/page_script/myprofile.js"></script>
