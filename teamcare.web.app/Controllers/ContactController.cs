@@ -77,12 +77,7 @@ namespace teamcare.web.app.Controllers
                     if (contactCreateViewModel.Contact.Id.ToString() == "")
                     {
                         var listOfContact = await _contactService.ListAllAsync();
-                        // check IfEmail already exists
-                        var contact = listOfContact.FirstOrDefault(u => u.Email == contactCreateViewModel.Contact.Email);
-                        if (contact != null)
-                        {
-                            return Json(new { statuscode = 2 });
-                        }
+                       
                         createdContact = await _contactService.AddAsync(contactCreateViewModel.Contact);
                         _auditService.Execute(async repository =>
                         {
@@ -130,9 +125,8 @@ namespace teamcare.web.app.Controllers
             }
 
             //Service User Detail for partial view 
-            var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(contactCreateViewModel.Contact.ServiceUserId.ToString()));            
+            var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(contactCreateViewModel.Contact.ServiceUserId.ToString()));
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
-            listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
             foreach (var item in listOfUser.Contacts)
             {
                 item.PrePath = "/" + _azureStorageOptions.Container;
@@ -140,18 +134,13 @@ namespace teamcare.web.app.Controllers
             }
             var model = new ServiceUsersViewModel
             {
-                UserName = base.UserName,
-                ServiceUserByID = listOfUser,
                 CreateViewModel = new ServiceUserCreateViewModel
                 {
                     Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-                    Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
-                    Religion = EnumExtensions.GetEnumListItems<Religion>(),
-                    Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
-                    PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>()
                 },
-                ContactList = listOfUser.Contacts.OrderByDescending(r => r.Sequence)
+                ServiceUserByID = listOfUser,
+                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
             };
             return PartialView("~/Views/Contact/Index.cshtml", model);
         }
@@ -207,6 +196,45 @@ namespace teamcare.web.app.Controllers
                 return Json(new { statuscode = 3, message = ex.Message });
             }
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ContactDetailBind(string id)
+        {
+            try
+            {
+                var model = new ContactCreateViewModel();
+
+                if (!string.IsNullOrEmpty(id))
+                {
+                    var contactData = await _contactService.GetByIdAsync(new Guid(id));
+                    contactData.PrePath = "/" + _azureStorageOptions.Container;
+
+                    model = new ContactCreateViewModel
+                    {
+
+                        Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                        Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
+                        Contact = contactData
+                    };
+                }
+                else
+                {
+                    model = new ContactCreateViewModel
+                    {
+
+                        Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                        Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
+                        Contact=new ContactModel()
+                    };
+                }
+                return PartialView("~/Views/Contact/_ContactAddUpdate.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
+            }
         }
     }
 }

@@ -17,7 +17,7 @@
             <div class="d-flex flex-column justify-content-center">
                 <a href="#" class="mb-1 text-gray-800 text-hover-primary" onclick="ContactDetilas(this)" data-contact-id="@Model.Id">@Model.Title.GetEnumDescription() @Model.FirstName @Model.MiddleName @Model.LastName  </a>
                 <div class="fw-bold fs-6 text-gray-400">
-                    @(Model.Relationship)
+                    @(Model.Relationship.GetEnumDescription())
                 </div>
             </div>
             <!--end::Info-->

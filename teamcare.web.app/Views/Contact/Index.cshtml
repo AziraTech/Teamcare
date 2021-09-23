@@ -12,7 +12,7 @@
         <!--begin::Tab nav-->
         <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
             <li class="nav-item m-0">
-                <a href="#" class="btn btn-sm btn-primary align-self-center me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_create_contact" id="btncreatecontact">Create</a>
+                <a href="javaScript:void(0);" class="btn btn-sm btn-primary align-self-center me-3"  id="btncreatecontact" onclick="openAddEditContactModal('')">Create</a>
             </li>
             <li class="nav-item m-0">
                 <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_contact_card_pane">
@@ -106,8 +106,25 @@
     <!--end::Tab pane-->
 </div>
 <!--end::Tab Content-->
+<!-- ------------------------------------- Model Portion ------------------------------------- -->
 <!--begin::Modals-->
-<!--begin::Modal - Create Service Users-->
+<!--begin::Modal - Create Contact-->
+<div class="modal fade" id="modalAddEditContact" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-900px">
+        <!--begin::Modal content-->
+        <input type="hidden" id="hdnsrvuserid" value="@Model.ServiceUserByID.Id" />
+
+        <div class="modal-content" id="divAddEditContact">
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - Create Contact-->
+<!--end::Modals-->
+<!--begin::Modals-->
+<!--begin::Modal - Contact Details -->
 <div class="modal fade" id="kt_modal_contact_details" tabindex="-1" aria-hidden="true">
     <!--begin::Modal dialog-->
     <div class="modal-dialog modal-dialog-centered mw-900px">
@@ -120,7 +137,7 @@
                 <!--end::Modal title-->
                 <!--begin::Close-->
                 <div class="d-flex mb-4" style="padding-left:501px;">
-                    <a href="#" class="btn btn-sm btn-primary me-3" id="btncreatecontact" title="Delete Contact" onclick="EditContactModal(this)"><i class="bi bi-pencil-square"></i></a>
+                    <a href="javaScript:void(0);" class="btn btn-sm btn-primary me-3" id="btneditcontact" title="Delete Contact" ><i class="bi bi-pencil-square"></i></a>
                     <a href="#" class="btn btn-sm btn-danger" id="btndeletecontact" title="Delete Contact" onclick="DeleteContact(this, '@Model.ServiceUserByID.Id')"><i class="bi bi-trash"></i></a>
                 </div>
 
@@ -150,5 +167,5 @@
     </div>
     <!--end::Modal dialog-->
 </div>
-<!--end::Modal - Create Service Users-->
+<!--end::Modal - Contact Details -->
 <!--end::Modals-->

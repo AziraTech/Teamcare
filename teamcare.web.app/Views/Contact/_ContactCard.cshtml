@@ -18,7 +18,7 @@
                     @item.Title.GetEnumDescription() @item.FirstName @item.MiddleName @item.LastName
                     <!--end::Name-->
                     <!--begin::Position-->
-                    <div class="fw-bold text-gray-400 mb-6">@item.Relationship</div>
+                    <div class="fw-bold text-gray-400 mb-6">@item.Relationship.GetEnumDescription()</div>
                     <!--end::Position-->
                     @if (item.IsNextOfKin == true)
                     {
@@ -38,7 +38,6 @@
 }
 
 <!-- ------------------------------------- Model Portion ------------------------------------- -->
-
 <!--begin::Modals-->
 <!--begin::Modal - Create Service Users-->
 <div class="modal fade" id="kt_modal_edit_contact" tabindex="-1" aria-hidden="true">
@@ -69,7 +68,9 @@
             <!--end::Modal header-->
             <!--begin::Modal body-->
             <div class="modal-body scroll-y py-lg-10 px-lg-10">
-                <partial name="../Contact/_ContactUpdate" model="Model" />
+                <div id="contactdatacontent">
+                    @*<partial name="../Contact/_ContactUpdate" />*@
+                </div>
             </div>
             <!--end::Modal body-->
         </div>
