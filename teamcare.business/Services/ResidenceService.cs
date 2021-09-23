@@ -22,23 +22,20 @@ namespace teamcare.business.Services
 
         public async Task<ResidenceModel> GetByIdAsync(Guid id)
         {
-
             var result = await _repository.GetByIdAsync(id);
             return _mapper.Map<Residence, ResidenceModel>(result);
         }
 
         public async Task<IEnumerable<ResidenceModel>> ListAllAsync()
         {
-
             var listresidence = await _repository.ListAllAsync();
-            var mapperlist = _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);
+            var mapperlist = _mapper.Map<IEnumerable<Residence>, IEnumerable<ResidenceModel>>(listresidence);            
             mapperlist = mapperlist.OrderBy(r => r.Name).ToList();
             return mapperlist;
         }
 
         public async Task<ResidenceModel> AddAsync(ResidenceModel model)
         {
-
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.AddAsync(mapped);
             return _mapper.Map<Residence, ResidenceModel>(result);
@@ -46,7 +43,6 @@ namespace teamcare.business.Services
 
         public async Task<ResidenceModel> UpdateAsync(ResidenceModel model)
         {
-
             var mapped = _mapper.Map<ResidenceModel, Residence>(model);
             var result = await _repository.UpdateAsync(mapped);
             return _mapper.Map<Residence, ResidenceModel>(result);

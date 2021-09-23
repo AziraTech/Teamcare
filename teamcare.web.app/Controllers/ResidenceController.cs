@@ -75,14 +75,19 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Residence, Url.Action("Index", "Residence"))
             });
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
-            if (listOfResidence != null) { listOfResidence.PrePath = "/" + _azureStorageOptions.Container; }           
-            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
-            var model = new ResidenceListViewModel
+            if (listOfResidence != null)
             {
-                Residence = listOfResidence,
-                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
-            };
-            return View(model);
+                listOfResidence.ServiceUsers = listOfResidence.ServiceUsers.Where(x => x.ArchivedOn == null).ToList();
+                if (listOfResidence != null) { listOfResidence.PrePath = "/" + _azureStorageOptions.Container; }
+                var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+                var model = new ResidenceListViewModel
+                {
+                    Residence = listOfResidence,
+                    totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+                };
+                return View(model);
+            }
+            return null;
         }
 
         public async Task<IActionResult> SetCurrentTab(string tabName, string Id)
@@ -97,26 +102,25 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> ResidenceDetail(Guid Id)
         {
-
             ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();
-            var listOfResidence = await _residenceService.GetByIdAsync(Id);
+            var listOfResidence = await _residenceService.GetByIdAsync(Id);            
             if (listOfResidence != null)
             {
+                listOfResidence.ServiceUsers = listOfResidence.ServiceUsers.Where(x => x.ArchivedOn == null).ToList();
                 listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
                 ReturnResidenceModel.Residence = listOfResidence;
                 foreach (var item in ReturnResidenceModel.Residence.ServiceUsers) { item.PrePath = "/" + _azureStorageOptions.Container; }
             }
-
-
             return PartialView("_ResidenceUpdate", ReturnResidenceModel);
         }
 
         public async Task<IActionResult> ServiceUserDetails(string Id)
         {
             ResidenceListViewModel ReturnResidenceModel = new ResidenceListViewModel();
-            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id));
+            var listOfResidence = await _residenceService.GetByIdAsync(new Guid(Id));            
             if (listOfResidence != null)
             {
+                listOfResidence.ServiceUsers = listOfResidence.ServiceUsers.Where(x => x.ArchivedOn == null).ToList();
                 listOfResidence.PrePath = "/" + _azureStorageOptions.Container;
                 ReturnResidenceModel.Residence = listOfResidence;
                 foreach (var item in ReturnResidenceModel.Residence.ServiceUsers) { item.PrePath = "/" + _azureStorageOptions.Container; }
@@ -171,7 +175,7 @@ namespace teamcare.web.app.Controllers
                 }
 
                 var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
-                var listOfResidence = await _residenceService.ListAllAsync();
+                var listOfResidence = await _residenceService.ListAllAsync();                
                 var model = new ResidenceListViewModel
                 {
                     Residences = listOfResidence,
@@ -179,12 +183,7 @@ namespace teamcare.web.app.Controllers
                 };
                 foreach (var item in model.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }                
                 return PartialView("_ShowAllRecrods", model);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { statuscode = 3, message = ex.Message });
-
-            }
+            } catch (Exception ex) { return Json(new { statuscode = 3, message = ex.Message }); }
         }
 
 
@@ -205,7 +204,6 @@ namespace teamcare.web.app.Controllers
                 {
                     await repository.CreateAuditRecord(new Audit { Action = "DeleteResidence", Details = "service call for delete residence.", UserReference = "", CreatedBy = base.UserId });
                 });
-
 
                 return Json(new { success = true, statuscode = 1, message = "Removed Successfully." });
             }

@@ -207,9 +207,9 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
+                var createdServiceUser = new ServiceUserModel();
                 if (serviceUserCreateViewModel?.ServiceUser != null)
-                {
-                    var createdServiceUser = new ServiceUserModel();
+                {                    
                     if (serviceUserCreateViewModel.ServiceUser.Id.ToString() == "")
                     {
                         createdServiceUser = await _serviceUserService.AddAsync(serviceUserCreateViewModel.ServiceUser);
@@ -252,12 +252,53 @@ namespace teamcare.web.app.Controllers
                             await _documentUploadService.UpdateAsync(document);
                         }
 
-                        var returnDoc = await _serviceUserService.GetByIdAsync(createdServiceUser.Id.Value);
+                        //var returnDoc = await _serviceUserService.GetByIdAsync(createdServiceUser.Id.Value);
                     }
                 }
 
-                return Json(new { statuscode = 1 });
+                if (serviceUserCreateViewModel.ServiceUser.Id.ToString() != "")
+                {
 
+                    var listOfUser = await _serviceUserService.GetByIdAsync((Guid)serviceUserCreateViewModel.ServiceUser.Id);
+                    if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
+                    listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+
+                    foreach (var item in listOfUser.Contacts)
+                    {
+                        item.PrePath = "/" + _azureStorageOptions.Container;
+                        item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
+                    }
+
+                    var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == (Guid)serviceUserCreateViewModel.ServiceUser.Id).FirstOrDefault();
+                    listOfUser.Favourite = valueOfFavourite == null ? false : true;
+                    var listOfResidence = await _residenceService.ListAllAsync();
+                    var distinctResidence = listOfResidence.Select(x => new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Name
+                    }).OrderBy(y => y.Text).ToList();
+
+                    var model = new ServiceUsersViewModel
+                    {
+                        UserName = base.UserName,
+                        ServiceUserByID = listOfUser,
+                        ResidenceList = distinctResidence,
+                        CreateViewModel = new ServiceUserCreateViewModel
+                        {
+                            Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                            Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                            Religion = EnumExtensions.GetEnumListItems<Religion>(),
+                            Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
+                            PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
+                            Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
+                            ArchiveReason = EnumExtensions.GetEnumListItems<ArchiveReason>()
+                        },
+                        ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+                    };
+                    return PartialView("_SeviceUserProfileDetails", model);
+                }
+                return Json(new { statuscode = 1, message = "Success" });
             }
             catch (Exception ex)
             {

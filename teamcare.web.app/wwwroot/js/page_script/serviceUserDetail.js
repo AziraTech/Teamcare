@@ -101,18 +101,22 @@ submit.addEventListener("click", function (e) {
                     url: '/ServiceUsers/Save',
                     data: { serviceUserCreateViewModel: serviceUserCreateViewModel },
                     success: function (data) {
-                        if (data.statuscode == 1) {
+                        if (data != null) {
                             Swal.fire({
                                 text: "Form has been successfully submitted!",
                                 icon: "success",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
+                                customClass: { confirmButton: "btn btn-primary" }
                             }).then(function (q) {
+
                                 q.isConfirmed && modal.hide();
+                                if (data.statuscode != 1) {
+                                    $('#divServiceUserDetails').html('');
+                                    $('#divServiceUserDetails').html(data);
+                                }
                             });
+
                         }
                         else {
                             Swal.fire({

@@ -22,8 +22,7 @@
 	</td>
     <td> @Model.Address</td>
 	<td>@Model.Capacity</td>
-	<td> @Model.ServiceUsers.Count
-	</td>
+	<td> @(@Model.ServiceUsers != null ? Model.ServiceUsers.Count : 0)</td>
 	<td>
 		@Model.Home_Tel_No
 	</td>

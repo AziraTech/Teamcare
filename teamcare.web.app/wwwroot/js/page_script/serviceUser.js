@@ -56,7 +56,7 @@ submit.addEventListener("click", function (e) {
     e.preventDefault();
     fv3.validate().then(function (s) {
         if ("Valid" == s) {
-
+            
             submit.disabled = !0;
             submit.setAttribute("data-kt-indicator", "on");
             setTimeout(function () {
@@ -101,18 +101,24 @@ submit.addEventListener("click", function (e) {
                     url: '/ServiceUsers/Save',
                     data: { serviceUserCreateViewModel: serviceUserCreateViewModel },
                     success: function (data) {
-                        if (data.statuscode == 1) {
+                        alert(data);
+                        if (data != null)
+                        {
                             Swal.fire({
                                 text: "Form has been successfully submitted!",
                                 icon: "success",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
+                                customClass: { confirmButton: "btn btn-primary" }
                             }).then(function (q) {
+                                
                                 q.isConfirmed && modal.hide();
+                                if (data.statuscode != 1) {
+                                    $('#divServiceUserDetails').html('');
+                                    $('#divServiceUserDetails').html(data);
+                                }
                             });
+                            
                         }
                         else {
                             Swal.fire({

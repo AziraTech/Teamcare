@@ -29,8 +29,7 @@ namespace teamcare.business.Services
 
         public async Task<ServiceUserModel> GetByIdAsync(Guid id)
         {
-
-            var serviceUser = await _serviceUserRepository.GetByIdAsync(id);
+            var serviceUser = await _serviceUserRepository.GetByIdAsync(id);            
             var residence = serviceUser.Residence;
             var documents = serviceUser.DocumentUploads;
             var contacts = serviceUser.Contacts;
@@ -41,6 +40,7 @@ namespace teamcare.business.Services
         public async Task<IEnumerable<ServiceUserModel>> ListAllAsync()
         {
             var listUsers = await _serviceUserRepository.ListAllAsync();
+            listUsers = listUsers.Where(x => x.ArchivedOn == null).ToList();
             return _mapper.Map<IEnumerable<ServiceUser>, IEnumerable<ServiceUserModel>>(listUsers);
         }
 
