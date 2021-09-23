@@ -116,7 +116,7 @@ namespace teamcare.web.app
                                         new Claim(ClaimTypes.Role, currentUser.UserRole.ToString()),
                                         new Claim(common.ReferenceData.ClaimTypes.UserId, currentUser.Id.ToString()),
                                         new Claim(common.ReferenceData.ClaimTypes.UserEmail, currentUser.Email),
-                                        new Claim(common.ReferenceData.ClaimTypes.UserPhoto, currentUser.ProfilePhoto.BlobName),
+                                        new Claim(common.ReferenceData.ClaimTypes.UserPhoto,currentUser.ProfilePhoto!=null? currentUser.ProfilePhoto?.BlobName:""),
                                     };
                                     var appIdentity = new ClaimsIdentity(claims);
 

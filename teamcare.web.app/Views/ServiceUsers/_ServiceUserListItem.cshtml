@@ -20,6 +20,10 @@
                     <img id="@idName" src="@( !Model.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
                          onclick="setAsFavourite('@Model.Id', '@idName');" class="h-15px align-self-center mx-1 cursor-pointer" alt="" />
                     <a href="@Url.Action("Detail", "ServiceUsers", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName</a>
+                    @if (Model.ArchivedOn.HasValue)
+                    {
+                        <span class="badge badge-sm badge-light">Archived</span>
+                    }
                 </div><div class="fw-bold fs-6 text-gray-400 mx-10">@(Model.KnownAs)</div>
             </div>
             <!--end::Info-->

@@ -206,7 +206,7 @@ namespace teamcare.web.app.Controllers
                         userdata.Position = userCreateViewModel.User.Position;
                         userdata.Phone_No = userCreateViewModel.User.Phone_No;
                         userdata.Mobile_No = userCreateViewModel.User.Mobile_No;
-                        userdata.Address = userCreateViewModel.User.Address.Trim();
+                        userdata.Address = userCreateViewModel.User.Address?.Trim();
 
                         createdUser = await _userService.UpdateAsync(userdata);
 
