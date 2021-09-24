@@ -49,12 +49,11 @@ var element = document.querySelector("#su-profile-stepper");
 var r = document.querySelector("#su-profile-form");
 var step1 = document.querySelector('#su-step-pi');
 var step2 = document.querySelector('#su-step-ad');
-var step3 = document.querySelector('#su-step-nok');
 var submit = document.querySelector('[data-kt-stepper-action="submit"]');
 var modal = new bootstrap.Modal(document.querySelector('#kt_modal_create_app'));
 submit.addEventListener("click", function (e) {
     e.preventDefault();
-    fv3.validate().then(function (s) {
+    fv2.validate().then(function (s) {
         if ("Valid" == s) {
 
             submit.disabled = !0;
@@ -70,7 +69,6 @@ submit.addEventListener("click", function (e) {
                     FirstName: $('#su-first_name').val(),
                     LastName: $('#su-last_name').val(),
                     KnownAs: $('#su-known_as').val(),
-
                     DateOfBirth: $('#su-date_of_birth').val(),
                     LegalStatus: $('#su-legal_status').val(),
                     NHSIdNumber: $('#su-nhs_id').val(),
@@ -82,11 +80,7 @@ submit.addEventListener("click", function (e) {
                     Religion: $('#su-religion').val(),
                     Ethnicity: $('#su-ethnicity').val(),
                     PreferredFirstLanguage: $('#su-language').val(),
-                    CurrentPreviousOccupation: $('#su-occupation').val(),
-                    NextOfKin: $('#su-next_of_kin').val(),
-                    RelationshipToPerson: $('#su-related_person').val(),
-                    Address: $('#su-address').val(),
-                    ContactDetails: $('#su-contact_detail').val(),
+                    CurrentPreviousOccupation: $('#su-occupation').val(),                   
                     FileName: fileName,
                     FileType: fileType,
                     TempFileId: tempFileId
@@ -140,7 +134,7 @@ submit.addEventListener("click", function (e) {
         else {
             Swal.fire({
                 text: "Sorry, looks like there are some feilds is required, please try again.",
-                icon: "error",
+                icon: "info",
                 buttonsStyling: !1,
                 confirmButtonText: "Ok, got it!",
                 customClass: {
@@ -163,7 +157,7 @@ stepper.on("kt.stepper.next", function (stepper) {
             fv1.validate().then(function (t) {
                 "Valid" == t ? (stepper.goNext(), KTUtil.scrollTop()) : Swal.fire({
                     text: "Sorry, looks like there are some errors detected, please try again.",
-                    icon: "error",
+                    icon: "info",
                     buttonsStyling: !1,
                     confirmButtonText: "Ok, got it!",
                     customClass: {
@@ -176,7 +170,7 @@ stepper.on("kt.stepper.next", function (stepper) {
             fv2.validate().then(function (t) {
                 "Valid" == t ? (stepper.goNext(), KTUtil.scrollTop()) : Swal.fire({
                     text: "Sorry, looks like there are some errors detected, please try again.",
-                    icon: "error",
+                    icon: "info",
                     buttonsStyling: !1,
                     confirmButtonText: "Ok, got it!",
                     customClass: {
@@ -270,29 +264,6 @@ const fv2 = FormValidation
                     validators: {
                         notEmpty: {
                             message: "Select prefered first language"
-                        }
-                    }
-                }
-            },
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                bootstrap: new FormValidation.plugins.Bootstrap5({
-                    rowSelector: ".fv-row",
-                    eleInvalidClass: "",
-                    eleValidClass: ""
-                })
-            }
-        }
-    );
-const fv3 = FormValidation
-    .formValidation(
-        step3,
-        {
-            fields: {
-                next_of_kin: {
-                    validators: {
-                        notEmpty: {
-                            message: "Next of kin is required"
                         }
                     }
                 }
@@ -667,10 +638,12 @@ async function setCurrentTabAssessment(tabName, id) {
 function assessmentDetails(ctrl) {
     if (ctrl != undefined) {
         var id = $(ctrl).attr('id');
+        var type = $(ctrl).attr('type');
+        var srvuserid = $(ctrl).attr('srvuserid');
         $.ajax({
             type: "POST",
             url: '/ServiceUsers/AssessmentSkillDetails',
-            data: { Id: id },
+            data: { Id: id, Type: type, ServiceUserId: srvuserid },
             success: function (data) {
                 if (data.statuscode == 3) {
                     Swal.fire({

@@ -1,4 +1,5 @@
-﻿@using teamcare.common.Helpers
+﻿@using teamcare.common.Helpers;
+@using teamcare.web.app.Helpers;
 @model teamcare.business.Models.ServiceUserModel
 <tr>
     <td>
@@ -30,8 +31,13 @@
         </div>
         <!--end::User-->
     </td>
-    <td>@(Model.DateOfAdmission.ToString("MMM, dd yyyy"))</td>
-    <td>@(Model.Residence != null?Model.Residence.Name:"")</td>
+    <td>@(Model.DateOfAdmission.GetDateFormat(false))</td>
+    <td>
+        @if (Model.Residence != null)
+        {
+            <a href="@Url.Action("Detail", "Residence", new { id = @Model.Residence.Id })">@Model.Residence.Name</a>
+        }
+    </td>
     <td class="text-end">
         <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="btn btn-light btn-sm">View</a>
     </td>

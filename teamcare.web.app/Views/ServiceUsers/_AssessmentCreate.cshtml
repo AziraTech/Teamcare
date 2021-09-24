@@ -40,7 +40,7 @@
                     <!--end::Status=-->
                     <!--begin::Amount=-->
                     <td>
-                        <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id">
+                        <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id"type="@((Int16)item.AssessmentType)" srvuserid="@item.ServiceUserId">
                             <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
                             <span class="svg-icon svg-icon-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">

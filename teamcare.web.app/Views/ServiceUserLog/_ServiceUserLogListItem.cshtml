@@ -1,23 +1,34 @@
-﻿@model teamcare.business.Models.ServiceUserLogModel
+﻿@using teamcare.web.app.Helpers;
+@using teamcare.common.Helpers; 
+@model teamcare.business.Models.ServiceUserLogModel
 
 <tr>
-    <td>@Model.ServiceUser.FirstName @Model.ServiceUser.LastName</td>
-    <td>@(Model.CreatedOn.ToString("MMM, dd yyyy"))</td>
     <td>
-        <!--begin::User-->
         <div class="d-flex align-items-center">
             <!--begin::Wrapper-->
-            <!--<div class="me-5 position-relative">-->
-            <!--begin::Avatar-->
-            <!--<div class="symbol symbol-35px symbol-circle">
-                <img src="../media/avatars/blank.png" alt="image" />
-            </div>-->
-            <!--end::Avatar-->
-            <!--</div>-->
+            <div class="me-5 position-relative">
+                <!--begin::Avatar-->
+                <div class="symbol symbol-35px symbol-circle">
+                    <img src="@(Model.ServiceUser.ProfilePhoto != null ? Model.PrePath + "/" + Model.ServiceUser.ProfilePhoto.BlobName + "?width=200" : "../../media/avatars/blank.png" )" alt="image" />
+                </div>
+                <!--end::Avatar-->
+            </div>
             <!--end::Wrapper-->
             <!--begin::Info-->
             <div class="d-flex flex-column justify-content-center">
-              @Model?.ActionByAdmin?.FirstName @Model?.ActionByAdmin?.LastName
+                <div class="flex-row flex-center">
+                    <a href="@Url.Action("Detail", "ServiceUsers", new { id = @Model.ServiceUser.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.ServiceUser.Title.GetEnumDescription() @Model.ServiceUser.FirstName @Model.ServiceUser.LastName</a>
+                </div>
+            </div>
+            <!--end::Info-->
+        </div>
+    </td>
+    <td>@(Model.CreatedOn.GetDateOffsetFormat(false))</td>
+    <td>
+        <!--begin::User-->
+        <div class="d-flex align-items-center">
+            <div class="d-flex flex-column justify-content-center">
+                @Model?.ActionByAdmin?.FirstName @Model?.ActionByAdmin?.LastName
             </div>
             <!--end::Info-->
         </div>
@@ -27,7 +38,7 @@
         <p class="minimize">
             @Model.LogMessage
         </p>
-    </td> 
+    </td>
     <td>
         <p class="minimize">
             @Model.LogMessageUpdated
@@ -90,6 +101,6 @@
                 <!--end::Svg Icon-->
             </a>
         </div>
-        
+
     </td>
 </tr>

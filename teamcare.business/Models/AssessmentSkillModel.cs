@@ -10,7 +10,7 @@ namespace teamcare.business.Models
     {
         public Guid AssessmentId { get; set; }
 
-        public Guid SkillId { get; set; }
+        public Guid? SkillId { get; set; }
 
         public string SkillGroup { get; set; }
 

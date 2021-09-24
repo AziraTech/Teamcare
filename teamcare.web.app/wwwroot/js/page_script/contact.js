@@ -86,8 +86,10 @@ function DeleteContact(ctrl, serviceUserId) {
                                 }
                             }).then(function (q) {
                                 q.isConfirmed && modalcontactdetail.hide();
-                                $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
+                                $("body").css("overflow", "");
+                                $("body").css("padding-right", "");
+
                             });
                             $('#contactIndexPage').html('');
                             $('#contactIndexPage').html(data);
@@ -137,14 +139,7 @@ function openAddEditContactModal(id) {
                                             message: "FirstName is required"
                                         }
                                     }
-                                },
-                                umiddle_name: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "MiddleName is required"
-                                        }
-                                    }
-                                },
+                                },                              
                                 ulast_name: {
                                     validators: {
                                         notEmpty: {
@@ -263,9 +258,10 @@ function saveContactDetails(sender) {
                             }).then(function (q) {
                                 q.isConfirmed;
                                 $('#modalAddEditContact').modal('hide');
-
-                                $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
+                                $("body").css("overflow", "");
+                                $("body").css("padding-right", "");
+
                             });
                             $('#contactIndexPage').html('');
                             $('#contactIndexPage').html(data);
@@ -276,8 +272,8 @@ function saveContactDetails(sender) {
             }, 2e3);
             } else {
                 Swal.fire({
-                    text: "Oops!, This Email,Address,Mobile No Or Telephone No at least one feilds fill up please.",
-                    icon: "error",
+                    text: "Please! fill up at least one field from Email, Address, Mobile No and Telephone No.",
+                    icon: "info",
                     buttonsStyling: !1,
                     confirmButtonText: "Ok, got it!",
                     customClass: {
@@ -288,7 +284,7 @@ function saveContactDetails(sender) {
         }
         else {
             Swal.fire({
-                text: "Sorry, looks like there are some errors detected, please try again.",
+                text: "Sorry, looks like there are some feilds is required, please try again.",
                 icon: "error",
                 buttonsStyling: !1,
                 confirmButtonText: "Ok, got it!",

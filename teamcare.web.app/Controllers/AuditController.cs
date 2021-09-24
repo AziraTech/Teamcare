@@ -65,7 +65,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new AuditViewModel
             {
-                Audit = listOfAudit,
+                Audit = listOfAudit.OrderByDescending(x => x.CreatedOn).ToList(),
             };
 
             return PartialView("_AuditDataContent", model);

@@ -18,5 +18,6 @@ namespace teamcare.business.Models
 		public bool IsVisible { get; set; }
 		public string LogMessageUpdated { get; set; }
 		public DateTimeOffset? AdminActionOn { get; set; }		
+		public string PrePath { get; set; }
 	}
 }

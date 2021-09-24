@@ -24,10 +24,6 @@ namespace teamcare.business.Models
         public Ethnicity Ethnicity { get; set; }
         public Language PreferredFirstLanguage { get; set; }
         public string CurrentPreviousOccupation { get; set; }
-        public string NextOfKin { get; set; }
-        public string RelationshipToPerson { get; set; }
-        public string Address { get; set; }
-        public string ContactDetails { get; set; }  
 		public DateTime? ArchivedOn { get; set; }
         public ArchiveReason ArchivedReason { get; set; }
         public ResidenceModel Residence { get; set; }        

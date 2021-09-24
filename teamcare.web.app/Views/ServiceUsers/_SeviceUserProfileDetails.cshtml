@@ -5,7 +5,7 @@
     <!--end::Label-->
     <!--begin::Col-->
     <div class="col-lg-8">
-        <span class="fw-bolder fs-6 text-gray-800"> @Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName </span>
+        <span class="fw-bold fs-6 text-gray-800"> @Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName </span>
     </div>
     <!--end::Col-->
 </div>
@@ -58,7 +58,7 @@
     <!--end::Label-->
     <!--begin::Col-->
     <div class="col-lg-8 d-flex align-items-center">
-        <span class="fw-bolder fs-6 text-gray-800 me-2"> @Model.ServiceUserByID.PersonalTelNo </span>
+        <span class="fw-bold fs-6 text-gray-800 me-2"> @Model.ServiceUserByID.PersonalTelNo </span>
     </div>
     <!--end::Col-->
 </div>
@@ -114,24 +114,11 @@
 </div>
 <div class="row mb-7">
     <!--begin::Label-->
-    <label class="col-lg-4 fw-bold text-muted">
-        Address
-        <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Country of origination"></i>
-    </label>
-    <!--end::Label-->
-    <!--begin::Col-->
-    <div class="col-lg-8">
-        <span class="fw-bolder fs-6 text-gray-800">@Model.ServiceUserByID.Address</span>
-    </div>
-    <!--end::Col-->
-</div>
-<div class="row mb-7">
-    <!--begin::Label-->
     <label class="col-lg-4 fw-bold text-muted">Communication Language</label>
     <!--end::Label-->
     <!--begin::Col-->
     <div class="col-lg-8">
-        <span class="fw-bolder fs-6 text-gray-800"> @Model.ServiceUserByID.PreferredFirstLanguage</span>
+        <span class="fw-bold fs-6 text-gray-800"> @Model.ServiceUserByID.PreferredFirstLanguage</span>
     </div>
     <!--end::Col-->
 </div>
@@ -145,33 +132,3 @@
     </div>
     <!--begin::Label-->
 </div>
-<div class="row mb-10">
-    <!--begin::Label-->
-    <label class="col-lg-4 fw-bold text-muted">NextOfKin</label>
-    <!--begin::Label-->
-    <!--begin::Label-->
-    <div class="col-lg-8">
-        <span class="fw-bold fs-6 text-gray-800">@Model.ServiceUserByID.NextOfKin</span>
-    </div>
-    <!--begin::Label-->
-</div>
-<div class="row mb-10">
-    <!--begin::Label-->
-    <label class="col-lg-4 fw-bold text-muted">Relationship To Person</label>
-    <!--begin::Label-->
-    <!--begin::Label-->
-    <div class="col-lg-8">
-        <span class="fw-bold fs-6 text-gray-800">@Model.ServiceUserByID.RelationshipToPerson</span>
-    </div>
-    <!--begin::Label-->
-</div>
-<div class="row mb-10">
-    <!--begin::Label-->
-    <label class="col-lg-4 fw-bold text-muted">Contact Details</label>
-    <!--begin::Label-->
-    <!--begin::Label-->
-    <div class="col-lg-8">
-        <span class="fw-bold fs-6 text-gray-800">@Model.ServiceUserByID.ContactDetails</span>
-    </div>
-    <!--begin::Label-->
-</div> 

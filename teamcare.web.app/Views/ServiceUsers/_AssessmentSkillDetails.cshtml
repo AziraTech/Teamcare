@@ -1,48 +1,54 @@
 ﻿@using teamcare.common.Helpers
 @model teamcare.web.app.ViewModels.SkillAssessmentViewModel
 
-<table class="table align-middle table-row-dashed gy-5" id="kt_table_customers_payment">
-    <!--begin::Table head-->
-    <thead class="border-bottom border-gray-200 fw-bold text-gray-600 fs-7 fw-bolder">
-        <!--begin::Table row-->
-        <tr class="text-start text-uppercase gs-0">
-            <th class="min-w-100px">
-                Group Name
-            </th>
-            <th>
-                Skill Name
-            </th>
-            <th>
-                Level
-            </th>
-        </tr>
-        <!--end::Table row-->
-    </thead>
-    <!--end::Table head-->
-    <!--begin::Table body-->
-    <tbody class="fs-6">
-        <!--begin::Table row-->
-        @foreach (var item in Model.AssessmentSkill)
-        {
+<table class="table table-row-dashed border-gray-300 align-middle gy-6" id="tbldetails">
+    @*<thead class="border-gray-200 fs-5 fw-bold bg-lighten">
             <tr>
-                <!--begin::Invoice=-->
-                <td>
-                    @item.SkillGroup
-                </td>
-                <!--end::Invoice=-->
-                <!--begin::Status=-->
-                <td>
-                    @item.SkillName
-                </td>
-                <!--end::Status=-->
-                <td>
-                    @item.SkillLevel.GetEnumDescription()
-                </td>
+                <th>Group / Skill</th>
+                <th>Level</th>
             </tr>
+        </thead>*@
+    <tbody class="fs-6">
+
+        @foreach (var item in Model.SkillGroups)
+        {
+            if (Model.LivingSkills.Where(r => r.GroupId == item.Id).ToList().Count > 0)
+            {
+                <tr>
+                    <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                        <label class="fw-bold fs-6">
+                            @item.GroupName
+                        </label>
+                    </td>
+                </tr>
+
+                @foreach (var livingitem in Model.LivingSkills.Where(r => r.GroupId == item.Id).OrderBy(r => r.Position).ToList())
+                {
+                    <tr>
+                        <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                            <label class="fs-7 text-muted">
+                                @livingitem.SkillName
+                            </label>
+                        </td>
+
+                        <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                            <div class="d-flex align-items-center">
+
+                                @foreach (var asset in Model.Assessment)
+                                {
+                                    var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.SkillLevel;
+
+                                    var assessetname = @asset.Text.Split('(');
+                                    <label class="form-check form-check-custom form-check-solid me-10" title="@asset.Text">
+                                        <input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="d+@livingitem.Id">
+                                        <span class="form-check-label fw-bold">@assessetname[1].Replace(")", "")</span>
+                                    </label>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
         }
-
-        <!--end::Table row-->
-
     </tbody>
-    <!--end::Table body-->
 </table>

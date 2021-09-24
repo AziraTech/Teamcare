@@ -85,6 +85,10 @@ const ufrm = FormValidation
 
 $(document).ready(function () {
 
+    $('#kt_toolbar_primary_button').click(function () {
+        Cleardata();
+    });
+
     $('#new_card_user_submit').click(function (e) {
         e.preventDefault();
         ufrm.validate().then(function (s) {

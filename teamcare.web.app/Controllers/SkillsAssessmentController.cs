@@ -21,14 +21,17 @@ namespace teamcare.web.app.Controllers
         private readonly ISkillGroupsService _skillGroupService;
         private readonly ILivingSkillService _livingskillService;
         private readonly IAuditService _auditService;
+        private readonly IAssessmentSkillService _assessmentSkillService;
 
         public SkillsAssessmentController(ISkillGroupsService skillGroupService,
                                             ILivingSkillService livingskillService,
-                                            IAuditService auditService)
+                                            IAuditService auditService,
+                                            IAssessmentSkillService assessmentSkillService)
         {
             _skillGroupService = skillGroupService;
             _livingskillService = livingskillService;
             _auditService = auditService;
+            _assessmentSkillService = assessmentSkillService;
 
         }
 
@@ -283,8 +286,19 @@ namespace teamcare.web.app.Controllers
             {
                
                 var groupskill = await _livingskillService.GetByIdAsync(id);
+
+                var assessmentskill = await _assessmentSkillService.ListAllAsync();
+                var finalskill = assessmentskill.Where(x => x.SkillId == groupskill.Id).ToList();
+
+                foreach (var item in finalskill)
+                {
+                    item.SkillId = null;
+                    await _assessmentSkillService.UpdateAsync(item);
+                }
+
                 await _livingskillService.DeleteAsync(groupskill);
 
+               
                 _auditService.Execute(async repository =>
                 {
                     await repository.CreateAuditRecord(new Audit { Action = "Delete Living Skill", Details = "service call for delete living skill.", UserReference = "", CreatedBy = base.UserId });

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using teamcare.business.Services;
+using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
 using teamcare.common.ReferenceData;
 using teamcare.data.Entities;
@@ -20,14 +22,19 @@ namespace teamcare.web.app.Controllers
         private readonly IServiceUserService _serviceUserService;
         private readonly IServiceUserLogService _serviceUserLogService;
         private readonly IAuditService _auditService;
+        private readonly AzureStorageSettings _azureStorageOptions;
 
         public ServiceUserLogController(IServiceUserService serviceUserService,
                                     IServiceUserLogService serviceUserLogService,
-                                    IAuditService auditService)
+                                    IAuditService auditService,
+                                      IOptions<AzureStorageSettings> azureStorageOptions
+                                    )
         {
             _serviceUserService = serviceUserService;
             _serviceUserLogService = serviceUserLogService;
             _auditService = auditService;
+            _azureStorageOptions = azureStorageOptions.Value;
+
 
         }
         public async Task<IActionResult> Index()
@@ -126,6 +133,11 @@ namespace teamcare.web.app.Controllers
         {
 
             var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(filterByserviceuser, IsApprove, daterange);
+
+            foreach (var item in listOfLog)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+            }
 
             var model = new ServiceUserLogViewModel
             {

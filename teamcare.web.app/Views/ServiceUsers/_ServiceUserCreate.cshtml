@@ -47,25 +47,7 @@
                 <!--begin::Label-->
             </div>
             <!--end::Step 2-->
-            <!--begin::Step 3-->
-            <div class="stepper-item" data-kt-stepper-element="nav">
-                <!--begin::Line-->
-                <div class="stepper-line w-40px"></div>
-                <!--end::Line-->
-                <!--begin::Icon-->
-                <div class="stepper-icon w-40px h-40px">
-                    <i class="stepper-check fas fa-check"></i>
-                    <span class="stepper-number">3</span>
-                </div>
-                <!--end::Icon-->
-                <!--begin::Label-->
-                <div class="stepper-label">
-                    <h3 class="stepper-title">Next of Kin</h3>
-                    <div class="stepper-desc">KIN Information of Service User</div>
-                </div>
-                <!--end::Label-->
-            </div>
-            <!--end::Step 3-->
+           
         </div>
         <!--end::Nav-->
     </div>
@@ -284,7 +266,7 @@
                         </label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="tel" class="form-control form-control-lg form-control-solid" name="personal_tel_no" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.PersonalTelNo; }" id="su-personal_tel_no" />
+                        <input type="number" class="form-control form-control-lg form-control-solid" name="personal_tel_no" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.PersonalTelNo; }" id="su-personal_tel_no" />
                         <!--end::Input-->
                     </div>
                     <div class="fv-row mb-10">
@@ -441,58 +423,7 @@
                 </div>
             </div>
             <!--end::Step 2-->
-            <!--begin::Step 3-->
-            <div data-kt-stepper-element="content" id="su-step-nok">
-                <div class="w-100">
-                    <!--begin::Input group-->
-                    <div class="fv-row mb-10">
-                        <!--begin::Label-->
-                        <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                            <span class="required">Next Of Kin</span>
-                            <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Service User's Next of KIN"></i>
-                        </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="next_of_kin" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.NextOfKin; }" id="su-next_of_kin" />
-                        <!--end::Input-->
-                    </div>
-                    <div class="fv-row mb-10">
-                        <!--begin::Label-->
-                        <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                            <span class="">Relationship to Person</span>
-                            @*<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Service User's Relation of Person"></i>*@
-                        </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-related_person" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.RelationshipToPerson; }" id="su-related_person" />
-                        <!--end::Input-->
-                    </div>
-                    <div class="fv-row mb-10">
-                        <!--begin::Label-->
-                        <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                            <span class="">Address</span>
-                            @*<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Service User's Address"></i>*@
-                        </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-address" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.Address; }" id="su-address" />
-                        <!--end::Input-->
-                    </div>
-                    <div class="fv-row mb-10">
-                        <!--begin::Label-->
-                        <label class="d-flex align-items-center fs-5 fw-bold mb-2">
-                            <span class="">Contact Detail</span>
-                            @*<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Service User's Contact Detail"></i>*@
-                        </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="su-contact_detail" placeholder="" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.ContactDetails; }" id="su-contact_detail" />
-                        <!--end::Input-->
-                    </div>
-                    <!--end::Input group-->
-                </div>
-            </div>
-            <!--end::Step 3-->
+           
             <!--begin::Actions-->
             <div class="d-flex flex-stack pt-10">
                 <!--begin::Wrapper-->

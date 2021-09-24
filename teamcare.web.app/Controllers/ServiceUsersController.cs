@@ -494,17 +494,39 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssessmentSkillDetails(Guid id)
+        public async Task<IActionResult> AssessmentSkillDetails(Guid id, int Type, Guid ServiceUserId)
         {
             try
             {
-              
+
                 var assessmentskillist = await _assessmentkillService.ListAllAsync();
                 var finalresult = assessmentskillist.Where(p => p.AssessmentId == id).ToList();
-             
+
+                var SkillList = await _skillgroupService.ListAllAsync();
+                var finalskill = SkillList.Where(r => (int)r.AssessmentType == Type).ToList();
+
+                var LivingSkill = await _livingskillService.ListAllAsync();
+
+                var assessmentlist = await _assessmentService.ListAllAsync();
+                var serviceuserassessmentlist = assessmentlist.Where(r => r.ServiceUserId == ServiceUserId && (int)r.AssessmentType == Type).ToList();
+
+
+                List<AssessmentSkillModel> asm = new List<AssessmentSkillModel>();
+                foreach (var item in serviceuserassessmentlist)
+                {
+                    var result = finalresult.Where(p => p.AssessmentId == item.Id).ToList();
+                    foreach (var items in result)
+                    {
+                        asm.Add(items);
+                    }
+                }
+
                 var model = new SkillAssessmentViewModel
-                {                  
-                    AssessmentSkill = finalresult
+                {
+                    SkillGroups = finalskill.OrderBy(r => r.Position),
+                    LivingSkills = LivingSkill,
+                    Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
+                    AssessmentSkill = asm
                 };
 
                 return PartialView("_AssessmentSkillDetails", model);
@@ -515,6 +537,7 @@ namespace teamcare.web.app.Controllers
 
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> ArchiveUserReason(int ReasonId, Guid Userid)
