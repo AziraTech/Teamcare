@@ -1,8 +1,8 @@
 ﻿@model teamcare.business.Models.AuditModel
-
+@using teamcare.web.app.Helpers; 
 <tr>
     <td>@Model.UserName</td>
     <td>@Model.Action</td>
     <td>@Model.Details</td>
-    <td>@(Model.CreatedOn.ToString("dd/MM/yyyy hh:mm:ss tt"))</td>
+    <td>@(Model.CreatedOn.GetDateCurrentFormat(true))</td>
 </tr>
