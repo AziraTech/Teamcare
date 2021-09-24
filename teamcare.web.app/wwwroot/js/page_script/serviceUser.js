@@ -116,6 +116,7 @@ submit.addEventListener("click", function (e) {
                                 if (data.statuscode != 1) {
                                     $('#divServiceUserDetails').html('');
                                     $('#divServiceUserDetails').html(data);
+                                    window.location.reload();
                                 }
                             });
                             

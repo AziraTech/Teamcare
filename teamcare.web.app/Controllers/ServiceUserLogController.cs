@@ -49,8 +49,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUserLogViewModel
             {
-                ServcieUsersList = distinctServiceUsers,
-                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+                ServcieUsersList = distinctServiceUsers, 
             };
 
             _auditService.Execute(async repository =>
@@ -130,8 +129,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUserLogViewModel
             {
-                ServiceUserLog = listOfLog,
-                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+                ServiceUserLog = listOfLog, 
             };
 
             return PartialView("_DataContent", model);

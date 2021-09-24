@@ -55,8 +55,7 @@ namespace teamcare.web.app.Controllers
             var listOfResidence = await _residenceService.ListAllAsync();
             var model = new ResidenceListViewModel
             {
-                Residences = listOfResidence,
-                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+                Residences = listOfResidence, 
             };
             foreach (var item in model.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
 
@@ -82,8 +81,7 @@ namespace teamcare.web.app.Controllers
                 var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
                 var model = new ResidenceListViewModel
                 {
-                    Residence = listOfResidence,
-                    totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+                    Residence = listOfResidence, 
                 };
                 return View(model);
             }
@@ -179,7 +177,7 @@ namespace teamcare.web.app.Controllers
                 var model = new ResidenceListViewModel
                 {
                     Residences = listOfResidence,
-                    totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
+                    //totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
                 };
                 foreach (var item in model.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }                
                 return PartialView("_ShowAllRecrods", model);

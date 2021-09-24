@@ -64,7 +64,6 @@ namespace teamcare.web.app.Controllers
             var model = new HomeViewModel
             { 
                 ServiceUser = listOfUsers,
-                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
             };
             
             _auditService.Execute(async repository =>

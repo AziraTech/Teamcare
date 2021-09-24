@@ -1,23 +1,19 @@
 ﻿@model teamcare.business.Models.ServiceUserModel
-<tr>
-    <td>
-        @{ var idName =  @Model.Id; }
+@{ var idName = @Model.Id; }
+<!--begin::Item-->
+<div class="d-flex align-items-center mb-7">
+    <!--begin::Avatar-->    
+    <div class="symbol symbol-45px me-5">
+        <img src="@(Model.ProfilePhoto !=null ? Model.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200" :"../media/avatars/blank.png" )" alt="image" />
+    </div>
+    <!--end::Avatar-->
+    <!--begin::Text-->
+    <div class="flex-grow-1">        
         <img id="@idName" src="@( !Model.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
-             onclick="setAsFavourite('@Model.Id', '@idName');" class="h-20px align-self-center cursor-pointer" alt="" />
-    </td>
-    <td>
-        <div class="d-flex align-items-center">
-            <div class="symbol symbol-45px me-5">                
-                <img src="@(Model.ProfilePhoto !=null ? Model.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200" :"../media/avatars/blank.png" )" alt="image" />
-            </div>
-            <div class="d-flex justify-content-start flex-column">
-                <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="text-dark fw-bolder text-hover-primary fs-6">@Model.Title @Model.FirstName @Model.LastName</a>
-                <span class="text-muted fw-bold text-muted d-block fs-7">@Model.KnownAs</span>
-            </div>
-        </div>
-    </td>
-    <td>
-        <a href="#" class="text-dark fw-bolder text-hover-primary d-block fs-6">@Model.Address</a>
-        <span class="text-muted fw-bold text-muted d-block fs-7">Admission from @Model.DateOfAdmission.ToString("MMM, dd yyyy")</span>
-    </td>    
-</tr>
+             onclick="setAsFavourite('@Model.Id', '@idName');" class="h-20px align-self-center cursor-pointer p-1" alt="" />
+        <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="text-dark fw-bolder text-hover-primary fs-6">@Model.Title @Model.FirstName @Model.LastName</a>
+        <span class="text-muted fw-bold text-muted d-block fs-7 " style="margin-left:25px">@Model.KnownAs</span>
+    </div>
+    <!--end::Text-->
+</div>
+<!--end::Item-->

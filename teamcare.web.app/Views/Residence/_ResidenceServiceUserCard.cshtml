@@ -65,7 +65,7 @@
                                     </div>
                                     <!--end::User-->
                                 </td>
-                                <td>@(item.DateOfAdmission.ToString("MMM, dd yyyy"))</td>
+                                <td>@(item.DateOfAdmission.ToString("dd MMM yyyy hh:mm"))</td>
                                 <td>@(item.Residence != null ? item.Residence.Name : "")</td>
                                 <td class="text-end">
                                     <a href="@Url.Action("Detail", "ServiceUsers", new { id = item.Id })" class="btn btn-light btn-sm">View</a>

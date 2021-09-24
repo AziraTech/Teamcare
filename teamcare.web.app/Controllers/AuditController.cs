@@ -44,12 +44,7 @@ namespace teamcare.web.app.Controllers
             {
                 ServcieUsersList = distinctUsers
             };
-
-            int totalPendingActions = 0;
-            if (model.ServiceUser != null)
-                foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
-            model.totalPendingActions = totalPendingActions;
-
+             
             return View(model);
         }
 

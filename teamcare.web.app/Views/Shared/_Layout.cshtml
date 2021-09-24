@@ -3252,4 +3252,18 @@
         .ajaxStop(function () {
             $('#AjaxLoader').hide();
         });
+
+    $(document).ready(async function () {
+        await $.ajax({
+            type: "GET",
+            url: '/ServiceUsers/GetPendingActions',
+            data: {},
+            success: function (data) {
+                $("#pendingActions").html(''+data);                
+            }
+        });
+
+    });
+
+
 </script>  

@@ -100,10 +100,6 @@ namespace teamcare.web.app.Controllers
                 }
             }
 
-            int totalPendingActions = 0;
-            if (model.ServiceUser != null)
-                foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
-            model.totalPendingActions = totalPendingActions;
 
             _auditService.Execute(async repository =>
             {
@@ -194,10 +190,6 @@ namespace teamcare.web.app.Controllers
                 ServiceUser = listOfUser
             };
 
-            int totalPendingActions = 0;
-            if (model.ServiceUser != null)
-                foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
-            model.totalPendingActions = totalPendingActions;
 
             return PartialView("_DataContent", model);
         }
@@ -395,7 +387,6 @@ namespace teamcare.web.app.Controllers
             {
                 UserName = base.UserName,
                 ServiceUserByID = listOfUser,
-                totalPendingActions = listOfLog.ToList().Count(x => x.IsApproved == false)
             };
 
             _auditService.Execute(async repository =>
@@ -567,6 +558,21 @@ namespace teamcare.web.app.Controllers
                 return Json(new { statuscode = 3, message = ex.Message });
 
             }
+        }
+
+
+        public async Task<int> GetPendingActions()
+        {
+            var listOfUser = await _serviceUserService.ListAllAsync();
+            
+            var model = new ServiceUsersViewModel
+            {
+                UserName = base.UserName,
+                ServiceUser = listOfUser
+            };            
+            int totalPendingActions = 0;            
+            foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
+            return totalPendingActions;
         }
     }
 }
