@@ -59,18 +59,6 @@ namespace teamcare.data.Entities
 		[Column("current_previous_occupation")]
 		public string CurrentPreviousOccupation { get; set; }
 
-		[Column("next_of_kin")]
-		public string NextOfKin { get; set; }
-
-		[Column("relationship_to_person")]
-		public string RelationshipToPerson { get; set; }
-
-		[Column("address")]
-		public string Address { get; set; }
-
-		[Column("contact_details")]
-		public string ContactDetails { get; set; }
-
 		[Column("archived_on")]
 		public DateTime? ArchivedOn { get; set; }
 

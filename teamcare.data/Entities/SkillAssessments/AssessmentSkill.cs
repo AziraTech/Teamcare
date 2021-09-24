@@ -16,7 +16,7 @@ namespace teamcare.data.Entities.SkillAssessments
 
 		[ForeignKey("LivingSkill")]
 		[Column("skill_id")]
-		public Guid SkillId { get; set; }
+		public Guid? SkillId { get; set; }
 		public virtual LivingSkill LivingSkill { get; set; }
 
 		[Column("skill_group")]
