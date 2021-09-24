@@ -11,9 +11,11 @@
     <tbody class="fs-6">
 
         @foreach (var item in Model.SkillGroups)
-        {
-            if (Model.LivingSkills.Where(r => r.GroupId == item.Id).ToList().Count > 0)
-            {
+		{
+			var skillsInGroup = Model.AssessmentSkill.Where(r => r.SkillGroup == item.GroupName).ToList();
+
+			if (skillsInGroup.Count > 0)
+			{
                 <tr>
                     <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
                         <label class="fw-bold fs-6">
@@ -22,7 +24,7 @@
                     </td>
                 </tr>
 
-                @foreach (var livingitem in Model.LivingSkills.Where(r => r.GroupId == item.Id).OrderBy(r => r.Position).ToList())
+                @foreach (var livingitem in skillsInGroup)
                 {
                     <tr>
                         <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
@@ -31,21 +33,11 @@
                             </label>
                         </td>
 
-                        <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                            <div class="d-flex align-items-center">
-
-                                @foreach (var asset in Model.Assessment)
-                                {
-                                    var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.SkillLevel;
-
-                                    var assessetname = @asset.Text.Split('(');
-                                    <label class="form-check form-check-custom form-check-solid me-10" title="@asset.Text">
-                                        <input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="d+@livingitem.Id">
-                                        <span class="form-check-label fw-bold">@assessetname[1].Replace(")", "")</span>
-                                    </label>
-                                }
-                            </div>
-                        </td>
+						<td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+							<label class="fs-7 text-muted">
+								@livingitem.SkillLevel
+							</label>
+						</td>
                     </tr>
                 }
             }
