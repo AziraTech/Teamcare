@@ -175,7 +175,6 @@ namespace teamcare.web.app.Controllers
                 }
                 var model = new ServiceUsersViewModel
                 {
-                    UserName = base.UserName,
                     ServiceUserByID = listOfUser,
                     CreateViewModel = new ServiceUserCreateViewModel
                     {

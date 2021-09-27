@@ -78,8 +78,7 @@ namespace teamcare.web.app.Controllers
             }).OrderBy(y => y.Text).ToList();
 
             var model = new ServiceUsersViewModel
-            {
-                UserName = base.UserName,
+            {                
                 ResidenceList = distinctResidence,
                 CreateViewModel = new ServiceUserCreateViewModel
                 {
@@ -114,13 +113,17 @@ namespace teamcare.web.app.Controllers
             var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
             if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
-
+            listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
             foreach (var item in listOfUser.Contacts)
             {
                 item.PrePath = "/" + _azureStorageOptions.Container;
                 item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
             }
 
+            foreach(var item in listOfUser.ServiceUserLog)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+            }
 
             SetPageMetadata(PageTitles.ServiceUsers, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
@@ -139,8 +142,8 @@ namespace teamcare.web.app.Controllers
             }).OrderBy(y => y.Text).ToList();
 
             var model = new ServiceUsersViewModel
-            {
-                UserName = base.UserName,
+            {                
+                
                 ServiceUserByID = listOfUser,
                 ResidenceList = distinctResidence,
                 CreateViewModel = new ServiceUserCreateViewModel
@@ -185,8 +188,7 @@ namespace teamcare.web.app.Controllers
             }
 
             var model = new ServiceUsersViewModel
-            {
-                UserName = base.UserName,
+            {                
                 ServiceUser = listOfUser
             };
 
@@ -272,8 +274,7 @@ namespace teamcare.web.app.Controllers
                     }).OrderBy(y => y.Text).ToList();
 
                     var model = new ServiceUsersViewModel
-                    {
-                        UserName = base.UserName,
+                    {                        
                         ServiceUserByID = listOfUser,
                         ResidenceList = distinctResidence,
                         CreateViewModel = new ServiceUserCreateViewModel
@@ -383,9 +384,12 @@ namespace teamcare.web.app.Controllers
             var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(serviceUserId));
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
             listOfUser.ServiceUserLog = listOfUser.ServiceUserLog.ToList().OrderByDescending(y => y.CreatedOn).ToList();
+            foreach (var item in listOfUser.ServiceUserLog)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+            }
             var model = new ServiceUsersViewModel
             {
-                UserName = base.UserName,
                 ServiceUserByID = listOfUser,
             };
 
@@ -590,11 +594,10 @@ namespace teamcare.web.app.Controllers
             
             var model = new ServiceUsersViewModel
             {
-                UserName = base.UserName,
                 ServiceUser = listOfUser
             };            
             int totalPendingActions = 0;            
-            foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
+            foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved){ totalPendingActions++; } } }
             return totalPendingActions;
         }
     }

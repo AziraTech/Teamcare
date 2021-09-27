@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using teamcare.common.Configuration;
@@ -21,7 +22,7 @@ namespace teamcare.web.app.ViewModels
         public ServiceUserCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ResidenceList { get; set; }
         public IEnumerable<business.Models.ContactModel> ContactList { get; set; }
-        public string UserName { get; set; }
+                
         public IEnumerable<EnumListItem> AssessmentType { get; set; }
         public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkills { get; set; }
 
