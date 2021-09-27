@@ -102,7 +102,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllServiceUsers", Details = "service call for get all serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.View, Details = "All ServiceUsers List.", UserReference = "", CreatedBy = base.UserId });
             });
             return View(model);
         }
@@ -210,7 +210,8 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddServiceUsers", Details = "service call for add new serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = serviceUserCreateViewModel.ServiceUser.FirstName + " " + serviceUserCreateViewModel.ServiceUser.LastName + " has been created.", UserReference = "", CreatedBy = base.UserId });
+
                         });
                     }
                     else
@@ -219,7 +220,8 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "UpdateServiceUsers", Details = "service call for update serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = serviceUserCreateViewModel.ServiceUser.FirstName + " " + serviceUserCreateViewModel.ServiceUser.LastName + " has been updated.", UserReference = "", CreatedBy = base.UserId });
+
                         });
                     }
 
@@ -318,7 +320,8 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddFavouriteServiceUsers", Details = "service call for add favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "service call for add favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
+
                         });
                         return Json(new { statuscode = 1 });
                     }
@@ -327,7 +330,8 @@ namespace teamcare.web.app.Controllers
                         await _favouriteServiceUserService.DeleteAsync(valueOfFavourite);
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "DeleteFavouriteServiceUsers", Details = "service call for remove favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Delete, Details = "service call for remove favourite serviceusers.", UserReference = "", CreatedBy = base.UserId });
+
                         });
 
                     }
@@ -395,7 +399,8 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "AddLogForServiceUsers", Details = "service call for add new log for serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add new log for serviceusers.", UserReference = "", CreatedBy = base.UserId });
+
             });
 
             return PartialView("_ServiceUserLogList", model);
@@ -472,7 +477,8 @@ namespace teamcare.web.app.Controllers
 
                     _auditService.Execute(async repository =>
                     {
-                        await repository.CreateAuditRecord(new Audit { Action = "AddAssessmentType", Details = "service call for add serviceuser assessment type.", UserReference = "", CreatedBy = base.UserId });
+                        await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add Assessment Type.", UserReference = "", CreatedBy = base.UserId });
+
                     });
 
                     if (am != null)
@@ -483,7 +489,8 @@ namespace teamcare.web.app.Controllers
 
                             _auditService.Execute(async repository =>
                             {
-                                await repository.CreateAuditRecord(new Audit { Action = "AddAssessmentSkill", Details = "service call for add serviceuser assessment skill.", UserReference = "", CreatedBy = base.UserId });
+                                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add Assessment Skill.", UserReference = "", CreatedBy = base.UserId });
+
                             });
                         }
                     }
@@ -509,8 +516,6 @@ namespace teamcare.web.app.Controllers
                 var SkillList = await _skillgroupService.ListAllAsync();
                 var finalskill = SkillList.Where(r => (int)r.AssessmentType == Type).ToList();
 
-                var LivingSkill = await _livingskillService.ListAllAsync();
-
                 var assessmentlist = await _assessmentService.ListAllAsync();
                 var serviceuserassessmentlist = assessmentlist.Where(r => r.ServiceUserId == ServiceUserId && (int)r.AssessmentType == Type).ToList();
 
@@ -528,8 +533,6 @@ namespace teamcare.web.app.Controllers
                 var model = new SkillAssessmentViewModel
                 {
                     SkillGroups = finalskill.OrderBy(r => r.Position),
-                    LivingSkills = LivingSkill,
-                    Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
                     AssessmentSkill = asm
                 };
 
@@ -552,7 +555,8 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "Add Archive ServiceUsers", Details = "service call for add archive serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add Archive Reason.", UserReference = "", CreatedBy = base.UserId });
+
                 });
 
                 return Json(new { statuscode = 1 });
@@ -574,7 +578,8 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "Un-Archive ServiceUsers", Details = "service call for un-archive serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = "Unarchive.", UserReference = "", CreatedBy = base.UserId });
+
                 });
 
                 return Json(new { statuscode = 1 });

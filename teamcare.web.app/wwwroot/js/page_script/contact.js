@@ -22,7 +22,7 @@ function ContactDetilas(ctrl) {
         data: { id: id },
         success: function (data) {
             if (data != null) {
-                $('#spnfullname').html(data.firstName + " " + data.middleName + "" + data.lastName);
+                $('#spnfullname').html(data.firstName + " " + data.middleName + " " + data.lastName);
                 $('#spnemail').html(data.email);
                 $('#spnaddress').html(data.address);
                 $('#spnmobile').html(data.mobile);

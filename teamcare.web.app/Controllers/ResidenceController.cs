@@ -61,7 +61,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllResidence", Details = "service call for get all residence.", UserReference = "", CreatedBy = base.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.View, Details = "Get All Residence.", UserReference = "", CreatedBy = base.UserId });
             });
             return View(model);
 
@@ -162,10 +162,22 @@ namespace teamcare.web.app.Controllers
 
                         var returnDoc = await _residenceService.GetByIdAsync(createdResidence.Id.Value);
                     }
-                    _auditService.Execute(async repository =>
+
+                    if (residenceCreateViewModel.Residence.Id.ToString().Length < 5)
                     {
-                        await repository.CreateAuditRecord(new Audit { Action = "AddResidence", Details = "service call for add new residence.", UserReference = "", CreatedBy = base.UserId });
-                    });
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = createdResidence.Name + " has been created.", UserReference = "", CreatedBy = base.UserId });
+                        });
+                    }
+                    else
+                    {
+                        _auditService.Execute(async repository =>
+                        {
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = createdResidence.Name + " has been updated.", UserReference = "", CreatedBy = base.UserId });
+                        });
+                    }
+                  
                 }
                 if (residenceCreateViewModel.Residence.Id.ToString().Length > 5)
                 {
@@ -191,17 +203,21 @@ namespace teamcare.web.app.Controllers
             try
             {
                 Guid id = new Guid(Id);
-                ResidenceModel rm = new ResidenceModel();
-                rm.Id = id;
-                rm.DeletedBy = (Guid)base.UserId;
+             
                 var dum = await _documentUploadService.GetByResidenceIdAsync(id);
                 if (dum != null) { await _documentUploadService.DeleteAsync(dum); }
-                await _residenceService.DeleteAsync(rm);
 
-                _auditService.Execute(async repository =>
+                var residencedata = await _residenceService.GetByIdAsync(id);
+                if(residencedata != null)
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "DeleteResidence", Details = "service call for delete residence.", UserReference = "", CreatedBy = base.UserId });
-                });
+                    await _residenceService.DeleteAsync(residencedata);
+
+                    _auditService.Execute(async repository =>
+                    {
+                        await repository.CreateAuditRecord(new Audit { Action = AuditAction.Delete, Details = residencedata.Name + " has been deleted.", UserReference = "", CreatedBy = base.UserId });
+                    });
+                }
+              
 
                 return Json(new { success = true, statuscode = 1, message = "Removed Successfully." });
             }

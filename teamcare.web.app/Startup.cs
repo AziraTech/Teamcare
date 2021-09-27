@@ -25,6 +25,7 @@ using SixLabors.ImageSharp.Web.Caching;
 using SixLabors.ImageSharp.Web.Processors;
 using teamcare.business.Services;
 using teamcare.data.Entities;
+using teamcare.common.Enumerations;
 
 namespace teamcare.web.app
 {
@@ -109,7 +110,7 @@ namespace teamcare.web.app
                                     var _auditService = ctx.HttpContext.RequestServices.GetService<IAuditService>();
                                     _auditService.Execute(async repository =>
                                     {
-                                        await repository.CreateAuditRecord(new Audit { Action = "Sign In", Details = (currentUser.FirstName + " " + currentUser.LastName) + " has signed in.", UserReference = "", CreatedBy = currentUser.Id });
+                                        await repository.CreateAuditRecord(new Audit { Action = AuditAction.SignIn, Details = (currentUser.FirstName + " " + currentUser.LastName) + " has signed in.", UserReference = "", CreatedBy = currentUser.Id });
                                     });
                                     var claims = new List<Claim>
                                     {

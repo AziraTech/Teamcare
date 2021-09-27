@@ -60,7 +60,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllUser", Details = "service call for get all users.", UserReference = "", CreatedBy = base.UserId, CreatedOn = DateTimeOffset.UtcNow });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.View, Details = "All User List.", UserReference = "", CreatedBy = base.UserId, CreatedOn = DateTimeOffset.UtcNow });
             });
             return View(model);
         }
@@ -113,7 +113,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddUser", Details = "service call for add new user.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = userCreateViewModel.User.FirstName +" "+ userCreateViewModel.User.LastName+" has been created.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
                     else
@@ -122,7 +122,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "UpdateUser", Details = "service call for update user.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = userCreateViewModel.User.FirstName + " " + userCreateViewModel.User.LastName + " has been updated.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
 
@@ -212,7 +212,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "MyProfile Update", Details = "service call for update myprofile.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = userCreateViewModel.User.FirstName + " " + userCreateViewModel.User.LastName + " has been updated.", UserReference = "", CreatedBy = base.UserId });
                         });
 
                     }

@@ -14,6 +14,15 @@ namespace teamcare.common.Enumerations
 		[Description("Delete")]
 		Delete = 3,
 		[Description("View")]
-		View = 4
+		View = 4,
+		[Description("Sign Out")]
+		SignOut = 5,
+		[Description("Home Page")]
+		HomePage = 6,
+		[Description("Status Change")]
+		StatusChange = 7,
+		[Description("Sign In")]
+		SignIn = 8,
+
 	}
 }

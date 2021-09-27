@@ -10,6 +10,7 @@ namespace teamcare.business.Services
 	{
         Task<IEnumerable<LivingSkillsModel>> ListByGroupId(Guid id);
         Task ChangePositoin(IEnumerable<LivingSkillsModel> model);
+        Task DeleteSetNullSkillId(Guid id);
 
     }
 }

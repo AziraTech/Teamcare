@@ -1,8 +1,9 @@
 ﻿@model teamcare.business.Models.AuditModel
 @using teamcare.web.app.Helpers; 
+@using teamcare.common.Helpers;
 <tr>
     <td>@Model.UserName</td>
-    <td>@Model.Action</td>
+    <td>@Model.Action.GetEnumDescription()</td>
     <td>@Model.Details</td>
     <td>@(Model.CreatedOn.GetDateOffsetFormat(true))</td>
 </tr>

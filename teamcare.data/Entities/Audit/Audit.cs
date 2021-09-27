@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using teamcare.common.Enumerations;
 
 namespace teamcare.data.Entities
 {
@@ -6,7 +7,7 @@ namespace teamcare.data.Entities
 	public class Audit : BaseEntity
 	{
 		[Column("action")]
-		public string Action { get; set; }
+		public AuditAction Action { get; set; }
 
 		[Column("details")]
 		public string Details { get; set; }

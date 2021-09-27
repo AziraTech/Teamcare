@@ -61,7 +61,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "GetAllLog", Details = "service call for get all log entry.", UserReference = "", CreatedBy = base.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.View, Details = "service call for get all log entry.", UserReference = "", CreatedBy = base.UserId });
             });
 
             return View(model);
@@ -76,7 +76,7 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log approve/Unapprove.", UserReference = "", CreatedBy = base.UserId });
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.StatusChange, Details = "service call for log approve/Unapprove.", UserReference = "", CreatedBy = base.UserId });
                 });
 
                 return Json(new { statuscode = 1 });
@@ -96,7 +96,7 @@ namespace teamcare.web.app.Controllers
                 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "SetLogStatus", Details = "service call for log hide/show.", UserReference = "", CreatedBy = base.UserId });
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.StatusChange, Details = "service call for log hide/show.", UserReference = "", CreatedBy = base.UserId });
                 });
 
                 return Json(new { statuscode = 1 });
@@ -116,7 +116,7 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "UpdateLogEntry for " + id, Details = "service call for update log entry by admin.", UserReference = "", CreatedBy = base.UserId });
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = "service call for update log entry by admin.", UserReference = "", CreatedBy = base.UserId });
                 });
 
                 return Json(new { statuscode = 1 });

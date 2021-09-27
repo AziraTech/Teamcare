@@ -13,11 +13,13 @@ namespace teamcare.business.Services
     {
         private readonly ILivingSkillRepository _livingSkillRepository;
         private readonly IMapper _mapper;
+        private readonly IAssessmentSkillService _assessmentSkillService;
 
-        public LivingSkillService(ILivingSkillRepository livingSkillRepository, IMapper mapper)
+        public LivingSkillService(ILivingSkillRepository livingSkillRepository, IMapper mapper,IAssessmentSkillService assessmentSkillService)
         {
             _livingSkillRepository = livingSkillRepository;
             _mapper = mapper;
+            _assessmentSkillService = assessmentSkillService;
 
         }
 
@@ -73,6 +75,24 @@ namespace teamcare.business.Services
 
                 await UpdateAsync(skilldata);
             }
+        }
+
+        public async Task DeleteSetNullSkillId(Guid id)
+        {
+
+            var groupskill = await GetByIdAsync(id);
+
+            var assessmentskill = await _assessmentSkillService.ListAllAsync();
+            var finalskill = assessmentskill.Where(x => x.SkillId == groupskill.Id).ToList();
+
+            foreach (var item in finalskill)
+            {
+                item.SkillId = null;
+                await _assessmentSkillService.UpdateAsync(item);
+            }
+
+            await DeleteAsync(groupskill);
+
         }
     }
 }

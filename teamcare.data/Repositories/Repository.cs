@@ -59,6 +59,8 @@ namespace teamcare.data.Repositories
 
         public virtual async Task DeleteAsync(T entity)
         {
+            entity.DeletedBy = UserId;
+            entity.DeletedOn = DateTimeOffset.UtcNow;
             _dbContext.DetachLocal(entity, entity.Id);
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();

@@ -107,7 +107,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddSkillGroup", Details = "service call for add new skill group.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "service call for add new skill group.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
                     else
@@ -116,7 +116,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "UpdateSkillGroup", Details = "service call for update skill group.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = "service call for update skill group.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
 
@@ -141,7 +141,7 @@ namespace teamcare.web.app.Controllers
                   
                     _auditService.Execute(async repository =>
                     {
-                        await repository.CreateAuditRecord(new Audit { Action = "Move SkillGroup Position", Details = "service call for move skill group position.", UserReference = "", CreatedBy = base.UserId });
+                        await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = "service call for move skill group position.", UserReference = "", CreatedBy = base.UserId });
                     });
                 }
 
@@ -171,7 +171,7 @@ namespace teamcare.web.app.Controllers
 
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "Delete Skill Group", Details = "service call for delete skill group.", UserReference = "", CreatedBy = base.UserId });
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.Delete, Details = "service call for delete skill group.", UserReference = "", CreatedBy = base.UserId });
                 });
 
                 return Json(new { statuscode = 1 });
@@ -218,7 +218,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddLivingSkill", Details = "service call for add new living skill.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "service call for add new living skill.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
                     else
@@ -227,7 +227,7 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "UpdateLivingSkill", Details = "service call for update living skill.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = "service call for update living skill.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
 
@@ -266,7 +266,7 @@ namespace teamcare.web.app.Controllers
 
                     _auditService.Execute(async repository =>
                     {
-                        await repository.CreateAuditRecord(new Audit { Action = "Move LivingSkill Position", Details = "service call for move living skill position.", UserReference = "", CreatedBy = base.UserId });
+                        await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = "service call for move living skill position.", UserReference = "", CreatedBy = base.UserId });
                     });
                 }
 
@@ -284,24 +284,11 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
-               
-                var groupskill = await _livingskillService.GetByIdAsync(id);
-
-                var assessmentskill = await _assessmentSkillService.ListAllAsync();
-                var finalskill = assessmentskill.Where(x => x.SkillId == groupskill.Id).ToList();
-
-                foreach (var item in finalskill)
-                {
-                    item.SkillId = null;
-                    await _assessmentSkillService.UpdateAsync(item);
-                }
-
-                await _livingskillService.DeleteAsync(groupskill);
-
-               
+                await _livingskillService.DeleteSetNullSkillId(id);
+                            
                 _auditService.Execute(async repository =>
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "Delete Living Skill", Details = "service call for delete living skill.", UserReference = "", CreatedBy = base.UserId });
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.Delete, Details = "service call for delete living skill.", UserReference = "", CreatedBy = base.UserId });
                 });
 
                 return Json(new { statuscode = 1 });

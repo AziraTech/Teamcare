@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using teamcare.business.Services;
 using teamcare.data.Entities;
 using teamcare.common.Helpers;
+using teamcare.common.Enumerations;
 
 namespace teamcare.web.app.Controllers
 {
@@ -33,7 +34,7 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "Signed out", Details = this.UserName+" has signed out.", UserReference = "", CreatedBy = this.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.SignOut, Details = this.UserName+" has signed out.", UserReference = "", CreatedBy = this.UserId });
             });
             return new SignOutResult(new[] { "OpenIdConnect", "Cookies" }, new AuthenticationProperties
             {

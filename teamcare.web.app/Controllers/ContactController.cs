@@ -81,7 +81,7 @@ namespace teamcare.web.app.Controllers
                         createdContact = await _contactService.AddAsync(contactCreateViewModel.Contact);
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "AddContact", Details = "service call for add new contact.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = contactCreateViewModel.Contact.FirstName + " " + contactCreateViewModel.Contact.LastName + " has been created.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
                     else
@@ -89,7 +89,7 @@ namespace teamcare.web.app.Controllers
                         createdContact = await _contactService.UpdateAsync(contactCreateViewModel.Contact);
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = "UpdateContact", Details = "service call for update contact.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = contactCreateViewModel.Contact.FirstName + " " + contactCreateViewModel.Contact.LastName + " has been updated.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
 
@@ -150,19 +150,19 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
-
-                ContactModel cm = new ContactModel();
-                cm.Id = id;
-                cm.ServiceUserId = serviceUserId;
-                cm.DeletedBy = (Guid)base.UserId;
+            
                 var dum = await _documentUploadService.GetByContactIdAsync(id);
                 if (dum != null) { await _documentUploadService.DeleteAsync(dum); }
-                await _contactService.DeleteAsync(cm);
-
-                _auditService.Execute(async repository =>
+                var contactdata = await _contactService.GetByIdAsync(id);
+                if(contactdata !=null)
                 {
-                    await repository.CreateAuditRecord(new Audit { Action = "DeleteContact", Details = "service call for delete contact.", UserReference = "", CreatedBy = base.UserId });
-                });
+                    await _contactService.DeleteAsync(contactdata);
+
+                    _auditService.Execute(async repository =>
+                    {
+                        await repository.CreateAuditRecord(new Audit { Action = AuditAction.Delete, Details = contactdata.FirstName + " " + contactdata.LastName + " has been deleted.", UserReference = "", CreatedBy = base.UserId });
+                    });
+                }              
 
                 //Service User Detail for partial view 
                 var listOfUser = await _serviceUserService.GetByIdAsync(serviceUserId);
@@ -178,11 +178,7 @@ namespace teamcare.web.app.Controllers
                     ServiceUserByID = listOfUser,
                     CreateViewModel = new ServiceUserCreateViewModel
                     {
-                        Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-                        Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
-                        Religion = EnumExtensions.GetEnumListItems<Religion>(),
-                        Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
-                        PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
+                        Title = EnumExtensions.GetEnumListItems<NameTitle>(),                     
                         Relationship = EnumExtensions.GetEnumListItems<Relationship>()
                     },
                     ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)

@@ -68,7 +68,7 @@ namespace teamcare.web.app.Controllers
             
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = "Home page", Details = "User has accessed Home page", UserReference = "", CreatedBy = base.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.HomePage, Details = this.UserName + " has accessed Home page.", UserReference = "", CreatedBy = base.UserId });
             });
             return View(model);
         }

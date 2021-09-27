@@ -17,9 +17,11 @@ namespace teamcare.web.app.ViewModels
             
         }
         public ContactModel Contact { get; set; }
+        public IEnumerable<business.Models.ContactModel> ContactList { get; set; }
         public string TempFileId { get; set; }
         public IEnumerable<EnumListItem> Relationship { get; set; }
         public IEnumerable<EnumListItem> Title { get; set; }
+        public string ServiceUserID { get; set; }
 
     }
 }
