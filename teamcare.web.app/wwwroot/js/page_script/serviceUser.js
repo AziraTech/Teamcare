@@ -214,6 +214,8 @@ function openAddEditServiceUserModal(id) {
                 }, function (start, end, label) {
                 });
 
+                $('.ddlselect2').select2();
+
                 var myDropzone = new Dropzone("#sv-profile-photo", {
                     url: "/DocumentUpload", // Set the url for your upload script location
                     paramName: "file", // The name that will be used to transfer the file

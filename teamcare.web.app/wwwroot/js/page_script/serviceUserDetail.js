@@ -473,6 +473,7 @@ function openAddEditServiceUserModal(id) {
                 $('#divAddEditServiceUser').html('');
                 $('#divAddEditServiceUser').html(data);
 
+                $('.ddlselect2').select2();
 
                 $(".date-dob").daterangepicker({
                     singleDatePicker: true,
