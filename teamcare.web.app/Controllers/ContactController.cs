@@ -67,6 +67,7 @@ namespace teamcare.web.app.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(ContactCreateViewModel contactCreateViewModel)
         {
+            string id = "";
             try
             {
                 if (contactCreateViewModel?.Contact != null)
@@ -117,6 +118,7 @@ namespace teamcare.web.app.Controllers
 
                         var returnDoc = await _contactService.GetByIdAsync(createdContact.Id.Value);
                     }
+                     id = createdContact.ServiceUserId.ToString();
                 }
             }
             catch (Exception ex)
@@ -124,28 +126,40 @@ namespace teamcare.web.app.Controllers
                 return Json(new { statuscode = 3, message = ex.Message });
             }
 
-            //Service User Detail for partial view 
-            var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(contactCreateViewModel.Contact.ServiceUserId.ToString()));
-            listOfUser.PrePath = "/" + _azureStorageOptions.Container;
-            foreach (var item in listOfUser.Contacts)
-            {
-                item.PrePath = "/" + _azureStorageOptions.Container;
-                item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
-            }
-            var model = new ServiceUsersViewModel
-            {
-                CreateViewModel = new ServiceUserCreateViewModel
-                {
-                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-                    Relationship = EnumExtensions.GetEnumListItems<Relationship>()
-                },
-                ServiceUserByID = listOfUser,
-                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
-            };
-            return PartialView("~/Views/Contact/Index.cshtml", model);
+            //contactCreateViewModel.Contact.ServiceUserId.ToString()
+            return Json(new { statuscode = 1, message = "Sumitted Successfully...", id = id });
         }
 
         [HttpPost]
+        public async Task<IActionResult> GetContactData(string id)
+        {
+            try
+            {
+                //Service User Detail for partial view 
+                var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
+                listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+                foreach (var item in listOfUser.Contacts)
+                {
+                    item.PrePath = "/" + _azureStorageOptions.Container;
+                    item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
+                }
+                var model = new ServiceUsersViewModel
+                {
+                    CreateViewModel = new ServiceUserCreateViewModel
+                    {
+                        Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                        Relationship = EnumExtensions.GetEnumListItems<Relationship>()
+                    },
+                    ServiceUserByID = listOfUser,
+                    ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+                };
+                return PartialView("~/Views/Contact/Index.cshtml", model);
+            }
+            catch { }
+            return PartialView("~/Views/Contact/Index.cshtml", null);
+        }
+
+            [HttpPost]
         public async Task<IActionResult> Delete(Guid id, Guid serviceUserId)
         {
             try

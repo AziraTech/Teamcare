@@ -247,24 +247,38 @@ function saveContactDetails(sender) {
                                 }
                             });
                         } else {
-                            Swal.fire({
-                                text: "Contact has been submitted successfully.",
-                                icon: "success",
-                                buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function (q) {
-                                q.isConfirmed;
-                                $('#modalAddEditContact').modal('hide');
-                                $('.modal-backdrop').remove();
-                                $("body").css("overflow", "");
-                                $("body").css("padding-right", "");
 
-                            });
-                            $('#contactIndexPage').html('');
-                            $('#contactIndexPage').html(data);
+                            if (data.statuscode == 1) {
+
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/Contact/GetContactData',
+                                    data: { id: data.id },
+                                    success: function (data1) {
+                                        if (data1 != undefined) {
+                                            Swal.fire({
+                                                text: "Contact has been submitted successfully.",
+                                                icon: "success",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "Ok, got it!",
+                                                customClass: {
+                                                    confirmButton: "btn btn-primary"
+                                                }
+                                            }).then(function (q) {
+                                                q.isConfirmed;
+                                                $('#modalAddEditContact').modal('hide');
+                                                $('.modal-backdrop').remove();
+                                                $("body").css("overflow", "");
+                                                $("body").css("padding-right", "");
+
+                                            });
+                                            $('#contactIndexPage').html('');
+                                            $('#contactIndexPage').html(data1);
+                                        }
+                                    }
+                                });
+                            }
                         }
                     }
                 });
