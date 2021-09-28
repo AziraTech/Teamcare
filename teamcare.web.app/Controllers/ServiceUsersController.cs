@@ -67,7 +67,7 @@ namespace teamcare.web.app.Controllers
         {
             SetPageMetadata(PageTitles.ServiceUsers, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
-                new BreadcrumbItem(PageTitles.ServiceUsers, string.Empty),
+                new BreadcrumbItem(PageTitles.ServiceUsers, null),
             });
 
             var listOfResidence = await _residenceService.ListAllAsync();
@@ -78,17 +78,10 @@ namespace teamcare.web.app.Controllers
             }).OrderBy(y => y.Text).ToList();
 
             var model = new ServiceUsersViewModel
-            {                
-                ResidenceList = distinctResidence,
-                CreateViewModel = new ServiceUserCreateViewModel
-                {
-                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-                    Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
-                    Religion = EnumExtensions.GetEnumListItems<Religion>(),
-                    Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
-                    PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
-                }
+            {
+                ResidenceList = distinctResidence             
             };
+
             if (model.ServiceUser != null)
             {
                 var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
@@ -120,7 +113,7 @@ namespace teamcare.web.app.Controllers
                 item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
             }
 
-            foreach(var item in listOfUser.ServiceUserLog)
+            foreach (var item in listOfUser.ServiceUserLog)
             {
                 item.PrePath = "/" + _azureStorageOptions.Container;
             }
@@ -134,27 +127,16 @@ namespace teamcare.web.app.Controllers
             var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
             var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(id)).FirstOrDefault();
             listOfUser.Favourite = valueOfFavourite == null ? false : true;
-            var listOfResidence = await _residenceService.ListAllAsync();
-            var distinctResidence = listOfResidence.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name
-            }).OrderBy(y => y.Text).ToList();
+            
 
             var model = new ServiceUsersViewModel
-            {                
-                
+            {
+
                 ServiceUserByID = listOfUser,
-                ResidenceList = distinctResidence,
                 CreateViewModel = new ServiceUserCreateViewModel
-                {
-                    Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-                    Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
-                    Religion = EnumExtensions.GetEnumListItems<Religion>(),
-                    Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
-                    PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
+                {                 
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
-                    ArchiveReason=EnumExtensions.GetEnumListItems<ArchiveReason>()
+                    ArchiveReason = EnumExtensions.GetEnumListItems<ArchiveReason>()
                 },
                 ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
             };
@@ -188,7 +170,7 @@ namespace teamcare.web.app.Controllers
             }
 
             var model = new ServiceUsersViewModel
-            {                
+            {
                 ServiceUser = listOfUser
             };
 
@@ -203,7 +185,7 @@ namespace teamcare.web.app.Controllers
             {
                 var createdServiceUser = new ServiceUserModel();
                 if (serviceUserCreateViewModel?.ServiceUser != null)
-                {                    
+                {
                     if (serviceUserCreateViewModel.ServiceUser.Id.ToString() == "")
                     {
                         createdServiceUser = await _serviceUserService.AddAsync(serviceUserCreateViewModel.ServiceUser);
@@ -247,53 +229,10 @@ namespace teamcare.web.app.Controllers
 
                             await _documentUploadService.UpdateAsync(document);
                         }
-
-                        //var returnDoc = await _serviceUserService.GetByIdAsync(createdServiceUser.Id.Value);
                     }
                 }
-
-                if (serviceUserCreateViewModel.ServiceUser.Id.ToString() != "")
-                {
-
-                    var listOfUser = await _serviceUserService.GetByIdAsync((Guid)serviceUserCreateViewModel.ServiceUser.Id);
-                    if (listOfUser == null) { return View(new ServiceUsersViewModel()); }
-                    listOfUser.PrePath = "/" + _azureStorageOptions.Container;
-
-                    foreach (var item in listOfUser.Contacts)
-                    {
-                        item.PrePath = "/" + _azureStorageOptions.Container;
-                        item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
-                    }
-
-                    var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
-                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == (Guid)serviceUserCreateViewModel.ServiceUser.Id).FirstOrDefault();
-                    listOfUser.Favourite = valueOfFavourite == null ? false : true;
-                    var listOfResidence = await _residenceService.ListAllAsync();
-                    var distinctResidence = listOfResidence.Select(x => new SelectListItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Name
-                    }).OrderBy(y => y.Text).ToList();
-
-                    var model = new ServiceUsersViewModel
-                    {                        
-                        ServiceUserByID = listOfUser,
-                        ResidenceList = distinctResidence,
-                        CreateViewModel = new ServiceUserCreateViewModel
-                        {
-                            Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-                            Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
-                            Religion = EnumExtensions.GetEnumListItems<Religion>(),
-                            Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
-                            PrefLanguage = EnumExtensions.GetEnumListItems<Language>(),
-                            Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
-                            ArchiveReason = EnumExtensions.GetEnumListItems<ArchiveReason>()
-                        },
-                        ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
-                    };
-                    return PartialView("_SeviceUserProfileDetails", model);
-                }
-                return Json(new { statuscode = 1, message = "Success" });
+                
+                return Json(new { statuscode = 1 });
             }
             catch (Exception ex)
             {
@@ -382,6 +321,12 @@ namespace teamcare.web.app.Controllers
                 blSuccess = false;
             }
 
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add new log for serviceusers.", UserReference = "", CreatedBy = base.UserId });
+
+            });
+
             //Service User Detail for partial view 
             var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
 
@@ -396,12 +341,6 @@ namespace teamcare.web.app.Controllers
             {
                 ServiceUserByID = listOfUser,
             };
-
-            _auditService.Execute(async repository =>
-            {
-                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add new log for serviceusers.", UserReference = "", CreatedBy = base.UserId });
-
-            });
 
             return PartialView("_ServiceUserLogList", model);
         }
@@ -448,12 +387,12 @@ namespace teamcare.web.app.Controllers
 
                 var model = new SkillAssessmentViewModel
                 {
-                    SkillGroups = finalskill.OrderBy(r=>r.Position),
+                    SkillGroups = finalskill.OrderBy(r => r.Position),
                     LivingSkills = LivingSkill,
                     AssessmentTypeId = Id,
                     Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
                     ServiceUserId = ServiceUserId,
-                    AssessmentList=serviceuserassessmentlist.OrderByDescending(r=>r.CreatedOn).ToList(),
+                    AssessmentList = serviceuserassessmentlist.OrderByDescending(r => r.CreatedOn).ToList(),
                     AssessmentSkill = asm
                 };
 
@@ -551,7 +490,7 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
-                var serviceuser =  await _serviceUserService.ArchiveUnArchiveUser(ReasonId,Userid,1);
+                var serviceuser = await _serviceUserService.ArchiveUnArchiveUser(ReasonId, Userid, 1);
 
                 _auditService.Execute(async repository =>
                 {
@@ -568,13 +507,13 @@ namespace teamcare.web.app.Controllers
 
             }
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> UnArchiveUser(Guid Userid)
         {
             try
             {
-               var serviceuser = await _serviceUserService.ArchiveUnArchiveUser(0,Userid,2);
+                var serviceuser = await _serviceUserService.ArchiveUnArchiveUser(0, Userid, 2);
 
                 _auditService.Execute(async repository =>
                 {
@@ -596,14 +535,76 @@ namespace teamcare.web.app.Controllers
         public async Task<int> GetPendingActions()
         {
             var listOfUser = await _serviceUserService.ListAllAsync();
-            
+
             var model = new ServiceUsersViewModel
             {
                 ServiceUser = listOfUser
-            };            
-            int totalPendingActions = 0;            
-            foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved){ totalPendingActions++; } } }
+            };
+            int totalPendingActions = 0;
+            foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
             return totalPendingActions;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ServiceUserModalBind(string id)
+        {
+            try
+            {
+
+                var model = new ServiceUsersViewModel();
+
+                var listOfResidence = await _residenceService.ListAllAsync();
+                var distinctResidence = listOfResidence.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name
+                }).OrderBy(y => y.Text).ToList();
+
+                if (!string.IsNullOrEmpty(id))
+                {
+                    var listOfUser = await _serviceUserService.GetByIdAsync(new Guid(id));
+                    listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+
+                    model = new ServiceUsersViewModel
+                    {
+
+                        ServiceUserByID = listOfUser,
+                        ResidenceList = distinctResidence,
+                        CreateViewModel = new ServiceUserCreateViewModel
+                        {
+                            Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                            Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                            Religion = EnumExtensions.GetEnumListItems<Religion>(),
+                            Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
+                            PrefLanguage = EnumExtensions.GetEnumListItems<Language>()
+                          
+                        }
+                    };
+                }
+                else
+                {
+                    model = new ServiceUsersViewModel
+                    {
+
+                        ResidenceList = distinctResidence,
+                        CreateViewModel = new ServiceUserCreateViewModel
+                        {
+                            Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                            Marital = EnumExtensions.GetEnumListItems<MaritalStatus>(),
+                            Religion = EnumExtensions.GetEnumListItems<Religion>(),
+                            Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
+                            PrefLanguage = EnumExtensions.GetEnumListItems<Language>()
+                         
+                        }
+                    };
+                }
+                return PartialView("~/Views/ServiceUsers/_ServiceUserCreate.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
+            }
         }
     }
 }
