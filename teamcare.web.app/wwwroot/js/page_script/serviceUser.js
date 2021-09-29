@@ -72,13 +72,13 @@ async function setAsFavourite(vFavauriteUser, imageId) {
                 }
             }
 
-            Swal.fire({
-                text: showMessage,
-                icon: icon,
-                buttonsStyling: !1,
-                confirmButtonText: "Ok",
-                customClass: { confirmButton: "btn btn-light" }
-            });
+            //Swal.fire({
+            //    text: showMessage,
+            //    icon: icon,
+            //    buttonsStyling: !1,
+            //    confirmButtonText: "Ok",
+            //    customClass: { confirmButton: "btn btn-light" }
+            //});
         }
     });
 }

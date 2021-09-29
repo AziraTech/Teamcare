@@ -32,13 +32,13 @@ async function setAsFavourite(vFavauriteUser, imageId) {
                 showMessage = data.message;
                 icon = 'error';
             }
-            Swal.fire({
-                text: showMessage,
-                icon: icon,
-                buttonsStyling: !1,
-                confirmButtonText: "Ok",
-                customClass: { confirmButton: "btn btn-light" }
-            });
+            //Swal.fire({
+            //    text: showMessage,
+            //    icon: icon,
+            //    buttonsStyling: !1,
+            //    confirmButtonText: "Ok",
+            //    customClass: { confirmButton: "btn btn-light" }
+            //});
         }
     });
 }
