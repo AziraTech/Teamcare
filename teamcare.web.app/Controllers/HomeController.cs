@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Linq;
 using teamcare.data.Entities;
+using teamcare.business.Models;
 
 namespace teamcare.web.app.Controllers
 {
@@ -71,6 +72,29 @@ namespace teamcare.web.app.Controllers
                 await repository.CreateAuditRecord(new Audit { Action = AuditAction.HomePage, Details = this.UserName + " has accessed Home page.", UserReference = "", CreatedBy = base.UserId });
             });
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetDashboardFavoriteUser()
+        {
+            try
+            {
+                var model = await _serviceUserService.ListAllAsync();
+                var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
+                foreach (ServiceUserModel serviceUser in model)
+                {
+                    var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == serviceUser.Id && x.UserId == (Guid)base.UserId).FirstOrDefault();
+                    serviceUser.Favourite = valueOfFavourite == null ? false : true;
+                    serviceUser.PrePath = "/" + _azureStorageOptions.Container;
+                }
+                return PartialView("_HomeServiceUsersListItem", model);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

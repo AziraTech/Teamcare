@@ -283,6 +283,8 @@ namespace teamcare.web.app.Controllers
             }
         }
 
+       
+
         public async Task<IActionResult> saveLog(string logId, string dbType, string serviceUserId, string logMessage)
         {
             //IActionResult returnValue = null;

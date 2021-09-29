@@ -29,27 +29,49 @@ async function doSortFilterBy() {
     });
 }
 
+
 async function setAsFavourite(vFavauriteUser, imageId) {
     await $.ajax({
         type: "POST",
         url: '/ServiceUsers/SetAsFavouriteUser',
         data: { FavauriteUser: vFavauriteUser },
-        success: function (data) {
+        success: async function (data) {
             var showMessage = ""; var icon = "";
             document.getElementById(imageId).src = "";
-            if (data.statuscode == 1) {
-                showMessage = "Add Favourite Successful.";
+            var host = location.href;
+            if (host.indexOf('/ServiceUsers') > 0) {
+                if (data.statuscode == 1) {
+                    showMessage = "Add Favourite Successful.";
+                    icon = 'success';
+                    document.getElementById(imageId).src = "/media/svg/files/on_favourite_star.svg";
+                    document.getElementById('lst' + imageId).src = "/media/svg/files/on_favourite_star.svg";
+                } else if (data.statuscode == 2) {
+                    showMessage = "Remove Favourite Successful.";
+                    icon = 'success';
+                    document.getElementById(imageId).src = "/media/svg/files/off_favourite_star.svg";
+                    document.getElementById('lst' + imageId).src = "/media/svg/files/off_favourite_star.svg";
+                }
+                else {
+                    showMessage = data.message;
+                    icon = 'error';
+                }
+
+            } else {
+                showMessage = "Changes of Favourite is Successfull.";
                 icon = 'success';
-                document.getElementById(imageId).src = "/media/svg/files/on_favourite_star.svg";
-            } else if (data.statuscode == 2) {
-                showMessage = "Remove Favourite Successful.";
-                icon = 'success';
-                document.getElementById(imageId).src = "/media/svg/files/off_favourite_star.svg";
+                if (data.statuscode == 1 || data.statuscode == 2) {
+                    await $.ajax({
+                        type: "POST",
+                        url: '/Home/ResetDashboardFavoriteUser',
+                        data: {},
+                        success: function (data1) {
+                            $('#dashboarFavoriteList').html('');
+                            $('#dashboarFavoriteList').html(data1);
+                        }
+                    });
+                }
             }
-            else {
-                showMessage = data.message;
-                icon = 'error';
-            }
+
             Swal.fire({
                 text: showMessage,
                 icon: icon,
@@ -203,20 +225,14 @@ function openAddEditServiceUserModal(id) {
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 1981,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
-                    locale: {
-                        format: 'DD/MM/yyyy'
-                    }
+                    maxYear: parseInt(moment().format("YYYY"), 10)
                 }, function (start, end, label) {
                 });
                 $(".date-admission").daterangepicker({
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 2001,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
-                    locale: {
-                        format: 'DD/MM/yyyy'
-                    }
+                    maxYear: parseInt(moment().format("YYYY"), 10)
                 }, function (start, end, label) {
                 });
 

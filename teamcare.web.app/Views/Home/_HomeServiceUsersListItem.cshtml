@@ -1,19 +1,59 @@
-﻿@model teamcare.business.Models.ServiceUserModel
-@{ var idName = @Model.Id; }
-<!--begin::Item-->
-<div class="d-flex align-items-center mb-7">
-    <!--begin::Avatar-->    
-    <div class="symbol symbol-45px me-5">
-        <img src="@(Model.ProfilePhoto !=null ? Model.PrePath+"/"+Model.ProfilePhoto.BlobName+"?width=200" :"../media/avatars/blank.png" )" alt="image" />
+﻿@model List<teamcare.business.Models.ServiceUserModel>
+@{ var favouriteUsers = Model.ToList().Where(x => x.Favourite == true).ToList().Count(); }
+<!--begin::List Widget 2-->
+@if (favouriteUsers > 0)
+{
+    <div class="card card-xl-stretch mb-xl-8">
+        <!--begin::Header-->
+        <div class="card-header border-0">
+            <h3 class="card-title fw-bolder text-dark">Favourite Service Users (@favouriteUsers)</h3>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body pt-2">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.Favourite)
+                    {
+                        var idName = @item.Id;
+                        <!--begin::Item-->
+                        <div class="d-flex align-items-center mb-7">
+                            <!--begin::Avatar-->
+                            <div class="symbol symbol-45px me-5">
+                                <img src="@(item.ProfilePhoto != null ? item.PrePath + "/" + item.ProfilePhoto.BlobName + "?width=200" : "../media/avatars/blank.png" )" alt="image" />
+                            </div>
+                            <!--end::Avatar-->
+                            <!--begin::Text-->
+                            <div class="flex-grow-1">
+                                <img id="@idName" src="@( !item.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
+                                     onclick="setAsFavourite('@item.Id', '@idName');" class="h-20px align-self-center cursor-pointer p-1" alt="" />
+                                <a href="@Url.Action("Detail", "ServiceUsers", new { id = item.Id })" class="text-dark fw-bolder text-hover-primary fs-6">@item.Title @item.FirstName @item.LastName</a>
+                                <span class="text-muted fw-bold text-muted d-block fs-7 " style="margin-left:25px">@item.KnownAs</span>
+                            </div>
+                            <!--end::Text-->
+                        </div>
+                        <!--end::Item-->
+                    }
+                }
+            }
+        </div>
+        <!--end::Body-->
     </div>
-    <!--end::Avatar-->
-    <!--begin::Text-->
-    <div class="flex-grow-1">        
-        <img id="@idName" src="@( !Model.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
-             onclick="setAsFavourite('@Model.Id', '@idName');" class="h-20px align-self-center cursor-pointer p-1" alt="" />
-        <a href="@Url.Action("Detail","ServiceUsers", new { id = @Model.Id })" class="text-dark fw-bolder text-hover-primary fs-6">@Model.Title @Model.FirstName @Model.LastName</a>
-        <span class="text-muted fw-bold text-muted d-block fs-7 " style="margin-left:25px">@Model.KnownAs</span>
+    <!--end::List Widget 2-->
+}
+else
+{
+<div class="card card-xl-stretch mb-xl-8">
+    <!--begin::Header-->
+    <div class="card-header border-0">
+        <h3 class="card-title fw-bolder text-dark">Favourite Service Users (0)</h3>
     </div>
-    <!--end::Text-->
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="card-body pt-2">
+    </div>
+    <!--end::Body-->
 </div>
-<!--end::Item-->
+}

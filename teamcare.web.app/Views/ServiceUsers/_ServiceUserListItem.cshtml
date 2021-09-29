@@ -18,7 +18,7 @@
             <div class="d-flex flex-column justify-content-center">
                 <div class="flex-row flex-center">
                     @{ var idName = @Model.Id; }
-                    <img id="@idName" src="@( !Model.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
+                    <img id="@("lst"+idName)" src="@( !Model.Favourite ? " /media/svg/files/off_favourite_star.svg" : "/media/svg/files/on_favourite_star.svg" )"
                          onclick="setAsFavourite('@Model.Id', '@idName');" class="h-15px align-self-center mx-1 cursor-pointer" alt="" />
                     <a href="@Url.Action("Detail", "ServiceUsers", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.Title.GetEnumDescription() @Model.FirstName @Model.LastName</a>
                     @if (Model.ArchivedOn.HasValue)
