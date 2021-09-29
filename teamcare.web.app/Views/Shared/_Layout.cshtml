@@ -36,13 +36,6 @@
 </head>
 <body id="kt_body" style="background-image: url(/media/patterns/header-bg.jpg)" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled">
     <!--begin::Main-->
-    <div class="loader" id="AjaxLoader" style="display:none;">
-        <div class="strip-holder">
-            <div class="strip-1"></div>
-            <div class="strip-2"></div>
-            <div class="strip-3"></div>
-        </div>
-    </div>
     <!--begin::Root-->
     <div class="d-flex flex-column flex-root">
         <!--begin::Page-->
@@ -2864,6 +2857,7 @@
     </div>
     <!--end::Scrolltop-->
     <!--end::Main-->
+    <div class="bottomright boxspnner spinner" id="mySpinner" style="display:none;"></div>
 
 
     @RenderSection("Scripts", required: false)
@@ -2872,10 +2866,10 @@
 <script>
     $(document)
         .ajaxStart(function () {
-            $('#AjaxLoader').show();
+            $('#mySpinner').show();
         })
         .ajaxStop(function () {
-            $('#AjaxLoader').hide();
+            $('#mySpinner').hide();
         });
 
     $(document).ready(async function () {
