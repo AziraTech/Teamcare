@@ -31,7 +31,9 @@ $(document).ready(function () {
         showDropdowns: true,
         minYear: 1981,
         maxYear: parseInt(moment().format("YYYY"), 10),
-        //autoUpdateInput: false,
+        locale: {
+            format: 'DD/MM/yyyy'
+        }
     }, function (start, end, label) {
     });
 
@@ -223,11 +225,21 @@ async function doFilter() {
         url: '/ServiceUserLog/SortFilterOptionList',
         data: { filterByserviceuser: optSortBy, IsApprove: optFilterByApprove, daterange: daterange },
         success: function (data) {
-            if (data) {
+            if (data !=null) {
                 $('#partialViewDataContent').html('');
                 $('#partialViewDataContent').html(data);
                 morelesstext();
-            } else { }
+            } else {
+                Swal.fire({
+                    text: data.message,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn btn-light"
+                    }
+                });
+            }
         }
     });
 }

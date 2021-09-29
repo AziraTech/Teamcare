@@ -86,9 +86,9 @@ namespace teamcare.business.Services
             {
                 string[] date = daterange.Split('-');
 
-                if (DateTime.ParseExact(date[0].Trim(), "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date != DateTime.UtcNow.Date && DateTime.ParseExact(date[1].Trim(), "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date != DateTime.UtcNow.Date)
+                if (DateTime.ParseExact(date[0].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date != DateTime.UtcNow.Date && DateTime.ParseExact(date[1].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date != DateTime.UtcNow.Date)
                 {
-                    listAudits = listAudits.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(), "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date).ToList();
+                    listAudits = listAudits.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date).ToList();
                 }
 
             }

@@ -44,31 +44,39 @@ namespace teamcare.web.app.Controllers
             {
                 ServcieUsersList = distinctUsers
             };
-             
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> SortFilterOptionList(Guid? filterByserviceuser, string daterange)
         {
-
-            var listOfAudit = await _auditService.ListAllSortedFiltered(filterByserviceuser, daterange);
-
-            foreach (var item in listOfAudit)
+            try
             {
-                var user = await _userService.GetByIdAsync((Guid)item.CreatedBy);
-                if (item.CreatedBy == user.Id)
+
+                var listOfAudit = await _auditService.ListAllSortedFiltered(filterByserviceuser, daterange);
+
+                foreach (var item in listOfAudit)
                 {
-                    item.UserName = user.Title+" "+ user.FirstName+" "+user.LastName;
+                    var user = await _userService.GetByIdAsync((Guid)item.CreatedBy);
+                    if (item.CreatedBy == user.Id)
+                    {
+                        item.UserName = user.Title + " " + user.FirstName + " " + user.LastName;
+                    }
                 }
+
+                var model = new AuditViewModel
+                {
+                    Audit = listOfAudit.OrderByDescending(x => x.CreatedOn).ToList(),
+                };
+
+                return PartialView("_AuditDataContent", model);
+
             }
-
-            var model = new AuditViewModel
+            catch (Exception ex)
             {
-                Audit = listOfAudit.OrderByDescending(x => x.CreatedOn).ToList(),
-            };
-
-            return PartialView("_AuditDataContent", model);
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
         }
     }
 }

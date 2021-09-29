@@ -106,7 +106,7 @@ namespace teamcare.business.Services
             {
                 string[] date = daterange.Split('-');
 
-                listLogs = listLogs.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(),"MM/dd/yyyy",System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date || r.IsApproved==false).ToList();
+                listLogs = listLogs.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(),"dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date || r.IsApproved==false).ToList();
 
             }
 

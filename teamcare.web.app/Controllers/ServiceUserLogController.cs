@@ -56,7 +56,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUserLogViewModel
             {
-                ServcieUsersList = distinctServiceUsers, 
+                ServcieUsersList = distinctServiceUsers,
             };
 
             _auditService.Execute(async repository =>
@@ -93,7 +93,7 @@ namespace teamcare.web.app.Controllers
             try
             {
                 var servicelog = await _serviceUserLogService.UpdateLogByParam(2, id, status, null, (Guid)base.UserId);
-                
+
                 _auditService.Execute(async repository =>
                 {
                     await repository.CreateAuditRecord(new Audit { Action = AuditAction.StatusChange, Details = "service call for log hide/show.", UserReference = "", CreatedBy = base.UserId });
@@ -131,20 +131,26 @@ namespace teamcare.web.app.Controllers
         [HttpPost]
         public async Task<IActionResult> SortFilterOptionList(Guid? filterByserviceuser, bool IsApprove, string daterange)
         {
-
-            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(filterByserviceuser, IsApprove, daterange);
-
-            foreach (var item in listOfLog)
+            try
             {
-                item.PrePath = "/" + _azureStorageOptions.Container;
+                var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(filterByserviceuser, IsApprove, daterange);
+
+                foreach (var item in listOfLog)
+                {
+                    item.PrePath = "/" + _azureStorageOptions.Container;
+                }
+
+                var model = new ServiceUserLogViewModel
+                {
+                    ServiceUserLog = listOfLog,
+                };
+
+                return PartialView("_DataContent", model);
             }
-
-            var model = new ServiceUserLogViewModel
+            catch (Exception ex)
             {
-                ServiceUserLog = listOfLog, 
-            };
-
-            return PartialView("_DataContent", model);
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
         }
 
     }
