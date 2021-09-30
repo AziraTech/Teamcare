@@ -225,14 +225,20 @@ function openAddEditServiceUserModal(id) {
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 1981,
-                    maxYear: parseInt(moment().format("YYYY"), 10)
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    locale: {
+                        format: 'DD/MM/yyyy'
+                    }
                 }, function (start, end, label) {
                 });
                 $(".date-admission").daterangepicker({
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 2001,
-                    maxYear: parseInt(moment().format("YYYY"), 10)
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    locale: {
+                        format: 'DD/MM/yyyy'
+                    }
                 }, function (start, end, label) {
                 });
 
