@@ -79,7 +79,7 @@ namespace teamcare.web.app.Controllers
 
             var model = new ServiceUsersViewModel
             {
-                ResidenceList = distinctResidence             
+                ResidenceList = distinctResidence
             };
 
             if (model.ServiceUser != null)
@@ -127,14 +127,14 @@ namespace teamcare.web.app.Controllers
             var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
             var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(id)).FirstOrDefault();
             listOfUser.Favourite = valueOfFavourite == null ? false : true;
-            
+
 
             var model = new ServiceUsersViewModel
             {
 
                 ServiceUserByID = listOfUser,
                 CreateViewModel = new ServiceUserCreateViewModel
-                {                 
+                {
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
                     ArchiveReason = EnumExtensions.GetEnumListItems<ArchiveReason>()
                 },
@@ -231,7 +231,7 @@ namespace teamcare.web.app.Controllers
                         }
                     }
                 }
-                
+
                 return Json(new { statuscode = 1 });
             }
             catch (Exception ex)
@@ -283,7 +283,7 @@ namespace teamcare.web.app.Controllers
             }
         }
 
-       
+
 
         public async Task<IActionResult> saveLog(string logId, string dbType, string serviceUserId, string logMessage)
         {
@@ -387,6 +387,19 @@ namespace teamcare.web.app.Controllers
                     }
                 }
 
+                bool IsDue = false;
+                var getfirstassessment = serviceuserassessmentlist.OrderByDescending(r => r.CreatedOn).FirstOrDefault();
+                if (getfirstassessment != null)
+                {
+                    DateTimeOffset trialPeriodEnd = getfirstassessment.CreatedOn.AddMonths(11);
+                    DateTimeOffset todaydate = DateTimeOffset.UtcNow.DateTime;
+
+                    if (todaydate >= trialPeriodEnd)
+                    {
+                        IsDue = true;
+                    }
+                }
+
                 var model = new SkillAssessmentViewModel
                 {
                     SkillGroups = finalskill.OrderBy(r => r.Position),
@@ -395,7 +408,8 @@ namespace teamcare.web.app.Controllers
                     Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
                     ServiceUserId = ServiceUserId,
                     AssessmentList = serviceuserassessmentlist.OrderByDescending(r => r.CreatedOn).ToList(),
-                    AssessmentSkill = asm
+                    AssessmentSkill = asm,
+                    IsDueAssessment = IsDue
                 };
 
                 return PartialView("_AssessmentCreate", model);
@@ -534,17 +548,27 @@ namespace teamcare.web.app.Controllers
         }
 
 
-        public async Task<int> GetPendingActions()
+        public async Task<IActionResult> GetNotificationCount()
         {
             var listOfUser = await _serviceUserService.ListAllAsync();
+
+            var assesmentlist = await _assessmentService.ListAllAsync();
+
+           var totaldue= assesmentlist.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime).GroupBy(x => x.ServiceUserId).Select(y=>y.Max(row=>row.CreatedOn)).Count();
 
             var model = new ServiceUsersViewModel
             {
                 ServiceUser = listOfUser
             };
             int totalPendingActions = 0;
-            foreach (var items in model.ServiceUser) { foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } } }
-            return totalPendingActions;
+
+            foreach (var items in model.ServiceUser)
+            {
+                foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } }
+            }
+
+            return Json(new { PendingActions=totalPendingActions,DueAssessment= totaldue });
+
         }
 
         [HttpPost]
@@ -579,7 +603,7 @@ namespace teamcare.web.app.Controllers
                             Religion = EnumExtensions.GetEnumListItems<Religion>(),
                             Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
                             PrefLanguage = EnumExtensions.GetEnumListItems<Language>()
-                          
+
                         }
                     };
                 }
@@ -596,7 +620,7 @@ namespace teamcare.web.app.Controllers
                             Religion = EnumExtensions.GetEnumListItems<Religion>(),
                             Ethnicity = EnumExtensions.GetEnumListItems<Ethnicity>(),
                             PrefLanguage = EnumExtensions.GetEnumListItems<Language>()
-                         
+
                         }
                     };
                 }

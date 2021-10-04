@@ -2875,10 +2875,11 @@
     $(document).ready(async function () {
         await $.ajax({
             type: "GET",
-            url: '/ServiceUsers/GetPendingActions',
+            url: '/ServiceUsers/GetNotificationCount',
             data: {},
             success: function (data) {
-                $("#pendingActions").html(''+data);                
+                $("#pendingActions").html('' + data.pendingActions);                
+                $("#dueassessment").html('' + data.dueAssessment);                
             }
         });
 

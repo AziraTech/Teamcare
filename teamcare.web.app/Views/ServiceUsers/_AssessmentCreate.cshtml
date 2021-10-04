@@ -3,6 +3,11 @@
 
 <div class="card-body p-9">
     <div class="py-3 py-md-1 mb-5">
+        @if (Model.IsDueAssessment)
+        {
+
+            <i class="las la-user-clock" style="font-size:38px;" title="Assessment is due."></i>
+        }
         <a href="#" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#create_assessment" id="btncreate">Create</a>
     </div>
 
@@ -40,7 +45,7 @@
                     <!--end::Status=-->
                     <!--begin::Amount=-->
                     <td>
-                        <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id"type="@((Int16)item.AssessmentType)" srvuserid="@item.ServiceUserId">
+                        <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id" type="@((Int16)item.AssessmentType)" srvuserid="@item.ServiceUserId">
                             <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
                             <span class="svg-icon svg-icon-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -97,11 +102,11 @@
                     <div class="table-responsive">
                         <table class="table table-row-dashed border-gray-300 align-middle gy-6" id="assessmentTbl">
                             @*<thead class="border-gray-200 fs-5 fw-bold bg-lighten">
-                        <tr>
-                            <th>Group / Skill</th>
-                            <th>Level</th>
-                        </tr>
-                    </thead>*@
+                                    <tr>
+                                        <th>Group / Skill</th>
+                                        <th>Level</th>
+                                    </tr>
+                                </thead>*@
                             <tbody class="fs-6">
 
                                 @foreach (var item in Model.SkillGroups)
