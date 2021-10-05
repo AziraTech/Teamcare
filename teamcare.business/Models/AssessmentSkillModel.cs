@@ -17,5 +17,6 @@ namespace teamcare.business.Models
         public string SkillName { get; set; }
 
         public AssessmentSkillLevel SkillLevel { get; set; }
+        public RiskAssessmentLevel RiskLevel { get; set; }
     }
 }

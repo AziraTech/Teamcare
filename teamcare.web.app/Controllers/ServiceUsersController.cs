@@ -367,10 +367,6 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
-                var SkillList = await _skillgroupService.ListAllAsync();
-                var finalskill = SkillList.Where(r => (int)r.AssessmentType == Id).ToList();
-
-                var LivingSkill = await _livingskillService.ListAllAsync();
 
                 var assessmentlist = await _assessmentService.ListAllAsync();
                 var serviceuserassessmentlist = assessmentlist.Where(r => r.ServiceUserId == ServiceUserId && (int)r.AssessmentType == Id).ToList();
@@ -400,6 +396,11 @@ namespace teamcare.web.app.Controllers
                     }
                 }
 
+                var SkillList = await _skillgroupService.ListAllAsync();
+                var finalskill = SkillList.Where(r => (int)r.AssessmentType == Id).ToList();
+
+                var LivingSkill = await _livingskillService.ListAllAsync();
+
                 var model = new SkillAssessmentViewModel
                 {
                     SkillGroups = finalskill.OrderBy(r => r.Position),
@@ -409,8 +410,11 @@ namespace teamcare.web.app.Controllers
                     ServiceUserId = ServiceUserId,
                     AssessmentList = serviceuserassessmentlist.OrderByDescending(r => r.CreatedOn).ToList(),
                     AssessmentSkill = asm,
-                    IsDueAssessment = IsDue
+                    IsDueAssessment = IsDue,
+                    RiskAssessment = EnumExtensions.GetEnumListItems<RiskAssessmentLevel>(),
+
                 };
+
 
                 return PartialView("_AssessmentCreate", model);
             }
@@ -464,6 +468,7 @@ namespace teamcare.web.app.Controllers
         {
             try
             {
+                var model = new SkillAssessmentViewModel();
 
                 var assessmentskillist = await _assessmentkillService.ListAllAsync();
                 var finalresult = assessmentskillist.Where(p => p.AssessmentId == id).ToList();
@@ -485,8 +490,9 @@ namespace teamcare.web.app.Controllers
                     }
                 }
 
-                var model = new SkillAssessmentViewModel
+                model = new SkillAssessmentViewModel
                 {
+                    AssessmentTypeId = Type,
                     SkillGroups = finalskill.OrderBy(r => r.Position),
                     AssessmentSkill = asm
                 };
@@ -550,25 +556,43 @@ namespace teamcare.web.app.Controllers
 
         public async Task<IActionResult> GetNotificationCount()
         {
-            var listOfUser = await _serviceUserService.ListAllAsync();
-
-            var assesmentlist = await _assessmentService.ListAllAsync();
-
-           var totaldue= assesmentlist.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime).GroupBy(x => x.ServiceUserId).Select(y=>y.Max(row=>row.CreatedOn)).Count();
-
-            var model = new ServiceUsersViewModel
+            try
             {
-                ServiceUser = listOfUser
-            };
-            int totalPendingActions = 0;
 
-            foreach (var items in model.ServiceUser)
-            {
-                foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } }
+                var listOfUser = await _serviceUserService.ListAllAsync();
+                var assesmentlist = await _assessmentService.ListAllAsync();
+
+                var totaldue = assesmentlist.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime).GroupBy(x => x.ServiceUserId).Select(y => y.Max(row => row.CreatedOn)).Count();
+
+                var model = new ServiceUsersViewModel
+                {
+                    ServiceUser = listOfUser
+                };
+                int totalPendingActions = 0;
+
+                //int duetotal = 0;
+                foreach (var items in model.ServiceUser)
+                {
+                    foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } }
+
+                    //var assetitem = assesmentlist.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime && x.ServiceUserId == items.Id).ToList();
+                    //foreach (var item in assetitem)
+                    //{
+                    //    if (item != null)
+                    //    {
+                    //        duetotal++;
+                    //    }
+                    //}
+
+                }
+
+                return Json(new { PendingActions = totalPendingActions, DueAssessment = totaldue });
+
             }
-
-            return Json(new { PendingActions=totalPendingActions,DueAssessment= totaldue });
-
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
         }
 
         [HttpPost]

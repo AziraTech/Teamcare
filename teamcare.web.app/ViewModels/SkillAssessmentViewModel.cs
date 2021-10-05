@@ -28,6 +28,9 @@ namespace teamcare.web.app.ViewModels
         public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkill { get; set; }
         public IEnumerable<business.Models.AssessmentModel> AssessmentList { get; set; }
         public bool IsDueAssessment { get; set; }
+        public IEnumerable<EnumListItem> RiskAssessment { get; set; }
+        public business.Models.AssessmentSkillModel RiskAssessmentSkill { get; set; }
+
 
     }
 }

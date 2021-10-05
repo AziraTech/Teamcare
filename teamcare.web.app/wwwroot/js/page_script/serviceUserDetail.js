@@ -293,13 +293,16 @@ async function setCurrentTabAssessment(tabName, id) {
                             var skillname = $(element).attr("skillname");
                             var skillid = $(element).attr("skillid");
                             var levelid = $(element).attr("levelid");
+                            var risklevelid = $(element).attr("risklevelid");
                             //var id = $(element).attr("id");
                             assessmsnedata.push({
                                 Id: 0,
                                 SkillGroup: grpname,
                                 SkillName: skillname,
                                 SkillId: skillid,
-                                SkillLevel: levelid
+                                SkillLevel: levelid,
+                                RiskLevel: risklevelid
+
                             });
                         });
 

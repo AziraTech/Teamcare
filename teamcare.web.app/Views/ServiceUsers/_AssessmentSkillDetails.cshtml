@@ -1,4 +1,5 @@
-﻿@model teamcare.web.app.ViewModels.SkillAssessmentViewModel
+﻿@using teamcare.common.Helpers;
+@model teamcare.web.app.ViewModels.SkillAssessmentViewModel
 
 <table class="table table-row-dashed border-gray-300 align-middle gy-6" id="tbldetails">
     @*<thead class="border-gray-200 fs-5 fw-bold bg-lighten">
@@ -8,13 +9,12 @@
             </tr>
         </thead>*@
     <tbody class="fs-6">
-
         @foreach (var item in Model.SkillGroups)
-		{
-			var skillsInGroup = Model.AssessmentSkill.Where(r => r.SkillGroup == item.GroupName).ToList();
+        {
+            var skillsInGroup = Model.AssessmentSkill.Where(r => r.SkillGroup == item.GroupName).ToList();
 
-			if (skillsInGroup.Count > 0)
-			{
+            if (skillsInGroup.Count > 0)
+            {
                 <tr>
                     <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
                         <label class="fw-bold fs-6">
@@ -32,11 +32,22 @@
                             </label>
                         </td>
 
-						<td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-							<label class="fs-7 text-muted">
-								@livingitem.SkillLevel
-							</label>
-						</td>
+                        @if (Model.AssessmentTypeId == 3)
+                        {
+                            <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                                <label class="fw-bold fs-6">
+                                    @livingitem.RiskLevel.GetEnumDescription()
+                                </label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                                <label class="fs-7 text-muted">
+                                    @livingitem.SkillLevel
+                                </label>
+                            </td>
+                        }
                     </tr>
                 }
             }

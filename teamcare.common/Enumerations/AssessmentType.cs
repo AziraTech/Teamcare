@@ -11,5 +11,7 @@ namespace teamcare.common.Enumerations
 		LivingSkill = 1,
 		[Description("Mental Health")]
 		MentalHealth = 2,
+		[Description("Risk")]
+		Risk = 3,
 	}
 }
