@@ -553,7 +553,7 @@ namespace teamcare.web.app.Controllers
             }
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> GetNotificationCount()
         {
             try
@@ -562,7 +562,18 @@ namespace teamcare.web.app.Controllers
                 var listOfUser = await _serviceUserService.ListAllAsync();
                 var assesmentlist = await _assessmentService.ListAllAsync();
 
-                var totaldue = assesmentlist.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime).GroupBy(x => x.ServiceUserId).Select(y => y.Max(row => row.CreatedOn)).Count();
+                var totaldue = assesmentlist
+                    .GroupBy(x => new { x.ServiceUserId, x.AssessmentType })
+                    .Select(y => new
+                    {
+                        ServiceUserId = y.Key.ServiceUserId,
+                        AssessmentType = y.Key.AssessmentType,
+                        CreatedOn = y.Max(r => r.CreatedOn)
+                    });
+
+                var filteres = totaldue.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime)
+                    .GroupBy(y => y.ServiceUserId).OrderByDescending(x => x.Max(r => r.CreatedOn))
+                    .Select(z => z.FirstOrDefault()).ToList();
 
                 var model = new ServiceUsersViewModel
                 {
@@ -570,23 +581,20 @@ namespace teamcare.web.app.Controllers
                 };
                 int totalPendingActions = 0;
 
-                //int duetotal = 0;
+                int duetotal = 0;
                 foreach (var items in model.ServiceUser)
                 {
                     foreach (var inner in items.ServiceUserLog) { if (!inner.IsApproved) { totalPendingActions++; } }
 
-                    //var assetitem = assesmentlist.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime && x.ServiceUserId == items.Id).ToList();
-                    //foreach (var item in assetitem)
-                    //{
-                    //    if (item != null)
-                    //    {
-                    //        duetotal++;
-                    //    }
-                    //}
+                    var getfirstassessment = filteres.Where(r => r.ServiceUserId == items.Id).FirstOrDefault();
 
+                    if (getfirstassessment != null)
+                    {
+                        duetotal++;
+                    }
                 }
 
-                return Json(new { PendingActions = totalPendingActions, DueAssessment = totaldue });
+                return Json(new { PendingActions = totalPendingActions, DueAssessment = duetotal });
 
             }
             catch (Exception ex)
