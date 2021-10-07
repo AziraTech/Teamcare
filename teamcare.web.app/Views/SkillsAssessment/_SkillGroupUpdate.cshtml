@@ -6,6 +6,8 @@
     <input type="hidden" id="selectedId" value="@if (Model.SkillGroup != null) { @Model.SkillGroup.Id; }" />
 
     <input type="hidden" id="hdnupdassessmenttype" value="@if (Model.SkillGroup != null) { @Model.SkillGroup.AssessmentType; }" />
+    <input type="hidden" id="hdnupdassessmentoptionsgroup" value="@if (Model.SkillGroup != null) { @Model.SkillGroup.AssessmentOptionsGroup; }" />
+
     <div class="row mb-7">
         <!--begin::Label-->
         <label class="col-lg-3 fw-bold form-label">Assessment Type : </label>
@@ -20,7 +22,20 @@
         </div>
         <!--end::Col-->
     </div>
-
+    <div class="row mb-7">
+        <!--begin::Label-->
+        <label class="col-lg-3 fw-bold form-label">Assessment OptionsGroup : </label>
+        <!--end::Label-->
+        <!--begin::Col-->
+        <div class="col-lg-8">
+            <span class="fw-bolder fs-6 text-gray-800">
+                @if (Model.SkillGroup != null)
+                {@Model.SkillGroup.AssessmentOptionsGroup.GetEnumDescription();
+            }
+            </span>
+        </div>
+        <!--end::Col-->
+    </div>
     <div class="d-flex flex-column mb-7 fv-row">
         <!--begin::Label-->
         <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
@@ -66,7 +81,7 @@
                 </span>
             </button>
         </div>
-    </div>     
+    </div>
     <!--end::Actions-->
 </form>
 <!--end::Form-->

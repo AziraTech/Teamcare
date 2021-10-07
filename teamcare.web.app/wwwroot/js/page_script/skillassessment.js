@@ -66,6 +66,8 @@ $(document).ready(function () {
     $('#kt_toolbar_primary_button').click(function () {
         $('#spnassesstype').html($("#ddlassessmenttype :selected").text());
         $('#hdnassessmenttype').val($("#ddlassessmenttype").val());
+
+        $('#spnassessoptionsgroup').html($("#ddlassessmentoptionsgroup :selected").text());
         $('#txtgroupname').val('');
     });
 
@@ -84,7 +86,8 @@ $(document).ready(function () {
                         Id: 0,
                         GroupName: $('#txtgroupname').val(),
                         Position: 0, //$('#txtposition').val()
-                        AssessmentType: $('#hdnassessmenttype').val()
+                        AssessmentType: $('#hdnassessmenttype').val(),
+                        AssessmentOptionsGroup: $("#ddlassessmentoptionsgroup").val()
                     }
                     var skillAssessmentCreateViewModel = {
                         SkillGroup: SkillGroup,
@@ -540,7 +543,8 @@ function EditGroup(ctrl) {
                                     Id: selectedId,
                                     GroupName: $('#txtupdgroupname').val(),
                                     Position: $('#txtupdposition').val() == "" ? 0 : $('#txtupdposition').val(),
-                                    AssessmentType: $('#hdnupdassessmenttype').val()
+                                    AssessmentType: $('#hdnupdassessmenttype').val(),
+                                    AssessmentOptionsGroup: $('#hdnupdassessmentoptionsgroup').val()
                                 }
                                 var skillAssessmentCreateViewModel = {
                                     SkillGroup: SkillGroup,

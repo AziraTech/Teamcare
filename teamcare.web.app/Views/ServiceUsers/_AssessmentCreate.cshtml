@@ -1,4 +1,5 @@
-﻿@using teamcare.common.Helpers
+﻿@using teamcare.common.Helpers;
+@using teamcare.common.Enumerations;
 @model teamcare.web.app.ViewModels.SkillAssessmentViewModel
 
 <div class="card-body p-9">
@@ -135,7 +136,7 @@
                                                 <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
                                                     <div class="d-flex align-items-center">
 
-                                                        @if (Model.AssessmentTypeId == 3)
+                                                        @if ((int)item.AssessmentOptionsGroup == (int)AssessmentOptionsGroup.Risk)
                                                         {
                                                             var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.RiskLevel;
 

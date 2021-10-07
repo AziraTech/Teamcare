@@ -44,7 +44,8 @@ namespace teamcare.web.app.Controllers
     
             var model = new SkillAssessmentViewModel
             {
-                Assessment = EnumExtensions.GetEnumListItems<AssessmentType>()
+                Assessment = EnumExtensions.GetEnumListItems<AssessmentType>(),
+                AssessmentOptionsGroup = EnumExtensions.GetEnumListItems<AssessmentOptionsGroup>()
 
             };
 

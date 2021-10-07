@@ -7,19 +7,27 @@
     <div class="container" id="kt_docs_content_container">
         <!--begin::Card-->
         <div class="card mb-2">
-          
+
             <!--begin::Card Body-->
             <div class="card-body fs-6 py-15 px-10 py-lg-15 px-lg-15 text-gray-700">
                 <div class="row">
                     <div class="py-3 py-md-1 mb-5">
-                        <select class="form-select form-select-sm float-end" style="width:30%!important;" name="assessmenttype" id="ddlassessmenttype">
+
+                        <select class="form-select form-select-sm float-end m-2" style="width:30%!important;" name="assessmenttype" id="ddlassessmenttype">
                             @foreach (var group in Model.Assessment)
                             {
                                 <option value="@group.Value">@group.Text</option>
                             }
                         </select>
+                        <select class="form-select form-select-sm float-end m-2" style="width:25%!important;" name="assessmentoptionsgroup" id="ddlassessmentoptionsgroup">
+                            @foreach (var group in Model.AssessmentOptionsGroup)
+                            {
+                                <option value="@group.Value">@group.Text</option>
+                            }
+                        </select>
+
                     </div>
-                </div>        
+                </div>
                 <div id="SkillGroupDataContent"></div>
             </div>
         </div>

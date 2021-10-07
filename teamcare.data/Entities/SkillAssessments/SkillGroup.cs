@@ -19,5 +19,8 @@ namespace teamcare.data.Entities.SkillAssessments
 
 		[Column("assessment_type")]
 		public AssessmentType AssessmentType { get; set; }
+		
+		[Column("assessment_optionsgroup")]
+		public AssessmentOptionsGroup AssessmentOptionsGroup { get; set; }
 	}
 }

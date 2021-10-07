@@ -30,6 +30,7 @@ namespace teamcare.web.app.ViewModels
         public bool IsDueAssessment { get; set; }
         public IEnumerable<EnumListItem> RiskAssessment { get; set; }
         public business.Models.AssessmentSkillModel RiskAssessmentSkill { get; set; }
+        public IEnumerable<EnumListItem> AssessmentOptionsGroup { get; set; }
 
 
     }
