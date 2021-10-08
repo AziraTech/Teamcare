@@ -14,7 +14,9 @@ namespace teamcare.data.Entities.SkillAssessments
 		public Guid ServiceUserId { get; set; }
 		public virtual ServiceUser ServiceUser { get; set; }
 
-		[Column("assessment_type")]
-		public AssessmentType AssessmentType { get; set; }
+		[ForeignKey("AssessmentType")]
+		[Column("assessment_type_id")]
+		public Guid AssessmentTypeId { get; set; }
+		public virtual AssessmentType AssessmentType { get; set; }
 	}
 }

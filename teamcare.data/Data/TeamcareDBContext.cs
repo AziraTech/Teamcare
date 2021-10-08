@@ -26,6 +26,7 @@ namespace teamcare.data.Data
         public DbSet<LivingSkill> LivingSkills { get; set; }
         public DbSet<Assessment> Assessments { get; set; }
         public DbSet<AssessmentSkill> AssessmentSkills { get; set; }
+        public DbSet<AssessmentType> AssessmentTypes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
