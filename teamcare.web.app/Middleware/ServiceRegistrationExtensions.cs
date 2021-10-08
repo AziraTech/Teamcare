@@ -47,6 +47,8 @@ namespace teamcare.web.app.Middleware
             services.AddScoped<IAssessmentRepository, AssessmentRepository>();
             services.AddScoped<IAssessmentSkillService, AssessmentSkillService>();
             services.AddScoped<IAssessmentSkillRepository, AssessmentSkillRepository>();
+            services.AddScoped<IAssessmentTypeService, AssessmentTypeService>();
+            services.AddScoped<IAssessmentTypeRepository, AssessmentTypeRepository>();
 
             return services;
         }

@@ -8,7 +8,7 @@ namespace teamcare.business.Models
 	public class AssessmentModel : BaseModel
 	{	
 		public Guid ServiceUserId { get; set; }
-		public AssessmentType AssessmentType { get; set; }
+		public Guid AssessmentTypeId { get; set; }
 		public string UserName { get; set; }
 	}
 }

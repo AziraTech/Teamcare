@@ -33,22 +33,22 @@
                             </label>
                         </td>
 
-                        @if ((int)item.AssessmentOptionsGroup == (int)AssessmentOptionsGroup.Risk)
-                        {
-                            <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                <label class="fw-bold fs-6">
-                                    @livingitem.RiskLevel.GetEnumDescription()
-                                </label>
-                            </td>
-                        }
-                        else
-                        {
-                            <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                <label class="fs-7 text-muted">
-                                    @livingitem.SkillLevel
-                                </label>
-                            </td>
-                        }
+                        @*@if (item.AssessmentTypeId == AssessmentOptionsGroup.Risk)
+                            {
+                                <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                                    <label class="fw-bold fs-6">
+                                        @livingitem.RiskLevel.GetEnumDescription()
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {*@
+                        <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                            <label class="fs-7 text-muted">
+                                @livingitem.SkillLevel
+                            </label>
+                        </td>
+                        @*}*@
                     </tr>
                 }
             }

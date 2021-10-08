@@ -10,5 +10,6 @@
         public const string Audit = "Audit Entries";
         public const string SkillAssest = "Manage Assessments";
         public const string MyProfile = "My Profile";
+        public const string Assessment = "Assessment Type";
     }
 }

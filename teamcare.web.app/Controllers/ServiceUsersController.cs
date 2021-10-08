@@ -32,6 +32,7 @@ namespace teamcare.web.app.Controllers
         private readonly ILivingSkillService _livingskillService;
         private readonly IAssessmentService _assessmentService;
         private readonly IAssessmentSkillService _assessmentkillService;
+        private readonly IAssessmentTypeService _assessmentTypeService;
         public Guid userName;
 
         public ServiceUsersController(IServiceUserService serviceUserService,
@@ -45,7 +46,8 @@ namespace teamcare.web.app.Controllers
                                       ISkillGroupsService skillgroupService,
                                       ILivingSkillService livingSkillService,
                                       IAssessmentService assessmentService,
-                                      IAssessmentSkillService assessmentSkillService
+                                      IAssessmentSkillService assessmentSkillService,
+                                      IAssessmentTypeService assessmentTypeService
                                      )
         {
             _serviceUserService = serviceUserService;
@@ -60,6 +62,7 @@ namespace teamcare.web.app.Controllers
             _livingskillService = livingSkillService;
             _assessmentService = assessmentService;
             _assessmentkillService = assessmentSkillService;
+            _assessmentTypeService = assessmentTypeService;
 
         }
 
@@ -147,10 +150,13 @@ namespace teamcare.web.app.Controllers
         [HttpGet]
         public async Task<IActionResult> AssessmentTabBind()
         {
+            var assettype = await _assessmentTypeService.ListAllAsync();
+
             var model = new ServiceUsersViewModel
             {
-                AssessmentType = EnumExtensions.GetEnumListItems<AssessmentType>()
+                AssessmentType = assettype,
             };
+
             return PartialView("_AssessmentDataContent", model);
         }
         public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy, bool isArchive)
@@ -363,13 +369,13 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssessmentGroupSkill(int Id, Guid ServiceUserId)
+        public async Task<IActionResult> AssessmentGroupSkill(Guid Id, Guid ServiceUserId)
         {
             try
             {
 
                 var assessmentlist = await _assessmentService.ListAllAsync();
-                var serviceuserassessmentlist = assessmentlist.Where(r => r.ServiceUserId == ServiceUserId && (int)r.AssessmentType == Id).ToList();
+                var serviceuserassessmentlist = assessmentlist.Where(r => r.ServiceUserId == ServiceUserId && r.AssessmentTypeId == Id).ToList();
 
                 var assessmentskillist = await _assessmentkillService.ListAllAsync();
 
@@ -397,16 +403,20 @@ namespace teamcare.web.app.Controllers
                 }
 
                 var SkillList = await _skillgroupService.ListAllAsync();
-                var finalskill = SkillList.Where(r => (int)r.AssessmentType == Id).ToList();
+                var finalskill = SkillList.Where(r => r.AssessmentTypeId == Id).ToList();
 
                 var LivingSkill = await _livingskillService.ListAllAsync();
+
+                var assettype = await _assessmentTypeService.ListAllAsync();
+
 
                 var model = new SkillAssessmentViewModel
                 {
                     SkillGroups = finalskill.OrderBy(r => r.Position),
                     LivingSkills = LivingSkill,
                     AssessmentTypeId = Id,
-                    Assessment = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
+                    AssessmentType = assettype,
+                    AssessmentSkillLevel = EnumExtensions.GetEnumListItems<AssessmentSkillLevel>(),
                     ServiceUserId = ServiceUserId,
                     AssessmentList = serviceuserassessmentlist.OrderByDescending(r => r.CreatedOn).ToList(),
                     AssessmentSkill = asm,
@@ -464,7 +474,7 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssessmentSkillDetails(Guid id, int Type, Guid ServiceUserId)
+        public async Task<IActionResult> AssessmentSkillDetails(Guid id, Guid Type, Guid ServiceUserId)
         {
             try
             {
@@ -474,10 +484,10 @@ namespace teamcare.web.app.Controllers
                 var finalresult = assessmentskillist.Where(p => p.AssessmentId == id).ToList();
 
                 var SkillList = await _skillgroupService.ListAllAsync();
-                var finalskill = SkillList.Where(r => (int)r.AssessmentType == Type).ToList();
+                var finalskill = SkillList.Where(r => r.AssessmentTypeId == Type).ToList();
 
                 var assessmentlist = await _assessmentService.ListAllAsync();
-                var serviceuserassessmentlist = assessmentlist.Where(r => r.ServiceUserId == ServiceUserId && (int)r.AssessmentType == Type).ToList();
+                var serviceuserassessmentlist = assessmentlist.Where(r => r.ServiceUserId == ServiceUserId && r.AssessmentTypeId == Type).ToList();
 
 
                 List<AssessmentSkillModel> asm = new List<AssessmentSkillModel>();
@@ -563,11 +573,11 @@ namespace teamcare.web.app.Controllers
                 var assesmentlist = await _assessmentService.ListAllAsync();
 
                 var totaldue = assesmentlist
-                    .GroupBy(x => new { x.ServiceUserId, x.AssessmentType })
+                    .GroupBy(x => new { x.ServiceUserId, x.AssessmentTypeId })
                     .Select(y => new
                     {
                         ServiceUserId = y.Key.ServiceUserId,
-                        AssessmentType = y.Key.AssessmentType,
+                        AssessmentType = y.Key.AssessmentTypeId,
                         CreatedOn = y.Max(r => r.CreatedOn)
                     });
 

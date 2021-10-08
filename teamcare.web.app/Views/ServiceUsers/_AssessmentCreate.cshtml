@@ -46,7 +46,7 @@
                     <!--end::Status=-->
                     <!--begin::Amount=-->
                     <td>
-                        <a href="javascript:void(0);" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id" type="@((Int16)item.AssessmentType)" srvuserid="@item.ServiceUserId">
+                        <a href="javascript:void(0);" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id" type="@item.AssessmentTypeId" srvuserid="@item.ServiceUserId">
                             <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
                             <span class="svg-icon svg-icon-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -136,32 +136,32 @@
                                                 <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
                                                     <div class="d-flex align-items-center">
 
-                                                        @if ((int)item.AssessmentOptionsGroup == (int)AssessmentOptionsGroup.Risk)
-                                                        {
-                                                            var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.RiskLevel;
-
-                                                            @foreach (var ritem in Model.RiskAssessment)
+                                                        @*@if (item.AssessmentTypeId == AssessmentOptionsGroup.Risk)
                                                             {
+                                                                var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.RiskLevel;
 
-                                                                <label class="form-check form-check-custom form-check-solid me-10" title="@ritem.Text">
-                                                                    <input class="form-check-input" type="radio" @(level != null && (int)level == ritem.Value ? "checked" : "") name="@livingitem.Id" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id" risklevelid="@ritem.Value">
-                                                                    <span class="form-check-label fw-bold">@ritem.Text</span>
-                                                                </label>
+                                                                @foreach (var ritem in Model.RiskAssessment)
+                                                                {
+
+                                                                    <label class="form-check form-check-custom form-check-solid me-10" title="@ritem.Text">
+                                                                        <input class="form-check-input" type="radio" @(level != null && (int)level == ritem.Value ? "checked" : "") name="@livingitem.Id" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id" risklevelid="@ritem.Value">
+                                                                        <span class="form-check-label fw-bold">@ritem.Text</span>
+                                                                    </label>
+                                                                }
                                                             }
-                                                        }
-                                                        else
+                                                            else
+                                                            {*@
+                                                        @foreach (var asset in Model.AssessmentSkillLevel)
                                                         {
-                                                            @foreach (var asset in Model.Assessment)
-                                                            {
-                                                                var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.SkillLevel;
+                                                            var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.SkillLevel;
 
-                                                                var assessetname = @asset.Text.Split('(');
-                                                                <label class="form-check form-check-custom form-check-solid me-10" title="@asset.Text">
-                                                                    <input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="@livingitem.Id" levelid="@asset.Value" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id">
-                                                                    <span class="form-check-label fw-bold">@assessetname[1].Replace(")", "")</span>
-                                                                </label>
-                                                            }
+                                                            var assessetname = @asset.Text.Split('(');
+                                                            <label class="form-check form-check-custom form-check-solid me-10" title="@asset.Text">
+                                                                <input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="@livingitem.Id" levelid="@asset.Value" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id">
+                                                                <span class="form-check-label fw-bold">@assessetname[1].Replace(")", "")</span>
+                                                            </label>
                                                         }
+                                                        @*  }*@
 
                                                     </div>
                                                 </td>

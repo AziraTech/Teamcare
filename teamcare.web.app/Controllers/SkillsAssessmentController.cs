@@ -22,41 +22,44 @@ namespace teamcare.web.app.Controllers
         private readonly ILivingSkillService _livingskillService;
         private readonly IAuditService _auditService;
         private readonly IAssessmentSkillService _assessmentSkillService;
+        private readonly IAssessmentTypeService _assessmentTypeService;
 
         public SkillsAssessmentController(ISkillGroupsService skillGroupService,
                                             ILivingSkillService livingskillService,
                                             IAuditService auditService,
-                                            IAssessmentSkillService assessmentSkillService)
+                                            IAssessmentSkillService assessmentSkillService,
+                                            IAssessmentTypeService assessmentTypeService)
         {
             _skillGroupService = skillGroupService;
             _livingskillService = livingskillService;
             _auditService = auditService;
             _assessmentSkillService = assessmentSkillService;
+            _assessmentTypeService = assessmentTypeService;
 
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Guid Id)
         {
             SetPageMetadata(PageTitles.SkillAssest, SiteSection.Users, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
                 new BreadcrumbItem(PageTitles.SkillAssest, string.Empty),
             });
-    
+
+            var assettype = await _assessmentTypeService.ListAllAsync();
             var model = new SkillAssessmentViewModel
             {
-                Assessment = EnumExtensions.GetEnumListItems<AssessmentType>(),
-                AssessmentOptionsGroup = EnumExtensions.GetEnumListItems<AssessmentOptionsGroup>()
-
+                AssessmentType = assettype,
+                AssessmentTypeId=Id
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> BindGroup(int TypeId)
+        public async Task<IActionResult> BindGroup(Guid TypeId)
         {
             var listOfSkillGroup = await _skillGroupService.ListAllAsync();
-            var TypeWiseGroupList = listOfSkillGroup.Where(x => (int)x.AssessmentType == TypeId).ToList();
+            var TypeWiseGroupList = listOfSkillGroup.Where(x => x.AssessmentTypeId == TypeId).ToList();
 
             foreach (var item in TypeWiseGroupList)
             {
@@ -85,7 +88,7 @@ namespace teamcare.web.app.Controllers
                     var listOfSkillGroup = await _skillGroupService.ListAllAsync();
 
                     // check Group Name already exists
-                    var groupdata = listOfSkillGroup.FirstOrDefault(u => u.Id != skillAssessmentCreateViewModel.SkillGroup.Id && u.GroupName.Trim().ToLower() == skillAssessmentCreateViewModel.SkillGroup.GroupName.Trim().ToLower() && u.AssessmentType == skillAssessmentCreateViewModel.SkillGroup.AssessmentType);
+                    var groupdata = listOfSkillGroup.FirstOrDefault(u => u.Id != skillAssessmentCreateViewModel.SkillGroup.Id && u.GroupName.Trim().ToLower() == skillAssessmentCreateViewModel.SkillGroup.GroupName.Trim().ToLower() && u.AssessmentTypeId == skillAssessmentCreateViewModel.SkillGroup.AssessmentTypeId);
                     if (groupdata != null)
                     {
                         return Json(new { statuscode = 2 });

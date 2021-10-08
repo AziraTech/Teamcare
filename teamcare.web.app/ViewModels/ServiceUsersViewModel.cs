@@ -21,9 +21,8 @@ namespace teamcare.web.app.ViewModels
         public business.Models.ServiceUserModel ServiceUserByID { get; set; }
         public ServiceUserCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ResidenceList { get; set; }
-        public IEnumerable<business.Models.ContactModel> ContactList { get; set; }
-                
-        public IEnumerable<EnumListItem> AssessmentType { get; set; }
+        public IEnumerable<business.Models.ContactModel> ContactList { get; set; }             
+        public IEnumerable<business.Models.AssessmentTypeModel> AssessmentType { get; set; }
         public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkills { get; set; }
 
     }

@@ -59,8 +59,9 @@ $(document).ready(function () {
                 if (data != null) {
                     $('#AssessmentTabContentData').html('');
                     $('#AssessmentTabContentData').html(data);
+                    
 
-                    setCurrentTabAssessment('LivingSkills', '1');
+                    setCurrentTabAssessment($('#hdnassettab').val());
                 }
             }
         });
@@ -240,13 +241,8 @@ async function fncEditOrDelete(opType, logId, msgAreaId) {
 }
 
 
-async function setCurrentTabAssessment(tabName, id) {
-    if (tabName == "LivingSkills") {
-        $('#LivingSkills').addClass('active');
-    } else {
-        $('#LivingSkills').removeClass('active');
-    }
-
+async function setCurrentTabAssessment(id) {
+   
     var serviceuserid = $('#hdnserviceuserid').val();
     $.ajax({
         type: "POST",
@@ -342,7 +338,7 @@ async function setCurrentTabAssessment(tabName, id) {
                                         }
                                     }).then(function (q) {
                                         q.isConfirmed && $('#create_assessment').modal('hide');
-                                        setCurrentTabAssessment(tabName, id);
+                                        setCurrentTabAssessment(id);
                                     });
                                 }
                             }

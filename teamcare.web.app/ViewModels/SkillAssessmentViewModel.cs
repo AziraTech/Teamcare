@@ -22,8 +22,9 @@ namespace teamcare.web.app.ViewModels
         public business.Models.SkillGroupsModel SkillGroup { get; set; }
         public business.Models.LivingSkillsModel LivingSkill { get; set; }
         public SkillAssessmentCreateViewModel CreateViewModel { get; set; }
-        public IEnumerable<EnumListItem> Assessment { get; set; }
-        public int AssessmentTypeId { get; set; }
+        public IEnumerable<business.Models.AssessmentTypeModel>  AssessmentType { get; set; }
+        public IEnumerable<EnumListItem> AssessmentSkillLevel { get; set; }
+        public Guid AssessmentTypeId { get; set; }
         public Guid ServiceUserId { get; set; }
         public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkill { get; set; }
         public IEnumerable<business.Models.AssessmentModel> AssessmentList { get; set; }

@@ -1,0 +1,44 @@
+﻿@{ ViewData["Title"] = "Assessment Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model teamcare.web.app.ViewModels.AssessmentTypeCreateViewModel
+}
+
+<div class="d-flex flex-wrap flex-stack pb-7">
+    <div class="col-md-9"></div>
+    <div class="col-md-1">
+        <a href="javaScript:void(0);" class="btn btn-bg-white btn-active-color-primary me-1 float-end" id="btncreate" onclick="openAddEditAssetTypeModal('')">Create</a>
+    </div>
+
+</div>
+
+<div class="docs-content d-flex flex-column flex-column-fluid" id="kt_docs_content">
+    <!--begin::Container-->  
+    <div class="container">
+        <!--begin::Card-->
+        <div class="card mb-2">
+
+            <!--begin::Card Body-->
+            <div class="card-body fs-6 py-15 px-10 py-lg-15 px-lg-15 text-gray-700">
+                <div id="AssetTypeDataContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ------------------------------------- Model Portion ------------------------------------- -->
+<!--begin::Modals-->
+<!--begin::Modal - Create Service Users-->
+<div class="modal fade" id="modalAddEditType"  aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-900px">
+        <!--begin::Modal content-->
+        <div class="modal-content" id="divAddEditType">
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - Create Service Users-->
+
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="~/js/page_script/assessmenttype.js"></script>

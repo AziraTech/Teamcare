@@ -1,4 +1,4 @@
-﻿@{ ViewData["Title"] = "Log Entry List";
+﻿@{ ViewData["Title"] = "Skill Assessment";
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model teamcare.web.app.ViewModels.SkillAssessmentViewModel
 }
@@ -15,22 +15,23 @@
                     <div class="col-md-4 fv-row">
                     </div>
                     <div class="col-md-4 fv-row">
-                        <label class="fs-6 fw-bold mb-2">Options Group</label>
-                        <select class="form-select form-select-sm" name="assessmentoptionsgroup" id="ddlassessmentoptionsgroup">
-                            @foreach (var group in Model.AssessmentOptionsGroup)
-                            {
-                                <option value="@group.Value">@group.Text</option>
-                            }
-                        </select>
+                      
                     </div>
                     <!--end::Col-->
                     <!--begin::Col-->
                     <div class="col-md-4 fv-row">
                         <label class="fs-6 fw-bold mb-2">Assessment Type</label>
-                        <select class="form-select form-select-sm" name="assessmenttype" id="ddlassessmenttype">
-                            @foreach (var group in Model.Assessment)
+                        <select class="form-select form-select-sm ddlselect2" name="assessmenttype" id="ddlassessmenttype">
+                            @foreach (var group in Model.AssessmentType)
                             {
-                                <option value="@group.Value">@group.Text</option>
+                                if (group.Id == Model.AssessmentTypeId)
+                                {
+                                    <option value="@group.Id" selected>@group.TypeName</option>
+                                }
+                                else
+                                {
+                                    <option value="@group.Id">@group.TypeName</option>
+                                }
                             }
                         </select>
                     </div>

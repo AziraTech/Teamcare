@@ -61,13 +61,13 @@ const livingskillfrm = FormValidation
 
 $(document).ready(function () {
 
+    $('.ddlselect2').select2();
+
     BindGropTypeWise($("#ddlassessmenttype").val());
 
     $('#kt_toolbar_primary_button').click(function () {
         $('#spnassesstype').html($("#ddlassessmenttype :selected").text());
         $('#hdnassessmenttype').val($("#ddlassessmenttype").val());
-
-        $('#spnassessoptionsgroup').html($("#ddlassessmentoptionsgroup :selected").text());
         $('#txtgroupname').val('');
     });
 
@@ -86,8 +86,7 @@ $(document).ready(function () {
                         Id: 0,
                         GroupName: $('#txtgroupname').val(),
                         Position: 0, //$('#txtposition').val()
-                        AssessmentType: $('#hdnassessmenttype').val(),
-                        AssessmentOptionsGroup: $("#ddlassessmentoptionsgroup").val()
+                        AssessmentTypeId: $('#hdnassessmenttype').val()
                     }
                     var skillAssessmentCreateViewModel = {
                         SkillGroup: SkillGroup,
@@ -543,8 +542,7 @@ function EditGroup(ctrl) {
                                     Id: selectedId,
                                     GroupName: $('#txtupdgroupname').val(),
                                     Position: $('#txtupdposition').val() == "" ? 0 : $('#txtupdposition').val(),
-                                    AssessmentType: $('#hdnupdassessmenttype').val(),
-                                    AssessmentOptionsGroup: $('#hdnupdassessmentoptionsgroup').val()
+                                    AssessmentTypeId: $('#hdnupdassessmenttype').val(),
                                 }
                                 var skillAssessmentCreateViewModel = {
                                     SkillGroup: SkillGroup,

@@ -28,6 +28,7 @@ namespace teamcare.web.app.Middleware
 			CreateMap<LivingSkill, LivingSkillsModel>().ReverseMap();
 			CreateMap<Assessment, AssessmentModel>().ReverseMap();
 			CreateMap<AssessmentSkill, AssessmentSkillModel>().ReverseMap();
+			CreateMap<AssessmentType, AssessmentTypeModel>().ReverseMap();
 		}
 	}
 }
