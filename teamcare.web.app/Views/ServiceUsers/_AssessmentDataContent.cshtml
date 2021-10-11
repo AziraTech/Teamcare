@@ -11,7 +11,7 @@
                 {
                     
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6 @(item.Position==0?"active":"")" data-bs-toggle="tab" id="@item.Id" href="#tab_@item.TypeName" onclick="setCurrentTabAssessment('@item.Id')">@item.TypeName</a>
+                        <a class="nav-link text-active-primary me-6 @(item.Position==0 ? " active " : " ")" data-bs-toggle="tab" id="@item.Id" href="#tab_@item.TypeName" onclick="setCurrentTabAssessment('@item.Id')">@item.TypeName</a>
                     </li>
                 }
                 <!--end::Nav item-->
