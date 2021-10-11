@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "teamcare.business", "teamca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "teamcare.data", "teamcare.data\teamcare.data.csproj", "{251CC7B1-21DD-44AF-9EFA-F22E1FFF0AE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "teamcare.common", "teamcare.common\teamcare.common.csproj", "{40B0FB8A-EBAD-4DAE-8E22-0890C5738C33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "teamcare.common", "teamcare.common\teamcare.common.csproj", "{40B0FB8A-EBAD-4DAE-8E22-0890C5738C33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -500,11 +500,14 @@ namespace teamcare.web.app.Controllers
                     }
                 }
 
+                var assettype = await _assessmentTypeService.ListAllAsync();
+
                 model = new SkillAssessmentViewModel
                 {
                     AssessmentTypeId = Type,
                     SkillGroups = finalskill.OrderBy(r => r.Position),
-                    AssessmentSkill = asm
+                    AssessmentSkill = asm,
+                    AssessmentType=assettype
                 };
 
                 return PartialView("_AssessmentSkillDetails", model);

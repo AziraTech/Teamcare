@@ -11,6 +11,6 @@ namespace teamcare.business.Models
         public int Position { get; set; }
         public Guid AssessmentTypeId { get; set; }
         public int TotalSkill { get; set; }
-
+        public string AssessmentTypeName { get; set; }
     }
 }

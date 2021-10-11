@@ -58,6 +58,7 @@ namespace teamcare.web.app.Controllers
         [HttpPost]
         public async Task<IActionResult> BindGroup(Guid TypeId)
         {
+            var typename = await _assessmentTypeService.GetByIdAsync(TypeId);
             var listOfSkillGroup = await _skillGroupService.ListAllAsync();
             var TypeWiseGroupList = listOfSkillGroup.Where(x => x.AssessmentTypeId == TypeId).ToList();
 
@@ -66,6 +67,7 @@ namespace teamcare.web.app.Controllers
                 var listOfSkill = await _livingskillService.ListByGroupId((Guid)item.Id);
                 int total = listOfSkill.Count();
                 item.TotalSkill = total;
+                item.AssessmentTypeName = typename.TypeName;
             }
 
             var model = new SkillAssessmentViewModel

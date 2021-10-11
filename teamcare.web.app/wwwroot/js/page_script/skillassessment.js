@@ -483,6 +483,7 @@ function DeleteLivingSkill(ctrl) {
 
 function EditGroup(ctrl) {
     var id = $(ctrl).attr('id');
+    var typename = $(ctrl).attr('typename');
     $.ajax({
         type: "POST",
         url: '/SkillsAssessment/EditSkillGroup',
@@ -502,6 +503,7 @@ function EditGroup(ctrl) {
                 $('#partialViewEditSkill').html('');
                 $('#partialViewEditSkill').html(data);
 
+                $('#spnassettypename').html(typename);
                 var selectedId = $('#selectedId').val();
 
                 var frmupdskillgroup = document.querySelector("#kt_modal_update_skillgroup");

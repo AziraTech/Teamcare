@@ -304,7 +304,7 @@ async function setCurrentTabAssessment(id) {
 
                         var Assessment = {
                             ServiceUserId: $('#hdnserviceuserid').val(),
-                            AssessmentType: $('#hdnassessmenttype').val()
+                            AssessmentTypeId: $('#hdnassessmenttype').val()
                         }
 
                         var assessmentCreateViewModel = {

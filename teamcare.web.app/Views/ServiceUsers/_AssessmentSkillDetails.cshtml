@@ -26,6 +26,8 @@
 
                 @foreach (var livingitem in skillsInGroup)
                 {
+                    var optionsgroup = @Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
+
                     <tr>
                         <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
                             <label class="fs-7 text-muted">
@@ -33,22 +35,22 @@
                             </label>
                         </td>
 
-                        @*@if (item.AssessmentTypeId == AssessmentOptionsGroup.Risk)
-                            {
-                                <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                    <label class="fw-bold fs-6">
-                                        @livingitem.RiskLevel.GetEnumDescription()
-                                    </label>
-                                </td>
-                            }
-                            else
-                            {*@
-                        <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                            <label class="fs-7 text-muted">
-                                @livingitem.SkillLevel
-                            </label>
-                        </td>
-                        @*}*@
+                        @if (optionsgroup == AssessmentOptionsGroup.Risk)
+                        {
+                            <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                                <label class="fw-bold fs-6">
+                                    @livingitem.RiskLevel.GetEnumDescription()
+                                </label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+                                <label class="fs-7 text-muted">
+                                    @livingitem.SkillLevel
+                                </label>
+                            </td>
+                        }
                     </tr>
                 }
             }
