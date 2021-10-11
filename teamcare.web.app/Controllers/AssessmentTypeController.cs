@@ -21,15 +21,23 @@ namespace teamcare.web.app.Controllers
         private readonly IAssessmentTypeService _assessmenttypeservice;
         private readonly ILivingSkillService _livingSkillService;
         private readonly IAuditService _auditService;
+        private readonly ISkillGroupsService _skillgroupService;
+        private readonly IAssessmentService _assessmentService;
+        private readonly IAssessmentSkillService _assessmentSkillService;
 
         public AssessmentTypeController(IAssessmentTypeService assessmenttypeService,
                                             IAuditService auditService,
-                                            ILivingSkillService livingSkillService)
+                                            ILivingSkillService livingSkillService,
+                                            ISkillGroupsService skillGroupsService,
+                                            IAssessmentService assessmentService,
+                                            IAssessmentSkillService assessmentSkillService)
         {
             _assessmenttypeservice = assessmenttypeService;
             _auditService = auditService;
             _livingSkillService = livingSkillService;
-
+            _skillgroupService = skillGroupsService;
+            _assessmentService = assessmentService;
+            _assessmentSkillService = assessmentSkillService;
         }
 
         public async Task<IActionResult> Index()
@@ -55,16 +63,25 @@ namespace teamcare.web.app.Controllers
             try
             {
                 var model = new AssessmentTypeCreateViewModel();
+                bool IsDisable = false;
 
                 if (!string.IsNullOrEmpty(id))
                 {
                     var assetData = await _assessmenttypeservice.GetByIdAsync(new Guid(id));
+                    var assessment = await _assessmentService.ListAllAsync();
+
+                    var finalassesment = assessment.Where(r => r.AssessmentTypeId == new Guid(id)).ToList();
+                    if (finalassesment.Count > 0)
+                    {
+                        IsDisable = true;
+                    }
 
                     model = new AssessmentTypeCreateViewModel
                     {
 
                         OptionsGroup = EnumExtensions.GetEnumListItems<AssessmentOptionsGroup>(),
-                        AssessmentType = assetData
+                        AssessmentType = assetData,
+                        IsOptionsGroupDisable=IsDisable
                     };
                 }
                 else
@@ -72,8 +89,9 @@ namespace teamcare.web.app.Controllers
                     model = new AssessmentTypeCreateViewModel
                     {
 
-                       OptionsGroup= EnumExtensions.GetEnumListItems<AssessmentOptionsGroup>(),
-                        AssessmentType = new AssessmentTypeModel()
+                        OptionsGroup = EnumExtensions.GetEnumListItems<AssessmentOptionsGroup>(),
+                        AssessmentType = new AssessmentTypeModel(),
+                        IsOptionsGroupDisable = false
                     };
                 }
                 return PartialView("~/Views/AssessmentType/_AssessmentTypeAddUpdate.cshtml", model);
@@ -185,15 +203,47 @@ namespace teamcare.web.app.Controllers
         {
             try 
             {
-                var listofLvingSkill = await _livingSkillService.ListByGroupId(id);
+                // Assessment & AssessmentSkill
+                var assessment = await _assessmentService.ListAllAsync();
+                var finalassest = assessment.Where(r => r.AssessmentTypeId == id).ToList();
 
-                foreach (var item in listofLvingSkill)
+                var assessmentskill = await _assessmentSkillService.ListAllAsync();
+
+                foreach (var item in finalassest)
                 {
-                    await _livingSkillService.DeleteAsync(item);
+                    var skill = assessmentskill.Where(x => x.AssessmentId == item.Id).ToList();
+
+                    foreach (var sitem in skill)
+                    {
+                        await _assessmentSkillService.DeleteAsync(sitem);
+                    }
+
+                    await _assessmentService.DeleteAsync(item);
+                }
+            
+
+                //Group
+                var groupskill = await _skillgroupService.ListAllAsync();
+
+                foreach (var gitem in groupskill)
+                {
+                    var finalfroup = groupskill.Where(x => x.AssessmentTypeId == gitem.Id).FirstOrDefault();
+                    if (finalfroup != null)
+                    {
+                        // Skill
+                        var listofLvingSkill = await _livingSkillService.ListByGroupId((Guid)finalfroup.Id);
+
+                        foreach (var item in listofLvingSkill)
+                        {
+                            await _livingSkillService.DeleteAsync(item);
+                        }
+                        await _skillgroupService.DeleteAsync(finalfroup);
+                    }
                 }
 
-                var groupskill = await _assessmenttypeservice.GetByIdAsync(id);
-                await _assessmenttypeservice.DeleteAsync(groupskill);
+                // Assessment Type
+                var assettype = await _assessmenttypeservice.GetByIdAsync(id);
+                await _assessmenttypeservice.DeleteAsync(assettype);
 
                 _auditService.Execute(async repository =>
                 {

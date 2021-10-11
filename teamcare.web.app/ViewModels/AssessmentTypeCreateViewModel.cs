@@ -16,6 +16,7 @@ namespace teamcare.web.app.ViewModels
         public AssessmentTypeModel AssessmentType { get; set; }
         public IEnumerable<business.Models.AssessmentTypeModel> AssessmentTypeList { get; set; }
         public IEnumerable<EnumListItem> OptionsGroup { get; set; }
+        public bool IsOptionsGroupDisable { get; set; }
 
     }
 }
