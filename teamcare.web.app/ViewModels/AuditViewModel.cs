@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using teamcare.common.Configuration;
 
@@ -20,5 +21,6 @@ namespace teamcare.web.app.ViewModels
         public business.Models.AuditModel AuditByID { get; set; }
         public AuditCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ServcieUsersList { get; set; }
+        public Guid UserId { get; set; }
     }
 }

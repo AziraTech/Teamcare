@@ -17,6 +17,7 @@ namespace teamcare.web.app.ViewModels
         public ServiceUserModel ServiceUserByID { get; set; }
         public ServiceUserCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ResidenceList { get; set; }
+        public IEnumerable<AuditModel> MyAudit { get; set; }
 
     }
 }

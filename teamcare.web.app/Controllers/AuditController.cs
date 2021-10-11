@@ -26,7 +26,7 @@ namespace teamcare.web.app.Controllers
 
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Guid id)
         {
             SetPageMetadata(PageTitles.Audit, SiteSection.ServiceUsers, new List<BreadcrumbItem>() {
                 new BreadcrumbItem(PageTitles.Dashboard, Url.Action("Index", "Home")),
@@ -39,10 +39,11 @@ namespace teamcare.web.app.Controllers
                 Value = x.Id.ToString(),
                 Text = x.FirstName + " " + x.LastName
             }).OrderBy(y => y.Text).ToList();
-
+           
             var model = new AuditViewModel
             {
-                ServcieUsersList = distinctUsers
+                ServcieUsersList = distinctUsers,
+                UserId=id
             };
 
             return View(model);

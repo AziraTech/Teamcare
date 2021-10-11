@@ -1,7 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Log Entry List";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    @using teamcare.common.Helpers
     @model teamcare.web.app.ViewModels.AuditViewModel
+
+    var userRole = User.GetClaimValue(System.Security.Claims.ClaimTypes.Role);
 
 }
 
@@ -50,13 +53,20 @@
                             <!--end::Label-->
                             <!--begin::Input-->
                             <div>
-                                <select class="form-select form-select-solid" id="sortByUser" data-kt-select2="true" data-placeholder="select user" data-allow-clear="true">
+                                <select class="form-select form-select-solid" id="sortByUser" data-kt-select2="true" data-placeholder="select user" data-allow-clear="true" @(userRole == teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString() || userRole == teamcare.common.Enumerations.UserRoles.Admin.ToString() ? "" : "disabled")>
                                     <option></option>
                                     @if (Model.ServcieUsersList != null)
                                     {
                                         foreach (var itm in Model.ServcieUsersList)
                                         {
-                                            <option value="@itm.Value">@itm.Text</option>
+                                            if (itm.Value == Model.UserId.ToString())
+                                            {
+                                                <option value="@itm.Value" selected>@itm.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@itm.Value">@itm.Text</option>
+                                            }
                                         }
                                     }
                                 </select>
@@ -94,7 +104,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="d-flex justify-content-end">

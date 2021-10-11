@@ -61,10 +61,14 @@ namespace teamcare.web.app.Controllers
             }
 
             var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
-            
+
+            var audit = await _auditService.ListAllAsync();
+            var myActivity = audit.Where(r => r.CreatedBy == base.UserId).ToList();
+
             var model = new HomeViewModel
             { 
                 ServiceUser = listOfUsers,
+                MyAudit=myActivity
             };
             
             _auditService.Execute(async repository =>

@@ -1,4 +1,11 @@
 ﻿@model teamcare.web.app.ViewModels.AuditViewModel
+@using teamcare.web.app.Helpers;
+@using teamcare.common.Helpers;
+
+@{
+    var userRole = User.GetClaimValue(System.Security.Claims.ClaimTypes.Role);
+
+}
 <!--begin::Tab Content-->
 <div class="tab-content">
 
@@ -15,10 +22,13 @@
                         <!--begin::Head-->
                         <thead class="fs-7 text-gray-400 text-uppercase">
                             <tr>
-                                <th class="min-w-200px">User Name</th>
+                                @if (userRole == teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString() || userRole == teamcare.common.Enumerations.UserRoles.Admin.ToString())
+                                {
+                                    <th class="min-w-200px">User Name</th>
+                                }
                                 <th class="min-w-150px">Action</th>
                                 <th class="min-w-150px">Details</th>
-                                <th class="min-w-200px">Created Date</th>            
+                                <th class="min-w-200px">Created Date</th>
                             </tr>
                         </thead>
                         <!--end::Head-->
@@ -28,7 +38,15 @@
                             {
                                 foreach (var item in Model.Audit)
                                 {
-                                    <partial name="_AuditListItem" model="item" />
+                                    <tr>
+                                        @if (userRole == teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString() || userRole == teamcare.common.Enumerations.UserRoles.Admin.ToString())
+                                        {
+                                            <td>@item.UserName</td>
+                                        }
+                                        <td>@item.Action.GetEnumDescription()</td>
+                                        <td>@item.Details</td>
+                                        <td>@item.CreatedOn.GetDateOffsetFormat(true)</td>
+                                    </tr>
                                 }
                             }
                         </tbody>
