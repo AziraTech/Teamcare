@@ -1,76 +1,77 @@
-﻿
+﻿var modalAsset = null;
+
 var frmassettype = null;
 var frmvalid = null;
 
 $(document).ready(function () {
 
     BindType();
-  
+
 });
 
 
 function BindType() {
-        $.ajax({
-            type: 'POST',
-            url: '/AssessmentType/BindType',
-            data: { },
-            success: function (htmlresponse) {
-                if (htmlresponse != null) {
-                    $('#AssetTypeDataContent').html('');
-                    $('#AssetTypeDataContent').html(htmlresponse);
+    $.ajax({
+        type: 'POST',
+        url: '/AssessmentType/BindType',
+        data: {},
+        success: function (htmlresponse) {
+            if (htmlresponse != null) {
+                $('#AssetTypeDataContent').html('');
+                $('#AssetTypeDataContent').html(htmlresponse);
 
-                    $("#sortable").sortable({
-                        /*stop: function(event, ui) {
-                            alert("New position: " + ui.item.index());
-                        }*/
-                        //start: function (e, ui) {
-                        //    // creates a temporary attribute on the element with the old index
-                        //    $(this).attr('data-previndex', ui.item.index());
-                        //},
-                        update: function (e, ui) {
-                            var itemOrder = $('#sortable').sortable("toArray");
-                            var AssessmentTypeList = new Array();
-                            for (var i = 0; i < itemOrder.length; i++) {
-                                var AssessmentType = {};
-                                AssessmentType.Id = itemOrder[i];
-                                AssessmentType.Position = i;
-                                AssessmentTypeList.push(AssessmentType);
-                            }
-
-                            var assessmentTypeCreateViewModel = {
-                                AssessmentTypeList: AssessmentTypeList,
-                            }
-
-                            $.ajax({
-                                type: "POST",
-                                url: '/AssessmentType/MovePosition',
-                                data: { assessmentTypeCreateViewModel: assessmentTypeCreateViewModel },
-                                success: function (data) {
-                                    if (data.statuscode == 3) {
-                                        Swal.fire({
-                                            text: data.message,
-                                            icon: "error",
-                                            buttonsStyling: !1,
-                                            confirmButtonText: "Ok, got it!",
-                                            customClass: {
-                                                confirmButton: "btn btn-light"
-                                            }
-                                        });
-                                    } else {
-
-                                    }
-                                }
-                            });
-
+                $("#sortable").sortable({
+                    /*stop: function(event, ui) {
+                        alert("New position: " + ui.item.index());
+                    }*/
+                    //start: function (e, ui) {
+                    //    // creates a temporary attribute on the element with the old index
+                    //    $(this).attr('data-previndex', ui.item.index());
+                    //},
+                    update: function (e, ui) {
+                        var itemOrder = $('#sortable').sortable("toArray");
+                        var AssessmentTypeList = new Array();
+                        for (var i = 0; i < itemOrder.length; i++) {
+                            var AssessmentType = {};
+                            AssessmentType.Id = itemOrder[i];
+                            AssessmentType.Position = i;
+                            AssessmentTypeList.push(AssessmentType);
                         }
-                    });
-                    $("#sortable").disableSelection();
-                }
-            }, error: function (e) {
 
+                        var assessmentTypeCreateViewModel = {
+                            AssessmentTypeList: AssessmentTypeList,
+                        }
+
+                        $.ajax({
+                            type: "POST",
+                            url: '/AssessmentType/MovePosition',
+                            data: { assessmentTypeCreateViewModel: assessmentTypeCreateViewModel },
+                            success: function (data) {
+                                if (data.statuscode == 3) {
+                                    Swal.fire({
+                                        text: data.message,
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-light"
+                                        }
+                                    });
+                                } else {
+
+                                }
+                            }
+                        });
+
+                    }
+                });
+                $("#sortable").disableSelection();
             }
-        });
-    
+        }, error: function (e) {
+
+        }
+    });
+
 }
 
 
@@ -138,9 +139,12 @@ function openAddEditAssetTypeModal(id) {
 
                 $('.ddlselect2').select2();
 
+                modalAsset = new bootstrap.Modal(document.querySelector('#modalAddEditType'));
+
+
                 frmassettype = document.querySelector("#kt_modal_assettype");
 
-                 frmvalid = FormValidation
+                frmvalid = FormValidation
                     .formValidation(frmassettype,
                         {
                             fields: {
@@ -179,7 +183,9 @@ function openAddEditAssetTypeModal(id) {
                     $('#lblheader').text('Edit Assessment Type');
                 }
 
-                $('#modalAddEditType').modal('show');
+                modalAsset.show();
+                $('.modal-backdrop').remove();
+
 
             }
             else {
@@ -199,58 +205,58 @@ function saveAssessmentType(sender) {
 
             $('#typesubmit').disabled = !0;
             $('#typesubmit').attr("data-kt-indicator", "on");
-                setTimeout(function () {
-                    $('#typesubmit').removeAttr("data-kt-indicator");
-                    $('#typesubmit').disabled = !1;
+            setTimeout(function () {
+                $('#typesubmit').removeAttr("data-kt-indicator");
+                $('#typesubmit').disabled = !1;
 
-                    //ajax call for the submit;
-                    var AssessmentType = {
-                        Id: $('#hdnassettypeid').val(),
-                        TypeName: $('#txttypename').val(),
-                        OptionsGroup: $('#ddloptionsgroup').val()
-                    }
-                    var assessmentTypeCreateViewModel = {
-                        AssessmentType: AssessmentType,
-                    }
-                    $.ajax({
-                        type: "POST",
-                        url: '/AssessmentType/Save',
-                        data: { assessmentTypeCreateViewModel: assessmentTypeCreateViewModel },
-                        success: function (data) {
-                            if (data.statuscode == 1) {
-                                $('#modalAddEditType').hide();
-                                //window.location.reload();
-                                BindType();
-                                $('#txttypename').val('');
-                                $('.modal-backdrop').remove();
+                //ajax call for the submit;
+                var AssessmentType = {
+                    Id: $('#hdnassettypeid').val(),
+                    TypeName: $('#txttypename').val(),
+                    OptionsGroup: $('#ddloptionsgroup').val()
+                }
+                var assessmentTypeCreateViewModel = {
+                    AssessmentType: AssessmentType,
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '/AssessmentType/Save',
+                    data: { assessmentTypeCreateViewModel: assessmentTypeCreateViewModel },
+                    success: function (data) {
+                        if (data.statuscode == 1) {
+                            $('#modalAddEditType').hide();
+                            //window.location.reload();
+                            BindType();
+                            $('#txttypename').val('');
+                            $('.modal-backdrop').remove();
 
-                            } else if (data.statuscode == 2) {
-                                Swal.fire({
-                                    text: "Sorry, TYpe Name already exists, please try again different type name.",
-                                    icon: "info",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-light"
-                                    }
-                                });
-                            }
-                            else {
-                                Swal.fire({
-                                    text: data.message,
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-light"
-                                    }
-                                });
-                            }
+                        } else if (data.statuscode == 2) {
+                            Swal.fire({
+                                text: "Sorry, TYpe Name already exists, please try again different type name.",
+                                icon: "info",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
                         }
-                    });
-                    //on success show message
-                }, 2e3);
-           
+                        else {
+                            Swal.fire({
+                                text: data.message,
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+                        }
+                    }
+                });
+                //on success show message
+            }, 2e3);
+
         }
         else {
             Swal.fire({

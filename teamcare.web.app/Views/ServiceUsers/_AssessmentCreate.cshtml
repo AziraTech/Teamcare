@@ -5,20 +5,19 @@
 <div class="card-body p-9">
     <div class="py-3 py-md-1 mb-5">
         @if (Model.IsDueAssessment)
-        {           
-
+        {
             <!--begin::Item-->
-        <div class="d-flex align-items-center bg-light-danger rounded p-5 mb-7">
-            <i class="las la-user-clock me-5 " style="font-size:30px;" title="Assessment is due."></i>             
-            <!--begin::Title-->
-            <div class="flex-grow-1 me-2">
-                <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
-                    Assessment is overdue of this type for this Service User
-                </a>
-                <span class="text-muted fw-bold d-block">Overdue by @Model.DueDays days</span>
+            <div class="d-flex align-items-center bg-light-danger rounded p-5 mb-7">
+                <i class="las la-user-clock me-5 " style="font-size:30px;color: #f1416c;" title="Assessment is due."></i>
+                <!--begin::Title-->
+                <div class="flex-grow-1 me-2">
+                    <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
+                        Assessment is overdue of this type for this Service User
+                    </a>
+                    <span class="text-muted fw-bold d-block">Overdue by @Model.DueDays days</span>
+                </div>
+                <!--end::Title-->
             </div>
-            <!--end::Title-->
-        </div>
             <!--end::Item-->
 
         }
@@ -47,7 +46,7 @@
                     <div class="flex-grow-1 me-2">
                         <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
                             There is no assessment of this type for this Service User
-                        </a>                    
+                        </a>
                     </div>
                     <!--end::Title-->
                 </div>
@@ -62,7 +61,7 @@
         <!--begin::Table head-->
         <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
             <!--begin::Table row-->
-            <tr class="text-start text-muted text-uppercase gs-0">                
+            <tr class="text-start text-muted text-uppercase gs-0">
                 <th class="min-w-100px">
                     Assessment Date
                 </th>
@@ -77,24 +76,24 @@
         <!--begin::Table body-->
         <tbody class="fs-6 fw-bold text-gray-600  ">
 
-            @if(Model.AssessmentList.ToList().Count > 0)
+            @if (Model.AssessmentList.ToList().Count > 0)
             {
                 <!--begin::Table row-->
                 @foreach (var item in Model.AssessmentList)
                 {
-                    <tr>                        
-                        <!--begin::Invoice=-->                
-                        <td >
+                    <tr>
+                        <!--begin::Invoice=-->
+                        <td>
                             @item.CreatedOn.ToString("dd MMMM yyyy, hh:mm")
                         </td>
                         <!--end::Invoice=-->
                         <!--begin::Status=-->
-                        <td >
+                        <td>
                             @item.CreatedByUser.Title @item.CreatedByUser.FirstName @item.CreatedByUser.LastName
                         </td>
                         <!--end::Status=-->
                         <!--begin::Amount=-->
-                        <td >
+                        <td>
                             <a href="javascript:void(0);" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id" type="@item.AssessmentTypeId" srvuserid="@item.ServiceUserId">
                                 <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
                                 <span class="svg-icon svg-icon-3">
