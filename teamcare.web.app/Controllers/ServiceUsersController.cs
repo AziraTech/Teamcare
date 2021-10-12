@@ -390,6 +390,7 @@ namespace teamcare.web.app.Controllers
                 }
 
                 bool IsDue = false;
+                int dueDays = 0;
                 var getfirstassessment = serviceuserassessmentlist.OrderByDescending(r => r.CreatedOn).FirstOrDefault();
                 if (getfirstassessment != null)
                 {
@@ -398,7 +399,8 @@ namespace teamcare.web.app.Controllers
 
                     if (todaydate >= trialPeriodEnd)
                     {
-                        IsDue = true;
+                        IsDue = true;                        
+                        dueDays = (todaydate - getfirstassessment.CreatedOn).Days;
                     }
                 }
 
@@ -422,7 +424,7 @@ namespace teamcare.web.app.Controllers
                     AssessmentSkill = asm,
                     IsDueAssessment = IsDue,
                     RiskAssessment = EnumExtensions.GetEnumListItems<RiskAssessmentLevel>(),
-
+                    DueDays = dueDays
                 };
 
 
