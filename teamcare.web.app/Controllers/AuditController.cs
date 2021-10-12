@@ -69,6 +69,7 @@ namespace teamcare.web.app.Controllers
                 var model = new AuditViewModel
                 {
                     Audit = listOfAudit.OrderByDescending(x => x.CreatedOn).ToList(),
+                    UserId= (Guid)base.UserId
                 };
 
                 return PartialView("_AuditDataContent", model);

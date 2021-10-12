@@ -36,18 +36,33 @@
                         <tbody class="fs-6">
                             @if (Model != null)
                             {
-                                foreach (var item in Model.Audit)
+
+                                @if (userRole == teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString() || userRole == teamcare.common.Enumerations.UserRoles.Admin.ToString())
                                 {
-                                    <tr>
-                                        @if (userRole == teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString() || userRole == teamcare.common.Enumerations.UserRoles.Admin.ToString())
-                                        {
+                                    foreach (var item in Model.Audit)
+                                    {
+                                        <tr>
                                             <td>@item.UserName</td>
-                                        }
-                                        <td>@item.Action.GetEnumDescription()</td>
-                                        <td>@item.Details</td>
-                                        <td>@item.CreatedOn.GetDateOffsetFormat(true)</td>
-                                    </tr>
+                                            <td>@item.Action.GetEnumDescription()</td>
+                                            <td>@item.Details</td>
+                                            <td>@item.CreatedOn.GetDateOffsetFormat(true)</td>
+                                        </tr>
+                                    }
                                 }
+                                else
+                                {
+                                    var myactivity = Model.Audit.Where(x => x.CreatedBy == Model.UserId).ToList();
+
+                                    foreach (var mitem in myactivity)
+                                    {
+                                        <tr>
+                                            <td>@mitem.Action.GetEnumDescription()</td>
+                                            <td>@mitem.Details</td>
+                                            <td>@mitem.CreatedOn.GetDateOffsetFormat(true)</td>
+                                        </tr>
+                                    }
+                                }
+
                             }
                         </tbody>
                         <!--end::Body-->
