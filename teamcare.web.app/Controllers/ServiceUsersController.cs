@@ -400,7 +400,7 @@ namespace teamcare.web.app.Controllers
                     if (todaydate >= trialPeriodEnd)
                     {
                         IsDue = true;                        
-                        dueDays = (todaydate - getfirstassessment.CreatedOn).Days;
+                        dueDays = (todaydate - trialPeriodEnd).Days;
                     }
                 }
 
