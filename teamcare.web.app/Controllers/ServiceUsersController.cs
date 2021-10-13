@@ -128,7 +128,7 @@ namespace teamcare.web.app.Controllers
 			});
 
             var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
-            var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(id)).FirstOrDefault();
+            var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(id) && x.UserId == (Guid)base.UserId).FirstOrDefault();
             listOfUser.Favourite = valueOfFavourite == null ? false : true;
 
 
