@@ -131,6 +131,17 @@ namespace teamcare.web.app.Controllers
             var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == new Guid(id) && x.UserId == (Guid)base.UserId).FirstOrDefault();
             listOfUser.Favourite = valueOfFavourite == null ? false : true;
 
+            bool IsNextOfKin = false;
+            bool IsNoEmrgency = false;
+
+            if (listOfUser.Contacts.Where(x => x.IsNextOfKin == true).Count() == 0)
+            {
+                IsNextOfKin = true;
+            }
+            else if (listOfUser.Contacts.Where(x => x.IsEmergencyContact == true).Count() == 0)
+            {
+                IsNoEmrgency = true;
+            }
 
             var model = new ServiceUsersViewModel
             {
@@ -141,7 +152,9 @@ namespace teamcare.web.app.Controllers
                     Relationship = EnumExtensions.GetEnumListItems<Relationship>(),
                     ArchiveReason = EnumExtensions.GetEnumListItems<ArchiveReason>()
                 },
-                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+                ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence),
+                IsNextOfKin = IsNextOfKin,
+                IsNoEmergency = IsNoEmrgency
             };
             return View(model);
         }
@@ -399,7 +412,7 @@ namespace teamcare.web.app.Controllers
 
                     if (todaydate >= trialPeriodEnd)
                     {
-                        IsDue = true;                        
+                        IsDue = true;
                         dueDays = (todaydate - trialPeriodEnd).Days;
                     }
                 }
@@ -509,7 +522,7 @@ namespace teamcare.web.app.Controllers
                     AssessmentTypeId = Type,
                     SkillGroups = finalskill.OrderBy(r => r.Position),
                     AssessmentSkill = asm,
-                    AssessmentType=assettype
+                    AssessmentType = assettype
                 };
 
                 return PartialView("_AssessmentSkillDetails", model);

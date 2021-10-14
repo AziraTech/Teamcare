@@ -143,6 +143,19 @@ namespace teamcare.web.app.Controllers
                     item.PrePath = "/" + _azureStorageOptions.Container;
                     item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
                 }
+
+                bool IsNextOfKin = false;
+                bool IsNoEmrgency = false;
+
+                if (listOfUser.Contacts.Where(x => x.IsNextOfKin == true).Count() == 0)
+                {
+                    IsNextOfKin = true;
+                }
+                else if (listOfUser.Contacts.Where(x => x.IsEmergencyContact == true).Count() == 0)
+                {
+                    IsNoEmrgency = true;
+                }
+
                 var model = new ServiceUsersViewModel
                 {
                     CreateViewModel = new ServiceUserCreateViewModel
@@ -151,7 +164,9 @@ namespace teamcare.web.app.Controllers
                         Relationship = EnumExtensions.GetEnumListItems<Relationship>()
                     },
                     ServiceUserByID = listOfUser,
-                    ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+                    ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence),
+                    IsNextOfKin = IsNextOfKin,
+                    IsNoEmergency = IsNoEmrgency
                 };
                 return PartialView("~/Views/Contact/Index.cshtml", model);
             }
@@ -187,6 +202,18 @@ namespace teamcare.web.app.Controllers
                     item.PrePath = "/" + _azureStorageOptions.Container;
                     item.Sequence = item.IsNextOfKin ? 1 : item.IsEmergencyContact ? 2 : 3;
                 }
+                bool IsNextOfKin = false;
+                bool IsNoEmrgency = false;
+
+                if (listOfUser.Contacts.Where(x => x.IsNextOfKin == true).Count() == 0)
+                {
+                    IsNextOfKin = true;
+                }
+                else if (listOfUser.Contacts.Where(x => x.IsEmergencyContact == true).Count() == 0)
+                {
+                    IsNoEmrgency = true;
+                }
+
                 var model = new ServiceUsersViewModel
                 {
                     ServiceUserByID = listOfUser,
@@ -195,7 +222,9 @@ namespace teamcare.web.app.Controllers
                         Title = EnumExtensions.GetEnumListItems<NameTitle>(),                     
                         Relationship = EnumExtensions.GetEnumListItems<Relationship>()
                     },
-                    ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence)
+                    ContactList = listOfUser.Contacts.OrderBy(r => r.Sequence),
+                    IsNextOfKin = IsNextOfKin,
+                    IsNoEmergency = IsNoEmrgency
                 };
                 return PartialView("~/Views/Contact/Index.cshtml", model);
 
