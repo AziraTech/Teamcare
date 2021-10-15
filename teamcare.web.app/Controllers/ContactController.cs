@@ -77,7 +77,6 @@ namespace teamcare.web.app.Controllers
 
                     if (contactCreateViewModel.Contact.Id.ToString() == "")
                     {
-                        var listOfContact = await _contactService.ListAllAsync();
                        
                         createdContact = await _contactService.AddAsync(contactCreateViewModel.Contact);
                         _auditService.Execute(async repository =>
