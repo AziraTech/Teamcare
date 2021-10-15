@@ -69,5 +69,7 @@ namespace teamcare.data.Entities
 		public virtual ICollection<Contact> Contacts { get; set; }		
         public virtual Residence Residence { get; set; }
 		public virtual ICollection<ServiceUserLog> ServiceUserLog { get; set; }
+		public virtual ICollection<ServiceUserDocument> ServiceUserDocuments { get; set; }
+		public virtual HealthMedication HealthMedication { get; set; }
 	}
 }
