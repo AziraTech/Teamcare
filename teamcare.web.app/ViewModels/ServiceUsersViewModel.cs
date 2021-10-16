@@ -23,7 +23,8 @@ namespace teamcare.web.app.ViewModels
         public List<SelectListItem> ResidenceList { get; set; }
         public IEnumerable<business.Models.ContactModel> ContactList { get; set; }             
         public IEnumerable<business.Models.AssessmentTypeModel> AssessmentType { get; set; }
-        public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkills { get; set; }
+        public IEnumerable<business.Models.AssessmentSkillModel> AssessmentSkills { get; set; }        
+        public IEnumerable<business.Models.ServiceUsersDocumentsModel> ServiceUsersDocument { get; set; }
         public bool IsNextOfKin { get; set; }
         public bool IsNoEmergency { get; set; }
 

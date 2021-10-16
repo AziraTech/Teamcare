@@ -4,7 +4,7 @@
     @using teamcare.common.Helpers
     @model teamcare.web.app.ViewModels.ServiceUsersViewModel
 
-    var userRole = User.GetClaimValue(System.Security.Claims.ClaimTypes.Role);
+    var userRole = User.GetClaimValue(System.Security.Claims.ClaimTypes.Role);    
 
 }
 <!--begin::Navbar-->
@@ -164,6 +164,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" href="#kt_project_assessments" id="tabassessments">Assessments</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" href="#kt_documents_manager" id="tabdocumentsmanager">Documents Manager</a>
+                </li>
             </ul>
         </div>
         <!--begin::Navs-->
@@ -189,10 +192,10 @@
             <!--begin::Card header-->
             <!--begin::Card body-->
             <div class="card-body p-9" id="divServiceUserDetails">
-                <partial name="_SeviceUserProfileDetails" model="Model" />       
+                <partial name="_SeviceUserProfileDetails" model="Model" />
             </div>
             <!--end::Card body-->
-            </div>
+        </div>
         <!--end::details View-->
 
     </div>
@@ -734,6 +737,12 @@
     <div id="kt_project_assessments" class="tab-pane fade" role="tabpanel">
         <!--begin::details View-->
         <div id="AssessmentTabContentData"></div>
+        <!--end::details View-->
+    </div>
+
+    <div id="kt_documents_manager" class="tab-pane fade" role="tabpanel">
+        <!--begin::details View-->
+        <div id="DocumentsManagerTabContentData"></div>
         <!--end::details View-->
     </div>
 

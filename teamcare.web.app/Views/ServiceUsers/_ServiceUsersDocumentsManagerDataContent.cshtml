@@ -1,0 +1,33 @@
+﻿@model teamcare.web.app.ViewModels.ServiceUsersDocumentsViewModel
+
+<div class="card mb-5 mb-xl-10">
+    <div class="card-header cursor-pointer">
+        <!--begin::Card title-->
+        <div class="card-title m-0">            
+            <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
+                <!--begin::Nav item-->
+                <li class="nav-item">
+                    @Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName Docuements
+                </li>
+                <!--end::Nav item-->
+            </ul>
+        </div>
+        <!--end::Card title-->
+    </div>
+
+    <div id="ServiceUsersDocumentsTabContent">
+        @if (Model.ServiceUsersDocument != null && Model.ServiceUsersDocument.Count() > 0)
+        {
+            <table border="0" cellpadding="0" cellspacing="0">
+                @foreach (var item in Model.ServiceUsersDocument)
+                {
+                <tr>
+                    <td>
+                        @item.DateReceived
+                    </td>
+                </tr>
+                }
+            </table>
+        }
+    </div>
+</div>

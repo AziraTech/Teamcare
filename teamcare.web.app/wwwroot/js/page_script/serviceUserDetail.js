@@ -60,8 +60,23 @@ $(document).ready(function () {
                     $('#AssessmentTabContentData').html('');
                     $('#AssessmentTabContentData').html(data);
                     
-
                     setCurrentTabAssessment($('#hdnassettab').val());
+                }
+            }
+        });
+    });
+
+    $('#tabdocumentsmanager').click(function ()
+    {
+        var serviceUserId = $('#hdnserviceuserid').val();
+        $.ajax({
+            type: "GET",
+            url: '/ServiceUsers/DocumentsManagerTabBind',
+            data: { docId: "", serviceUserId: serviceUserId },
+            success: function (data) {
+                if (data != null) {
+                    $('#DocumentsManagerTabContentData').html('');
+                    $('#DocumentsManagerTabContentData').html(data);
                 }
             }
         });

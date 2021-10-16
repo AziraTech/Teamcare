@@ -29,6 +29,11 @@ namespace teamcare.data.Entities.Documents
         public Guid? ContactId { get; set; }
         public virtual Contact Contact { get; set; }
 
+        [ForeignKey("ServiceUserDocument")]
+        [Column("service_user_document_id")]
+        public Guid? ServiceUserDocumentId { get; set; }
+        public virtual ServiceUserDocument ServiceUserDocument { get; set; }
+
         [Column("file_extension")]
         public string FileExtension { get; set; }
 

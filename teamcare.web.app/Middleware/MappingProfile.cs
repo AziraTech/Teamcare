@@ -10,6 +10,7 @@ using teamcare.data.Entities.Documents;
 using teamcare.data.Entities.ServiceUsers;
 using teamcare.data.Entities.SkillAssessments;
 
+
 namespace teamcare.web.app.Middleware
 {
 	public class MappingProfile : Profile
@@ -29,6 +30,9 @@ namespace teamcare.web.app.Middleware
 			CreateMap<Assessment, AssessmentModel>().ReverseMap();
 			CreateMap<AssessmentSkill, AssessmentSkillModel>().ReverseMap();
 			CreateMap<AssessmentType, AssessmentTypeModel>().ReverseMap();
+			CreateMap<ServiceUserDocument, ServiceUsersDocumentsModel>().ReverseMap();
+
+			
 		}
 	}
 }
