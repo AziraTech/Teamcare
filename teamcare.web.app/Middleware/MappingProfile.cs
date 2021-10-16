@@ -30,9 +30,8 @@ namespace teamcare.web.app.Middleware
 			CreateMap<Assessment, AssessmentModel>().ReverseMap();
 			CreateMap<AssessmentSkill, AssessmentSkillModel>().ReverseMap();
 			CreateMap<AssessmentType, AssessmentTypeModel>().ReverseMap();
-			CreateMap<ServiceUserDocument, ServiceUsersDocumentsModel>().ReverseMap();
-
-			
+			CreateMap<HealthMedication, HealthMedicationModel>().ReverseMap();
+CreateMap<ServiceUserDocument, ServiceUsersDocumentsModel>().ReverseMap();
 		}
 	}
 }

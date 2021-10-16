@@ -136,9 +136,13 @@ namespace teamcare.data.Migrations
                     .HasColumnType("uuid")
                     .HasColumnName("residence_id");
 
-                b.Property<Guid?>("ServiceUserId")
-                    .HasColumnType("uuid")
-                    .HasColumnName("service_user_id");
+                    b.Property<Guid?>("ServiceUserDocumentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("service_user_document_id");
+
+                    b.Property<Guid?>("ServiceUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("service_user_id");
 
                 b.Property<Guid?>("UpdatedBy")
                     .HasColumnType("uuid")
@@ -160,7 +164,9 @@ namespace teamcare.data.Migrations
 
                 b.HasIndex("ResidenceId");
 
-                b.HasIndex("ServiceUserId");
+                    b.HasIndex("ServiceUserDocumentId");
+
+                    b.HasIndex("ServiceUserId");
 
                 b.HasIndex("UserId");
 
@@ -512,6 +518,131 @@ namespace teamcare.data.Migrations
 
                 b.ToTable("Contacts");
             });
+
+            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.HealthMedication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AllergyInformation")
+                        .HasColumnType("text")
+                        .HasColumnName("allergy_information");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("deleted_by");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_on");
+
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("text")
+                        .HasColumnName("diagnosis");
+
+                    b.Property<string>("OtherSignificantInformation")
+                        .HasColumnType("text")
+                        .HasColumnName("other_significant_information");
+
+                    b.Property<string>("PrescriptionHistory")
+                        .HasColumnType("text")
+                        .HasColumnName("prescription_history");
+
+                    b.Property<Guid>("ServiceUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("service_user_id");
+
+                    b.Property<string>("SocialHistory")
+                        .HasColumnType("text")
+                        .HasColumnName("social_history");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("last_updated_by");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated_on");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ServiceUserId")
+                        .IsUnique();
+
+                    b.ToTable("HealthMedications");
+                });
+
+            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<DateTimeOffset>("DateReceived")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_received");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("deleted_by");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_on");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int>("DocumentCategory")
+                        .HasColumnType("integer")
+                        .HasColumnName("document_category");
+
+                    b.Property<Guid>("ServiceUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("service_user_id");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("last_updated_by");
+
+                    b.Property<DateTimeOffset?>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated_on");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ServiceUserId");
+
+                    b.ToTable("ServiceUserDocuments");
+                });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserLog", b =>
             {
@@ -933,30 +1064,30 @@ namespace teamcare.data.Migrations
 
                 b.ToTable("Users");
 
-                b.HasData(
-                    new
-                    {
-                        Id = new Guid("ebc90c82-ba40-453b-a4de-324089df2b22"),
-                        CreatedOn = new DateTimeOffset(new DateTime(2021, 10, 8, 10, 3, 21, 547, DateTimeKind.Unspecified).AddTicks(2400), new TimeSpan(0, 0, 0, 0, 0)),
-                        Email = "hans.doyekee@gmail.com",
-                        FirstName = "Teamcare",
-                        IsActive = true,
-                        LastName = "Admin",
-                        Title = 0,
-                        UserRole = 1
-                    },
-                    new
-                    {
-                        Id = new Guid("a258c184-c0f0-4f3b-ba8d-87bf934ca593"),
-                        CreatedOn = new DateTimeOffset(new DateTime(2021, 10, 8, 10, 3, 21, 547, DateTimeKind.Unspecified).AddTicks(4751), new TimeSpan(0, 0, 0, 0, 0)),
-                        Email = "nish.kagathara0791@gmail.com",
-                        FirstName = "Nishidh",
-                        IsActive = true,
-                        LastName = "Kagathara",
-                        Title = 0,
-                        UserRole = 1
-                    });
-            });
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3708c8fd-e14a-4684-b15e-0002d1289f36"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2021, 10, 15, 9, 30, 31, 934, DateTimeKind.Unspecified).AddTicks(6675), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "hans.doyekee@gmail.com",
+                            FirstName = "Teamcare",
+                            IsActive = true,
+                            LastName = "Admin",
+                            Title = 1,
+                            UserRole = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("f6f064bd-a28b-4d62-97ab-78e50f1f0e3f"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2021, 10, 15, 9, 30, 31, 934, DateTimeKind.Unspecified).AddTicks(8116), new TimeSpan(0, 0, 0, 0, 0)),
+                            Email = "nish.kagathara0791@gmail.com",
+                            FirstName = "Nishidh",
+                            IsActive = true,
+                            LastName = "Kagathara",
+                            Title = 4,
+                            UserRole = 1
+                        });
+                });
 
             modelBuilder.Entity("teamcare.data.Entities.Users.FavouriteServiceUser", b =>
             {
@@ -1031,9 +1162,13 @@ namespace teamcare.data.Migrations
                     .WithMany("DocumentUploads")
                     .HasForeignKey("ResidenceId");
 
-                b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
-                    .WithMany("DocumentUploads")
-                    .HasForeignKey("ServiceUserId");
+                    b.HasOne("teamcare.data.Entities.ServiceUsers.ServiceUserDocument", "ServiceUserDocument")
+                        .WithMany()
+                        .HasForeignKey("ServiceUserDocumentId");
+
+                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                        .WithMany("DocumentUploads")
+                        .HasForeignKey("ServiceUserId");
 
                 b.HasOne("teamcare.data.Entities.User", "User")
                     .WithMany("DocumentUploads")
@@ -1047,8 +1182,10 @@ namespace teamcare.data.Migrations
 
                 b.Navigation("ServiceUser");
 
-                b.Navigation("User");
-            });
+                    b.Navigation("ServiceUserDocument");
+
+                    b.Navigation("User");
+                });
 
             modelBuilder.Entity("teamcare.data.Entities.MedicalHistory", b =>
             {
@@ -1109,6 +1246,40 @@ namespace teamcare.data.Migrations
 
                 b.Navigation("ServiceUser");
             });
+
+            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.HealthMedication", b =>
+                {
+                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy");
+
+                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                        .WithOne("HealthMedication")
+                        .HasForeignKey("teamcare.data.Entities.ServiceUsers.HealthMedication", "ServiceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ServiceUser");
+                });
+
+            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserDocument", b =>
+                {
+                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy");
+
+                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                        .WithMany("ServiceUserDocuments")
+                        .HasForeignKey("ServiceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("ServiceUser");
+                });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserLog", b =>
             {
@@ -1269,8 +1440,12 @@ namespace teamcare.data.Migrations
 
                 b.Navigation("DocumentUploads");
 
-                b.Navigation("ServiceUserLog");
-            });
+                    b.Navigation("HealthMedication");
+
+                    b.Navigation("ServiceUserDocuments");
+
+                    b.Navigation("ServiceUserLog");
+                });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.Contact", b =>
             {

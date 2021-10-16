@@ -1,0 +1,86 @@
+﻿@model teamcare.web.app.ViewModels.HealthMedicationViewModel
+
+<div class="card mb-5 mb-xl-10">
+    <div class="card-header cursor-pointer">
+        <!--begin::Card title-->
+        <div class="card-title m-0">
+            <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
+                <!--begin::Nav item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6 active" data-bs-toggle="tab" href="#tab_Medication Profile">Medication Profile</a>
+                </li>
+                <!--end::Nav item-->
+            </ul>
+        </div>
+        <!--end::Card title-->
+    </div>
+
+    <div class="card-body p-9">
+
+        <form id="medicationform" class="form" novalidate="novalidate">
+            <input type="hidden" id="hdnhealthid" value="@if (Model.HealthMedication != null) { @Model.HealthMedication.Id; }" />
+            <div class="d-flex flex-column mb-7 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                    <span >Diagnosis</span>
+                </label>
+                <!--end::Label-->
+                <textarea name="Diagnosis" id="ckeDiagnosis">@if (Model.HealthMedication != null) { @Model.HealthMedication.Diagnosis; }</textarea>
+            </div>
+            <div class="d-flex flex-column mb-7 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                    <span >Prescription History</span>
+                </label>
+                <!--end::Label-->
+                <textarea name="PrescriptionHistory" id="ckePrescriptionHistory">@if (Model.HealthMedication != null) { @Model.HealthMedication.PrescriptionHistory; }</textarea>
+            </div>
+            <div class="d-flex flex-column mb-7 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                    <span >Social History</span>
+                </label>
+                <!--end::Label-->
+                <textarea name="SocialHistory" id="ckeSocialHistory">@if (Model.HealthMedication != null) { @Model.HealthMedication.SocialHistory; }</textarea>
+            </div>
+            <div class="d-flex flex-column mb-7 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                    <span >Allergy Information</span>
+                </label>
+                <!--end::Label-->
+                <textarea name="AllergyInformation" id="ckeAllergyInformation">@if (Model.HealthMedication != null) { @Model.HealthMedication.AllergyInformation; }</textarea>
+            </div>
+            <div class="d-flex flex-column mb-7 fv-row">
+                <!--begin::Label-->
+                <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                    <span >Other Significant Information</span>
+                </label>
+                <!--end::Label-->
+                <textarea name="OtherSignificantInformation" id="ckeOtherSignificantInformation">@if (Model.HealthMedication != null) { @Model.HealthMedication.OtherSignificantInformation; }</textarea>
+            </div>
+
+            <div class="d-flex flex-stack pt-10 float-end">
+                <button type="button" id="btnhealthsubmit" class="btn btn-primary" onclick="saveHealths(this)">
+                    <span class="indicator-label">
+                        Submit
+                        <span class="svg-icon svg-icon-3 ms-2 me-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />
+                                    <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                </g>
+                            </svg>
+                        </span>
+                    </span>
+                    <span class="indicator-progress">
+                        Please wait...
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/js/ckeditorclassic.js"></script>
