@@ -64,7 +64,7 @@
                                     </div>
                                     <!--end::Icon-->
                                     <!--begin::Input-->
-                                    <input class="form-control form-control-solid ps-12 date-admission" placeholder="Pick date of document receive" name="date_of_receive" value="" id="sud-date_of_receive" />
+                                    <input class="form-control form-control-solid ps-12 date-receive" placeholder="Pick date of document receive" name="date_of_receive" value="" id="sud-date_of_receive" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Wrapper-->
@@ -94,7 +94,7 @@
                                 <!--end::Input-->
                             </div>
 
-                            <div class="fv-row ">
+                            <div class="fv-row mb-10">
                                 <!--begin::Label-->
                                 <label class="d-flex align-items-center fs-5 fw-bold mb-2">
                                     <span class="required">Document Category</span>
@@ -157,11 +157,11 @@
                                     {
 
                                         @*<div class="dz-preview dz-file-preview" id="OldDocument">
-                                            <div class="dz-image">
-                                                <img data-dz-thumbnail src="@(Model.ServiceUserDocument.DocumentFile !=null ? Model.PrePath +"/"+Model.ServiceUserDocument.DocumentFile.BlobName+"?width=200" : "../../media/avatars/blank.png" )" alt="Click me to remove the file." />
-                                            </div>
-                                            <a class="dz-remove" href="javascript:undefined;" onclick="RemoveDocument()">Remove file</a>
-                                        </div>*@
+                                                <div class="dz-image">
+                                                    <img data-dz-thumbnail src="@(Model.ServiceUserDocument.DocumentFile !=null ? Model.PrePath +"/"+Model.ServiceUserDocument.DocumentFile.BlobName+"?width=200" : "../../media/avatars/blank.png" )" alt="Click me to remove the file." />
+                                                </div>
+                                                <a class="dz-remove" href="javascript:undefined;" onclick="RemoveDocument()">Remove file</a>
+                                            </div>*@
                                     }
 
                                 </div>
@@ -173,9 +173,14 @@
                         <!--begin::Actions-->
                         <div class="d-flex flex-stack pt-10">
 
+                            <div class="me-2">
+                                <button type="button" class="btn btn-lg btn-light-primary me-3" data-bs-dismiss="modal">
+                                    Cancel
+                                </button>
+                            </div>
                             <!--begin::Wrapper-->
                             <div>
-                                <button type="button" class="btn btn-lg btn-primary" id="btnsaveserviceuserdocuments" data-kt-stepper-action="submit" onclick="sendServiceUserDocument('@userId', 'I', '')">
+                                <button type="button" class="btn btn-lg btn-primary" id="btnsaveserviceuserdocuments" data-kt-stepper-action="submit" onclick="sendServiceUserDocument('I', '')">
                                     <span class="indicator-label">
                                         Submit
                                         <!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->

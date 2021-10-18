@@ -1,0 +1,162 @@
+﻿@using teamcare.web.app.Helpers;
+@model teamcare.web.app.ViewModels.BloodPressureReadingViewModel
+
+
+<div class="d-flex flex-wrap flex-stack pb-7">
+    <div class="d-flex flex-wrap align-items-center my-1">
+        <h3 class="fw-bolder me-5 my-1"></h3>
+    </div>
+    <div class="d-flex flex-wrap my-1">
+        <!--begin::Tab nav-->
+        <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
+            <li class="nav-item m-0">
+                <a href="javaScript:void(0);" class="btn btn-primary btn-sm align-self-center me-3" id="btncreate" onclick="openAddEditBloodModal('')">Create</a>
+            </li>
+            <li class="nav-item m-0">
+                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_blood_card_pane">
+                    <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-4-blocks-2.svg-->
+                    <span class="svg-icon svg-icon-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
+                                <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
+            <li class="nav-item m-0">
+                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_project_blood_table_pane">
+                    <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-horizontal.svg-->
+                    <span class="svg-icon svg-icon-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
+                                <rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </a>
+            </li>
+        </ul>
+        <!--end::Tab nav-->
+    </div>
+    <!--end::Controls-->
+</div>
+
+<div class="tab-content" id="tabblood">
+    <!--begin::Tab pane-->
+    <div id="kt_project_blood_card_pane" class="tab-pane fade show active">
+        <!--begin::Row-->
+        <div class="row g-6 g-xl-9">
+            <div class="col-md-10">
+                <div class="card card-xl-stretch mb-5 mb-xl-8">
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <!--begin::Chart-->
+                        <div id="kt_charts_widget_2_chart" style="height: 350px"></div>
+                        <!--end::Chart-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+            </div>
+
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Tab pane-->
+    <!--begin::Tab pane-->
+    <div id="kt_project_blood_table_pane" class="tab-pane fade">
+        <!--begin::Card-->
+        <div class="card card-flush">
+            <!--begin::Card body-->
+            <div class="card-body pt-0">
+                <!--begin::Table container-->
+                <div class="table-responsive">
+                    <!--begin::Table-->
+                    <table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
+                        <!--begin::Head-->
+                        <thead class="fs-7 text-gray-400 text-uppercase">
+                            <tr>
+                                <th class="min-w-150px">TestDate</th>
+                                <th class="min-w-50px">Systolic Reading</th>
+                                <th class="min-w-50px">Diastolic Reading</th>
+                                <th class="min-w-50px">Pulse</th>
+                                <th class="min-w-100px text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <!--end::Head-->
+                        <!--begin::Body-->
+                        <tbody class="fs-6">
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model.BloodPressureReadingList)
+                                {
+                                    <tr>
+                                        <td>@item.TestDate.GetDateOffsetFormat(false)</td>
+                                        <td>@item.SystolicReading</td>
+                                        <td>@item.DiastolicReading</td>
+                                        <td>@item.Pulse</td>
+                                        <td class="text-end">
+                                            <a href="javaScript:void(0);" class="btn btn-sm btn-primary me-3" id="btnedit" title="Edit Blood Pressure Reading" onclick="openAddEditBloodModal('@item.Id')"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="#" class="btn btn-sm btn-danger" id="btndelete" title="Delete Blood Pressure Reading" onclick="DeleteBloodReading(this, '@item.Id')"><i class="bi bi-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <!--end::Body-->
+                    </table>
+                    <!--end::Table-->
+                </div>
+                <!--end::Table container-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+    </div>
+    <!--end::Tab pane-->
+</div>
+
+<script type="text/javascript">
+    var e = document.getElementById("kt_charts_widget_2_chart"),
+        t = parseInt(KTUtil.css(e, "height")),
+        a = KTUtil.getCssVariableValue("--bs-gray-500"),
+        o = KTUtil.getCssVariableValue("--bs-gray-200"),
+        s = KTUtil.getCssVariableValue("--bs-warning"),
+        r = KTUtil.getCssVariableValue("--bs-gray-300");
+    e &&
+        new ApexCharts(e, {
+            series: [
+                { name: "Net Profit", data: [44, 55, 57, 56, 61, 58] },
+                { name: "Revenue", data: [76, 85, 101, 98, 87, 105] },
+            ],
+            chart: { fontFamily: "inherit", type: "bar", height: t, toolbar: { show: !1 } },
+            plotOptions: { bar: { horizontal: !1, columnWidth: ["30%"], endingShape: "rounded" } },
+            legend: { show: !1 },
+            dataLabels: { enabled: !1 },
+            stroke: { show: !0, width: 2, colors: ["transparent"] },
+            xaxis: { categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul"], axisBorder: { show: !1 }, axisTicks: { show: !1 }, labels: { style: { colors: a, fontSize: "12px" } } },
+            yaxis: { labels: { style: { colors: a, fontSize: "12px" } } },
+            fill: { opacity: 1 },
+            states: { normal: { filter: { type: "none", value: 0 } }, hover: { filter: { type: "none", value: 0 } }, active: { allowMultipleDataPointsSelection: !1, filter: { type: "none", value: 0 } } },
+            tooltip: {
+                style: { fontSize: "12px" },
+                y: {
+                    formatter: function (e) {
+                        return "$" + e + " thousands";
+                    },
+                },
+            },
+            colors: [s, r],
+            grid: { borderColor: o, strokeDashArray: 4, yaxis: { lines: { show: !0 } } },
+        }).render();
+
+</script>
+
+

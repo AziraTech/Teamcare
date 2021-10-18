@@ -53,7 +53,8 @@ namespace teamcare.web.app.Middleware
             services.AddScoped<IServiceUserDocumentRepository, ServiceUserDocumentRepository>();
             services.AddScoped<IHealthMedicationService, HealthMedicationService>();
             services.AddScoped<IHealthMedicationRepository, HealthMedicationRepository>();
-
+            services.AddScoped<IBloodPressureReadingService, BloodPressureReadingService>();
+            services.AddScoped<IBloodPressureReadingRepository, BloodPressureReadingRepository>();
 
             return services;
         }

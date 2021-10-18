@@ -709,6 +709,12 @@ namespace teamcare.web.app.Controllers
             {
                 serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
             }
+
+            foreach (var item in serviceUsersDocument)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+            }
+
             var model = new ServiceUsersDocumentsViewModel
             {
                 ServiceUsersDocument = serviceUsersDocument,
@@ -722,7 +728,7 @@ namespace teamcare.web.app.Controllers
             return PartialView("_ServiceUsersDocumentsManagerDataContent", model);
         }
 
-        public async Task<IActionResult> saveServiceUserDocument(string docId, string dbType, string serviceUserId, ServiceUsersDocumentsCreateViewModel data)
+        public async Task<IActionResult> saveServiceUserDocument(string docId, string dbType, string serviceUserId, string TempFileId, ServiceUsersDocumentsCreateViewModel data)
         {
             //IActionResult returnValue = null;
             bool blSuccess = false;
@@ -744,9 +750,35 @@ namespace teamcare.web.app.Controllers
                 else if (docId != null && dbType == "D")
                 {
                     data.ServiceUserDocument.Id = new Guid(docId);
-                    data.ServiceUserDocument.DeletedBy = new Guid(serviceUserId);                    
+                    data.ServiceUserDocument.DeletedBy = new Guid(serviceUserId);
                     await _serviceUserDocumentService.DeleteAsync(data.ServiceUserDocument);
                 }
+
+
+                if (serviceUserDoc != null && !string.IsNullOrWhiteSpace(TempFileId))
+                {
+
+                    //	Get the temporary document
+                    var document =
+                        await _documentUploadService.GetByIdAsync(Guid.Parse(TempFileId));
+
+                    var relocateFile = await _fileUploadService.MoveBlobAsync(new FileUploadModel
+                    {
+                        BlobName = document.BlobName,
+                        DestinationFolder = serviceUserDoc.Id.ToString()
+                    });
+
+                    if (relocateFile != null)
+                    {
+                        document.DocumentType = (int)DocumentTypes.ServiceUsers;
+                        document.IsTemporary = false;
+                        document.ServiceUserDocumentId = serviceUserDoc.Id;
+                        document.BlobName = relocateFile.BlobName;
+
+                        await _documentUploadService.UpdateAsync(document);
+                    }
+                }
+
                 blSuccess = true;
             }
             catch
@@ -769,6 +801,13 @@ namespace teamcare.web.app.Controllers
             {
                 serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
             }
+
+            foreach (var item in serviceUsersDocument)
+            {
+                item.PrePath = "/" + _azureStorageOptions.Container;
+            }
+
+
             var model = new ServiceUsersDocumentsViewModel
             {
                 ServiceUsersDocument = serviceUsersDocument,

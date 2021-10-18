@@ -4,6 +4,12 @@ var fileName = null;
 var fileType = null;
 var tempFileId = null;
 
+var docfileName = null;
+var docfileType = null;
+var doctempFileId = null;
+
+
+
 // Stepper lement
 var serviceUserId = $('#selectedId').val();
 var element = null;
@@ -784,7 +790,7 @@ function addNewDocument(userId)
 {
     $('#kt_modal_Add_Document').modal('show');
 
-    $("#sud-date_of_admission").daterangepicker(
+    $(".date-receive").daterangepicker(
         {
             singleDatePicker: true,
             showDropdowns: true,
@@ -794,9 +800,24 @@ function addNewDocument(userId)
         }, function (start, end, label) { }
     );
 
+    $('.ddlselect2').select2();
+
+    var myDropzonedoc = new Dropzone("#sud-document", {
+        url: "/DocumentUpload", // Set the url for your upload script location
+        paramName: "file", // The name that will be used to transfer the file
+        maxFiles: 1,
+        maxFilesize: 10, // MB
+        addRemoveLinks: true,
+        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+        success: function (file, response) {
+            doctempFileId = response.id;
+            docfileName = file.name;
+            docfileType = file.type;
+        }
+    });
 }
 
-async function sendServiceUserDocument(serviceUserId, dbType, docId) {
+async function sendServiceUserDocument (dbType, docId) {
     if (dbType == 'I' || dbType == 'U')
     {
         //if ($('#' + logMessageId).val() == null || $('#' + logMessageId).val().trim() == "") {
@@ -810,7 +831,8 @@ async function sendServiceUserDocument(serviceUserId, dbType, docId) {
         //    return;
         //}
     }
-    
+
+    var serviceUserId = $('#hdnserviceuserid').val();
     var opType = $('#editOrDelete').val();
     var DeldocId = $('#editOrDeleteId').val();
     dbType = opType != 'I' ? opType : dbType;
@@ -829,6 +851,7 @@ async function sendServiceUserDocument(serviceUserId, dbType, docId) {
             docId: docId,
             dbType: dbType,
             serviceUserId: serviceUserId,
+            TempFileId: doctempFileId,
             data:
             {
                 ServiceUserDocument:
@@ -838,9 +861,8 @@ async function sendServiceUserDocument(serviceUserId, dbType, docId) {
                     Title: title,
                     Description: description,
                     DocumentCategory: documentCategory,
-                    FileName: fileName,
-                    FileType: fileType,
-                    TempFileId: tempFileId
+                    FileName: docfileName,
+                    FileType: docfileType,
                 }
             }
         };
@@ -863,6 +885,11 @@ async function sendServiceUserDocument(serviceUserId, dbType, docId) {
                 $('#editOrDeleteId').val('');
                 $('#ServiceUsersDocumentsTabContent').html('');
                 $('#ServiceUsersDocumentsTabContent').html(data);
+
+                $("body").css("overflow", "");
+                $("body").css("padding-right", "");
+
+                $('#kt_modal_Add_Document').modal('hide');
 
             } else {
                 icon = 'error';

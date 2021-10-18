@@ -9,11 +9,12 @@ namespace teamcare.web.app.ViewModels
 {
     public class HealthMedicationViewModel : BaseViewModel
     {
-        public HealthMedicationViewModel()
+        public HealthMedicationViewModel() : base()
         {
-            
+
         }
         public HealthMedicationModel HealthMedication { get; set; }
         public IEnumerable<business.Models.HealthMedicationModel> HealthMedicationList { get; set; }
+        public BloodPressureReadingModel BloodPressureReading { get;set;}
     }
 }
