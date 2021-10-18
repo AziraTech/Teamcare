@@ -7,7 +7,7 @@ using teamcare.data.Entities.Documents;
 using teamcare.data.Entities.ServiceUsers;
 
 namespace teamcare.data.Entities
-{	
+{
 	[Table("ServiceUsers")]
 	public class ServiceUser : BaseEntity
 	{
@@ -66,8 +66,8 @@ namespace teamcare.data.Entities
 		public ArchiveReason ArchivedReason { get; set; }
 
 		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
-		public virtual ICollection<Contact> Contacts { get; set; }		
-        public virtual Residence Residence { get; set; }
+		public virtual ICollection<Contact> Contacts { get; set; }
+		public virtual Residence Residence { get; set; }
 		public virtual ICollection<ServiceUserLog> ServiceUserLog { get; set; }
 		public virtual ICollection<ServiceUserDocument> ServiceUserDocuments { get; set; }
 		public virtual HealthMedication HealthMedication { get; set; }

@@ -1,4 +1,5 @@
-﻿var base64Image = null;
+﻿
+var base64Image = null;
 var fileName = null;
 var fileType = null;
 var tempFileId = null;
@@ -48,6 +49,10 @@ function RemoveProfile() {
     $('#OldProfile').remove();
 }
 
+function RemoveDocument() {
+    $('#OldDocument').remove();
+}
+
 $(document).ready(function () {
 
     $('#tabassessments').click(function () {
@@ -60,8 +65,23 @@ $(document).ready(function () {
                     $('#AssessmentTabContentData').html('');
                     $('#AssessmentTabContentData').html(data);
                     
-
                     setCurrentTabAssessment($('#hdnassettab').val());
+                }
+            }
+        });
+    });
+
+    $('#tabdocumentsmanager').click(function ()
+    {        
+        var serviceUserId = $('#hdnserviceuserid').val();
+        $.ajax({
+            type: "GET",
+            url: '/ServiceUsers/DocumentsManagerTabBind',
+            data: { docId: "", serviceUserId: serviceUserId },
+            success: function (data) {
+                if (data != null) {
+                    $('#DocumentsManagerTabContentData').html('');
+                    $('#DocumentsManagerTabContentData').html(data);
                 }
             }
         });
@@ -755,3 +775,143 @@ function saveEditServiceUser(sender) {
         }
     });
 }
+
+
+
+/* Add New Service Users Document */
+
+function addNewDocument(userId)
+{
+    $('#kt_modal_Add_Document').modal('show');
+
+    $("#sud-date_of_admission").daterangepicker(
+        {
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 2001,
+            maxYear: parseInt(moment().format("YYYY"), 10),
+            locale: { format: 'DD/MM/yyyy' }
+        }, function (start, end, label) { }
+    );
+
+}
+
+async function sendServiceUserDocument(serviceUserId, dbType, docId) {
+    if (dbType == 'I' || dbType == 'U')
+    {
+        //if ($('#' + logMessageId).val() == null || $('#' + logMessageId).val().trim() == "") {
+        //    Swal.fire({
+        //        text: "Please fill Log Message First.",
+        //        icon: "info",
+        //        buttonsStyling: !1,
+        //        confirmButtonText: "Ok",
+        //        customClass: { confirmButton: "btn btn-light" }
+        //    });
+        //    return;
+        //}
+    }
+    
+    var opType = $('#editOrDelete').val();
+    var DeldocId = $('#editOrDeleteId').val();
+    dbType = opType != 'I' ? opType : dbType;
+    docId = DeldocId != '' ? DeldocId : docId;
+
+    var dateReceived = $('#sud-date_of_receive').val();
+    var title = $('#sud-title').val();
+    var description = $('#sud-description').val();
+    var documentCategory = $('#sud-document_category').val();
+
+    var postData = null;
+    if (dbType == 'I' || dbType == 'U')
+    {
+        postData =
+        {
+            docId: docId,
+            dbType: dbType,
+            serviceUserId: serviceUserId,
+            data:
+            {
+                ServiceUserDocument:
+                {
+                    ServiceUserId: serviceUserId,
+                    DateReceived: dateReceived,
+                    Title: title,
+                    Description: description,
+                    DocumentCategory: documentCategory,
+                    FileName: fileName,
+                    FileType: fileType,
+                    TempFileId: tempFileId
+                }
+            }
+        };
+    }
+
+    
+    await $.ajax({
+        type: "POST",
+        url: '/ServiceUsers/saveServiceUserDocument',
+        data: postData,
+        success: function (data) {
+            var showMessage = ""; var icon = "";
+            if (data) {
+                switch (dbType) {
+                    case "I": showMessage = "Service User Document Added Successful."; break;
+                    case "U": showMessage = "Service User Document Updated Successful."; break;
+                    case "D": showMessage = "Service User Document Removed Successful."; break;
+                } icon = 'success';
+                $('#editOrDelete').val('I');
+                $('#editOrDeleteId').val('');
+                $('#ServiceUsersDocumentsTabContent').html('');
+                $('#ServiceUsersDocumentsTabContent').html(data);
+
+            } else {
+                icon = 'error';
+                showMessage = 'Please Check, There may be some error to save Service User Docu.';
+            }
+            Swal.fire({
+                text: showMessage,
+                icon: icon,
+                buttonsStyling: !1,
+                confirmButtonText: "Ok",
+                customClass: { confirmButton: "btn btn-light" }
+            }); //return;
+        }
+    });
+    $('#editOrDelete').val('I');
+    $('#editOrDeleteId').val('');
+}
+
+async function fncServiceUserDocumentEditOrDelete(opType, logId, msgAreaId) {
+    if (opType == 'D') {
+        await Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to delete selected service user log.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            showLoaderOnConfirm: true,
+            preConfirm: async function () { await sendServiceUserLog(serviceUserId, 'sul-log_message', opType, logId); }
+        });
+    }
+    else {
+        $('#editOrDelete').val(opType);
+        $('#editOrDeleteId').val(logId);
+
+        await $.ajax({
+            type: "POST",
+            url: '/ServiceUsers/GetByLogId',
+            data: { id: logId },
+            success: function (data) {
+                if (data != null) {
+                    $('#sul-log_message').val(data.logMessage);
+                    $('#' + msgAreaId).html = '';
+                    $('#' + msgAreaId).html = data.logMessage;
+                } else { }
+            }
+        });
+
+    }
+}
+

@@ -20,121 +20,121 @@ namespace teamcare.data.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("teamcare.data.Entities.Audit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<int>("Action")
-                        .HasColumnType("integer")
-                        .HasColumnName("action");
+                b.Property<int>("Action")
+                    .HasColumnType("integer")
+                    .HasColumnName("action");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<string>("Details")
-                        .HasColumnType("text")
-                        .HasColumnName("details");
+                b.Property<string>("Details")
+                    .HasColumnType("text")
+                    .HasColumnName("details");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.Property<string>("UserReference")
-                        .HasColumnType("text")
-                        .HasColumnName("user_reference");
+                b.Property<string>("UserReference")
+                    .HasColumnType("text")
+                    .HasColumnName("user_reference");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.ToTable("Audits");
-                });
+                b.ToTable("Audits");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.Documents.DocumentUpload", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<string>("BlobName")
-                        .HasColumnType("text")
-                        .HasColumnName("blob_name");
+                b.Property<string>("BlobName")
+                    .HasColumnType("text")
+                    .HasColumnName("blob_name");
 
-                    b.Property<Guid?>("ContactId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("contact_id");
+                b.Property<Guid?>("ContactId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("contact_id");
 
-                    b.Property<string>("ContentType")
-                        .HasColumnType("text")
-                        .HasColumnName("content_type");
+                b.Property<string>("ContentType")
+                    .HasColumnType("text")
+                    .HasColumnName("content_type");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                b.Property<string>("Description")
+                    .HasColumnType("text")
+                    .HasColumnName("description");
 
-                    b.Property<string>("DocumentSubtype")
-                        .HasColumnType("text")
-                        .HasColumnName("document_subtype");
+                b.Property<string>("DocumentSubtype")
+                    .HasColumnType("text")
+                    .HasColumnName("document_subtype");
 
-                    b.Property<int>("DocumentType")
-                        .HasColumnType("integer")
-                        .HasColumnName("document_type");
+                b.Property<int>("DocumentType")
+                    .HasColumnType("integer")
+                    .HasColumnName("document_type");
 
-                    b.Property<string>("FileExtension")
-                        .HasColumnType("text")
-                        .HasColumnName("file_extension");
+                b.Property<string>("FileExtension")
+                    .HasColumnType("text")
+                    .HasColumnName("file_extension");
 
-                    b.Property<string>("FileName")
-                        .HasColumnType("text")
-                        .HasColumnName("file_name");
+                b.Property<string>("FileName")
+                    .HasColumnType("text")
+                    .HasColumnName("file_name");
 
-                    b.Property<long>("FileSizeInBytes")
-                        .HasColumnType("bigint")
-                        .HasColumnName("file_size_in_bytes");
+                b.Property<long>("FileSizeInBytes")
+                    .HasColumnType("bigint")
+                    .HasColumnName("file_size_in_bytes");
 
-                    b.Property<bool>("IsTemporary")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_temporary");
+                b.Property<bool>("IsTemporary")
+                    .HasColumnType("boolean")
+                    .HasColumnName("is_temporary");
 
-                    b.Property<Guid?>("ResidenceId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("residence_id");
+                b.Property<Guid?>("ResidenceId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("residence_id");
 
                     b.Property<Guid?>("ServiceUserDocumentId")
                         .HasColumnType("uuid")
@@ -144,380 +144,380 @@ namespace teamcare.data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("service_user_id");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                b.Property<Guid?>("UserId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                b.HasIndex("ContactId");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ResidenceId");
+                b.HasIndex("ResidenceId");
 
                     b.HasIndex("ServiceUserDocumentId");
 
                     b.HasIndex("ServiceUserId");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("DocumentUploads");
-                });
+                b.ToTable("DocumentUploads");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.MedicalHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<string>("Diagnosis")
-                        .HasColumnType("text")
-                        .HasColumnName("diagnosis");
+                b.Property<string>("Diagnosis")
+                    .HasColumnType("text")
+                    .HasColumnName("diagnosis");
 
-                    b.Property<string>("GPAddress")
-                        .HasColumnType("text")
-                        .HasColumnName("gp_address");
+                b.Property<string>("GPAddress")
+                    .HasColumnType("text")
+                    .HasColumnName("gp_address");
 
-                    b.Property<string>("GPEmailId")
-                        .HasColumnType("text")
-                        .HasColumnName("gp_email_id");
+                b.Property<string>("GPEmailId")
+                    .HasColumnType("text")
+                    .HasColumnName("gp_email_id");
 
-                    b.Property<long>("GPFaxNo")
-                        .HasColumnType("bigint")
-                        .HasColumnName("gp_fax_no");
+                b.Property<long>("GPFaxNo")
+                    .HasColumnType("bigint")
+                    .HasColumnName("gp_fax_no");
 
-                    b.Property<string>("GPName")
-                        .HasColumnType("text")
-                        .HasColumnName("gp_name");
+                b.Property<string>("GPName")
+                    .HasColumnType("text")
+                    .HasColumnName("gp_name");
 
-                    b.Property<long>("GPTelNo")
-                        .HasColumnType("bigint")
-                        .HasColumnName("gp_tel_no");
+                b.Property<long>("GPTelNo")
+                    .HasColumnType("bigint")
+                    .HasColumnName("gp_tel_no");
 
-                    b.Property<string>("OtherSignificantInformation")
-                        .HasColumnType("text")
-                        .HasColumnName("other_significant_information");
+                b.Property<string>("OtherSignificantInformation")
+                    .HasColumnType("text")
+                    .HasColumnName("other_significant_information");
 
-                    b.Property<Guid>("ServiceUserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("service_user_id");
+                b.Property<Guid>("ServiceUserId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("service_user_id");
 
-                    b.Property<string>("SychiatristAddress")
-                        .HasColumnType("text")
-                        .HasColumnName("sychiatrist_address");
+                b.Property<string>("SychiatristAddress")
+                    .HasColumnType("text")
+                    .HasColumnName("sychiatrist_address");
 
-                    b.Property<string>("SychiatristEmailId")
-                        .HasColumnType("text")
-                        .HasColumnName("sychiatrist_email_id");
+                b.Property<string>("SychiatristEmailId")
+                    .HasColumnType("text")
+                    .HasColumnName("sychiatrist_email_id");
 
-                    b.Property<long>("SychiatristFaxNo")
-                        .HasColumnType("bigint")
-                        .HasColumnName("sychiatrist_fax_no");
+                b.Property<long>("SychiatristFaxNo")
+                    .HasColumnType("bigint")
+                    .HasColumnName("sychiatrist_fax_no");
 
-                    b.Property<string>("SychiatristName")
-                        .HasColumnType("text")
-                        .HasColumnName("sychiatrist_name");
+                b.Property<string>("SychiatristName")
+                    .HasColumnType("text")
+                    .HasColumnName("sychiatrist_name");
 
-                    b.Property<long>("SychiatristTelNo")
-                        .HasColumnType("bigint")
-                        .HasColumnName("sychiatrist_tel_no");
+                b.Property<long>("SychiatristTelNo")
+                    .HasColumnType("bigint")
+                    .HasColumnName("sychiatrist_tel_no");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ServiceUserId");
+                b.HasIndex("ServiceUserId");
 
-                    b.ToTable("MedicalHistories");
-                });
+                b.ToTable("MedicalHistories");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.Residence", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text")
-                        .HasColumnName("address");
+                b.Property<string>("Address")
+                    .HasColumnType("text")
+                    .HasColumnName("address");
 
-                    b.Property<string>("Capacity")
-                        .HasColumnType("text")
-                        .HasColumnName("capacity");
+                b.Property<string>("Capacity")
+                    .HasColumnType("text")
+                    .HasColumnName("capacity");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<string>("Home_Tel_No")
-                        .HasColumnType("text")
-                        .HasColumnName("home_tel_no");
+                b.Property<string>("Home_Tel_No")
+                    .HasColumnType("text")
+                    .HasColumnName("home_tel_no");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                b.Property<string>("Name")
+                    .HasColumnType("text")
+                    .HasColumnName("name");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.ToTable("Residences");
-                });
+                b.ToTable("Residences");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<DateTime?>("ArchivedOn")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("archived_on");
+                b.Property<DateTime?>("ArchivedOn")
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("archived_on");
 
-                    b.Property<int>("ArchivedReason")
-                        .HasColumnType("integer")
-                        .HasColumnName("archived_reason");
+                b.Property<int>("ArchivedReason")
+                    .HasColumnType("integer")
+                    .HasColumnName("archived_reason");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<string>("CurrentPreviousOccupation")
-                        .HasColumnType("text")
-                        .HasColumnName("current_previous_occupation");
+                b.Property<string>("CurrentPreviousOccupation")
+                    .HasColumnType("text")
+                    .HasColumnName("current_previous_occupation");
 
-                    b.Property<DateTime>("DateOfAdmission")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("date_of_admission");
+                b.Property<DateTime>("DateOfAdmission")
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("date_of_admission");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("date_of_birth");
+                b.Property<DateTime>("DateOfBirth")
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("date_of_birth");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<int>("Ethnicity")
-                        .HasColumnType("integer")
-                        .HasColumnName("ethnicity");
+                b.Property<int>("Ethnicity")
+                    .HasColumnType("integer")
+                    .HasColumnName("ethnicity");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text")
-                        .HasColumnName("first_name");
+                b.Property<string>("FirstName")
+                    .HasColumnType("text")
+                    .HasColumnName("first_name");
 
-                    b.Property<string>("KnownAs")
-                        .HasColumnType("text")
-                        .HasColumnName("known_as");
+                b.Property<string>("KnownAs")
+                    .HasColumnType("text")
+                    .HasColumnName("known_as");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("text")
-                        .HasColumnName("last_name");
+                b.Property<string>("LastName")
+                    .HasColumnType("text")
+                    .HasColumnName("last_name");
 
-                    b.Property<string>("LegalStatus")
-                        .HasColumnType("text")
-                        .HasColumnName("legal_status");
+                b.Property<string>("LegalStatus")
+                    .HasColumnType("text")
+                    .HasColumnName("legal_status");
 
-                    b.Property<int>("MaritalStatus")
-                        .HasColumnType("integer")
-                        .HasColumnName("marital_status");
+                b.Property<int>("MaritalStatus")
+                    .HasColumnType("integer")
+                    .HasColumnName("marital_status");
 
-                    b.Property<string>("NHSIdNumber")
-                        .HasColumnType("text")
-                        .HasColumnName("nhs_id_number");
+                b.Property<string>("NHSIdNumber")
+                    .HasColumnType("text")
+                    .HasColumnName("nhs_id_number");
 
-                    b.Property<string>("NationalInsuranceNo")
-                        .HasColumnType("text")
-                        .HasColumnName("national_insurance_no");
+                b.Property<string>("NationalInsuranceNo")
+                    .HasColumnType("text")
+                    .HasColumnName("national_insurance_no");
 
-                    b.Property<string>("PersonalTelNo")
-                        .HasColumnType("text")
-                        .HasColumnName("personal_tel_no");
+                b.Property<string>("PersonalTelNo")
+                    .HasColumnType("text")
+                    .HasColumnName("personal_tel_no");
 
-                    b.Property<int>("PreferredFirstLanguage")
-                        .HasColumnType("integer")
-                        .HasColumnName("preferred_first_language");
+                b.Property<int>("PreferredFirstLanguage")
+                    .HasColumnType("integer")
+                    .HasColumnName("preferred_first_language");
 
-                    b.Property<int>("Religion")
-                        .HasColumnType("integer")
-                        .HasColumnName("religion");
+                b.Property<int>("Religion")
+                    .HasColumnType("integer")
+                    .HasColumnName("religion");
 
-                    b.Property<Guid>("ResidenceId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("residence_id");
+                b.Property<Guid>("ResidenceId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("residence_id");
 
-                    b.Property<int>("Title")
-                        .HasColumnType("integer")
-                        .HasColumnName("title");
+                b.Property<int>("Title")
+                    .HasColumnType("integer")
+                    .HasColumnName("title");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ResidenceId");
+                b.HasIndex("ResidenceId");
 
-                    b.ToTable("ServiceUsers");
-                });
+                b.ToTable("ServiceUsers");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.Contact", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text")
-                        .HasColumnName("address");
+                b.Property<string>("Address")
+                    .HasColumnType("text")
+                    .HasColumnName("address");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text")
-                        .HasColumnName("email");
+                b.Property<string>("Email")
+                    .HasColumnType("text")
+                    .HasColumnName("email");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text")
-                        .HasColumnName("first_name");
+                b.Property<string>("FirstName")
+                    .HasColumnType("text")
+                    .HasColumnName("first_name");
 
-                    b.Property<bool>("IsEmergencyContact")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_emergency_contact");
+                b.Property<bool>("IsEmergencyContact")
+                    .HasColumnType("boolean")
+                    .HasColumnName("is_emergency_contact");
 
-                    b.Property<bool>("IsNextOfKin")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_next_of_kin");
+                b.Property<bool>("IsNextOfKin")
+                    .HasColumnType("boolean")
+                    .HasColumnName("is_next_of_kin");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("text")
-                        .HasColumnName("last_name");
+                b.Property<string>("LastName")
+                    .HasColumnType("text")
+                    .HasColumnName("last_name");
 
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("text")
-                        .HasColumnName("middle_name");
+                b.Property<string>("MiddleName")
+                    .HasColumnType("text")
+                    .HasColumnName("middle_name");
 
-                    b.Property<string>("Mobile")
-                        .HasColumnType("text")
-                        .HasColumnName("mobile");
+                b.Property<string>("Mobile")
+                    .HasColumnType("text")
+                    .HasColumnName("mobile");
 
-                    b.Property<int>("Relationship")
-                        .HasColumnType("integer")
-                        .HasColumnName("relationship");
+                b.Property<int>("Relationship")
+                    .HasColumnType("integer")
+                    .HasColumnName("relationship");
 
-                    b.Property<Guid>("ServiceUserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("service_user_id");
+                b.Property<Guid>("ServiceUserId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("service_user_id");
 
-                    b.Property<string>("Telephone")
-                        .HasColumnType("text")
-                        .HasColumnName("telephone");
+                b.Property<string>("Telephone")
+                    .HasColumnType("text")
+                    .HasColumnName("telephone");
 
-                    b.Property<int>("Title")
-                        .HasColumnType("integer")
-                        .HasColumnName("title");
+                b.Property<int>("Title")
+                    .HasColumnType("integer")
+                    .HasColumnName("title");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ServiceUserId");
+                b.HasIndex("ServiceUserId");
 
-                    b.ToTable("Contacts");
-                });
+                b.ToTable("Contacts");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.HealthMedication", b =>
                 {
@@ -645,424 +645,424 @@ namespace teamcare.data.Migrations
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserLog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid?>("ActionByAdminId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("action_by_admin_id");
+                b.Property<Guid?>("ActionByAdminId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("action_by_admin_id");
 
-                    b.Property<DateTimeOffset?>("AdminActionOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("admin_action_on");
+                b.Property<DateTimeOffset?>("AdminActionOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("admin_action_on");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_approved");
+                b.Property<bool>("IsApproved")
+                    .HasColumnType("boolean")
+                    .HasColumnName("is_approved");
 
-                    b.Property<bool>("IsVisible")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_visible");
+                b.Property<bool>("IsVisible")
+                    .HasColumnType("boolean")
+                    .HasColumnName("is_visible");
 
-                    b.Property<Guid>("LogCreatedFor")
-                        .HasColumnType("uuid")
-                        .HasColumnName("log_created_for");
+                b.Property<Guid>("LogCreatedFor")
+                    .HasColumnType("uuid")
+                    .HasColumnName("log_created_for");
 
-                    b.Property<string>("LogMessage")
-                        .HasColumnType("text")
-                        .HasColumnName("log_message");
+                b.Property<string>("LogMessage")
+                    .HasColumnType("text")
+                    .HasColumnName("log_message");
 
-                    b.Property<string>("LogMessageUpdated")
-                        .HasColumnType("text")
-                        .HasColumnName("log_message_updated");
+                b.Property<string>("LogMessageUpdated")
+                    .HasColumnType("text")
+                    .HasColumnName("log_message_updated");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("ActionByAdminId");
+                b.HasIndex("ActionByAdminId");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("LogCreatedFor");
+                b.HasIndex("LogCreatedFor");
 
-                    b.ToTable("ServiceUserLog");
-                });
+                b.ToTable("ServiceUserLog");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.Assessment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid>("AssessmentTypeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("assessment_type_id");
+                b.Property<Guid>("AssessmentTypeId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("assessment_type_id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<Guid>("ServiceUserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("service_user_id");
+                b.Property<Guid>("ServiceUserId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("service_user_id");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AssessmentTypeId");
+                b.HasIndex("AssessmentTypeId");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ServiceUserId");
+                b.HasIndex("ServiceUserId");
 
-                    b.ToTable("Assessments");
-                });
+                b.ToTable("Assessments");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.AssessmentSkill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid>("AssessmentId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("assessment_id");
+                b.Property<Guid>("AssessmentId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("assessment_id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<int>("RiskLevel")
-                        .HasColumnType("integer")
-                        .HasColumnName("risk_level");
+                b.Property<int>("RiskLevel")
+                    .HasColumnType("integer")
+                    .HasColumnName("risk_level");
 
-                    b.Property<string>("SkillGroup")
-                        .HasColumnType("text")
-                        .HasColumnName("skill_group");
+                b.Property<string>("SkillGroup")
+                    .HasColumnType("text")
+                    .HasColumnName("skill_group");
 
-                    b.Property<Guid?>("SkillId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("skill_id");
+                b.Property<Guid?>("SkillId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("skill_id");
 
-                    b.Property<int>("SkillLevel")
-                        .HasColumnType("integer")
-                        .HasColumnName("skill_level");
+                b.Property<int>("SkillLevel")
+                    .HasColumnType("integer")
+                    .HasColumnName("skill_level");
 
-                    b.Property<string>("SkillName")
-                        .HasColumnType("text")
-                        .HasColumnName("skill_name");
+                b.Property<string>("SkillName")
+                    .HasColumnType("text")
+                    .HasColumnName("skill_name");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AssessmentId");
+                b.HasIndex("AssessmentId");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("SkillId");
+                b.HasIndex("SkillId");
 
-                    b.ToTable("AssessmentSkills");
-                });
+                b.ToTable("AssessmentSkills");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.AssessmentType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<int>("OptionsGroup")
-                        .HasColumnType("integer")
-                        .HasColumnName("options_group");
+                b.Property<int>("OptionsGroup")
+                    .HasColumnType("integer")
+                    .HasColumnName("options_group");
 
-                    b.Property<int>("Position")
-                        .HasColumnType("integer")
-                        .HasColumnName("position");
+                b.Property<int>("Position")
+                    .HasColumnType("integer")
+                    .HasColumnName("position");
 
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("type_name");
+                b.Property<string>("TypeName")
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("type_name");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.ToTable("AssessmentTypes");
-                });
+                b.ToTable("AssessmentTypes");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.LivingSkill", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("group_id");
+                b.Property<Guid>("GroupId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("group_id");
 
-                    b.Property<int>("Position")
-                        .HasColumnType("integer")
-                        .HasColumnName("skill_position");
+                b.Property<int>("Position")
+                    .HasColumnType("integer")
+                    .HasColumnName("skill_position");
 
-                    b.Property<string>("SkillName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("skill_name");
+                b.Property<string>("SkillName")
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("skill_name");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("GroupId");
+                b.HasIndex("GroupId");
 
-                    b.ToTable("LivingSkills");
-                });
+                b.ToTable("LivingSkills");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.SkillGroup", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid>("AssessmentTypeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("assessment_type_id");
+                b.Property<Guid>("AssessmentTypeId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("assessment_type_id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<string>("GroupName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("group_name");
+                b.Property<string>("GroupName")
+                    .IsRequired()
+                    .HasColumnType("text")
+                    .HasColumnName("group_name");
 
-                    b.Property<int>("Position")
-                        .HasColumnType("integer")
-                        .HasColumnName("group_position");
+                b.Property<int>("Position")
+                    .HasColumnType("integer")
+                    .HasColumnName("group_position");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AssessmentTypeId");
+                b.HasIndex("AssessmentTypeId");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.ToTable("SkillGroups");
-                });
+                b.ToTable("SkillGroups");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text")
-                        .HasColumnName("address");
+                b.Property<string>("Address")
+                    .HasColumnType("text")
+                    .HasColumnName("address");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text")
-                        .HasColumnName("email");
+                b.Property<string>("Email")
+                    .HasColumnType("text")
+                    .HasColumnName("email");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text")
-                        .HasColumnName("first_name");
+                b.Property<string>("FirstName")
+                    .HasColumnType("text")
+                    .HasColumnName("first_name");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
+                b.Property<bool>("IsActive")
+                    .HasColumnType("boolean")
+                    .HasColumnName("is_active");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("text")
-                        .HasColumnName("last_name");
+                b.Property<string>("LastName")
+                    .HasColumnType("text")
+                    .HasColumnName("last_name");
 
-                    b.Property<string>("Mobile_No")
-                        .HasColumnType("text")
-                        .HasColumnName("mobile_no");
+                b.Property<string>("Mobile_No")
+                    .HasColumnType("text")
+                    .HasColumnName("mobile_no");
 
-                    b.Property<string>("Phone_No")
-                        .HasColumnType("text")
-                        .HasColumnName("phone_no");
+                b.Property<string>("Phone_No")
+                    .HasColumnType("text")
+                    .HasColumnName("phone_no");
 
-                    b.Property<string>("Position")
-                        .HasColumnType("text")
-                        .HasColumnName("position");
+                b.Property<string>("Position")
+                    .HasColumnType("text")
+                    .HasColumnName("position");
 
-                    b.Property<int>("Title")
-                        .HasColumnType("integer")
-                        .HasColumnName("title");
+                b.Property<int>("Title")
+                    .HasColumnType("integer")
+                    .HasColumnName("title");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.Property<int>("UserRole")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_role");
+                b.Property<int>("UserRole")
+                    .HasColumnType("integer")
+                    .HasColumnName("user_role");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.ToTable("Users");
+                b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -1090,77 +1090,77 @@ namespace teamcare.data.Migrations
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.Users.FavouriteServiceUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
 
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
+                b.Property<Guid?>("CreatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("created_by");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
+                b.Property<DateTimeOffset>("CreatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_on");
 
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
+                b.Property<Guid?>("DeletedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("deleted_by");
 
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
+                b.Property<DateTimeOffset?>("DeletedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_on");
 
-                    b.Property<Guid>("ServiceUserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("service_user_id");
+                b.Property<Guid>("ServiceUserId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("service_user_id");
 
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_updated_by");
+                b.Property<Guid?>("UpdatedBy")
+                    .HasColumnType("uuid")
+                    .HasColumnName("last_updated_by");
 
-                    b.Property<DateTimeOffset?>("UpdatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_updated_on");
+                b.Property<DateTimeOffset?>("UpdatedOn")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("last_updated_on");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                b.Property<Guid?>("UserId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
+                b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ServiceUserId");
+                b.HasIndex("ServiceUserId");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("FavouriteServiceUsers");
-                });
+                b.ToTable("FavouriteServiceUsers");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.Audit", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.Navigation("CreatedByUser");
-                });
+                b.Navigation("CreatedByUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.Documents.DocumentUpload", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.ServiceUsers.Contact", "Contact")
-                        .WithMany("DocumentUploads")
-                        .HasForeignKey("ContactId");
+            {
+                b.HasOne("teamcare.data.Entities.ServiceUsers.Contact", "Contact")
+                    .WithMany("DocumentUploads")
+                    .HasForeignKey("ContactId");
 
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.Residence", "Residence")
-                        .WithMany("DocumentUploads")
-                        .HasForeignKey("ResidenceId");
+                b.HasOne("teamcare.data.Entities.Residence", "Residence")
+                    .WithMany("DocumentUploads")
+                    .HasForeignKey("ResidenceId");
 
                     b.HasOne("teamcare.data.Entities.ServiceUsers.ServiceUserDocument", "ServiceUserDocument")
                         .WithMany()
@@ -1170,17 +1170,17 @@ namespace teamcare.data.Migrations
                         .WithMany("DocumentUploads")
                         .HasForeignKey("ServiceUserId");
 
-                    b.HasOne("teamcare.data.Entities.User", "User")
-                        .WithMany("DocumentUploads")
-                        .HasForeignKey("UserId");
+                b.HasOne("teamcare.data.Entities.User", "User")
+                    .WithMany("DocumentUploads")
+                    .HasForeignKey("UserId");
 
-                    b.Navigation("Contact");
+                b.Navigation("Contact");
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("Residence");
+                b.Navigation("Residence");
 
-                    b.Navigation("ServiceUser");
+                b.Navigation("ServiceUser");
 
                     b.Navigation("ServiceUserDocument");
 
@@ -1188,64 +1188,64 @@ namespace teamcare.data.Migrations
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.MedicalHistory", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
-                        .WithMany()
-                        .HasForeignKey("ServiceUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                    .WithMany()
+                    .HasForeignKey("ServiceUserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("ServiceUser");
-                });
+                b.Navigation("ServiceUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.Residence", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.Navigation("CreatedByUser");
-                });
+                b.Navigation("CreatedByUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUser", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.Residence", "Residence")
-                        .WithMany("ServiceUsers")
-                        .HasForeignKey("ResidenceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("teamcare.data.Entities.Residence", "Residence")
+                    .WithMany("ServiceUsers")
+                    .HasForeignKey("ResidenceId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("Residence");
-                });
+                b.Navigation("Residence");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.Contact", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
-                        .WithMany("Contacts")
-                        .HasForeignKey("ServiceUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                    .WithMany("Contacts")
+                    .HasForeignKey("ServiceUserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("ServiceUser");
-                });
+                b.Navigation("ServiceUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.HealthMedication", b =>
                 {
@@ -1282,163 +1282,163 @@ namespace teamcare.data.Migrations
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.ServiceUserLog", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "ActionByAdmin")
-                        .WithMany()
-                        .HasForeignKey("ActionByAdminId");
+            {
+                b.HasOne("teamcare.data.Entities.User", "ActionByAdmin")
+                    .WithMany()
+                    .HasForeignKey("ActionByAdminId");
 
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
-                        .WithMany("ServiceUserLog")
-                        .HasForeignKey("LogCreatedFor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                    .WithMany("ServiceUserLog")
+                    .HasForeignKey("LogCreatedFor")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("ActionByAdmin");
+                b.Navigation("ActionByAdmin");
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("ServiceUser");
-                });
+                b.Navigation("ServiceUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.Assessment", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.SkillAssessments.AssessmentType", "AssessmentType")
-                        .WithMany()
-                        .HasForeignKey("AssessmentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("teamcare.data.Entities.SkillAssessments.AssessmentType", "AssessmentType")
+                    .WithMany()
+                    .HasForeignKey("AssessmentTypeId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
-                        .WithMany()
-                        .HasForeignKey("ServiceUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                    .WithMany()
+                    .HasForeignKey("ServiceUserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("AssessmentType");
+                b.Navigation("AssessmentType");
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("ServiceUser");
-                });
+                b.Navigation("ServiceUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.AssessmentSkill", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.SkillAssessments.Assessment", "Assessment")
-                        .WithMany()
-                        .HasForeignKey("AssessmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("teamcare.data.Entities.SkillAssessments.Assessment", "Assessment")
+                    .WithMany()
+                    .HasForeignKey("AssessmentId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.SkillAssessments.LivingSkill", "LivingSkill")
-                        .WithMany()
-                        .HasForeignKey("SkillId");
+                b.HasOne("teamcare.data.Entities.SkillAssessments.LivingSkill", "LivingSkill")
+                    .WithMany()
+                    .HasForeignKey("SkillId");
 
-                    b.Navigation("Assessment");
+                b.Navigation("Assessment");
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("LivingSkill");
-                });
+                b.Navigation("LivingSkill");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.AssessmentType", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.Navigation("CreatedByUser");
-                });
+                b.Navigation("CreatedByUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.LivingSkill", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.SkillAssessments.SkillGroup", "SkillGroup")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("teamcare.data.Entities.SkillAssessments.SkillGroup", "SkillGroup")
+                    .WithMany()
+                    .HasForeignKey("GroupId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("SkillGroup");
-                });
+                b.Navigation("SkillGroup");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.SkillGroup", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.SkillAssessments.AssessmentType", "AssessmentType")
-                        .WithMany()
-                        .HasForeignKey("AssessmentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("teamcare.data.Entities.SkillAssessments.AssessmentType", "AssessmentType")
+                    .WithMany()
+                    .HasForeignKey("AssessmentTypeId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.Navigation("AssessmentType");
+                b.Navigation("AssessmentType");
 
-                    b.Navigation("CreatedByUser");
-                });
+                b.Navigation("CreatedByUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.User", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.Navigation("CreatedByUser");
-                });
+                b.Navigation("CreatedByUser");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.Users.FavouriteServiceUser", b =>
-                {
-                    b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
+            {
+                b.HasOne("teamcare.data.Entities.User", "CreatedByUser")
+                    .WithMany()
+                    .HasForeignKey("CreatedBy");
 
-                    b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
-                        .WithMany()
-                        .HasForeignKey("ServiceUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("teamcare.data.Entities.ServiceUser", "ServiceUser")
+                    .WithMany()
+                    .HasForeignKey("ServiceUserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("teamcare.data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                b.HasOne("teamcare.data.Entities.User", "User")
+                    .WithMany()
+                    .HasForeignKey("UserId");
 
-                    b.Navigation("CreatedByUser");
+                b.Navigation("CreatedByUser");
 
-                    b.Navigation("ServiceUser");
+                b.Navigation("ServiceUser");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.Residence", b =>
-                {
-                    b.Navigation("DocumentUploads");
+            {
+                b.Navigation("DocumentUploads");
 
-                    b.Navigation("ServiceUsers");
-                });
+                b.Navigation("ServiceUsers");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUser", b =>
-                {
-                    b.Navigation("Contacts");
+            {
+                b.Navigation("Contacts");
 
-                    b.Navigation("DocumentUploads");
+                b.Navigation("DocumentUploads");
 
                     b.Navigation("HealthMedication");
 
@@ -1448,14 +1448,14 @@ namespace teamcare.data.Migrations
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.Contact", b =>
-                {
-                    b.Navigation("DocumentUploads");
-                });
+            {
+                b.Navigation("DocumentUploads");
+            });
 
             modelBuilder.Entity("teamcare.data.Entities.User", b =>
-                {
-                    b.Navigation("DocumentUploads");
-                });
+            {
+                b.Navigation("DocumentUploads");
+            });
 #pragma warning restore 612, 618
         }
     }

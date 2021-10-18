@@ -1,0 +1,212 @@
+﻿@using teamcare.common.Helpers;
+@using teamcare.common.Enumerations;
+@model teamcare.web.app.ViewModels.ServiceUsersDocumentsCreateViewModel
+@{ Guid userId = new Guid(User.GetClaimValue(teamcare.common.ReferenceData.ClaimTypes.UserId)); }
+<input type="hidden" id="editOrDelete" value="I" />
+<input type="hidden" id="editOrDeleteId" value="" />
+<div class="modal fade" id="kt_modal_Add_Document" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-600px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2>Add New Document</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y py-lg-10 px-lg-10">
+                <div class="flex-row-fluid py-lg-5 px-lg-5">
+                    <!--begin::Form-->
+                    <form class="form" novalidate="novalidate" id="sud-profile-form">
+
+
+                        <div class="w-100">
+                            <!--begin::Input group-->
+
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class=" fs-6 fw-bold mb-2">Date of Received</label>
+                                <!--end::Label-->
+                                <!--begin::Wrapper-->
+                                <div class="position-relative d-flex align-items-center">
+                                    <!--begin::Icon-->
+                                    <div class="symbol symbol-20px me-4 position-absolute ms-4">
+                                        <span class="symbol-label bg-secondary">
+                                            <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-grid.svg-->
+                                            <span class="svg-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <rect fill="#000000" opacity="0.3" x="4" y="4" width="4" height="4" rx="1" />
+                                                        <path d="M5,10 L7,10 C7.55228475,10 8,10.4477153 8,11 L8,13 C8,13.5522847 7.55228475,14 7,14 L5,14 C4.44771525,14 4,13.5522847 4,13 L4,11 C4,10.4477153 4.44771525,10 5,10 Z M11,4 L13,4 C13.5522847,4 14,4.44771525 14,5 L14,7 C14,7.55228475 13.5522847,8 13,8 L11,8 C10.4477153,8 10,7.55228475 10,7 L10,5 C10,4.44771525 10.4477153,4 11,4 Z M11,10 L13,10 C13.5522847,10 14,10.4477153 14,11 L14,13 C14,13.5522847 13.5522847,14 13,14 L11,14 C10.4477153,14 10,13.5522847 10,13 L10,11 C10,10.4477153 10.4477153,10 11,10 Z M17,4 L19,4 C19.5522847,4 20,4.44771525 20,5 L20,7 C20,7.55228475 19.5522847,8 19,8 L17,8 C16.4477153,8 16,7.55228475 16,7 L16,5 C16,4.44771525 16.4477153,4 17,4 Z M17,10 L19,10 C19.5522847,10 20,10.4477153 20,11 L20,13 C20,13.5522847 19.5522847,14 19,14 L17,14 C16.4477153,14 16,13.5522847 16,13 L16,11 C16,10.4477153 16.4477153,10 17,10 Z M5,16 L7,16 C7.55228475,16 8,16.4477153 8,17 L8,19 C8,19.5522847 7.55228475,20 7,20 L5,20 C4.44771525,20 4,19.5522847 4,19 L4,17 C4,16.4477153 4.44771525,16 5,16 Z M11,16 L13,16 C13.5522847,16 14,16.4477153 14,17 L14,19 C14,19.5522847 13.5522847,20 13,20 L11,20 C10.4477153,20 10,19.5522847 10,19 L10,17 C10,16.4477153 10.4477153,16 11,16 Z M17,16 L19,16 C19.5522847,16 20,16.4477153 20,17 L20,19 C20,19.5522847 19.5522847,20 19,20 L17,20 C16.4477153,20 16,19.5522847 16,19 L16,17 C16,16.4477153 16.4477153,16 17,16 Z" fill="#000000" />
+                                                    </g>
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </div>
+                                    <!--end::Icon-->
+                                    <!--begin::Input-->
+                                    <input class="form-control form-control-solid ps-12 date-admission" placeholder="Pick date of document receive" name="date_of_receive" value="" id="sud-date_of_receive" />
+                                    <!--end::Input-->
+                                </div>
+                                <!--end::Wrapper-->
+                            </div>
+
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                    <span class="">Title</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Title"></i>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="title" placeholder="Title" value="" id="sud-title" />
+                                <!--end::Input-->
+                            </div>
+
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                    <span class="">Description</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Description"></i>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="description" placeholder="Description" value="" id="sud-description" />
+                                <!--end::Input-->
+                            </div>
+
+                            <div class="fv-row ">
+                                <!--begin::Label-->
+                                <label class="d-flex align-items-center fs-5 fw-bold mb-2">
+                                    <span class="required">Document Category</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Document Category"></i>
+                                </label>
+
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <div>
+                                    <select class="form-select form-select-solid ddlselect2" name="document_category" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" id="sud-document_category">
+                                        <option selected></option>
+                                        @foreach (var group in Model.DocumentCategories)
+                                        {
+                                            if (group.Text == Model.SelectedDocumentCategory.ToString())
+                                            {
+                                                <option value="@group.Value" selected>@group.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@group.Value">@group.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <!--end::Input-->
+                            </div>
+
+
+                            <div class="fv-row mb-10">
+                                <!--begin::Dropzone-->
+                                @*<div class="dropzone" id="sv-profile-photo">*@
+                                <div class="dropzone" id="sud-document">
+                                    @if (Model == null)
+                                    {
+
+                                        <!--begin::Message-->
+                                        <div class="dz-message needsclick">
+                                            <!--begin::Icon-->
+                                            <!--begin::Svg Icon | path: icons/duotone/Files/Uploaded-file.svg-->
+                                            <span class="svg-icon svg-icon-3hx svg-icon-primary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <polygon points="0 0 24 0 24 24 0 24" />
+                                                        <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                        <path d="M8.95128003,13.8153448 L10.9077535,13.8153448 L10.9077535,15.8230161 C10.9077535,16.0991584 11.1316112,16.3230161 11.4077535,16.3230161 L12.4310522,16.3230161 C12.7071946,16.3230161 12.9310522,16.0991584 12.9310522,15.8230161 L12.9310522,13.8153448 L14.8875257,13.8153448 C15.1636681,13.8153448 15.3875257,13.5914871 15.3875257,13.3153448 C15.3875257,13.1970331 15.345572,13.0825545 15.2691225,12.9922598 L12.3009997,9.48659872 C12.1225648,9.27584861 11.8070681,9.24965194 11.596318,9.42808682 C11.5752308,9.44594059 11.5556598,9.46551156 11.5378061,9.48659872 L8.56968321,12.9922598 C8.39124833,13.2030099 8.417445,13.5185067 8.62819511,13.6969416 C8.71848979,13.773391 8.8329684,13.8153448 8.95128003,13.8153448 Z" fill="#000000" />
+                                                    </g>
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                            <!--end::Icon-->
+                                            <!--begin::Info-->
+                                            <div class="ms-4">
+                                                <h3 class="dfs-3 fw-bolder text-gray-900 mb-1">Drop file here or click to upload.</h3>
+                                                <span class="fw-bold fs-4 text-muted">Upload single file at a time</span>
+                                            </div>
+                                            <!--end::Info-->
+                                        </div>
+                                    }
+                                    else
+                                    {
+
+                                        @*<div class="dz-preview dz-file-preview" id="OldDocument">
+                                            <div class="dz-image">
+                                                <img data-dz-thumbnail src="@(Model.ServiceUserDocument.DocumentFile !=null ? Model.PrePath +"/"+Model.ServiceUserDocument.DocumentFile.BlobName+"?width=200" : "../../media/avatars/blank.png" )" alt="Click me to remove the file." />
+                                            </div>
+                                            <a class="dz-remove" href="javascript:undefined;" onclick="RemoveDocument()">Remove file</a>
+                                        </div>*@
+                                    }
+
+                                </div>
+                                <!--end::Dropzone-->
+                            </div>
+
+
+                        </div>
+                        <!--begin::Actions-->
+                        <div class="d-flex flex-stack pt-10">
+
+                            <!--begin::Wrapper-->
+                            <div>
+                                <button type="button" class="btn btn-lg btn-primary" id="btnsaveserviceuserdocuments" data-kt-stepper-action="submit" onclick="sendServiceUserDocument('@userId', 'I', '')">
+                                    <span class="indicator-label">
+                                        Submit
+                                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->
+                                        <span class="svg-icon svg-icon-3 ms-2 me-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                                    <rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />
+                                                    <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+                                                </g>
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="indicator-progress">
+                                        Please wait...
+                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                    </span>
+                                </button>
+
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Actions-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>

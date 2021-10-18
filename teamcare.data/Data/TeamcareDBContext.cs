@@ -28,6 +28,7 @@ namespace teamcare.data.Data
         public DbSet<AssessmentSkill> AssessmentSkills { get; set; }
         public DbSet<AssessmentType> AssessmentTypes { get; set; }
         public DbSet<HealthMedication> HealthMedications { get; set; }
+ public DbSet<ServiceUserDocument> ServiceUserDocuments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
