@@ -176,23 +176,6 @@ namespace teamcare.web.app.Controllers
             return PartialView("_AssessmentDataContent", model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> DocumentsManagerTabBind(string docId, string serviceUserId)
-        {
-            var serviceUsersDocument = (""+docId.Trim() == "") ? await _serviceUserDocumentService.ListAllAsync() : null;
-            var serviceUsersDocumentByID = (""+docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));
-            if(serviceUsersDocument != null && (""+serviceUserId.ToString().Trim()) != "")
-            {
-                serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
-            }
-            var model = new ServiceUsersDocumentsViewModel
-            {
-                ServiceUsersDocument = serviceUsersDocument,
-                ServiceUsersDocumentByID = serviceUsersDocumentByID
-            };
-
-            return PartialView("_ServiceUsersDocumentsManagerDataContent", model);
-        }
         public async Task<IActionResult> SortFilterOption(int sortBy, string filterBy, bool isArchive)
         {
 
@@ -713,5 +696,91 @@ namespace teamcare.web.app.Controllers
 
             }
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> DocumentsManagerTabBind(string docId = "", string serviceUserId = "")
+        {
+            if (docId == null) { docId = ""; }
+            if (serviceUserId == null) { serviceUserId = ""; }
+            var serviceUsersDocument = ("" + docId.Trim() == "") ? await _serviceUserDocumentService.ListAllAsync() : null;
+            var serviceUsersDocumentByID = ("" + docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));
+            if (serviceUsersDocument != null && ("" + serviceUserId.ToString().Trim()) != "")
+            {
+                serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
+            }
+            var model = new ServiceUsersDocumentsViewModel
+            {
+                ServiceUsersDocument = serviceUsersDocument,
+                ServiceUsersDocumentByID = serviceUsersDocumentByID,
+                CreateViewModel = new ServiceUsersDocumentsCreateViewModel
+                {
+                    DocumentCategories = EnumExtensions.GetEnumListItems<DocumentCategories>()
+                }
+            };
+
+            return PartialView("_ServiceUsersDocumentsManagerDataContent", model);
+        }
+
+        public async Task<IActionResult> saveServiceUserDocument(string docId, string dbType, string serviceUserId, ServiceUsersDocumentsCreateViewModel data)
+        {
+            //IActionResult returnValue = null;
+            bool blSuccess = false;
+            try
+            {
+
+                ServiceUsersDocumentsModel serviceUserDoc = new ServiceUsersDocumentsModel();
+                if (docId == null && dbType == "I")
+                {
+                    data.ServiceUserDocument.CreatedBy = new Guid(serviceUserId);
+                    serviceUserDoc = await _serviceUserDocumentService.AddAsync(data.ServiceUserDocument);
+                }
+                else if (docId != null && dbType == "U")
+                {
+                    data.ServiceUserDocument.Id = new Guid(docId);
+                    data.ServiceUserDocument.UpdatedBy = new Guid(serviceUserId);
+                    serviceUserDoc = await _serviceUserDocumentService.UpdateAsync(data.ServiceUserDocument);
+                }
+                else if (docId != null && dbType == "D")
+                {
+                    data.ServiceUserDocument.Id = new Guid(docId);
+                    data.ServiceUserDocument.DeletedBy = new Guid(serviceUserId);                    
+                    await _serviceUserDocumentService.DeleteAsync(data.ServiceUserDocument);
+                }
+                blSuccess = true;
+            }
+            catch
+            {
+                blSuccess = false;
+            }
+
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add new log for serviceusers.", UserReference = "", CreatedBy = base.UserId });
+
+            });
+
+            //Service User Document for partial view 
+            if (docId == null) { docId = ""; }
+            if (serviceUserId == null) { serviceUserId = ""; }
+            var serviceUsersDocument = ("" + docId.Trim() == "") ? await _serviceUserDocumentService.ListAllAsync() : null;
+            var serviceUsersDocumentByID = ("" + docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));
+            if (serviceUsersDocument != null && ("" + serviceUserId.ToString().Trim()) != "")
+            {
+                serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
+            }
+            var model = new ServiceUsersDocumentsViewModel
+            {
+                ServiceUsersDocument = serviceUsersDocument,
+                ServiceUsersDocumentByID = serviceUsersDocumentByID,
+                CreateViewModel = new ServiceUsersDocumentsCreateViewModel
+                {
+                    DocumentCategories = EnumExtensions.GetEnumListItems<DocumentCategories>()
+                }
+            };
+
+            return PartialView("_ServiceUsersDocumentsManagerCard", model);
+        }
+
     }
 }
