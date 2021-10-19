@@ -6,9 +6,9 @@ using teamcare.data.Repositories;
 
 namespace teamcare.business.Services
 {
-	public interface IBloodPressureReadingService : IService<BloodPressureReadingModel>
+	public interface IWeightReadingService : IService<WeightReadingModel>
 	{
-        Task<IEnumerable<BloodPressureReadingModel>> ListAllSortedFiltered(Guid serviceuser, string daterange);
+        Task<IEnumerable<WeightReadingModel>> ListFiltered(Guid serviceuser, string daterange);
 
     }
 }

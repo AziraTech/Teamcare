@@ -1,30 +1,41 @@
-﻿var frmeditblood = null;
+﻿var frmeditweight = null;
 
-var editbloodfrm = null;
+var editweightfrm = null;
 
 $(document).ready(function () {
-    GetBloodData();
+  
+    GetweightData();
 });
 
-function ResetFilterBlood() {
-    $("#txtdaterangeblood").val('');
-    GetBloodData();
+function ResetFilterWeight() {
+    $("#txtdaterangeweight").val('');
+    GetweightData();
 
 }
 
-function GetBloodData() {
+function GetweightData() {
     var daterange = $("#txtdaterangeblood").val();
 
     $.ajax({
         type: "GET",
-        url: '/BloodPressure/GetBloodReadingData',
+        url: '/Weightreading/GetWeightReadingData',
         data: { id: $('#hdnserviceuserid').val(), daterange: daterange },
         success: function (data) {
             if (data != undefined) {
-                $('#divblooddataContent').html('');
-                $('#divblooddataContent').html(data);
+                $('#divWeightdataContent').html('');
+                $('#divWeightdataContent').html(data);
 
-                $('.blooddropdown').hover(
+                $(".date-filter-weight").daterangepicker({
+                    showDropdowns: true,
+                    minYear: 1981,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    locale: {
+                        format: 'DD/MM/yyyy'
+                    }
+                }, function (start, end, label) {
+                });
+
+                $('.weightdropdown').hover(
                     function () {
 
                         $(this).find('ul').css({
@@ -42,36 +53,23 @@ function GetBloodData() {
 
                     }
                 );
-
-
-                $(".date-filter-blood").daterangepicker({
-                    showDropdowns: true,
-                    minYear: 1981,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
-                    locale: {
-                        format: 'DD/MM/yyyy'
-                    }
-                }, function (start, end, label) {
-                });
-
-
             }
         }
     });
 }
 
-function openAddEditBloodModal(id) {
+function openAddEditWeightModal(id) {
 
     $.ajax({
         type: "POST",
-        url: '/BloodPressure/BloodModalBind',
+        url: '/WeightReading/WeightModalBind',
         data: { id: id },
         success: function (data) {
             if (data != null) {
-                $('#divAddEditBloodReading').html('');
-                $('#divAddEditBloodReading').html(data);
+                $('#divAddEditWeightReading').html('');
+                $('#divAddEditWeightReading').html(data);
 
-                $("#txttestdate").daterangepicker({
+                $("#txtweighttestdate").daterangepicker({
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 1981,
@@ -84,11 +82,11 @@ function openAddEditBloodModal(id) {
                 }, function (start, end, label) {
                 });
 
-              
-                frmeditblood = document.querySelector("#kt_modal_new_blood");
 
-                editbloodfrm = FormValidation
-                    .formValidation(frmeditblood,
+                frmeditweight = document.querySelector("#kt_modal_new_weight");
+
+                editweightfrm = FormValidation
+                    .formValidation(frmeditweight,
                         {
                             fields: {
                                 testdate: {
@@ -98,27 +96,14 @@ function openAddEditBloodModal(id) {
                                         }
                                     }
                                 },
-                                systolicreading: {
+                                weighttestdate: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Systolic Reading is required"
+                                            message: "Weigt is required"
                                         }
                                     }
-                                },
-                                diastolicreading: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Diastolic Reading is required"
-                                        }
-                                    }
-                                },
-                                pulse: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Pulse is required"
-                                        }
-                                    }
-                                },
+                                }
+
                             },
                             plugins: {
                                 trigger: new FormValidation.plugins.Trigger(),
@@ -132,13 +117,13 @@ function openAddEditBloodModal(id) {
                     );
 
                 if (id == null) {
-                    $('#lblheader').text('Create Blood Pressure Reading');
+                    $('#lblheaderweight').text('Create Weight Reading');
                 } else {
 
-                    $('#lblheader').text('Edit Blood Pressure Reading');
+                    $('#lblheaderweight').text('Edit Weight Reading');
                 }
 
-                $('#create_bloodrecord').modal('show');
+                $('#create_weightrecord').modal('show');
 
             }
             else {
@@ -151,35 +136,32 @@ function openAddEditBloodModal(id) {
     });
 }
 
-function saveBloodReadingDetails(sender) {
+function saveweightReadingDetails(sender) {
 
-    editbloodfrm.validate().then(function (s) {
+    editweightfrm.validate().then(function (s) {
         if ("Valid" == s) {
 
-            $('#btnaddbloodreding').disabled = !0;
-            $('#btnaddbloodreding').attr("data-kt-indicator", "on");
+            $('#btnaddweightreding').disabled = !0;
+            $('#btnaddweightreding').attr("data-kt-indicator", "on");
             setTimeout(function () {
-                $('#btnaddbloodreding').removeAttr("data-kt-indicator");
-                $('#btnaddbloodreding').disabled = !1;
+                $('#btnaddweightreding').removeAttr("data-kt-indicator");
+                $('#btnaddweightreding').disabled = !1;
 
                 //ajax call for the submit;
-                var BloodPressureReading = {
-                    Id: $('#hdnbloodid').val(),
+                var weightReading = {
+                    Id: $('#hdnweightid').val(),
                     ServiceUserId: $('#hdnserviceuserid').val(),
-                    BloodTestdate: $('#txttestdate').val(),
-                    SystolicReading: $('#txtsystolicreading').val(),
-                    DiastolicReading: $('#txtdiastolicreading').val(),
-                    Pulse: $('#txtpulse').val(),
-
+                    WeightTestdate: $('#txtweighttestdate').val(),
+                    Weight: $('#txtweight').val(),
 
                 }
-                var bloodPressureReadingViewModel = {
-                    BloodPressureReading: BloodPressureReading
+                var weightReadingViewModel = {
+                    weightReading: weightReading
                 }
                 $.ajax({
                     type: "POST",
-                    url: '/BloodPressure/Save',
-                    data: { bloodPressureReadingViewModel: bloodPressureReadingViewModel },
+                    url: '/Weightreading/Save',
+                    data: { weightReadingViewModel: weightReadingViewModel },
                     success: function (data) {
                         if (data.statuscode == 3) {
                             Swal.fire({
@@ -193,7 +175,7 @@ function saveBloodReadingDetails(sender) {
                             });
                         } else {
                             Swal.fire({
-                                text: "Blood Pressure Reading has been created successfully.",
+                                text: "Weight Reading has been created successfully.",
                                 icon: "success",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
@@ -202,12 +184,12 @@ function saveBloodReadingDetails(sender) {
                                 }
                             }).then(function (q) {
                                 q.isConfirmed;
-                                $('#create_bloodrecord').modal('hide');
+                                $('#create_weightrecord').modal('hide');
                                 $('.modal-backdrop').remove();
                                 //$("body").css("overflow", "");
                                 //$("body").css("padding-right", "");
 
-                                GetBloodData();
+                                GetweightData();
                             });
                         }
                     }
@@ -230,7 +212,7 @@ function saveBloodReadingDetails(sender) {
     });
 }
 
-function DeleteBloodReading(ctrl, Id) {
+function DeleteWeightReading(ctrl, Id) {
 
     Swal.fire({
         title: 'Are you sure?',
@@ -245,7 +227,7 @@ function DeleteBloodReading(ctrl, Id) {
             return new Promise(function (resolve) {
                 $.ajax({
                     type: "POST",
-                    url: '/BloodPressure/Delete',
+                    url: '/WeightReading/Delete',
                     data: { id: Id },
                     success: function (data) {
                         if (data.statuscode == 3) {
@@ -271,7 +253,7 @@ function DeleteBloodReading(ctrl, Id) {
                             }).then(function (q) {
                                 q.isConfirmed;
                                 $('.modal-backdrop').remove();
-                                GetBloodData();
+                                GetweightData();
                             });
 
                         }

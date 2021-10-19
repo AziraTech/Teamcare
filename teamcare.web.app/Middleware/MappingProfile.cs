@@ -33,6 +33,7 @@ namespace teamcare.web.app.Middleware
 			CreateMap<HealthMedication, HealthMedicationModel>().ReverseMap();
 			CreateMap<ServiceUserDocument, ServiceUsersDocumentsModel>().ReverseMap();
 			CreateMap<BloodPressureReading, BloodPressureReadingModel>().ReverseMap();
+			CreateMap<WeightReading, WeightReadingModel>().ReverseMap();
 		}
 	}
 }

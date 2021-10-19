@@ -12,6 +12,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" href="#tab_Blood_Pressure_Recording">Blood Pressure Reading</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary me-6" data-bs-toggle="tab" href="#tab_Weight_Reading">Weight Reading</a>
+                </li>
                 <!--end::Nav item-->
             </ul>
         </div>
@@ -92,6 +95,10 @@
             <div class="mt-5 mb-5" id="divblooddataContent">
             </div>
         </div>
+        <div id="tab_Weight_Reading" class="tab-pane fade" role="tabpanel">
+            <div class="mt-5 mb-5" id="divWeightdataContent">
+            </div>
+        </div>
     </div>
 
 </div>
@@ -109,5 +116,21 @@
     <!--end::Modal dialog-->
 </div>
 
+<div class="modal fade" id="create_weightrecord" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <div class="modal-content" id="divAddEditWeightReading">
+            </div>
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+
 <script src="~/js/ckeditorclassic.js"></script>
 <script src="~/js/page_script/bloodpressurereading.js"></script>
+<script src="~/js/page_script/weightreading.js"></script>
+
+

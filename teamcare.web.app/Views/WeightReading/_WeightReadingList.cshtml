@@ -1,5 +1,5 @@
 ﻿@using teamcare.web.app.Helpers;
-@model teamcare.web.app.ViewModels.BloodPressureReadingViewModel
+@model teamcare.web.app.ViewModels.WeightReadingViewModel
 
 
 <div class="d-flex flex-wrap flex-stack pb-7">
@@ -10,8 +10,7 @@
         <!--begin::Tab nav-->
         <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
             <li class="nav-item m-0">
-
-                <div class="dropdown blooddropdown">
+                <div class="dropdown weightdropdown">
 
                     <button class="btn btn-custom btn-active-white btn-flex btn-active-color-primary fw-bolder btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                         <span class="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
@@ -52,7 +51,7 @@
                                         </div>
                                         <!--end::Icon-->
                                         <!--begin::Input-->
-                                        <input class="form-control form-control-solid ps-12 date-filter-blood" placeholder="Pick date range" name="blooddatefilter" id="txtdaterangeblood" />
+                                        <input class="form-control form-control-solid ps-12 date-filter-weight" placeholder="Pick date range" name="weightdatefilter" id="txtdaterangeweight" />
                                         <!--end::Input-->
                                     </div>
                                 </div>
@@ -61,22 +60,20 @@
                             <!--end::Input group-->
                             <!--begin::Actions-->
                             <div class="d-flex justify-content-end">
-                                <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" onclick="ResetFilterBlood();" data-kt-menu-dismiss="true">Reset</button>
-                                <button type="button" onclick="GetBloodData();" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
+                                <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" onclick="ResetFilterWeight();" data-kt-menu-dismiss="true">Reset</button>
+                                <button type="button" onclick="GetweightData();" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
                             </div>
                             <!--end::Actions-->
                         </div>
                     </ul>
 
                 </div>
-              
-                <!--end::Menu-->
             </li>
             <li class="nav-item m-0">
-                <a href="javaScript:void(0);" class="btn btn-primary btn-sm align-self-center me-3" id="btncreate" onclick="openAddEditBloodModal('')">Create</a>
+                <a href="javaScript:void(0);" class="btn btn-primary btn-sm align-self-center me-3" id="btncreate" onclick="openAddEditWeightModal('')">Create</a>
             </li>
             <li class="nav-item m-0">
-                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_blood_card_pane">
+                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_weight_card_pane">
                     <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-4-blocks-2.svg-->
                     <span class="svg-icon svg-icon-2">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -91,9 +88,10 @@
                 </a>
             </li>
             <li class="nav-item m-0">
-                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_project_blood_table_pane">
+                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_project_weight_table_pane">
                     <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-horizontal.svg-->
                     <span class="svg-icon svg-icon-2">
+                       
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
                             <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z" />
                         </svg>
@@ -107,9 +105,9 @@
     <!--end::Controls-->
 </div>
 
-<div class="tab-content" id="tabblood">
+<div class="tab-content" id="tabweight">
     <!--begin::Tab pane-->
-    <div id="kt_project_blood_card_pane" class="tab-pane fade show active">
+    <div id="kt_project_weight_card_pane" class="tab-pane fade show active">
         <!--begin::Card-->
         <div class="card card-flush">
             <!--begin::Card body-->
@@ -122,9 +120,7 @@
                         <thead class="fs-7 text-gray-400 text-uppercase">
                             <tr>
                                 <th class="min-w-150px">TestDate</th>
-                                <th class="min-w-50px">Systolic Reading</th>
-                                <th class="min-w-50px">Diastolic Reading</th>
-                                <th class="min-w-50px">Pulse</th>
+                                <th class="min-w-50px">Weight</th>                           
                                 <th class="min-w-100px text-end">Action</th>
                             </tr>
                         </thead>
@@ -133,16 +129,14 @@
                         <tbody class="fs-6">
                             @if (Model != null)
                             {
-                                foreach (var item in Model.BloodPressureReadingList)
+                                foreach (var item in Model.WeightReadingList)
                                 {
                                     <tr>
                                         <td>@item.TestDate.GetDateFormat(false)</td>
-                                        <td>@item.SystolicReading</td>
-                                        <td>@item.DiastolicReading</td>
-                                        <td>@item.Pulse</td>
+                                        <td>@item.Weight</td>                                  
                                         <td class="text-end">
                                             @*  <a href="javaScript:void(0);" class="btn btn-sm btn-primary me-3" id="btnedit" title="Edit Blood Pressure Reading" onclick="openAddEditBloodModal('@item.Id')"><i class="bi bi-pencil-square"></i></a>*@
-                                            <a href="#" class="btn btn-sm btn-danger" id="btndelete" title="Delete Blood Pressure Reading" onclick="DeleteBloodReading(this, '@item.Id')"><i class="bi bi-trash"></i></a>
+                                            <a href="#" class="btn btn-sm btn-danger" id="btndelete" title="Delete Weight Reading" onclick="DeleteWeightReading(this, '@item.Id')"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
                                 }
@@ -160,7 +154,7 @@
     </div>
     <!--end::Tab pane-->
     <!--begin::Tab pane-->
-    <div id="kt_project_blood_table_pane" class="tab-pane fade">
+    <div id="kt_project_weight_table_pane" class="tab-pane fade">
 
         <!--begin::Row-->
         <div class="row g-6 g-xl-9">
@@ -183,37 +177,39 @@
 </div>
 
 @*<script type="text/javascript">
-        var e = document.getElementById("kt_charts_widget_2_chart"),
-            t = parseInt(KTUtil.css(e, "height")),
-            a = KTUtil.getCssVariableValue("--bs-gray-500"),
-            o = KTUtil.getCssVariableValue("--bs-gray-200"),
-            s = KTUtil.getCssVariableValue("--bs-warning"),
-            r = KTUtil.getCssVariableValue("--bs-gray-300");
-        e &&
-            new ApexCharts(e, {
-                series: [
-                    { name: "Net Profit", data: [44, 55, 57, 56, 61, 58] },
-                    { name: "Revenue", data: [76, 85, 101, 98, 87, 105] },
-                ],
-                chart: { fontFamily: "inherit", type: "bar", height: t, toolbar: { show: !1 } },
-                plotOptions: { bar: { horizontal: !1, columnWidth: ["30%"], endingShape: "rounded" } },
-                legend: { show: !1 },
-                dataLabels: { enabled: !1 },
-                stroke: { show: !0, width: 2, colors: ["transparent"] },
-                xaxis: { categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul"], axisBorder: { show: !1 }, axisTicks: { show: !1 }, labels: { style: { colors: a, fontSize: "12px" } } },
-                yaxis: { labels: { style: { colors: a, fontSize: "12px" } } },
-                fill: { opacity: 1 },
-                states: { normal: { filter: { type: "none", value: 0 } }, hover: { filter: { type: "none", value: 0 } }, active: { allowMultipleDataPointsSelection: !1, filter: { type: "none", value: 0 } } },
-                tooltip: {
-                    style: { fontSize: "12px" },
-                    y: {
-                        formatter: function (e) {
-                            return "$" + e + " thousands";
-                        },
+    var e = document.getElementById("kt_charts_widget_2_chart"),
+        t = parseInt(KTUtil.css(e, "height")),
+        a = KTUtil.getCssVariableValue("--bs-gray-500"),
+        o = KTUtil.getCssVariableValue("--bs-gray-200"),
+        s = KTUtil.getCssVariableValue("--bs-warning"),
+        r = KTUtil.getCssVariableValue("--bs-gray-300");
+    e &&
+        new ApexCharts(e, {
+            series: [
+                { name: "Net Profit", data: [44, 55, 57, 56, 61, 58] },
+                { name: "Revenue", data: [76, 85, 101, 98, 87, 105] },
+            ],
+            chart: { fontFamily: "inherit", type: "bar", height: t, toolbar: { show: !1 } },
+            plotOptions: { bar: { horizontal: !1, columnWidth: ["30%"], endingShape: "rounded" } },
+            legend: { show: !1 },
+            dataLabels: { enabled: !1 },
+            stroke: { show: !0, width: 2, colors: ["transparent"] },
+            xaxis: { categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul"], axisBorder: { show: !1 }, axisTicks: { show: !1 }, labels: { style: { colors: a, fontSize: "12px" } } },
+            yaxis: { labels: { style: { colors: a, fontSize: "12px" } } },
+            fill: { opacity: 1 },
+            states: { normal: { filter: { type: "none", value: 0 } }, hover: { filter: { type: "none", value: 0 } }, active: { allowMultipleDataPointsSelection: !1, filter: { type: "none", value: 0 } } },
+            tooltip: {
+                style: { fontSize: "12px" },
+                y: {
+                    formatter: function (e) {
+                        return "$" + e + " thousands";
                     },
                 },
-                colors: [s, r],
-                grid: { borderColor: o, strokeDashArray: 4, yaxis: { lines: { show: !0 } } },
-            }).render();
+            },
+            colors: [s, r],
+            grid: { borderColor: o, strokeDashArray: 4, yaxis: { lines: { show: !0 } } },
+        }).render();
 
-    </script>*@
+</script>*@
+
+

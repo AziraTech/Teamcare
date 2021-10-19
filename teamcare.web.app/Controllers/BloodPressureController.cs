@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using teamcare.business.Models;
@@ -35,17 +36,15 @@ namespace teamcare.web.app.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBloodReadingData(Guid id)
+        public async Task<IActionResult> GetBloodReadingData(Guid id, string daterange)
         {
             try
             {
-                var bloodreadingdata = await _bloodPressureReadingService.ListAllAsync();
-
-                var finaldata = bloodreadingdata.Where(x => x.ServiceUserId == id).OrderByDescending(x => x.CreatedOn).ToList();
+                var bloodreadingdata = await _bloodPressureReadingService.ListAllSortedFiltered(id, daterange);
 
                 var model = new BloodPressureReadingViewModel
                 {
-                    BloodPressureReadingList = finaldata
+                    BloodPressureReadingList = bloodreadingdata.ToList()
                 };
 
                 return PartialView("~/Views/BloodPressureReading/_BloodPressureReadingList.cshtml", model);
@@ -99,7 +98,13 @@ namespace teamcare.web.app.Controllers
 
                     var bloodPressureReading = new BloodPressureReadingModel();
 
-                    if (bloodPressureReadingViewModel.BloodPressureReading.Id.ToString() == "")
+                    var oldblooddata = await _bloodPressureReadingService.ListAllAsync();
+
+                    var IsGetTodayData = oldblooddata.Where(x => x.CreatedOn.Date == DateTimeOffset.UtcNow.Date).FirstOrDefault();
+
+                    bloodPressureReadingViewModel.BloodPressureReading.TestDate = DateTime.ParseExact(bloodPressureReadingViewModel.BloodPressureReading.BloodTestdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                    if (IsGetTodayData ==null)
                     {
                         bloodPressureReading = await _bloodPressureReadingService.AddAsync(bloodPressureReadingViewModel.BloodPressureReading);
 
@@ -110,6 +115,8 @@ namespace teamcare.web.app.Controllers
                     }
                     else
                     {
+                        bloodPressureReadingViewModel.BloodPressureReading.Id = IsGetTodayData.Id;
+
                         bloodPressureReading = await _bloodPressureReadingService.UpdateAsync(bloodPressureReadingViewModel.BloodPressureReading);
 
                         _auditService.Execute(async repository =>

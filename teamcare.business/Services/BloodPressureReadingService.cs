@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using teamcare.business.Models;
 using teamcare.data.Entities.ServiceUsers;
@@ -51,7 +52,22 @@ namespace teamcare.business.Services
             var result = _mapper.Map<BloodPressureReadingModel, BloodPressureReading>(model);
             await _BloodPressureReadingRepository.DeleteAsync(result);
         }
-       
 
+        public async Task<IEnumerable<BloodPressureReadingModel>> ListAllSortedFiltered(Guid id, string daterange)
+        {
+
+            var bloodreadingdata = await ListAllAsync();
+
+            var finaldata = bloodreadingdata.Where(x => x.ServiceUserId == id).OrderByDescending(x => x.CreatedOn).ToList();
+
+            if (daterange != null)
+            {
+                string[] date = daterange.Split('-');
+
+                finaldata = finaldata.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date).ToList();
+            }
+
+            return finaldata;
+        }
     }
 }
