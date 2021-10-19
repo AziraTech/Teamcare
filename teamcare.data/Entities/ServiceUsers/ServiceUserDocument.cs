@@ -15,7 +15,7 @@ namespace teamcare.data.Entities.ServiceUsers
         public virtual ServiceUser ServiceUser { get; set; }
 
         [Column("date_received")]
-        public DateTimeOffset DateReceived { get; set; } = DateTimeOffset.UtcNow;
+        public DateTime DateReceived { get; set; } = DateTime.UtcNow;
 
         [Column("title")]
         public string Title { get; set; }
@@ -24,7 +24,7 @@ namespace teamcare.data.Entities.ServiceUsers
         public string Description { get; set; }
 
         [Column("document_category")]
-        public DocumentCategories DocumentCategory { get; set; }
+        public DocumentTypes DocumentCategory { get; set; }
 
     }
 }

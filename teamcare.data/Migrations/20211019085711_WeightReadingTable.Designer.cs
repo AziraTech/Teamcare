@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using teamcare.data.Data;
@@ -9,9 +10,10 @@ using teamcare.data.Data;
 namespace teamcare.data.Migrations
 {
     [DbContext(typeof(TeamcareDbContext))]
-    partial class TeamcareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211019085711_WeightReadingTable")]
+    partial class WeightReadingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -774,7 +776,7 @@ namespace teamcare.data.Migrations
                     b.ToTable("ServiceUserLog");
                 });
 
-            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.WeightRecording", b =>
+            modelBuilder.Entity("teamcare.data.Entities.ServiceUsers.WeightReading", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -823,7 +825,7 @@ namespace teamcare.data.Migrations
 
                     b.HasIndex("ServiceUserId");
 
-                    b.ToTable("WeightRecordings");
+                    b.ToTable("WeightReadings");
                 });
 
             modelBuilder.Entity("teamcare.data.Entities.SkillAssessments.Assessment", b =>

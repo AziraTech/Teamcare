@@ -12,7 +12,7 @@ namespace teamcare.data.Entities.ServiceUsers
         public virtual ServiceUser ServiceUser { get; set; }
 
         [Column("test_date")]
-        public DateTimeOffset TestDate { get; set; } = DateTimeOffset.UtcNow;
+        public DateTime TestDate { get; set; } = DateTime.UtcNow;
 
         [Column("systolic_reading")]
         public int SystolicReading { get; set; }
