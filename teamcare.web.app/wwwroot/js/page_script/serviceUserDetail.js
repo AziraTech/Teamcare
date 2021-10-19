@@ -808,7 +808,7 @@ function addNewDocument(userId)
         maxFiles: 1,
         maxFilesize: 10, // MB
         addRemoveLinks: true,
-        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf, .xls, .xlsx",
         success: function (file, response) {
             doctempFileId = response.id;
             docfileName = file.name;
@@ -817,7 +817,8 @@ function addNewDocument(userId)
     });
 }
 
-async function sendServiceUserDocument (dbType, docId) {
+async function sendServiceUserDocument(dbType, docId)
+{
     if (dbType == 'I' || dbType == 'U')
     {
         //if ($('#' + logMessageId).val() == null || $('#' + logMessageId).val().trim() == "") {
@@ -844,7 +845,7 @@ async function sendServiceUserDocument (dbType, docId) {
     var documentCategory = $('#sud-document_category').val();
 
     var postData = null;
-    if (dbType == 'I' || dbType == 'U')
+    if (dbType == 'I' || dbType == 'U' || dbType == 'D')
     {
         postData =
         {
@@ -873,14 +874,18 @@ async function sendServiceUserDocument (dbType, docId) {
         type: "POST",
         url: '/ServiceUsers/saveServiceUserDocument',
         data: postData,
-        success: function (data) {
+        success: function (data)
+        {
             var showMessage = ""; var icon = "";
-            if (data) {
+            if (data)
+            {
                 switch (dbType) {
                     case "I": showMessage = "Service User Document Added Successful."; break;
                     case "U": showMessage = "Service User Document Updated Successful."; break;
                     case "D": showMessage = "Service User Document Removed Successful."; break;
-                } icon = 'success';
+                }
+                icon = 'success';
+                var edirOrNot = $('#editOrDelete').val();
                 $('#editOrDelete').val('I');
                 $('#editOrDeleteId').val('');
                 $('#ServiceUsersDocumentsTabContent').html('');
@@ -889,7 +894,8 @@ async function sendServiceUserDocument (dbType, docId) {
                 $("body").css("overflow", "");
                 $("body").css("padding-right", "");
 
-                $('#kt_modal_Add_Document').modal('hide');
+                if (edirOrNot == 'I') { $('#kt_modal_Add_Document').modal('hide'); }
+                if (edirOrNot == 'U') { $('#kt_modal_Update_Document').modal('hide'); }
 
             } else {
                 icon = 'error';
@@ -908,37 +914,89 @@ async function sendServiceUserDocument (dbType, docId) {
     $('#editOrDeleteId').val('');
 }
 
-async function fncServiceUserDocumentEditOrDelete(opType, logId, msgAreaId) {
-    if (opType == 'D') {
+async function UpdateServiceUserDocument(opType, docId)
+{
+    if (opType == 'D')
+    {
         await Swal.fire({
             title: 'Are you sure?',
-            text: "You want to delete selected service user log.",
+            text: "You want to delete selected service user document.",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!',
             showLoaderOnConfirm: true,
-            preConfirm: async function () { await sendServiceUserLog(serviceUserId, 'sul-log_message', opType, logId); }
+            preConfirm: async function ()
+            {
+                $('#editOrDelete').val('D');
+                $('#editOrDeleteId').val('');
+                await sendServiceUserDocument(opType, docId);
+            }
         });
     }
-    else {
+    else
+    {
         $('#editOrDelete').val(opType);
-        $('#editOrDeleteId').val(logId);
-
+        $('#editOrDeleteId').val(docId);
+        
         await $.ajax({
-            type: "POST",
-            url: '/ServiceUsers/GetByLogId',
-            data: { id: logId },
-            success: function (data) {
-                if (data != null) {
-                    $('#sul-log_message').val(data.logMessage);
-                    $('#' + msgAreaId).html = '';
-                    $('#' + msgAreaId).html = data.logMessage;
-                } else { }
+            type: "GET",
+            url: '/ServiceUsers/GetByServiceUserDocId',
+            data: { docId: docId, serviceUserId : '' },
+            success: function (data)
+            {
+                console.log('data', data);
+                if (data)
+                {
+                    $('#showServiceUserDocumentModel').html('');
+                    $('#showServiceUserDocumentModel').html(data);
+
+                    $('#kt_modal_Update_Document').modal('show');
+
+                    $(".date-receive").daterangepicker(
+                        {
+                            singleDatePicker: true,
+                            showDropdowns: true,
+                            minYear: 2001,
+                            maxYear: parseInt(moment().format("YYYY"), 10),
+                            locale: { format: 'DD/MM/yyyy' }
+                        }, function (start, end, label) { }
+                    );
+
+                    $('.ddlselect2').select2();
+
+                    var myDropzonedoc = new Dropzone("#sud-document-up", {
+                        url: "/DocumentUpload", // Set the url for your upload script location
+                        paramName: "file", // The name that will be used to transfer the file
+                        maxFiles: 1,
+                        maxFilesize: 10, // MB
+                        addRemoveLinks: true,
+                        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf, .xls, .xlsx",
+                        success: function (file, response) {
+                            doctempFileId = response.id;
+                            docfileName = file.name;
+                            docfileType = file.type;
+                        }
+                    });
+
+
+                    //$('#sud-date_of_receive').val(data.serviceUsersDocumentByID.dateReceived);
+                    //$('#sud-title').val(data.serviceUsersDocumentByID.title);
+                    //$('#sud-description').val(data.serviceUsersDocumentByID.description);
+                    //$('#sud-document_category').val(data.serviceUsersDocumentByID.documentCategory);
+                }
             }
         });
 
+
+
+        
     }
 }
 
+
+
+async function DownloadServiceUserDocument(docId)
+{
+}

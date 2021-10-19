@@ -7,18 +7,51 @@
 
     <div class="card-header cursor-pointer">
         <!--begin::Card title-->
-        <div class="card-title m-0">
-
-            <div class="d-flex flex-stack pt-10">
-                <div class="me-2">
+        <div class="card-title m-0 col-md-12">
+            <div class="d-flex flex-stack pt-10 col-md-12">
+                <div class="col-md-2 me-6 mb-2 mb-sm-0">
                     <h3 class="fw-bolder me-5 my-1">Documents : @Model.ServiceUsersDocument.Count() </h3>
+                </div>                
+                <div class="d-flex flex-wrap flex-stack pb-7 col-md-10">
+                    <div class="col-md-9">&nbsp;</div>
+                    <div class="col-md-3 align-center right text-end" >
+                        <button type="button" id="btnAddDocument" onclick="addNewDocument('@userId')" class="btn btn-sm btn-primary me-6 mb-2 mb-sm-0">
+                            Add New Document
+                        </button>
+                    </div>
+                    @*<div class="col-md-2 align-center right text-end">                       
+                        <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
+                            <li class="nav-item m-0">
+                                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_service_user_document_grid_pane">                                    
+                                    <span class="svg-icon svg-icon-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
+                                                <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                                <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                                <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item m-0">
+                                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_service_user_document_table_pane">                                    
+                                    <span class="svg-icon svg-icon-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
+                                                <rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>*@
                 </div>
-                <div>
-                    <button type="button" id="btnAddDocument" onclick="addNewDocument('@userId')" class="btn btn-sm btn-primary me-3 mb-5">
-                        Add New Document
-                    </button>
-                </div>
-            </div>
+             </div>
         </div>
         <!--end::Card title-->
     </div>
@@ -27,12 +60,13 @@
 @if (Model.ServiceUsersDocument.Count() > 0)
 {
     <div class="row g-6 g-xl-9">
-        <div id="ServiceUsersDocumentsTabContent">
-            <partial name="_ServiceUsersDocumentsManagerCard" model="Model" />
+        <div class="tab-content" id="ServiceUsersDocumentsTabContent">
+            <partial name="_ServiceUsersDocumentsManagerShow" model="Model" />
         </div>
     </div>
 }
-
-<div class="d-flex flex-wrap flex-stack pb-7">
+<input type="hidden" id="editOrDelete" value="I" />
+<input type="hidden" id="editOrDeleteId" value="" />
+<div class="d-flex flex-wrap flex-stack pb-7" id="showServiceUserDocumentModel" >
     <partial name="_ServiceUsersDocumentsManagerCreate" model="Model.CreateViewModel" />
 </div>

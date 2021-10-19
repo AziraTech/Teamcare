@@ -24,6 +24,6 @@ namespace teamcare.web.app.ViewModels
         public business.Models.ServiceUsersDocumentsModel ServiceUsersDocumentByID { get; set; }
         public IEnumerable<business.Models.ServiceUserModel> ServiceUser { get; set; }
         public business.Models.ServiceUserModel ServiceUserByID { get; set; }
-
+        public string PrePath { get; set; }
     }
 }

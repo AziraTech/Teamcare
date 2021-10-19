@@ -1,9 +1,9 @@
-﻿@using teamcare.common.Helpers;
+﻿@using teamcare.common.Helpers
+@using teamcare.web.app.Helpers
 @using teamcare.common.Enumerations;
 @model teamcare.web.app.ViewModels.ServiceUsersDocumentsCreateViewModel
 @{ Guid userId = new Guid(User.GetClaimValue(teamcare.common.ReferenceData.ClaimTypes.UserId)); }
-
-<div class="modal fade" id="kt_modal_Add_Document" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="kt_modal_Update_Document" tabindex="-1" aria-hidden="true">
     <!--begin::Modal dialog-->
     <div class="modal-dialog modal-dialog-centered mw-600px">
         <!--begin::Modal content-->
@@ -63,7 +63,7 @@
                                     </div>
                                     <!--end::Icon-->
                                     <!--begin::Input-->
-                                    <input class="form-control form-control-solid ps-12 date-receive" placeholder="Pick date of document receive" name="date_of_receive" value="" id="sud-date_of_receive" />
+                                    <input class="form-control form-control-solid ps-12 date-receive" placeholder="Pick date of document receive" name="date_of_receive" value="@(Model.ServiceUserDocument.DateReceived != null ? Model.ServiceUserDocument.DateReceived : DateTime.UtcNow)" id="sud-date_of_receive" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Wrapper-->
@@ -77,7 +77,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="title" placeholder="Title" value="" id="sud-title" />
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="title" placeholder="Title" value="@(Model.ServiceUserDocument.Title == null ? "" : Model.ServiceUserDocument.Title)" id="sud-title" />
                                 <!--end::Input-->
                             </div>
 
@@ -89,7 +89,7 @@
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid" name="description" placeholder="Description" value="" id="sud-description" />
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="description" placeholder="Description" value="@(Model.ServiceUserDocument.Description == null ? "" : Model.ServiceUserDocument.Description)" id="sud-description" />
                                 <!--end::Input-->
                             </div>
 
@@ -105,15 +105,15 @@
                                 <div>
                                     <select class="form-select form-select-solid ddlselect2" name="document_category" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" id="sud-document_category">
                                         <option selected></option>
-                                        @foreach (var group in Model.DocumentCategories)
+                                        @foreach (var item in Model.DocumentCategories)
                                         {
-                                            if (group.Text == Model.SelectedDocumentCategory.ToString())
+                                            if (item.Text == Model.ServiceUserDocument.DocumentCategory.GetEnumDescription().ToString())
                                             {
-                                                <option value="@group.Value" selected>@group.Text</option>
+                                                <option value="@item.Value" selected >@item.Text</option>
                                             }
                                             else
                                             {
-                                                <option value="@group.Value">@group.Text</option>
+                                                <option value="@item.Value">@item.Text</option>
                                             }
                                         }
                                     </select>
@@ -125,7 +125,7 @@
                             <div class="fv-row mb-10">
                                 <!--begin::Dropzone-->
                                 @*<div class="dropzone" id="sv-profile-photo">*@
-                                <div class="dropzone" id="sud-document">
+                                <div class="dropzone" id="sud-document-up">
                                     @if (Model == null)
                                     {
 
@@ -155,12 +155,12 @@
                                     else
                                     {
 
-                                        @*<div class="dz-preview dz-file-preview" id="OldDocument">
-                                                <div class="dz-image">
-                                                    <img data-dz-thumbnail src="@(Model.ServiceUserDocument.DocumentFile !=null ? Model.PrePath +"/"+Model.ServiceUserDocument.DocumentFile.BlobName+"?width=200" : "../../media/avatars/blank.png" )" alt="Click me to remove the file." />
-                                                </div>
-                                                <a class="dz-remove" href="javascript:undefined;" onclick="RemoveDocument()">Remove file</a>
-                                            </div>*@
+                                        <div class="dz-preview dz-file-preview" id="OldDocument">
+                                            <div class="dz-image">
+                                                <img data-dz-thumbnail src="@(Model.ServiceUserDocument.DocumentFile !=null ? Model.ServiceUserDocument.PrePath +"/"+Model.ServiceUserDocument.DocumentFile.BlobName+"?width=200" : "../../media/avatars/blank.png" )" alt="Click me to remove the file." />
+                                            </div>
+                                            <a class="dz-remove" href="javascript:undefined;" onclick="RemoveDocument()">Remove file</a>
+                                        </div>
                                     }
 
                                 </div>
@@ -179,7 +179,7 @@
                             </div>
                             <!--begin::Wrapper-->
                             <div>
-                                <button type="button" class="btn btn-lg btn-primary" id="btnsaveserviceuserdocuments" data-kt-stepper-action="submit" onclick="sendServiceUserDocument('I', '')">
+                                <button type="button" class="btn btn-lg btn-primary" id="btnsaveserviceuserdocuments" data-kt-stepper-action="submit" onclick="sendServiceUserDocument('U', '')">
                                     <span class="indicator-label">
                                         Submit
                                         <!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->

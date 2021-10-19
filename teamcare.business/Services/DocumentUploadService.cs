@@ -48,9 +48,16 @@ namespace teamcare.business.Services
             return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
         }
 
+        public async Task<DocumentUploadModel> GetByServiceUserDocIdAsync(Guid id)
+        {
+            var documents = await _documentUploadRepository.ListAllAsync();
+            var document = documents.ToList().FirstOrDefault(x => x.DocumentType == 1 && x.ServiceUserDocumentId == id);
+            return _mapper.Map<DocumentUpload, DocumentUploadModel>(document);
+        }
+
+        
         public async Task<IEnumerable<DocumentUploadModel>> ListAllAsync()
         {
-
             var listUsers = await _documentUploadRepository.ListAllAsync();
             return _mapper.Map<IEnumerable<DocumentUpload>, IEnumerable<DocumentUploadModel>>(listUsers);
         }

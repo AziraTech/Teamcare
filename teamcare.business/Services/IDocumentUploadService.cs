@@ -11,5 +11,6 @@ namespace teamcare.business.Services
         Task<DocumentUploadModel> GetByContactIdAsync(Guid id);
 
         Task<DocumentUploadModel> GetByResidenceIdAsync(Guid id);
+        Task<DocumentUploadModel> GetByServiceUserDocIdAsync(Guid id);
     }
 }

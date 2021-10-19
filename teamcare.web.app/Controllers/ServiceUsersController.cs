@@ -714,18 +714,50 @@ namespace teamcare.web.app.Controllers
             {
                 item.PrePath = "/" + _azureStorageOptions.Container;
             }
-
+            var dTypes = EnumExtensions.GetEnumListItems<DocumentTypes>();
             var model = new ServiceUsersDocumentsViewModel
             {
                 ServiceUsersDocument = serviceUsersDocument,
                 ServiceUsersDocumentByID = serviceUsersDocumentByID,
+                
                 CreateViewModel = new ServiceUsersDocumentsCreateViewModel
                 {
-                    DocumentCategories = EnumExtensions.GetEnumListItems<DocumentCategories>()
+                    DocumentCategories = dTypes.Where(x => x.Value != 1)
                 }
             };
 
             return PartialView("_ServiceUsersDocumentsManagerDataContent", model);
+        }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetByServiceUserDocId(string docId = "", string serviceUserId = "")
+        {
+            try 
+            { 
+                if (docId == null) { docId = ""; }
+                if (serviceUserId == null) { serviceUserId = ""; }                
+                var serviceUsersDocumentByID = ("" + docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));                
+                var dTypes = EnumExtensions.GetEnumListItems<DocumentTypes>();
+                var model = new ServiceUsersDocumentsViewModel
+                {
+                    ServiceUsersDocumentByID = serviceUsersDocumentByID,
+                    CreateViewModel = new ServiceUsersDocumentsCreateViewModel
+                    {
+                        PrePath = "/" + _azureStorageOptions.Container,
+                        ServiceUserDocument = serviceUsersDocumentByID,
+                        DocumentCategories = dTypes.Where(x => x.Value != 1)
+                    }
+                };
+                
+                return PartialView("_ServiceUsersDocumentsManagerUpdate", model.CreateViewModel);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message }) ;
+
+            }
         }
 
         public async Task<IActionResult> saveServiceUserDocument(string docId, string dbType, string serviceUserId, string TempFileId, ServiceUsersDocumentsCreateViewModel data)
@@ -734,7 +766,6 @@ namespace teamcare.web.app.Controllers
             bool blSuccess = false;
             try
             {
-
                 ServiceUsersDocumentsModel serviceUserDoc = new ServiceUsersDocumentsModel();
                 if (docId == null && dbType == "I")
                 {
@@ -749,8 +780,7 @@ namespace teamcare.web.app.Controllers
                 }
                 else if (docId != null && dbType == "D")
                 {
-                    data.ServiceUserDocument.Id = new Guid(docId);
-                    data.ServiceUserDocument.DeletedBy = new Guid(serviceUserId);
+                    data.ServiceUserDocument.Id = new Guid(docId);                    
                     await _serviceUserDocumentService.DeleteAsync(data.ServiceUserDocument);
                 }
 
@@ -770,7 +800,7 @@ namespace teamcare.web.app.Controllers
 
                     if (relocateFile != null)
                     {
-                        document.DocumentType = (int)DocumentTypes.ServiceUsers;
+                        document.DocumentType = (int)data.ServiceUserDocument.DocumentCategory;
                         document.IsTemporary = false;
                         document.ServiceUserDocumentId = serviceUserDoc.Id;
                         document.BlobName = relocateFile.BlobName;
@@ -781,7 +811,7 @@ namespace teamcare.web.app.Controllers
 
                 blSuccess = true;
             }
-            catch
+            catch(Exception ex)
             {
                 blSuccess = false;
             }
@@ -797,28 +827,33 @@ namespace teamcare.web.app.Controllers
             if (serviceUserId == null) { serviceUserId = ""; }
             var serviceUsersDocument = ("" + docId.Trim() == "") ? await _serviceUserDocumentService.ListAllAsync() : null;
             var serviceUsersDocumentByID = ("" + docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));
-            if (serviceUsersDocument != null && ("" + serviceUserId.ToString().Trim()) != "")
+            
+            if (serviceUsersDocument != null)
             {
-                serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
+                if (("" + serviceUserId.ToString().Trim()) != "")
+                {
+                    serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
+                }
+                
+                foreach (var item in serviceUsersDocument)
+                {
+                    item.PrePath = "/" + _azureStorageOptions.Container;
+                }
             }
 
-            foreach (var item in serviceUsersDocument)
-            {
-                item.PrePath = "/" + _azureStorageOptions.Container;
-            }
-
-
+            var dTypes = EnumExtensions.GetEnumListItems<DocumentTypes>();            
             var model = new ServiceUsersDocumentsViewModel
             {
+                PrePath = "/" + _azureStorageOptions.Container,
                 ServiceUsersDocument = serviceUsersDocument,
                 ServiceUsersDocumentByID = serviceUsersDocumentByID,
                 CreateViewModel = new ServiceUsersDocumentsCreateViewModel
                 {
-                    DocumentCategories = EnumExtensions.GetEnumListItems<DocumentCategories>()
+                    DocumentCategories = dTypes.Where(x => x.Value != 1)
                 }
             };
 
-            return PartialView("_ServiceUsersDocumentsManagerCard", model);
+            return PartialView("_ServiceUsersDocumentsManagerShow", model);
         }
 
     }

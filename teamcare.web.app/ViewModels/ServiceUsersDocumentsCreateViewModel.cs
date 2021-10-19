@@ -23,6 +23,7 @@ namespace teamcare.web.app.ViewModels
         public string TempFileId { get; set; }
         public string SelectedDocumentCategory { get; set; } = "";
         public IEnumerable<EnumListItem> DocumentCategories { get; set; }
-        
+        public string PrePath { get; set; }
+
     }
 }

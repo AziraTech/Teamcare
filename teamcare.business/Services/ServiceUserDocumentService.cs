@@ -16,16 +16,19 @@ namespace teamcare.business.Services
         private readonly IServiceUserRepository _serviceUserRepository;
         private readonly IServiceUserDocumentRepository _serviceUserDocumentRepository;
         private readonly IAuditService _auditService;
-        
+        private readonly IDocumentUploadService _documentUploadService;
+
 
         public ServiceUserDocumentService(IAuditService auditService, IMapper mapper,
                                           IServiceUserRepository serviceUserRepository,
+                                          IDocumentUploadService documentUploadService,
                                           IServiceUserDocumentRepository serviceUserDocumentRepository) : base(auditService)
         {
             _mapper = mapper;
             _serviceUserRepository = serviceUserRepository;
             _serviceUserDocumentRepository = serviceUserDocumentRepository;
             _auditService = auditService;
+            _documentUploadService = documentUploadService;
         }
 
         public async Task<ServiceUsersDocumentsModel> GetByIdAsync(Guid id)
@@ -43,7 +46,6 @@ namespace teamcare.business.Services
         
         public async Task<ServiceUsersDocumentsModel> AddAsync(ServiceUsersDocumentsModel model)
         {
-
             var result = _mapper.Map<ServiceUsersDocumentsModel, ServiceUserDocument>(model);
             var user = await _serviceUserDocumentRepository.AddAsync(result);
             return _mapper.Map<ServiceUserDocument, ServiceUsersDocumentsModel>(user);
@@ -58,8 +60,11 @@ namespace teamcare.business.Services
         }
 
         public async Task DeleteAsync(ServiceUsersDocumentsModel model)
-        {
-            throw new NotImplementedException();
+        {            
+            var lstDocUpload = await _documentUploadService.GetByServiceUserDocIdAsync(new Guid(model.Id.ToString()));
+            if (lstDocUpload != null) { await _documentUploadService.DeleteAsync(lstDocUpload); }
+            var result = _mapper.Map<ServiceUsersDocumentsModel, ServiceUserDocument>(model);
+            await _serviceUserDocumentRepository.DeleteAsync(result);
         }
 
         
