@@ -58,15 +58,14 @@ namespace teamcare.business.Services
 
             var bloodreadingdata = await ListAllAsync();
 
-            var finaldata = bloodreadingdata.Where(x => x.ServiceUserId == id).OrderByDescending(x => x.CreatedOn).ToList();
+            var finaldata = bloodreadingdata.Where(x => x.ServiceUserId == id).OrderByDescending(x => x.TestDate).ToList();
 
             if (daterange != null)
             {
                 string[] date = daterange.Split('-');
-
-                finaldata = finaldata.Where(r => r.CreatedOn.Date >= DateTime.ParseExact(date[0].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date && r.CreatedOn.Date <= DateTime.ParseExact(date[1].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date).ToList();
+               
+                    finaldata = finaldata.Where(r => r.TestDate.Date >= DateTime.ParseExact(date[0].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date && r.TestDate.Date <= DateTime.ParseExact(date[1].Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date).ToList();
             }
-
             return finaldata;
         }
 

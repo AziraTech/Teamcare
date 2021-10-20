@@ -101,7 +101,7 @@ namespace teamcare.web.app.Controllers
 
                     var oldblooddata = await _weightReadingService.ListAllAsync();
 
-                    var IsGetTodayData = oldblooddata.Where(x => x.CreatedOn.Date == DateTimeOffset.UtcNow.Date).FirstOrDefault();
+                    var IsGetTodayData = oldblooddata.Where(x => x.TestDate.Date == DateTimeOffset.UtcNow.Date && x.ServiceUserId == weightReadingViewModel.WeightReading.ServiceUserId).FirstOrDefault();
 
                     weightReadingViewModel.WeightReading.TestDate = DateTime.ParseExact(weightReadingViewModel.WeightReading.WeightTestdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 

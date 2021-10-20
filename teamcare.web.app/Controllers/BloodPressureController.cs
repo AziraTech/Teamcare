@@ -100,7 +100,7 @@ namespace teamcare.web.app.Controllers
 
                     var oldblooddata = await _bloodPressureReadingService.ListAllAsync();
 
-                    var IsGetTodayData = oldblooddata.Where(x => x.CreatedOn.Date == DateTimeOffset.UtcNow.Date).FirstOrDefault();
+                    var IsGetTodayData = oldblooddata.Where(x => x.TestDate.Date == DateTimeOffset.UtcNow.Date && x.ServiceUserId== bloodPressureReadingViewModel.BloodPressureReading.ServiceUserId).FirstOrDefault();
 
                     bloodPressureReadingViewModel.BloodPressureReading.TestDate = DateTime.ParseExact(bloodPressureReadingViewModel.BloodPressureReading.BloodTestdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 

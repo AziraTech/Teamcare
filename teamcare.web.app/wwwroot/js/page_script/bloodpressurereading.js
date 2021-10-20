@@ -131,7 +131,7 @@ function openAddEditBloodModal(id) {
                         }
                     );
 
-                if (id == null) {
+                if (id == "") {
                     $('#lblheader').text('Create Blood Pressure Reading');
                 } else {
 

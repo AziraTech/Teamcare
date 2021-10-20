@@ -116,7 +116,7 @@ function openAddEditWeightModal(id) {
                         }
                     );
 
-                if (id == null) {
+                if (id == "") {
                     $('#lblheaderweight').text('Create Weight Reading');
                 } else {
 
