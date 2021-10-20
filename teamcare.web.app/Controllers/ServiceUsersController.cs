@@ -725,7 +725,7 @@ namespace teamcare.web.app.Controllers
                     DocumentCategories = dTypes.Where(x => x.Value != 1)
                 }
             };
-
+            
             return PartialView("_ServiceUsersDocumentsManagerDataContent", model);
         }
 
@@ -764,6 +764,7 @@ namespace teamcare.web.app.Controllers
         {
             //IActionResult returnValue = null;
             bool blSuccess = false;
+            string tmpDocId = "";
             try
             {
                 ServiceUsersDocumentsModel serviceUserDoc = new ServiceUsersDocumentsModel();
@@ -771,6 +772,7 @@ namespace teamcare.web.app.Controllers
                 {
                     data.ServiceUserDocument.CreatedBy = new Guid(serviceUserId);
                     serviceUserDoc = await _serviceUserDocumentService.AddAsync(data.ServiceUserDocument);
+                    
                 }
                 else if (docId != null && dbType == "U")
                 {
@@ -783,10 +785,10 @@ namespace teamcare.web.app.Controllers
                     data.ServiceUserDocument.Id = new Guid(docId);                    
                     await _serviceUserDocumentService.DeleteAsync(data.ServiceUserDocument);
                 }
-
+                tmpDocId = serviceUserDoc.Id.ToString();
 
                 if (serviceUserDoc != null && !string.IsNullOrWhiteSpace(TempFileId))
-                {
+                {   
 
                     //	Get the temporary document
                     var document =
@@ -818,14 +820,12 @@ namespace teamcare.web.app.Controllers
 
             _auditService.Execute(async repository =>
             {
-                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add new log for serviceusers.", UserReference = "", CreatedBy = base.UserId });
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add new log for serviceusersdocument.", UserReference = "", CreatedBy = base.UserId });
 
             });
 
-            //Service User Document for partial view 
-            if (docId == null) { docId = ""; }
-            if (serviceUserId == null) { serviceUserId = ""; }
-            var serviceUsersDocument = ("" + docId.Trim() == "") ? await _serviceUserDocumentService.ListAllAsync() : null;
+            //Service User Document for partial view             
+            var serviceUsersDocument = await _serviceUserDocumentService.ListAllAsync();
             var serviceUsersDocumentByID = ("" + docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));
             
             if (serviceUsersDocument != null)
@@ -843,8 +843,7 @@ namespace teamcare.web.app.Controllers
 
             var dTypes = EnumExtensions.GetEnumListItems<DocumentTypes>();            
             var model = new ServiceUsersDocumentsViewModel
-            {
-                PrePath = "/" + _azureStorageOptions.Container,
+            {                
                 ServiceUsersDocument = serviceUsersDocument,
                 ServiceUsersDocumentByID = serviceUsersDocumentByID,
                 CreateViewModel = new ServiceUsersDocumentsCreateViewModel
@@ -854,6 +853,33 @@ namespace teamcare.web.app.Controllers
             };
 
             return PartialView("_ServiceUsersDocumentsManagerShow", model);
+        }
+
+        public async Task<IActionResult> saveServiceUserDocumentDelete(string docId)
+        {
+            //IActionResult returnValue = null;
+            bool blSuccess = false;            
+            try
+            {
+                ServiceUsersDocumentsModel data = new ServiceUsersDocumentsModel();
+                data.Id = new Guid(docId);
+                await _serviceUserDocumentService.DeleteAsync(data);
+                blSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                blSuccess = false;
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
+
+            _auditService.Execute(async repository =>
+            {
+                await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add new log for serviceusersdocument.", UserReference = "", CreatedBy = base.UserId });
+
+            });
+
+
+            return Json(new { statuscode = 1, message = "Done" });
         }
 
     }

@@ -15,7 +15,32 @@
                     <div class="card-body d-flex flex-center flex-column pt-12 p-9">
                         <!--begin::Avatar-->
                         <div class="symbol symbol-65px symbol-circle mb-5">
-                            <img src="@(item.DocumentFile != null ? item.PrePath + "/" + item.DocumentFile.BlobName + "?width=200" : "../../media/avatars/blank.png" )" alt="image" />
+                            @if (item.DocumentFile != null)
+                            {
+                                @if (item.DocumentFile.FileExtension.ToLower() == ".xls" || item.DocumentFile.FileExtension.ToLower() == ".xlsx")
+                                {
+                                    <img src="~/media/icons/xls.png" alt="image" />
+                                }
+                                else if (item.DocumentFile.FileExtension.ToLower() == ".pdf")
+                                {
+                                    <img src="~/media/icons/pdf.png" alt="image"/>
+                                }
+                                else if (item.DocumentFile.FileExtension.ToLower() == ".png")
+                                {
+                                    <img src="~/media/icons/png.png" alt="image" />
+                                }
+                                else if (item.DocumentFile.FileExtension.ToLower() == ".jpg" ||
+                                        item.DocumentFile.FileExtension.ToLower() == ".gif" ||
+                                        item.DocumentFile.FileExtension.ToLower() == ".bmp" ||
+                                        item.DocumentFile.FileExtension.ToLower() == ".jpeg")
+                                {
+                                    <img src="~/media/icons/jpg.png" alt="image"/>
+                                }
+                            }
+                            else
+                            {
+                                <img src="~/media/icons/file.png" alt="image"/>
+                            }
                         </div>
                         <!--end::Avatar-->
                         <!--begin::Name-->

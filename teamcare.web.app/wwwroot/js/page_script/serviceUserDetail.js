@@ -899,8 +899,13 @@ async function sendServiceUserDocument(dbType, docId)
 
             } else {
                 icon = 'error';
-                showMessage = 'Please Check, There may be some error to save Service User Docu.';
+                showMessage = 'Please Check, There may be some error to save Service User Document.';
             }
+
+            $('#sud-title').val('');
+            $('#sud-description').val('');
+            $('#sud-document_category').val('');
+
             Swal.fire({
                 text: showMessage,
                 icon: icon,
@@ -916,6 +921,7 @@ async function sendServiceUserDocument(dbType, docId)
 
 async function UpdateServiceUserDocument(opType, docId)
 {
+    debugger;
     if (opType == 'D')
     {
         await Swal.fire({
@@ -931,7 +937,52 @@ async function UpdateServiceUserDocument(opType, docId)
             {
                 $('#editOrDelete').val('D');
                 $('#editOrDeleteId').val('');
-                await sendServiceUserDocument(opType, docId);
+                debugger;
+                //sendServiceUserDocument(opType, docId);
+
+                await $.ajax({
+                    type: "POST",
+                    url: '/ServiceUsers/saveServiceUserDocumentDelete',
+                    data: { docId: docId },
+                    success: async function (data)
+                    {
+                        if (data.statuscode == 3) {
+
+                            Swal.fire({
+                                text: data.message,
+                                icon: 'error',
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok",
+                                customClass: { confirmButton: "btn btn-light" }
+                            });
+
+                        }
+                        else if (data.statuscode == 1)
+                        {
+                            
+                            await $.ajax({
+                                type: "GET",
+                                url: '/ServiceUsers/DocumentsManagerTabBind',
+                                data: { docId: "", serviceUserId: serviceUserId },
+                                success: function (data)
+                                {
+                                    if (data != null)
+                                    {
+                                        Swal.fire({
+                                            text: 'Service User Document Removed Successful.',
+                                            icon: 'success',
+                                            buttonsStyling: !1,
+                                            confirmButtonText: "Ok",
+                                            customClass: { confirmButton: "btn btn-success" }
+                                        });
+                                        $('#DocumentsManagerTabContentData').html('');
+                                        $('#DocumentsManagerTabContentData').html(data);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
     }
@@ -954,19 +1005,19 @@ async function UpdateServiceUserDocument(opType, docId)
 
                     $('#kt_modal_Update_Document').modal('show');
 
-                    $(".date-receive").daterangepicker(
-                        {
-                            singleDatePicker: true,
-                            showDropdowns: true,
-                            minYear: 2001,
-                            maxYear: parseInt(moment().format("YYYY"), 10),
-                            locale: { format: 'DD/MM/yyyy' }
-                        }, function (start, end, label) { }
-                    );
+                    //$(".date-receive").daterangepicker(
+                    //    {
+                    //        singleDatePicker: true,
+                    //        showDropdowns: true,
+                    //        minYear: 2001,
+                    //        maxYear: parseInt(moment().format("YYYY"), 10),
+                    //        locale: { format: 'DD/MM/yyyy' }
+                    //    }, function (start, end, label) { }
+                    //);
 
-                    $('.ddlselect2').select2();
+                    //$('.ddlselect2').select2();
 
-                    var myDropzonedoc = new Dropzone("#sud-document-up", {
+                    var myDropzonedoc1 = new Dropzone("#sud-document", {
                         url: "/DocumentUpload", // Set the url for your upload script location
                         paramName: "file", // The name that will be used to transfer the file
                         maxFiles: 1,
@@ -979,12 +1030,7 @@ async function UpdateServiceUserDocument(opType, docId)
                             docfileType = file.type;
                         }
                     });
-
-
-                    //$('#sud-date_of_receive').val(data.serviceUsersDocumentByID.dateReceived);
-                    //$('#sud-title').val(data.serviceUsersDocumentByID.title);
-                    //$('#sud-description').val(data.serviceUsersDocumentByID.description);
-                    //$('#sud-document_category').val(data.serviceUsersDocumentByID.documentCategory);
+                     
                 }
             }
         });
@@ -997,6 +1043,13 @@ async function UpdateServiceUserDocument(opType, docId)
 
 
 
-async function DownloadServiceUserDocument(docId)
+async function DownloadServiceUserDocument(docId, prePath, blobName)
 {
+    if (blobName != '') {
+        var host = location.host;
+        var downloadLink = 'http://' + host + prePath + blobName;
+
+        
+    }
+
 }

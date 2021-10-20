@@ -12,39 +12,8 @@
 </div>
 <!--end::Tab pane-->
 <!--begin::Tab pane-->
-<div id="kt_service_user_document_table_pane" class="tab-pane fade show active">
-    <!--begin::Card-->
-    <div class="card card-flush">
-        <!--begin::Card body-->
-        <div class="card-body pt-0">
-            <!--begin::Table container-->
-            <div class="table-responsive">
-                <!--begin::Table-->
-                <table id="kt_service_user_document_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
-                    <!--begin::Head-->
-                    <thead class="fs-7 text-gray-400 text-uppercase">
-                        <tr>
-                            <th class="w-70px"></th>
-                            <th>Title</th>
-                            <th>Document Category</th>
-                            <th>Date Received</th>
-                            <th> </th>
-                        </tr>
-                    </thead>
-                    <!--end::Head-->
-                    <!--begin::Body-->
-                    <tbody class="fs-6">
-                        <partial name="_ServiceUsersDocumentsManagerList" model="Model" />
-                    </tbody>
-                    <!--end::Body-->
-                </table>
-                <!--end::Table-->
-            </div>
-            <!--end::Table container-->
-        </div>
-        <!--end::Card body-->
-    </div>
-    <!--end::Card-->
+<div id="kt_service_user_document_table_pane" class="tab-pane fade show active">    
+    <partial name="_ServiceUsersDocumentsManagerList" model="Model" />                    
 </div>
 <!--end::Tab pane-->
 <!--end::Tab Content-->

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using teamcare.common.Enumerations;
+using teamcare.data.Entities.Documents;
 
 namespace teamcare.data.Entities.ServiceUsers
 {
@@ -25,6 +26,8 @@ namespace teamcare.data.Entities.ServiceUsers
 
         [Column("document_category")]
         public DocumentTypes DocumentCategory { get; set; }
+
+        public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
 
     }
 }
