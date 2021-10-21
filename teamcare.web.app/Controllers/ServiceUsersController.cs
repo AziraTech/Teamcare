@@ -824,7 +824,9 @@ namespace teamcare.web.app.Controllers
 
             });
 
-            //Service User Document for partial view             
+            //Service User Document for partial view
+            if (docId == null) { docId = ""; }
+            if (serviceUserId == null) { serviceUserId = ""; }
             var serviceUsersDocument = await _serviceUserDocumentService.ListAllAsync();
             var serviceUsersDocumentByID = ("" + docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));
             

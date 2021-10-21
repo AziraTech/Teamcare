@@ -894,8 +894,8 @@ async function sendServiceUserDocument(dbType, docId)
                 $("body").css("overflow", "");
                 $("body").css("padding-right", "");
 
-                if (edirOrNot == 'I') { $('#kt_modal_Add_Document').modal('hide'); }
-                if (edirOrNot == 'U') { $('#kt_modal_Update_Document').modal('hide'); }
+                try { $('#kt_modal_Add_Document').modal('hide'); } catch (ex) { }
+                try { $('#kt_modal_Update_Document').modal('hide'); } catch (xe) { }
 
             } else {
                 icon = 'error';
