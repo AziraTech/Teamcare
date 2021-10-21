@@ -14,7 +14,7 @@ function ResetFilterWeight() {
 }
 
 function GetweightData() {
-    var daterange = $("#txtdaterangeblood").val();
+    var daterange = $("#txtdaterangeweight").val();
 
     $.ajax({
         type: "GET",
