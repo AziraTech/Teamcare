@@ -3,7 +3,7 @@
 @model teamcare.web.app.ViewModels.ServiceUsersDocumentsCreateViewModel
 @{ Guid userId = new Guid(User.GetClaimValue(teamcare.common.ReferenceData.ClaimTypes.UserId)); }
 
-<div class="modal fade" id="kt_modal_Add_Document" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="kt_modal_Add_Document" tabindex="-1" aria-hidden="true" >
     <!--begin::Modal dialog-->
     <div class="modal-dialog modal-dialog-centered mw-600px">
         <!--begin::Modal content-->
@@ -125,7 +125,7 @@
                             <div class="fv-row mb-10">
                                 <!--begin::Dropzone-->
                                 @*<div class="dropzone" id="sv-profile-photo">*@
-                                <div class="dropzone" id="sud-document">
+                                <div class="dropzone drzoncreate" id="sud-document">
                                     @if (Model == null)
                                     {
 
@@ -214,3 +214,5 @@
     </div>
     <!--end::Modal dialog-->
 </div>
+
+ 

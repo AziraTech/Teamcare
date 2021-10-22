@@ -63,7 +63,7 @@
                                     </div>
                                     <!--end::Icon-->
                                     <!--begin::Input-->
-                                    <input class="form-control form-control-solid ps-12 date-receive" placeholder="Pick date of document receive" name="date_of_receive" value="@(Model.ServiceUserDocument.DateReceived != null ? Model.ServiceUserDocument.DateReceived : DateTime.UtcNow)" id="sud-date_of_receive" />
+                                    <input class="form-control form-control-solid ps-12 date-receive-u" placeholder="Pick date of document receive" name="date_of_receive" value="@(Model.ServiceUserDocument.DateReceived != null ? Model.ServiceUserDocument.DateReceived.GetDateFormat(true).ToString() : DateTime.UtcNow.GetDateFormat(true).ToString())" id="sud-date_of_receive" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Wrapper-->
@@ -125,7 +125,7 @@
                             <div class="fv-row mb-10">
                                 <!--begin::Dropzone-->
                                 @*<div class="dropzone" id="sv-profile-photo">*@
-                                <div class="dropzone" id="sud-document">
+                                <div class="dropzone drzonupdate"  id="sud-document">
                                     @if (Model == null)
                                     {
 
@@ -213,3 +213,4 @@
     </div>
     <!--end::Modal dialog-->
 </div>
+

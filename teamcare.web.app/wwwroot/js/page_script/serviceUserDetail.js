@@ -17,6 +17,7 @@ var r = null;
 
 var fv2 = null;
 
+Dropzone.autoDiscover = false;
 
 async function setAsFavourite(vFavauriteUser, imageId) {
     await $.ajax({
@@ -785,6 +786,8 @@ function saveEditServiceUser(sender) {
 
 
 /* Add New Service Users Document */
+var myDropzonedoc = new Dropzone();
+var myDropzonedoc1 = new Dropzone();
 
 function addNewDocument(userId)
 {
@@ -802,19 +805,21 @@ function addNewDocument(userId)
 
     $('.ddlselect2').select2();
 
-    var myDropzonedoc = new Dropzone("#sud-document", {
-        url: "/DocumentUpload", // Set the url for your upload script location
-        paramName: "file", // The name that will be used to transfer the file
-        maxFiles: 1,
-        maxFilesize: 10, // MB
-        addRemoveLinks: true,
-        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf, .xls, .xlsx",
-        success: function (file, response) {
-            doctempFileId = response.id;
-            docfileName = file.name;
-            docfileType = file.type;
-        }
-    });
+    
+    myDropzonedoc = new Dropzone(".drzoncreate", {
+            url: "/DocumentUpload", // Set the url for your upload script location
+            paramName: "file", // The name that will be used to transfer the file
+            maxFiles: 1,
+            maxFilesize: 10, // MB
+            addRemoveLinks: true,
+            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf, .xls, .xlsx",
+            success: function (file, response) {
+                doctempFileId = response.id;
+                docfileName = file.name;
+                docfileType = file.type;
+            }
+        });
+    
 }
 
 async function sendServiceUserDocument(dbType, docId)
@@ -921,7 +926,6 @@ async function sendServiceUserDocument(dbType, docId)
 
 async function UpdateServiceUserDocument(opType, docId)
 {
-    debugger;
     if (opType == 'D')
     {
         await Swal.fire({
@@ -936,8 +940,7 @@ async function UpdateServiceUserDocument(opType, docId)
             preConfirm: async function ()
             {
                 $('#editOrDelete').val('D');
-                $('#editOrDeleteId').val('');
-                debugger;
+                $('#editOrDeleteId').val('');                
                 //sendServiceUserDocument(opType, docId);
 
                 await $.ajax({
@@ -1005,31 +1008,33 @@ async function UpdateServiceUserDocument(opType, docId)
 
                     $('#kt_modal_Update_Document').modal('show');
 
-                    //$(".date-receive").daterangepicker(
-                    //    {
-                    //        singleDatePicker: true,
-                    //        showDropdowns: true,
-                    //        minYear: 2001,
-                    //        maxYear: parseInt(moment().format("YYYY"), 10),
-                    //        locale: { format: 'DD/MM/yyyy' }
-                    //    }, function (start, end, label) { }
-                    //);
+                    $(".date-receive-u").daterangepicker(
+                        {
+                            singleDatePicker: true,
+                            showDropdowns: true,
+                            minYear: 2001,
+                            maxYear: parseInt(moment().format("YYYY"), 10),
+                            locale: { format: 'DD/MM/yyyy' }
+                        }, function (start, end, label) { }
+                    );
 
-                    //$('.ddlselect2').select2();
+                    $('.ddlselect2').select2();
 
-                    var myDropzonedoc1 = new Dropzone("#sud-document", {
-                        url: "/DocumentUpload", // Set the url for your upload script location
-                        paramName: "file", // The name that will be used to transfer the file
-                        maxFiles: 1,
-                        maxFilesize: 10, // MB
-                        addRemoveLinks: true,
-                        acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf, .xls, .xlsx",
-                        success: function (file, response) {
-                            doctempFileId = response.id;
-                            docfileName = file.name;
-                            docfileType = file.type;
-                        }
-                    });
+                    
+                        myDropzonedoc1 = new Dropzone(".drzonupdate", {
+                            url: "/DocumentUpload", // Set the url for your upload script location
+                            paramName: "file", // The name that will be used to transfer the file
+                            maxFiles: 1,
+                            maxFilesize: 10, // MB
+                            addRemoveLinks: true,
+                            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf, .xls, .xlsx",
+                            success: function (file, response) {
+                                doctempFileId = response.id;
+                                docfileName = file.name;
+                                docfileType = file.type;
+                            }
+                        });
+                    
                      
                 }
             }
