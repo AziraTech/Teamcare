@@ -1050,11 +1050,57 @@ async function UpdateServiceUserDocument(opType, docId)
 
 async function DownloadServiceUserDocument(docId, prePath, blobName)
 {
-    if (blobName != '') {
-        var host = location.host;
-        var downloadLink = 'http://' + host + prePath + blobName;
+    if (blobName != '')
+    {
+        //var host = location.host;
+        //var downloadLink = 'http://' + host + prePath + blobName;
+
+
+        await $.ajax({
+            type: "POST",
+            url: '/ServiceUsers/DownloadFile',
+            data: { id: docId },
+            success: function (data) {
+                if (data != null) {
+                    if (data.statuscode == 1)
+                    {
+                         
+                        //OpenDownloadedFile(data.FileName, data.bytes, data.ContentType);
+
+                        //var blob = new Blob([byte], { type: contentType });
+                        //var link = document.createElement('anc');
+                        //link.href = window.URL.createObjectURL(blob);
+                        //var fileName = reportName;
+                        //link.download = fileName;
+                        //link.click();
+                        //link.remove();
+
+                        
+                    } else {
+                        Swal.fire({
+                            text: data.message,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-light"
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
         
     }
 
 }
+
+function OpenDownloadedFile(reportName, byte, contentType) {
+    var blob = new Blob([byte], { type: contentType });
+    var link = document.createElement('anc');
+    link.href = window.URL.createObjectURL(blob);
+    var fileName = reportName;
+    link.download = fileName;
+    link.click();
+};

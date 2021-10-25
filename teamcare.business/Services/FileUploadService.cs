@@ -158,5 +158,25 @@ namespace teamcare.business.Services
 
             return null;
         }
+
+        public async Task<BlobClient> GetBlobDataAsync(FileUploadModel model)
+        {
+
+            try
+            {
+                var destinationFolder = string.IsNullOrWhiteSpace(model.DestinationFolder) ? string.Empty : $"{model.DestinationFolder}/";
+
+                BlobServiceClient blobServiceClient = new BlobServiceClient(_azureStorageOptions.ConnectionString);
+                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(model.DestinationFolder);
+                BlobClient blob = containerClient.GetBlobClient(model.BlobName.Split("/").Last());
+                return blob;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
     }
 }

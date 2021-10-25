@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azure.Storage.Blobs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,5 +11,9 @@ namespace teamcare.business.Services
     {
         Task<FileUploadModel> MoveBlobAsync(FileUploadModel model);
         Task<byte[]> GetBlobAsync(FileUploadModel model);
+
+        Task<BlobClient> GetBlobDataAsync(FileUploadModel model);
+
+
     }
 }
