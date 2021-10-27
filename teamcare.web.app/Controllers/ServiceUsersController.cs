@@ -895,9 +895,23 @@ namespace teamcare.web.app.Controllers
                 model.BlobName = document.DocumentFile.BlobName;
                 model.FileName = document.DocumentFile.FileName;
                 model.DestinationFolder = document.DocumentFile.ServiceUserDocumentId.ToString();
-                BlobClient blob = await _fileUploadService.GetBlobDataAsync(model);
-                var dload = await blob.DownloadStreamingAsync();
-                return Redirect(blob.Uri.AbsoluteUri);
+                byte[] blob = await _fileUploadService.GetBlobDataAsync(model);
+                //var dload = await blob.DownloadStreamingAsync();
+                //return Redirect(blob.Uri.AbsoluteUri);
+            }
+            return Json(new { statuscode = 2, message = "Fail Not Available." });
+        }
+
+        public async Task<IActionResult> DownloadFile11(string id)
+        {
+            var document = await _serviceUserDocumentService.GetByIdAsync(new Guid(id));
+            if (document != null)
+            {                
+                FileUploadModel model = new FileUploadModel();
+                model.BlobName = document.DocumentFile.BlobName;
+                model.FileName = document.DocumentFile.FileName;
+                model.DestinationFolder = document.DocumentFile.ServiceUserDocumentId.ToString();
+                return Json(new { statuscode = 1, message = "Download File." });
             }
             return Json(new { statuscode = 2, message = "Fail Not Available." });
         }

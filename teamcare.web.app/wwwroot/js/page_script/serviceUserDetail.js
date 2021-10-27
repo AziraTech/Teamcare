@@ -1048,7 +1048,7 @@ async function UpdateServiceUserDocument(opType, docId)
 
 
 
-async function DownloadServiceUserDocument(docId, prePath, blobName)
+async function DownloadServiceUserDocument1(docId, prePath, blobName)
 {
     if (blobName != '')
     {
@@ -1064,7 +1064,9 @@ async function DownloadServiceUserDocument(docId, prePath, blobName)
                 if (data != null) {
                     if (data.statuscode == 1)
                     {
-                         
+
+                        console.log('data : ', data);
+
                         //OpenDownloadedFile(data.FileName, data.bytes, data.ContentType);
 
                         //var blob = new Blob([byte], { type: contentType });
@@ -1096,7 +1098,7 @@ async function DownloadServiceUserDocument(docId, prePath, blobName)
 
 }
 
-function OpenDownloadedFile(reportName, byte, contentType) {
+function OpenDownloadedFile1(reportName, byte, contentType) {
     var blob = new Blob([byte], { type: contentType });
     var link = document.createElement('anc');
     link.href = window.URL.createObjectURL(blob);
@@ -1104,3 +1106,20 @@ function OpenDownloadedFile(reportName, byte, contentType) {
     link.download = fileName;
     link.click();
 };
+
+
+function DownloadServiceUserDocument(sas, storageUri, containerName, fileId, destinationFileName) {
+
+    var blobService = AzureStorage.Blob.createBlobServiceWithSas(storageUri, sas);
+
+    const downloadLink = storageUri + '/' + containerName + '/' + fileId + sas;
+
+    OpenDownloadedFile(downloadLink, destinationFileName);
+}
+
+function OpenDownloadedFile(uri, name) {
+    var link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    link.click();
+}

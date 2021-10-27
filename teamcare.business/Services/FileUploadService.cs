@@ -159,17 +159,33 @@ namespace teamcare.business.Services
             return null;
         }
 
-        public async Task<BlobClient> GetBlobDataAsync(FileUploadModel model)
+        public async Task<byte[]> GetBlobDataAsync(FileUploadModel model)
         {
-
             try
             {
-                var destinationFolder = string.IsNullOrWhiteSpace(model.DestinationFolder) ? string.Empty : $"{model.DestinationFolder}/";
+                //var destinationFolder = string.IsNullOrWhiteSpace(model.DestinationFolder) ? string.Empty : $"{model.DestinationFolder}/";
+                //BlobServiceClient blobServiceClient = new BlobServiceClient(_azureStorageOptions.ConnectionString);
+                //BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(model.DestinationFolder);
+                //BlobClient blob = containerClient.GetBlobClient(model.BlobName.Split("/").Last());
 
+                var destinationFolder = string.IsNullOrWhiteSpace(model.DestinationFolder) ? string.Empty : $"{model.DestinationFolder}/";
                 BlobServiceClient blobServiceClient = new BlobServiceClient(_azureStorageOptions.ConnectionString);
-                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(model.DestinationFolder);
-                BlobClient blob = containerClient.GetBlobClient(model.BlobName.Split("/").Last());
-                return blob;
+                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(model.DestinationFolder + "/" +model.BlobName.Split("/").Last());
+                BlobClient blob = containerClient.GetBlobClient(model.BlobName.Split("/").First());
+                if (await blob.ExistsAsync())
+                {
+                    BlobDownloadInfo blobdata = await blob.DownloadAsync(); 
+                    byte[] dataArray = new byte[model.FileSizeInBytes]; // Create random data to write to the file.
+                    new Random().NextBytes(dataArray);
+                    using (FileStream fileStream = new FileStream(model.FileName, FileMode.Create))
+                    {
+                        await blobdata.Content.CopyToAsync(fileStream);
+                        for (int i = 0; i < dataArray.Length; i++) { fileStream.WriteByte(dataArray[i]); }
+                        fileStream.Seek(0, SeekOrigin.Begin);
+                        for (int i = 0; i < fileStream.Length; i++) { if (dataArray[i] != fileStream.ReadByte()) { } }
+                    }
+                    return dataArray;
+                }
             }
             catch (Exception ex)
             {

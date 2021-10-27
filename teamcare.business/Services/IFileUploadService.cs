@@ -12,8 +12,7 @@ namespace teamcare.business.Services
         Task<FileUploadModel> MoveBlobAsync(FileUploadModel model);
         Task<byte[]> GetBlobAsync(FileUploadModel model);
 
-        Task<BlobClient> GetBlobDataAsync(FileUploadModel model);
-
+        Task<byte[]> GetBlobDataAsync(FileUploadModel model);
 
     }
 }
