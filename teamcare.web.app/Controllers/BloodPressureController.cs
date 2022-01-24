@@ -56,6 +56,34 @@ namespace teamcare.web.app.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetBloodReadingChartData(Guid id, string daterange)
+        {
+            try
+            {
+                var bloodreadingdata = await _bloodPressureReadingService.ListAllSortedFiltered(id, daterange);
+
+                if(bloodreadingdata!=null && bloodreadingdata.Count() > 0)
+				{
+                    bloodreadingdata = bloodreadingdata.GroupBy(x => x.TestDate).Select(y => y.OrderByDescending(z=>z.TestDate).FirstOrDefault()).ToList();
+                    var blooddata = bloodreadingdata?.OrderBy(x => x.TestDate)?.Take(20).Select(y => new
+                    {
+                        TestDate = y.TestDate.ToString("dd-MMM-yyyy"),
+                        SystolicReading = y.SystolicReading,
+                        DiastolicReading = y.DiastolicReading,
+                        Pulse = y.Pulse
+                    }).ToList();
+
+                    return Json(new { statuscode = 1, data = blooddata });
+				}
+                return Json(new { statuscode = 0, data = "" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> BloodModalBind(string id)
         {
