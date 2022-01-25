@@ -5,6 +5,7 @@ var editweightfrm = null;
 $(document).ready(function () {
   
     GetweightData();
+    fillWeightChart(null);
 });
 
 function ResetFilterWeight() {
@@ -13,7 +14,87 @@ function ResetFilterWeight() {
 
 }
 
-function GetweightData() {
+function fillWeightChart(daterange) {
+    $.ajax({
+        type: "GET",
+        url: '/Weightreading/GetWeightReadingChartData',
+        data: { id: $('#hdnserviceuserid').val(), daterange: daterange },
+        success: function (data) {
+            if (data && data.statuscode === 1) {
+                $('#kt_charts_weight_chart').html("");
+                var weight = [];
+                var category = [];
+                maxValue = 25;
+
+                data.data.forEach(function (element) {
+                    if (element.weight > maxValue) {
+                        maxValue = element.weight;
+                    }
+
+                    category.push(element.testDate);
+                    weight.push(element.weight);
+                });
+                var options = {
+                    series: [{
+                        name: "Weight",
+                        data: weight
+                    }],
+                    chart: {
+                        height: 500,
+                        type: 'line',
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'straight'
+                    },
+                    title: {
+                        text: 'Weight Analysis',
+                        align: 'left'
+                    },
+                    grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.5
+                        },
+                    },
+                    xaxis: {
+                        categories: category,
+                        title: {
+                            text: 'Dates'
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Weight'
+                        },
+                        min: 0,
+                        max: (maxValue + 10)
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'right',
+                        floating: true,
+                        offsetY: -25,
+                        offsetX: -5
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#kt_charts_weight_chart"), options);
+                chart.render();
+            }
+            else {
+                $('#kt_charts_weight_chart').html("No data found");
+            }
+        }
+    });
+}
+
+function GetweightData(filtered) {
     var daterange = $("#txtdaterangeweight").val();
 
     $.ajax({
@@ -24,7 +105,9 @@ function GetweightData() {
             if (data != undefined) {
                 $('#divWeightdataContent').html('');
                 $('#divWeightdataContent').html(data);
-
+                if (filtered) {
+                    fillWeightChart(daterange);
+				}
                 $(".date-filter-weight").daterangepicker({
                     showDropdowns: true,
                     minYear: 1981,

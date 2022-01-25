@@ -57,6 +57,34 @@ namespace teamcare.web.app.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetWeightReadingChartData(Guid id, string daterange)
+        {
+            try
+            {
+                var weightreadingdata = await _weightReadingService.ListFiltered(id, daterange);
+
+                if (weightreadingdata != null && weightreadingdata.Count() > 0)
+                {
+                    weightreadingdata = weightreadingdata.GroupBy(x => x.TestDate).Select(y => y.OrderByDescending(z => z.TestDate).FirstOrDefault()).ToList();
+                    var blooddata = weightreadingdata?.OrderBy(x => x.TestDate)?.Take(20).Select(y => new
+                    {
+                        TestDate = y.TestDate.ToString("dd-MMM-yyyy"),
+                        Weight = y.Weight
+                    }).ToList();
+
+                    return Json(new { statuscode = 1, data = blooddata });
+                }
+
+                return Json(new { statuscode = 0, data = "" });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> WeightModalBind(string id)
         {

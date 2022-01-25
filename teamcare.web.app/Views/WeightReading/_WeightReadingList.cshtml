@@ -61,7 +61,7 @@
                             <!--begin::Actions-->
                             <div class="d-flex justify-content-end">
                                 <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" onclick="ResetFilterWeight();" data-kt-menu-dismiss="true">Reset</button>
-                                <button type="button" onclick="GetweightData();" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
+                                <button type="button" onclick="GetweightData(1);" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
                             </div>
                             <!--end::Actions-->
                         </div>
@@ -163,7 +163,7 @@
                     <!--begin::Body-->
                     <div class="card-body">
                         <!--begin::Chart-->
-                        <div id="kt_charts_widget_2_chart" style="height: 350px"></div>
+                        <div id="kt_charts_weight_chart" style="height: 500px"></div>
                         <!--end::Chart-->
                     </div>
                     <!--end::Body-->
@@ -176,40 +176,6 @@
     <!--end::Tab pane-->
 </div>
 
-@*<script type="text/javascript">
-    var e = document.getElementById("kt_charts_widget_2_chart"),
-        t = parseInt(KTUtil.css(e, "height")),
-        a = KTUtil.getCssVariableValue("--bs-gray-500"),
-        o = KTUtil.getCssVariableValue("--bs-gray-200"),
-        s = KTUtil.getCssVariableValue("--bs-warning"),
-        r = KTUtil.getCssVariableValue("--bs-gray-300");
-    e &&
-        new ApexCharts(e, {
-            series: [
-                { name: "Net Profit", data: [44, 55, 57, 56, 61, 58] },
-                { name: "Revenue", data: [76, 85, 101, 98, 87, 105] },
-            ],
-            chart: { fontFamily: "inherit", type: "bar", height: t, toolbar: { show: !1 } },
-            plotOptions: { bar: { horizontal: !1, columnWidth: ["30%"], endingShape: "rounded" } },
-            legend: { show: !1 },
-            dataLabels: { enabled: !1 },
-            stroke: { show: !0, width: 2, colors: ["transparent"] },
-            xaxis: { categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul"], axisBorder: { show: !1 }, axisTicks: { show: !1 }, labels: { style: { colors: a, fontSize: "12px" } } },
-            yaxis: { labels: { style: { colors: a, fontSize: "12px" } } },
-            fill: { opacity: 1 },
-            states: { normal: { filter: { type: "none", value: 0 } }, hover: { filter: { type: "none", value: 0 } }, active: { allowMultipleDataPointsSelection: !1, filter: { type: "none", value: 0 } } },
-            tooltip: {
-                style: { fontSize: "12px" },
-                y: {
-                    formatter: function (e) {
-                        return "$" + e + " thousands";
-                    },
-                },
-            },
-            colors: [s, r],
-            grid: { borderColor: o, strokeDashArray: 4, yaxis: { lines: { show: !0 } } },
-        }).render();
 
-</script>*@
 
 
