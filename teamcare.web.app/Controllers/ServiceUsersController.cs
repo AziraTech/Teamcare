@@ -521,12 +521,15 @@ namespace teamcare.web.app.Controllers
 
                 var assettype = await _assessmentTypeService.ListAllAsync();
 
+                var LivingSkill = await _livingskillService.ListAllAsync();
+
                 model = new SkillAssessmentViewModel
                 {
                     AssessmentTypeId = Type,
                     SkillGroups = finalskill.OrderBy(r => r.Position),
                     AssessmentSkill = asm,
-                    AssessmentType = assettype
+                    AssessmentType = assettype,
+                    LivingSkills = LivingSkill
                 };
 
                 return PartialView("_AssessmentSkillDetails", model);

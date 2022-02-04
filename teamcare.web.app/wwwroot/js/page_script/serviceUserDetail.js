@@ -684,7 +684,7 @@ function saveInitialAssessment(sender) {
 					}
 				}).then(function (q) {
 					q.isConfirmed && $('#create_assessment').modal('hide');
-					setCurrentTabAssessment(id);
+					setCurrentTabAssessment($('#hdnassessmenttype').val());
 				});
 			}
 		}
