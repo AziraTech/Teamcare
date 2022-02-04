@@ -291,7 +291,6 @@ async function setCurrentTabAssessment(id) {
 		url: '/ServiceUsers/AssessmentGroupSkill',
 		data: { Id: id, ServiceUserId: serviceuserid },
 		success: function (data) {
-			debugger;
 			if (data.statuscode == 3) {
 				Swal.fire({
 					text: data.message,
@@ -503,6 +502,195 @@ async function setCurrentTabAssessment(id) {
 			}
 		}
 	});
+}
+
+function saveInitialAssessment(sender) {
+	var grpname = $('#ckeProfile').attr('grpname');
+	var skillname = $('#ckeProfile').attr('skillname');
+	var skillid = $('#ckeProfile').attr('skillid');
+	var section = $('#ckeProfile').attr('section');
+	var assessmsnedata = [];
+	assessmsnedata.push({
+		Id: 0,
+		SkillGroup: grpname,
+		SkillName: skillname,
+		SkillId: skillid,
+		InitialAssessmentSection: section,
+		InitialAssessmentContent: editorProfile.getData()
+	});
+	if (editorBehaviour.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeBehaviour').attr('section'),
+			InitialAssessmentContent: editorBehaviour.getData()
+		});
+	}
+	if (editorCognition.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeCognition').attr('section'),
+			InitialAssessmentContent: editorCognition.getData()
+		});
+	}
+	if (editorPsychologicalNeeds.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckePsychologicalNeeds').attr('section'),
+			InitialAssessmentContent: editorPsychologicalNeeds.getData()
+		});
+	}
+	if (editorCommunication.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeCommunication').attr('section'),
+			InitialAssessmentContent: editorCommunication.getData()
+		});
+	}
+	if (editorMobility.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeMobility').attr('section'),
+			InitialAssessmentContent: editorMobility.getData()
+		});
+	}
+
+	if (editorNutrition.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeNutrition').attr('section'),
+			InitialAssessmentContent: editorNutrition.getData()
+		});
+	}
+	if (editorContinence.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeContinence').attr('section'),
+			InitialAssessmentContent: editorContinence.getData()
+		});
+	}
+	if (editorSkin.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeSkin').attr('section'),
+			InitialAssessmentContent: editorSkin.getData()
+		});
+	}
+	if (editorBreathing.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeBreathing').attr('section'),
+			InitialAssessmentContent: editorBreathing.getData()
+		});
+	}
+	if (editorDrug.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeDrugTherapies').attr('section'),
+			InitialAssessmentContent: editorDrug.getData()
+		});
+	}
+	if (editorAltered.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeAlteredState').attr('section'),
+			InitialAssessmentContent: editorAltered.getData()
+		});
+	}
+	if (editorIndependent.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeIndependentSkills').attr('section'),
+			InitialAssessmentContent: editorIndependent.getData()
+		});
+	}
+	if (editorSummary.getData()?.length > 0) {
+		assessmsnedata.push({
+			Id: 0,
+			SkillGroup: grpname,
+			SkillName: skillname,
+			SkillId: skillid,
+			InitialAssessmentSection: $('#ckeSummaryofNeeds').attr('section'),
+			InitialAssessmentContent: editorSummary.getData()
+		});
+	}
+	var Assessment = {
+		ServiceUserId: $('#hdnserviceuserid').val(),
+		AssessmentTypeId: $('#hdnassessmenttype').val()
+	}
+	var assessmentCreateViewModel = {
+		Assessment: Assessment,
+		AssessmentSkills: assessmsnedata
+	}
+
+	$.ajax({
+		type: "POST",
+		url: '/ServiceUsers/AssessmentSave',
+		data: { assessmentCreateViewModel: assessmentCreateViewModel },
+		success: function (data) {
+			if (data.statuscode == 3) {
+				Swal.fire({
+					text: data.message,
+					icon: "error",
+					buttonsStyling: !1,
+					confirmButtonText: "Ok, got it!",
+					customClass: {
+						confirmButton: "btn btn-light"
+					}
+				});
+			} else {
+				Swal.fire({
+					text: "Form has been successfully submitted!",
+					icon: "success",
+					buttonsStyling: !1,
+					confirmButtonText: "Ok, got it!",
+					customClass: {
+						confirmButton: "btn btn-primary"
+					}
+				}).then(function (q) {
+					q.isConfirmed && $('#create_assessment').modal('hide');
+					setCurrentTabAssessment(id);
+				});
+			}
+		}
+
+	});
+
 }
 
 function assessmentDetails(ctrl) {

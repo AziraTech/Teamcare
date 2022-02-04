@@ -148,6 +148,7 @@
 			<div class="modal-body flex-row-fluid scroll-y py-lg-10 px-lg-10">
 				@{
 					var optionGroup = Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
+					var firstSkill = Model.LivingSkills.Where(x => x.GroupId == Model.SkillGroups?.FirstOrDefault().Id)?.FirstOrDefault();
 				}
 				@if (optionGroup == AssessmentOptionsGroup.InitialAssessment)
 				{
@@ -228,12 +229,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Profile</span>
+												<span>@InitialAssessmentSections.Profile.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify profile data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_profile" id="ckeProfile"></textarea>
+											<textarea name="ias_profile" id="ckeProfile" section="@InitialAssessmentSections.Profile" grpname="@optionGroup" skillname="@firstSkill.SkillName" skillid="@firstSkill.Id"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -241,12 +242,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Behaviour</span>
+												<span>@InitialAssessmentSections.Behaviour.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify behaviour data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_behaviour" id="ckeBehaviour"></textarea>
+											<textarea name="ias_behaviour" id="ckeBehaviour" section="@InitialAssessmentSections.Behaviour"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -254,12 +255,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Cognition</span>
+												<span>@InitialAssessmentSections.Cognition.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify cognition data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_cognition" id="ckeCognition"></textarea>
+											<textarea name="ias_cognition" id="ckeCognition" section="@InitialAssessmentSections.Cognition"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -267,12 +268,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Psychological Needs</span>
+												<span>@InitialAssessmentSections.PsychologicalNeeds.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify psychological needs data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_psychological_needs" id="ckePsychologicalNeeds"></textarea>
+											<textarea name="ias_psychological_needs" id="ckePsychologicalNeeds" section="@InitialAssessmentSections.PsychologicalNeeds"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -280,12 +281,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Communication</span>
+												<span>@InitialAssessmentSections.Communication.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify communication data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_communication" id="ckeCommunication"></textarea>
+											<textarea name="ias_communication" id="ckeCommunication" section="@InitialAssessmentSections.Communication"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -299,12 +300,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Mobility</span>
+												<span>@InitialAssessmentSections.Mobility.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify mobility data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_mobility" id="ckeMobility"></textarea>
+											<textarea name="ias_mobility" id="ckeMobility" section="@InitialAssessmentSections.Mobility"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -312,12 +313,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Nutrition - Food & Drink</span>
+												<span>@InitialAssessmentSections.NutritionFoodAndDrink.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify nutrition - food & drink data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_nutrition" id="ckeNutrition"></textarea>
+											<textarea name="ias_nutrition" id="ckeNutrition" section="@InitialAssessmentSections.NutritionFoodAndDrink"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -325,12 +326,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Continence</span>
+												<span>@InitialAssessmentSections.Continence.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify continence data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_continence" id="ckeContinence"></textarea>
+											<textarea name="ias_continence" id="ckeContinence" section="@InitialAssessmentSections.Continence"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -338,12 +339,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Skin (including tissue viability)</span>
+												<span>@InitialAssessmentSections.Skin.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Skin (including tissue viability) data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_skin" id="ckeSkin"></textarea>
+											<textarea name="ias_skin" id="ckeSkin" section="@InitialAssessmentSections.Skin"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -351,12 +352,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Breathing</span>
+												<span>@InitialAssessmentSections.Breathing.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify breathing data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_breathing" id="ckeBreathing"></textarea>
+											<textarea name="ias_breathing" id="ckeBreathing" section="@InitialAssessmentSections.Breathing"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -370,12 +371,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Drug Therapies & Medication</span>
+												<span>@InitialAssessmentSections.DrugTherapiesAndMedication.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Drug Therapies & Medication data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_drug_therapies" id="ckeDrugTherapies"></textarea>
+											<textarea name="ias_drug_therapies" id="ckeDrugTherapies" section="@InitialAssessmentSections.DrugTherapiesAndMedication"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -383,12 +384,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Altered State of Consciousness</span>
+												<span>@InitialAssessmentSections.AlteredStateOfConsciousness.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Altered State of Consciousness data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_altered_state" id="ckeAlteredState"></textarea>
+											<textarea name="ias_altered_state" id="ckeAlteredState" section="@InitialAssessmentSections.AlteredStateOfConsciousness"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -396,12 +397,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Independent Skills</span>
+												<span>@InitialAssessmentSections.IndependentSkills.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Independent Skills data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_independent_skills" id="ckeIndependentSkills"></textarea>
+											<textarea name="ias_independent_skills" id="ckeIndependentSkills" section="@InitialAssessmentSections.IndependentSkills"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -409,12 +410,12 @@
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
 											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
-												<span>Summary of Needs</span>
+												<span>@InitialAssessmentSections.SummaryOfNeeds.GetEnumDescription()</span>
 												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Summary of Needs data"></i>
 											</label>
 											<!--end::Label-->
 											<!--begin::Input-->
-											<textarea name="ias_SummaryofNeeds" id="ckeSummaryofNeeds"></textarea>
+											<textarea name="ias_SummaryofNeeds" id="ckeSummaryofNeeds" section="@InitialAssessmentSections.SummaryOfNeeds"></textarea>
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -442,7 +443,7 @@
 									<!--end::Wrapper-->
 									<!--begin::Wrapper-->
 									<div>
-										<button type="button" class="btn btn-lg btn-primary" data-kt-stepper-action="submit">
+										<button type="button" class="btn btn-lg btn-primary" data-kt-stepper-action="submit" onclick="saveInitialAssessment(this)">
 											<span class="indicator-label">
 												Submit
 												<!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->
