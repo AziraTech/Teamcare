@@ -30,5 +30,11 @@ namespace teamcare.data.Entities.SkillAssessments
 		
 		[Column("risk_level")]
 		public RiskAssessmentLevel RiskLevel { get; set; }
+
+		[Column("initial_assessment_section")]
+		public InitialAssessmentSections InitialAssessmentSection { get; set; }
+
+		[Column("initial_assessment_content")]
+		public string InitialAssessmentContent { get; set; }
 	}
 }

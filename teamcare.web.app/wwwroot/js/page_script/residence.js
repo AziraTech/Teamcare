@@ -183,6 +183,62 @@ function RemoveResidence(serviceUserCount, residenceId)
 var newResidenceID = 0;
 $(document).ready(function () {
 
+    $('#residence_archive_submit').click(function () {
+
+        if ($('#ddlRArchiveReason').val() != "") {
+
+            $.ajax({
+                type: "POST",
+                url: '/Residence/ArchiveResidence',
+                data: { ReasonId: $('#ddlRArchiveReason').val(), Userid: $('#hdnresidenceid').val() },
+                success: function (data) {
+                    if (data != null) {
+                        if (data.statuscode == 1) {
+                            Swal.fire({
+                                text: "Residence has been archived successfully.",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function (q) {
+                                q.isConfirmed
+                                $('#kt_modal_ArchiveResidence').modal('hide');
+                                //window.location.href = "/ServiceUsers";
+                                window.location.reload();
+
+                            });
+
+                        } else {
+                            Swal.fire({
+                                text: data.message,
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-light"
+                                }
+                            });
+                        }
+
+                    }
+                }
+            });
+        } else {
+            Swal.fire({
+                text: "Oops! It looks like a required field has not been set.",
+                icon: "info",
+                buttonsStyling: !1,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-light"
+                }
+            });
+        }
+    });
+
+
     $('#new_card_residence_submit').click(function (e) {
         e.preventDefault();
         fv1.validate().then(function (s) {
@@ -284,3 +340,82 @@ $(document).ready(function () {
     }
 });
 
+function ArchiveResidenceModal(ctrl) {
+    var id = $(ctrl).attr('id');
+    if (id != undefined) {
+        $('#kt_modal_ArchiveResidence').modal('show');
+    }
+}
+
+function UnArchiveResidence(ctrl) {
+    var id = $(ctrl).attr('id');
+    if (id != undefined) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "The residence will be unarchived.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, do it!',
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Residence/UnArchiveResidence',
+                        data: { Userid: $('#hdnresidenceid').val() },
+                        success: function (data) {
+                            if (data != null) {
+                                if (data.statuscode == 1) {
+                                    Swal.fire({
+                                        text: "Residence has been unarchived successfully.",
+                                        icon: "success",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary"
+                                        }
+                                    }).then(function (q) {
+                                        q.isConfirmed
+                                        //window.location.href = "/ServiceUsers";
+                                        window.location.reload();
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        text: data.message,
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-light"
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+
+                });
+            },
+        });
+    }
+}
+
+async function filterResidence() {
+    var IsArchive = $("#chkRIsArchive").prop('checked');
+    await $.ajax({
+        type: "POST",
+        url: '/Residence/SortFilterResidence',
+        data: { isArchive: IsArchive },
+        success: function (data) {
+            if (data) {
+                $('#partialViewResidenceList').html('');
+                $('#partialViewResidenceList').html(data);
+                $('#spanTotalResidences').text($('#hdnTotalResidence').val());
+            } else { }
+        }
+    });
+}

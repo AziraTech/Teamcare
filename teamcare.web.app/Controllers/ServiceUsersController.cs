@@ -1,5 +1,4 @@
-﻿using Azure.Storage.Blobs;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
@@ -554,12 +553,10 @@ namespace teamcare.web.app.Controllers
                 });
 
                 return Json(new { statuscode = 1 });
-
             }
             catch (Exception ex)
             {
                 return Json(new { statuscode = 3, message = ex.Message });
-
             }
         }
 
@@ -883,37 +880,6 @@ namespace teamcare.web.app.Controllers
 
 
             return Json(new { statuscode = 1, message = "Done" });
-        }
-
-
-        public async Task<IActionResult> DownloadFile(string id)
-        {
-            var document = await _serviceUserDocumentService.GetByIdAsync(new Guid(id));
-            if (document != null)
-            {
-                FileUploadModel model = new FileUploadModel();
-                model.BlobName = document.DocumentFile.BlobName;
-                model.FileName = document.DocumentFile.FileName;
-                model.DestinationFolder = document.DocumentFile.ServiceUserDocumentId.ToString();
-                byte[] blob = await _fileUploadService.GetBlobDataAsync(model);
-                //var dload = await blob.DownloadStreamingAsync();
-                //return Redirect(blob.Uri.AbsoluteUri);
-            }
-            return Json(new { statuscode = 2, message = "Fail Not Available." });
-        }
-
-        public async Task<IActionResult> DownloadFile11(string id)
-        {
-            var document = await _serviceUserDocumentService.GetByIdAsync(new Guid(id));
-            if (document != null)
-            {                
-                FileUploadModel model = new FileUploadModel();
-                model.BlobName = document.DocumentFile.BlobName;
-                model.FileName = document.DocumentFile.FileName;
-                model.DestinationFolder = document.DocumentFile.ServiceUserDocumentId.ToString();
-                return Json(new { statuscode = 1, message = "Download File." });
-            }
-            return Json(new { statuscode = 2, message = "Fail Not Available." });
         }
 
     }

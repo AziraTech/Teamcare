@@ -133,7 +133,7 @@ function GetBloodData(filtered) {
                 $('#divblooddataContent').html(data);
                 if (filtered) {
                     fillBloodPressureChart(daterange);
-				}
+                }
                 $('.blooddropdown').hover(
                     function () {
 
@@ -162,7 +162,7 @@ function GetBloodData(filtered) {
                 }, function (start, end, label) {
                 });
 
-                
+
             }
         }
     });
@@ -192,7 +192,7 @@ function openAddEditBloodModal(id) {
                 }, function (start, end, label) {
                 });
 
-              
+
                 frmeditblood = document.querySelector("#kt_modal_new_blood");
 
                 editbloodfrm = FormValidation

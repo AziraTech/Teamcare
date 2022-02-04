@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using teamcare.business.Models;
 using teamcare.common.Configuration;
+using teamcare.common.Models;
 
 namespace teamcare.web.app.ViewModels
 {
@@ -21,7 +22,7 @@ namespace teamcare.web.app.ViewModels
         }
         public ResidenceModel Residence { get; set; }
         public string TempFileId { get; set; }
-
+        public IEnumerable<EnumListItem> ArchiveReason { get; set; }
         public static implicit operator ResidenceCreateViewModel(ResidenceModel v)
         {
             throw new NotImplementedException();

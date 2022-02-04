@@ -3,299 +3,643 @@
 @model teamcare.web.app.ViewModels.SkillAssessmentViewModel
 
 <div class="card-body p-9">
-    <div class="py-3 py-md-1 mb-5">
-        @if (Model.IsDueAssessment)
-        {
-            <!--begin::Item-->
-            <div class="d-flex align-items-center bg-light-danger rounded p-5 mb-7">
-                <i class="las la-user-clock me-5 " style="font-size:30px;color: #f1416c;" title="Assessment is due."></i>
-                <!--begin::Title-->
-                <div class="flex-grow-1 me-2">
-                    <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
-                        Assessment is overdue of this type for this Service User
-                    </a>
-                    <span class="text-muted fw-bold d-block">Overdue by @Model.DueDays days</span>
-                </div>
-                <!--end::Title-->
-            </div>
-            <!--end::Item-->
+	<div class="py-3 py-md-1 mb-5">
+		@if (Model.IsDueAssessment)
+		{
+			<!--begin::Item-->
+			<div class="d-flex align-items-center bg-light-danger rounded p-5 mb-7">
+				<i class="las la-user-clock me-5 " style="font-size:30px;color: #f1416c;" title="Assessment is due."></i>
+				<!--begin::Title-->
+				<div class="flex-grow-1 me-2">
+					<a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
+						Assessment is overdue of this type for this Service User
+					</a>
+					<span class="text-muted fw-bold d-block">Overdue by @Model.DueDays days</span>
+				</div>
+				<!--end::Title-->
+			</div>
+			<!--end::Item-->
 
-        }
-        else
-        {
-            if (Model.AssessmentList.ToList().Count <= 0)
-            {
-                <!--begin::Item-->
-                <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-7">
-                    <!--begin::Icon-->
-                    <span class="svg-icon svg-icon-warning me-5">
-                        <!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
-                        <span class="svg-icon svg-icon-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <rect x="0" y="0" width="24" height="24" />
-                                    <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
-                                    <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
-                                </g>
-                            </svg>
-                        </span>
-                        <!--end::Svg Icon-->
-                    </span>
-                    <!--end::Icon-->
-                    <!--begin::Title-->
-                    <div class="flex-grow-1 me-2">
-                        <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
-                            There is no assessment of this type for this Service User
-                        </a>
-                    </div>
-                    <!--end::Title-->
-                </div>
-                <!--end::Item-->
-            }
-        }
+		}
+		else
+		{
+			if (Model.AssessmentList.ToList().Count <= 0)
+			{
+				<!--begin::Item-->
+				<div class="d-flex align-items-center bg-light-warning rounded p-5 mb-7">
+					<!--begin::Icon-->
+					<span class="svg-icon svg-icon-warning me-5">
+						<!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
+						<span class="svg-icon svg-icon-1">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									<rect x="0" y="0" width="24" height="24" />
+									<path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+									<rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+								</g>
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</span>
+					<!--end::Icon-->
+					<!--begin::Title-->
+					<div class="flex-grow-1 me-2">
+						<a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
+							There is no assessment of this type for this Service User
+						</a>
+					</div>
+					<!--end::Title-->
+				</div>
+				<!--end::Item-->
+			}
+		}
 
-        <a href="#" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#create_assessment" id="btncreate">Create</a>
-    </div>
+		<a href="#" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#create_assessment" id="btncreate">Create</a>
+	</div>
 
-    <table class="table align-middle table-row-dashed gy-5" id="kt_table_customers_payment">
-        <!--begin::Table head-->
-        <thead class="border-bottom border-gray-200 fs-7 fw-bolder">
-            <!--begin::Table row-->
-            <tr class="text-start text-muted text-uppercase gs-0">
-                <th class="min-w-100px">
-                    Assessment Date
-                </th>
-                <th>
-                    Assessed By
-                </th>
-                <th>Action</th>
-            </tr>
-            <!--end::Table row-->
-        </thead>
-        <!--end::Table head-->
-        <!--begin::Table body-->
-        <tbody class="fs-6 fw-bold text-gray-600  ">
+	<table class="table align-middle table-row-dashed gy-5" id="kt_table_customers_payment">
+		<!--begin::Table head-->
+		<thead class="border-bottom border-gray-200 fs-7 fw-bolder">
+			<!--begin::Table row-->
+			<tr class="text-start text-muted text-uppercase gs-0">
+				<th class="min-w-100px">
+					Assessment Date
+				</th>
+				<th>
+					Assessed By
+				</th>
+				<th>Action</th>
+			</tr>
+			<!--end::Table row-->
+		</thead>
+		<!--end::Table head-->
+		<!--begin::Table body-->
+		<tbody class="fs-6 fw-bold text-gray-600  ">
 
-            @if (Model.AssessmentList.ToList().Count > 0)
-            {
-                <!--begin::Table row-->
-                @foreach (var item in Model.AssessmentList)
-                {
-                    <tr>
-                        <!--begin::Invoice=-->
-                        <td>
-                            @item.CreatedOn.ToString("dd MMMM yyyy, hh:mm")
-                        </td>
-                        <!--end::Invoice=-->
-                        <!--begin::Status=-->
-                        <td>
-                            @item.CreatedByUser.Title @item.CreatedByUser.FirstName @item.CreatedByUser.LastName
-                        </td>
-                        <!--end::Status=-->
-                        <!--begin::Amount=-->
-                        <td>
-                            <a href="javascript:void(0);" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id" type="@item.AssessmentTypeId" srvuserid="@item.ServiceUserId">
-                                <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
-                                <span class="svg-icon svg-icon-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
-                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-                                    </svg>
-                                </span>
-                                <!--end::Svg Icon-->
-                            </a>
-                        </td>
-                        <!--end::Amount=-->
-                    </tr>
-                }
-                <!--end::Table row-->
-            }
-        </tbody>
-        <!--end::Table body-->
-    </table>
+			@if (Model.AssessmentList.ToList().Count > 0)
+			{
+				<!--begin::Table row-->
+				@foreach (var item in Model.AssessmentList)
+				{
+					<tr>
+						<!--begin::Invoice=-->
+						<td>
+							@item.CreatedOn.ToString("dd MMMM yyyy, hh:mm")
+						</td>
+						<!--end::Invoice=-->
+						<!--begin::Status=-->
+						<td>
+							@item.CreatedByUser.Title @item.CreatedByUser.FirstName @item.CreatedByUser.LastName
+						</td>
+						<!--end::Status=-->
+						<!--begin::Amount=-->
+						<td>
+							<a href="javascript:void(0);" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm" title="View Data" onclick="assessmentDetails(this)" id="@item.Id" type="@item.AssessmentTypeId" srvuserid="@item.ServiceUserId">
+								<!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
+								<span class="svg-icon svg-icon-3">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+										<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+										<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</a>
+						</td>
+						<!--end::Amount=-->
+					</tr>
+				}
+				<!--end::Table row-->
+			}
+		</tbody>
+		<!--end::Table body-->
+	</table>
 
 </div>
 
 <div class="modal fade" id="create_assessment" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <input type="hidden" id="hdnserviceuserid" value="@Model.ServiceUserId" />
-    <input type="hidden" id="hdnassessmenttype" value="@Model.AssessmentTypeId" />
-    <div class="modal-dialog modal-dialog-centered mw-xl-1000px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-            <!--begin::Modal header-->
-            <div class="modal-header">
-                <!--begin::Modal title-->
-                <h2>Create Users Assessment</h2>
-                <!--end::Modal title-->
-                <!--begin::Close-->
-                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
-                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
-                            </g>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                </div>
-                <!--end::Close-->
-            </div>
-            <!--end::Modal header-->
-            <!--begin::Modal body-->
-            <div class="modal-body flex-row-fluid scroll-y py-lg-10 px-lg-10">
-                <div class="mh-500px scroll-y me-n7 pe-7">
-                    <div class="table-responsive">
-                        <table class="table table-row-dashed border-gray-300 align-middle gy-6" id="assessmentTbl">
-                            @*<thead class="border-gray-200 fs-5 fw-bold bg-lighten">
-                                    <tr>
-                                        <th>Group / Skill</th>
-                                        <th>Level</th>
-                                    </tr>
-                                </thead>*@
-                            <tbody class="fs-6">
-                                @foreach (var item in Model.SkillGroups)
-                                {
-                                    if (Model.LivingSkills.Where(r => r.GroupId == item.Id).ToList().Count > 0)
-                                    {
-                                        <tr>
-                                            <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                                <label class="fw-bold fs-6">
-                                                    @item.GroupName
-                                                </label>
-                                            </td>
-                                        </tr>
+	<!--begin::Modal dialog-->
+	<input type="hidden" id="hdnserviceuserid" value="@Model.ServiceUserId" />
+	<input type="hidden" id="hdnassessmenttype" value="@Model.AssessmentTypeId" />
+	<div class="modal-dialog modal-dialog-centered mw-xl-1000px">
+		<!--begin::Modal content-->
+		<div class="modal-content">
+			<!--begin::Modal header-->
+			<div class="modal-header">
+				<!--begin::Modal title-->
+				<h2>Create Users Assessment</h2>
+				<!--end::Modal title-->
+				<!--begin::Close-->
+				<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+					<!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+					<span class="svg-icon svg-icon-1">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+							<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+								<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+								<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+							</g>
+						</svg>
+					</span>
+					<!--end::Svg Icon-->
+				</div>
+				<!--end::Close-->
+			</div>
+			<!--end::Modal header-->
+			<!--begin::Modal body-->
+			<div class="modal-body flex-row-fluid scroll-y py-lg-10 px-lg-10">
+				@{
+					var optionGroup = Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
+				}
+				@if (optionGroup == AssessmentOptionsGroup.InitialAssessment)
+				{
+					<div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="kt_modal_create_ias_stepper">
+						<!--begin::Aside-->
+						<div class="d-flex justify-content-center justify-content-xl-start flex-row-auto w-100 w-xl-300px">
+							<!--begin::Nav-->
+							<div class="stepper-nav ps-lg-10">
+								<!--begin::Step 1-->
+								<div class="stepper-item current" data-kt-stepper-element="nav">
+									<!--begin::Line-->
+									<div class="stepper-line w-40px"></div>
+									<!--end::Line-->
+									<!--begin::Icon-->
+									<div class="stepper-icon w-40px h-40px">
+										<i class="stepper-check fas fa-check"></i>
+										<span class="stepper-number">1</span>
+									</div>
+									<!--end::Icon-->
+									<!--begin::Label-->
+									<div class="stepper-label">
+										<h3 class="stepper-title">Profile</h3>
+										<div class="stepper-desc">Behavior, Communication etc.</div>
+									</div>
+									<!--end::Label-->
+								</div>
+								<!--end::Step 1-->
+								<!--begin::Step 2-->
+								<div class="stepper-item" data-kt-stepper-element="nav">
+									<!--begin::Line-->
+									<div class="stepper-line w-40px"></div>
+									<!--end::Line-->
+									<!--begin::Icon-->
+									<div class="stepper-icon w-40px h-40px">
+										<i class="stepper-check fas fa-check"></i>
+										<span class="stepper-number">2</span>
+									</div>
+									<!--begin::Icon-->
+									<!--begin::Label-->
+									<div class="stepper-label">
+										<h3 class="stepper-title">Mobility</h3>
+										<div class="stepper-desc">Nutrition - Food & Drink,Breathing etc. </div>
+									</div>
+									<!--begin::Label-->
+								</div>
+								<!--end::Step 2-->
+								<!--begin::Step 3-->
+								<div class="stepper-item" data-kt-stepper-element="nav">
+									<!--begin::Line-->
+									<div class="stepper-line w-40px"></div>
+									<!--end::Line-->
+									<!--begin::Icon-->
+									<div class="stepper-icon w-40px h-40px">
+										<i class="stepper-check fas fa-check"></i>
+										<span class="stepper-number">3</span>
+									</div>
+									<!--end::Icon-->
+									<!--begin::Label-->
+									<div class="stepper-label">
+										<h3 class="stepper-title">Therapies & Medication</h3>
+										<div class="stepper-desc">Drug Therapies & Medication</div>
+									</div>
+									<!--end::Label-->
+								</div>
+								<!--end::Step 3-->
+							</div>
+							<!--end::Nav-->
+						</div>
+						<!--begin::Aside-->
+						<!--begin::Content-->
+						<div class="flex-row-fluid py-lg-5 px-lg-15">
+							<!--begin::Form-->
+							<form class="form" novalidate="novalidate" id="kt_modal_create_ias_form">
+								<!--begin::Step 1-->
+								<div class="current" data-kt-stepper-element="content" id="ias-step-first">
+									<div class="w-100">
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Profile</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify profile data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_profile" id="ckeProfile"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Behaviour</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify behaviour data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_behaviour" id="ckeBehaviour"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Cognition</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify cognition data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_cognition" id="ckeCognition"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Psychological Needs</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify psychological needs data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_psychological_needs" id="ckePsychologicalNeeds"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Communication</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify communication data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_communication" id="ckeCommunication"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+									</div>
+								</div>
+								<!--end::Step 1-->
+								<!--begin::Step 2-->
+								<div data-kt-stepper-element="content" id="ias-step-second">
+									<div class="w-100">
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Mobility</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify mobility data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_mobility" id="ckeMobility"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Nutrition - Food & Drink</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify nutrition - food & drink data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_nutrition" id="ckeNutrition"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Continence</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify continence data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_continence" id="ckeContinence"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Skin (including tissue viability)</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Skin (including tissue viability) data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_skin" id="ckeSkin"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Breathing</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify breathing data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_breathing" id="ckeBreathing"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+									</div>
+								</div>
+								<!--end::Step 2-->
+								<!--begin::Step 3-->
+								<div data-kt-stepper-element="content" id="ias-step-third">
+									<div class="w-100">
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Drug Therapies & Medication</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Drug Therapies & Medication data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_drug_therapies" id="ckeDrugTherapies"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Altered State of Consciousness</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Altered State of Consciousness data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_altered_state" id="ckeAlteredState"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Independent Skills</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Independent Skills data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_independent_skills" id="ckeIndependentSkills"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+												<span>Summary of Needs</span>
+												<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Specify Summary of Needs data"></i>
+											</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<textarea name="ias_SummaryofNeeds" id="ckeSummaryofNeeds"></textarea>
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+									</div>
+								</div>
+								<!--end::Step 3-->
+								<!--begin::Actions-->
+								<div class="d-flex flex-stack pt-10">
+									<!--begin::Wrapper-->
+									<div class="me-2">
+										<button type="button" class="btn btn-lg btn-light-primary me-3" data-kt-stepper-action="previous">
+											<!--begin::Svg Icon | path: icons/duotone/Navigation/Left-2.svg-->
+											<span class="svg-icon svg-icon-3 me-1">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<polygon points="0 0 24 0 24 24 0 24" />
+														<rect fill="#000000" opacity="0.3" transform="translate(15.000000, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-15.000000, -12.000000)" x="14" y="7" width="2" height="10" rx="1" />
+														<path d="M3.7071045,15.7071045 C3.3165802,16.0976288 2.68341522,16.0976288 2.29289093,15.7071045 C1.90236664,15.3165802 1.90236664,14.6834152 2.29289093,14.2928909 L8.29289093,8.29289093 C8.67146987,7.914312 9.28105631,7.90106637 9.67572234,8.26284357 L15.6757223,13.7628436 C16.0828413,14.136036 16.1103443,14.7686034 15.7371519,15.1757223 C15.3639594,15.5828413 14.7313921,15.6103443 14.3242731,15.2371519 L9.03007346,10.3841355 L3.7071045,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(9.000001, 11.999997) scale(-1, -1) rotate(90.000000) translate(-9.000001, -11.999997)" />
+													</g>
+												</svg>
+											</span>
+											<!--end::Svg Icon-->Back
+										</button>
+									</div>
+									<!--end::Wrapper-->
+									<!--begin::Wrapper-->
+									<div>
+										<button type="button" class="btn btn-lg btn-primary" data-kt-stepper-action="submit">
+											<span class="indicator-label">
+												Submit
+												<!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->
+												<span class="svg-icon svg-icon-3 ms-2 me-0">
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<polygon points="0 0 24 0 24 24 0 24" />
+															<rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />
+															<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+														</g>
+													</svg>
+												</span>
+												<!--end::Svg Icon-->
+											</span>
+											<span class="indicator-progress">
+												Please wait...
+												<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+											</span>
+										</button>
+										<button type="button" class="btn btn-lg btn-primary" data-kt-stepper-action="next">
+											Continue
+											<!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->
+											<span class="svg-icon svg-icon-3 ms-1 me-0">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<polygon points="0 0 24 0 24 24 0 24" />
+														<rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />
+														<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+													</g>
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+										</button>
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Actions-->
+							</form>
+							<!--end::Form-->
+						</div>
+						<!--end::Content-->
+					</div>
+				}
+				else
+				{
+					<div class="mh-500px scroll-y me-n7 pe-7">
+						<div class="table-responsive">
+							<table class="table table-row-dashed border-gray-300 align-middle gy-6" id="assessmentTbl">
+								@*<thead class="border-gray-200 fs-5 fw-bold bg-lighten">
+										<tr>
+											<th>Group / Skill</th>
+											<th>Level</th>
+										</tr>
+									</thead>*@
+								<tbody class="fs-6">
+									@foreach (var item in Model.SkillGroups)
+									{
+										if (Model.LivingSkills.Where(r => r.GroupId == item.Id).ToList().Count > 0)
+										{
+											<tr>
+												<td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+													<label class="fw-bold fs-6">
+														@item.GroupName
+													</label>
+												</td>
+											</tr>
 
-                                        @foreach (var livingitem in Model.LivingSkills.Where(r => r.GroupId == item.Id).OrderBy(r => r.Position).ToList())
-                                        {
-                                            var optionsgroup = @Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
+											@foreach (var livingitem in Model.LivingSkills.Where(r => r.GroupId == item.Id).OrderBy(r => r.Position).ToList())
+											{
+												var optionsgroup = @Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
 
-                                            <tr>
+												<tr>
 
-                                                <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                                    <label class="fs-7 text-muted" lid="@livingitem.Id">
-                                                        @livingitem.SkillName
-                                                    </label>
-                                                </td>
+													<td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+														<label class="fs-7 text-muted" lid="@livingitem.Id">
+															@livingitem.SkillName
+														</label>
+													</td>
 
-                                                <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                                    <div class="d-flex align-items-center">
+													<td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+														<div class="d-flex align-items-center">
 
-                                                        @if (optionsgroup == AssessmentOptionsGroup.Risk)
-                                                        {
-                                                            var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.RiskLevel;
+															@if (optionsgroup == AssessmentOptionsGroup.Risk)
+															{
+																var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.RiskLevel;
 
-                                                            @foreach (var ritem in Model.RiskAssessment)
-                                                            {
+																@foreach (var ritem in Model.RiskAssessment)
+																{
 
-                                                                <label class="form-check form-check-custom form-check-solid me-10" title="@ritem.Text">
-                                                                    <input class="form-check-input" type="radio" @(level != null && (int)level == ritem.Value ? "checked" : "") name="@livingitem.Id" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id" risklevelid="@ritem.Value">
-                                                                    <span class="form-check-label fw-bold">@ritem.Text</span>
-                                                                </label>
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            @foreach (var asset in Model.AssessmentSkillLevel)
-                                                            {
-                                                                var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.SkillLevel;
+																	<label class="form-check form-check-custom form-check-solid me-10" title="@ritem.Text">
+																		<input class="form-check-input" type="radio" @(level != null && (int)level == ritem.Value ? "checked" : "") name="@livingitem.Id" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id" risklevelid="@ritem.Value">
+																		<span class="form-check-label fw-bold">@ritem.Text</span>
+																	</label>
+																}
+															}
+															else
+															{
+																@foreach (var asset in Model.AssessmentSkillLevel)
+																{
+																	var level = Model.AssessmentSkill.Where(x => x.SkillId == livingitem.Id).OrderByDescending(x => x.CreatedOn).FirstOrDefault()?.SkillLevel;
 
-                                                                var assessetname = @asset.Text.Split('(');
-                                                                <label class="form-check form-check-custom form-check-solid me-10" title="@asset.Text">
-                                                                    <input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="@livingitem.Id" levelid="@asset.Value" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id">
-                                                                    <span class="form-check-label fw-bold">@assessetname[1].Replace(")", "")</span>
-                                                                </label>
-                                                            }
-                                                        }
+																	var assessetname = @asset.Text.Split('(');
+																	<label class="form-check form-check-custom form-check-solid me-10" title="@asset.Text">
+																		<input class="form-check-input" type="radio" @(level != null && (int)level == asset.Value ? "checked" : "") name="@livingitem.Id" levelid="@asset.Value" grpname="@item.GroupName" skillname="@livingitem.SkillName" skillid="@livingitem.Id">
+																		<span class="form-check-label fw-bold">@assessetname[1].Replace(")", "")</span>
+																	</label>
+																}
+															}
 
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                }
+														</div>
+													</td>
+												</tr>
+											}
+										}
+									}
 
-                            </tbody>
-                        </table>
+								</tbody>
+							</table>
 
-                    </div>
-                </div>
+						</div>
+					</div>
+					<div class="d-flex flex-stack pt-10">
+						<div class="me-2">
+							<button type="button" class="btn btn-lg btn-light-primary me-3" data-bs-dismiss="modal">
+								Cancel
+							</button>
+						</div>
+						<div>
+							<button type="submit" id="new_assessment_submit" class="btn btn-primary">
+								<span class="indicator-label">
+									Submit
+									<span class="svg-icon svg-icon-3 ms-2 me-0">
+										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												<polygon points="0 0 24 0 24 24 0 24" />
+												<rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />
+												<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
+											</g>
+										</svg>
+									</span>
+								</span>
+								<span class="indicator-progress">
+									Please wait...
+									<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+								</span>
+							</button>
+						</div>
+					</div>
+				}
 
-                <div class="d-flex flex-stack pt-10">
-                    <div class="me-2">
-                        <button type="button" class="btn btn-lg btn-light-primary me-3" data-bs-dismiss="modal">
-                            Cancel
-                        </button>
-                    </div>
-                    <div>
-                        <button type="submit" id="new_assessment_submit" class="btn btn-primary">
-                            <span class="indicator-label">
-                                Submit
-                                <span class="svg-icon svg-icon-3 ms-2 me-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <polygon points="0 0 24 0 24 24 0 24" />
-                                            <rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />
-                                            <path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />
-                                        </g>
-                                    </svg>
-                                </span>
-                            </span>
-                            <span class="indicator-progress">
-                                Please wait...
-                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!--end::Modal body-->
-        </div>
-        <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
+			</div>
+			<!--end::Modal body-->
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal dialog-->
 </div>
 
 
 <div class="modal fade" id="assessment_details" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-xl-1000px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-            <!--begin::Modal header-->
-            <div class="modal-header">
-                <!--begin::Modal title-->
-                <h2>Assessment Details</h2>
-                <!--end::Modal title-->
-                <!--begin::Close-->
-                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
-                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
-                            </g>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                </div>
-                <!--end::Close-->
-            </div>
-            <!--end::Modal header-->
-            <!--begin::Modal body-->
-            <div class="modal-body scroll-y py-lg-10 px-lg-10">
-                <div class="mh-500px scroll-y me-n7 pe-7">
-                    <div class="table-responsive" id="AssessmentDetailsContent">
+	<!--begin::Modal dialog-->
+	<div class="modal-dialog modal-dialog-centered mw-xl-1000px">
+		<!--begin::Modal content-->
+		<div class="modal-content">
+			<!--begin::Modal header-->
+			<div class="modal-header">
+				<!--begin::Modal title-->
+				<h2>Assessment Details</h2>
+				<!--end::Modal title-->
+				<!--begin::Close-->
+				<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+					<!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+					<span class="svg-icon svg-icon-1">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+							<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+								<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+								<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+							</g>
+						</svg>
+					</span>
+					<!--end::Svg Icon-->
+				</div>
+				<!--end::Close-->
+			</div>
+			<!--end::Modal header-->
+			<!--begin::Modal body-->
+			<div class="modal-body scroll-y py-lg-10 px-lg-10">
+				<div class="mh-500px scroll-y me-n7 pe-7">
+					<div class="table-responsive" id="AssessmentDetailsContent">
 
-                    </div>
-                </div>
-            </div>
-            <!--end::Modal body-->
-        </div>
-        <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
+					</div>
+				</div>
+			</div>
+			<!--end::Modal body-->
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal dialog-->
 </div>
+<script src="~/js/ckeditorclassic.js"></script>

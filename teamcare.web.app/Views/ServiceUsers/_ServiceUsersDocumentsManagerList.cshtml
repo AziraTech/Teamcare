@@ -61,9 +61,7 @@
                             <td class="text-end">
                                 @if (item.DocumentFile != null)
                                 {
-                                    //DownloadServiceUserDocument(sas, storageUri, containerName, fileId, destinationFileName) 
-                                    <a href="#" title="Download File"  data-document-id="@item.Id" class="btn btn-success btn-sm"                                        
-                                       onclick="DownloadServiceUserDocument1('@item.Id', '@item.PrePath', '@item.DocumentFile.FileName')">
+                                    <a href="@item.PrePath/@(item.DocumentFile != null ? item.DocumentFile.BlobName.ToString() : "")" title="Download File" target="_blank" data-document-id="@item.Id" class="btn btn-success btn-sm">
                                         <i class="bi bi-download"></i>
                                     </a>
                                 }

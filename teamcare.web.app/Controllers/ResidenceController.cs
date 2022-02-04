@@ -9,6 +9,7 @@ using teamcare.business.Models;
 using teamcare.business.Services;
 using teamcare.common.Configuration;
 using teamcare.common.Enumerations;
+using teamcare.common.Helpers;
 using teamcare.common.ReferenceData;
 using teamcare.data.Entities;
 using teamcare.web.app.ViewModels;
@@ -50,14 +51,17 @@ namespace teamcare.web.app.Controllers
                 new BreadcrumbItem(PageTitles.Residence, string.Empty),
             });
 
-            var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+            //var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
             
-            var listOfResidence = await _residenceService.ListAllAsync();
+            var listOfResidence = await _residenceService.ListAllResidenceFiltered(false);
             var model = new ResidenceListViewModel
             {
                 Residences = listOfResidence, 
             };
-            foreach (var item in model.Residences) { item.PrePath = "/" + _azureStorageOptions.Container; }
+            foreach (var item in model.Residences) { 
+                item.PrePath = "/" + _azureStorageOptions.Container;
+                item.ServiceUsers = item.ServiceUsers.Where(x => x.ArchivedOn == null).ToList();
+            }
 
             _auditService.Execute(async repository =>
             {
@@ -65,6 +69,28 @@ namespace teamcare.web.app.Controllers
             });
             return View(model);
 
+        }
+
+        public async Task<IActionResult> SortFilterResidence(bool isArchive)
+        {
+
+            //Sorting List
+            var listOfResidences = await _residenceService.ListAllResidenceFiltered(isArchive);
+            if (listOfResidences != null)
+            {
+                foreach (var item in listOfResidences)
+                {
+                    item.PrePath = "/" + _azureStorageOptions.Container;
+                }
+            }
+
+            var model = new ResidenceListViewModel
+            {
+                Residences = listOfResidences
+            };
+
+
+            return PartialView("_ShowAllRecrods", model);
         }
 
         public async Task<IActionResult> Detail(Guid Id)
@@ -76,12 +102,19 @@ namespace teamcare.web.app.Controllers
             var listOfResidence = await _residenceService.GetByIdAsync(Id);
             if (listOfResidence != null)
             {
-                listOfResidence.ServiceUsers = listOfResidence.ServiceUsers.Where(x => x.ArchivedOn == null).ToList();
+                if (listOfResidence.ArchivedOn == null)
+                {
+                    listOfResidence.ServiceUsers = listOfResidence.ServiceUsers.Where(x => x.ArchivedOn == null).ToList();
+                }
                 if (listOfResidence != null) { listOfResidence.PrePath = "/" + _azureStorageOptions.Container; }
                 var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
                 var model = new ResidenceListViewModel
                 {
                     Residence = listOfResidence, 
+                    CreateViewModel=new ResidenceCreateViewModel
+					{
+                        ArchiveReason = EnumExtensions.GetEnumListItems<ArchiveReasonResidence>()
+                    }
                 };
                 return View(model);
             }
@@ -227,7 +260,54 @@ namespace teamcare.web.app.Controllers
             }
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> ArchiveResidence(int ReasonId, Guid Userid)
+        {
+            try
+            {
+                var residence = await _residenceService.ArchiveUnArchiveResidence(ReasonId, Userid, 1);
+                if(residence!=null && residence.ServiceUsers !=null && residence.ServiceUsers.Where(x => x.ArchivedOn == null).Any())
+				{
+                    return Json(new { statuscode = 4, message = "Please! Archive Service User first to archive this residence" });
+				}
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = "Add Archive Reason for Residence.", UserReference = "", CreatedBy = base.UserId });
+
+                });
+
+                return Json(new { statuscode = 1 });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UnArchiveResidence(Guid Userid)
+        {
+            try
+            {
+                var serviceuser = await _residenceService.ArchiveUnArchiveResidence(0, Userid, 2);
+
+                _auditService.Execute(async repository =>
+                {
+                    await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = "Unarchive residence.", UserReference = "", CreatedBy = base.UserId });
+
+                });
+
+                return Json(new { statuscode = 1 });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statuscode = 3, message = ex.Message });
+
+            }
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using teamcare.data.Data;
@@ -9,9 +10,10 @@ using teamcare.data.Data;
 namespace teamcare.data.Migrations
 {
     [DbContext(typeof(TeamcareDbContext))]
-    partial class TeamcareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220127134230_ResidenceArchiveFunctionality")]
+    partial class ResidenceArchiveFunctionality
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -911,14 +913,6 @@ namespace teamcare.data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_on");
 
-                    b.Property<string>("InitialAssessmentContent")
-                        .HasColumnType("text")
-                        .HasColumnName("initial_assessment_content");
-
-                    b.Property<int>("InitialAssessmentSection")
-                        .HasColumnType("integer")
-                        .HasColumnName("initial_assessment_section");
-
                     b.Property<int>("RiskLevel")
                         .HasColumnType("integer")
                         .HasColumnName("risk_level");
@@ -1195,8 +1189,8 @@ namespace teamcare.data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e54bb57b-4e4b-4b7e-b3cd-5b4306bfdee7"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2022, 2, 3, 12, 50, 54, 641, DateTimeKind.Unspecified).AddTicks(5728), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("12d163b1-24b9-449b-9d64-09813db2c27d"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2022, 1, 27, 13, 42, 29, 537, DateTimeKind.Unspecified).AddTicks(5734), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "hans.doyekee@gmail.com",
                             FirstName = "Teamcare",
                             IsActive = true,
@@ -1206,8 +1200,8 @@ namespace teamcare.data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c3ddcc96-6fed-4dd1-8087-f5b406111f91"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2022, 2, 3, 12, 50, 54, 641, DateTimeKind.Unspecified).AddTicks(7190), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("b0c78856-189b-4b68-86d5-cd0ae71d8adc"),
+                            CreatedOn = new DateTimeOffset(new DateTime(2022, 1, 27, 13, 42, 29, 537, DateTimeKind.Unspecified).AddTicks(7431), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "nish.kagathara0791@gmail.com",
                             FirstName = "Nishidh",
                             IsActive = true,

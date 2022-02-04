@@ -15,6 +15,10 @@
 			<!--begin::Info-->
 			<div class="d-flex flex-column justify-content-center">
 				<a href="@Url.Action("Detail","Residence", new { id = @Model.Id })" class="mb-1 text-gray-800 text-hover-primary">@Model.Name</a>
+				@if (Model.ArchivedOn.HasValue)
+				{
+					<span class="badge badge-sm badge-light">Archived</span>
+				}
 			</div>
 			<!--end::Info-->
 		</div>

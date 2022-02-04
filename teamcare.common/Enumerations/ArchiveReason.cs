@@ -12,4 +12,12 @@ namespace teamcare.common.Enumerations
 		[Description("Left")]
 		Left = 2
 	}
+
+	public enum ArchiveReasonResidence
+	{
+		[Description("Sold")]
+		Sold = 1,
+		[Description("Not in use")]
+		NotInUse = 2
+	}
 }

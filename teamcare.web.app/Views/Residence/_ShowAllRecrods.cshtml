@@ -1,17 +1,18 @@
 ﻿@model teamcare.web.app.ViewModels.ResidenceListViewModel
 <!--begin::Tab pane-->
 <div id="kt_project_users_card_pane" class="tab-pane fade show active">
-    <!--begin::Row-->
-    <div class="row g-6 g-xl-9">
-        @if (Model != null)
-        {
-            foreach (var item in Model.Residences)
-            {
-                <partial name="_ResidenceCard" model="item" />
-            }
-        }
-    </div>
-    <!--end::Row-->
+	<!--begin::Row-->
+	<input type="hidden" value="@Model.Residences.Count()" id="hdnTotalResidence" />
+	<div class="row g-6 g-xl-9">
+		@if (Model != null)
+		{
+			foreach (var item in Model.Residences)
+			{
+				<partial name="_ResidenceCard" model="item" />
+			}
+		}
+	</div>
+	<!--end::Row-->
 </div>
 <!--end::Tab pane-->
 <!--begin::Tab pane-->

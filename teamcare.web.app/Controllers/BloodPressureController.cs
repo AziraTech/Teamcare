@@ -63,9 +63,9 @@ namespace teamcare.web.app.Controllers
             {
                 var bloodreadingdata = await _bloodPressureReadingService.ListAllSortedFiltered(id, daterange);
 
-                if(bloodreadingdata!=null && bloodreadingdata.Count() > 0)
-				{
-                    bloodreadingdata = bloodreadingdata.GroupBy(x => x.TestDate).Select(y => y.OrderByDescending(z=>z.TestDate).FirstOrDefault()).ToList();
+                if (bloodreadingdata != null && bloodreadingdata.Count() > 0)
+                {
+                    bloodreadingdata = bloodreadingdata.GroupBy(x => x.TestDate).Select(y => y.OrderByDescending(z => z.TestDate).FirstOrDefault()).ToList();
                     var blooddata = bloodreadingdata?.OrderBy(x => x.TestDate)?.Take(20).Select(y => new
                     {
                         TestDate = y.TestDate.ToString("dd-MMM-yyyy"),
@@ -75,7 +75,7 @@ namespace teamcare.web.app.Controllers
                     }).ToList();
 
                     return Json(new { statuscode = 1, data = blooddata });
-				}
+                }
                 return Json(new { statuscode = 0, data = "" });
             }
             catch (Exception ex)
@@ -128,11 +128,11 @@ namespace teamcare.web.app.Controllers
 
                     var oldblooddata = await _bloodPressureReadingService.ListAllAsync();
 
-                    var IsGetTodayData = oldblooddata.Where(x => x.TestDate.Date == DateTimeOffset.UtcNow.Date && x.ServiceUserId== bloodPressureReadingViewModel.BloodPressureReading.ServiceUserId).FirstOrDefault();
+                    var IsGetTodayData = oldblooddata.Where(x => x.TestDate.Date == DateTimeOffset.UtcNow.Date && x.ServiceUserId == bloodPressureReadingViewModel.BloodPressureReading.ServiceUserId).FirstOrDefault();
 
                     bloodPressureReadingViewModel.BloodPressureReading.TestDate = DateTime.ParseExact(bloodPressureReadingViewModel.BloodPressureReading.BloodTestdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-                    if (IsGetTodayData ==null)
+                    if (IsGetTodayData == null)
                     {
                         bloodPressureReading = await _bloodPressureReadingService.AddAsync(bloodPressureReadingViewModel.BloodPressureReading);
 

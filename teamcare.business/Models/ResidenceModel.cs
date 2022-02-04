@@ -12,6 +12,9 @@ namespace teamcare.business.Models
         public string Address { get; set; }
         public string Capacity { get; set; }
         public string Home_Tel_No { get; set; }
+        public DateTime? ArchivedOn { get; set; }
+        public ArchiveReasonResidence ArchivedReason { get; set; }
+
         public ICollection<ServiceUserModel> ServiceUsers { get; set; }
 
         public ICollection<DocumentUploadModel> DocumentUploads { get; set; }

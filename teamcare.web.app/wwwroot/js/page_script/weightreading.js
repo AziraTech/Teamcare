@@ -3,7 +3,7 @@
 var editweightfrm = null;
 
 $(document).ready(function () {
-  
+
     GetweightData();
     fillWeightChart(null);
 });
@@ -107,7 +107,7 @@ function GetweightData(filtered) {
                 $('#divWeightdataContent').html(data);
                 if (filtered) {
                     fillWeightChart(daterange);
-				}
+                }
                 $(".date-filter-weight").daterangepicker({
                     showDropdowns: true,
                     minYear: 1981,

@@ -134,7 +134,7 @@ namespace teamcare.web.app.Controllers
                     weightReadingViewModel.WeightReading.TestDate = DateTime.ParseExact(weightReadingViewModel.WeightReading.WeightTestdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
 
-                    if (IsGetTodayData ==null)
+                    if (IsGetTodayData == null)
                     {
                         bloodPressureReading = await _weightReadingService.AddAsync(weightReadingViewModel.WeightReading);
 
