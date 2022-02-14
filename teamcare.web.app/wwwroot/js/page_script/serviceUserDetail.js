@@ -862,12 +862,6 @@ function saveInitialAssessment(sender) {
 					customClass: {
 						confirmButton: "btn btn-light"
 					}
-<<<<<<< HEAD
-=======
-				}).then(function (q) {
-					q.isConfirmed && $('#create_assessment').modal('hide');
-					setCurrentTabAssessment($('#hdnassessmenttype').val());
->>>>>>> 1905cbd3ce4560d6f36915f0440c836e9361f64c
 				});
 			}
 		});
