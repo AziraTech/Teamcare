@@ -1,0 +1,55 @@
+﻿<html>
+<head>
+    <meta name='viewport' content='width=device-width' />
+    <title>PDF</title>
+    <meta charset='utf-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no' />
+    <meta name='description' content='' />
+    <meta name='author' content='' />
+</head>
+<body style='width: 210mm; font-family: sans-serif;'>
+    <div style='display: flex;justify-content: center;'><img src='{logoImage}' /></div><div style='text-align: center;text-decoration: underline;'><h2>Missing Person</h2></div>
+    <div style='border:1px solid black;float: left;'>
+        <div style='width: 70%;float: left;'>
+            <table style='width: 100%;padding: 5px;'>
+                <tr><td style='font-weight: bold;'>Name :</td><td>{name}</td></tr>
+                <tr><td style='font-weight: bold;'>Known as :</td><td>{knownAs}</td></tr>
+                <tr><td style='font-weight: bold;'>Date of birth :</td><td>{dob}</td></tr>
+                <tr><td style='font-weight: bold;'>Legal Status :</td><td>{legalStatus}</td></tr>
+                <tr><td style='font-weight: bold;'>NHS ID No. :</td><td>{nhsID}</td></tr>
+                <tr><td style='font-weight: bold;'>National Insurance No. :</td><td>{nationalInsurance}</td></tr>
+                <tr><td style='font-weight: bold;'>Date of Admission :</td><td>{dateOfAdmission}</td></tr>
+                <tr><td style='font-weight: bold;'>Last seen :</td><td>{dateLastSeen}</td></tr>
+            </table>
+        </div>
+        <div style='width: 30%;float: left;display: flex;justify-content: center;'><img src='{suImage}' style='width: 70%;padding: 5%;' /></div>
+    </div>
+    <div style='border: 1px solid black;float: left;width: calc(100% - 2px);border-top: none;'><div style='width: 50%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>House Tel. No. :</strong> {houseTelNo}</p></div><div style='width: 50%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Personal Tel. No. :</strong> {personalTelNo}</p></div></div>
+    <div style='border: 1px solid black;float: left;width: calc(100% - 2px);border-top: none;'>
+        <div style='width: 33%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Marital Status :</strong> {maritalStatus}</p></div>
+        <div style='width: 33%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Religion :</strong> {religion}</p></div>
+        <div style='width: 34%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Ethnicity :</strong> {ethnicity}</p></div>
+        <div style='width: 50%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Preferred First Language :</strong> {language}</p></div>
+        <div style='width: 50%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Current/Previous occupation :</strong> {occupation}</p></div>
+    </div>
+    <div style='border: 1px solid black;float: left;width: calc(100% - 2px);border-top: none;'>
+        <div style='width: 60%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Next of Kin :</strong> {nextOfKin}</p></div>
+        <div style='width: 40%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Relationship to person :</strong> {relationship}</p></div>
+        <div style='width: 60%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Address :</strong> {address}</p></div>
+        <div style='width: 40%;float: left;'><p style='text-indent: 5px;line-height: 0px;'><strong>Contact Details :</strong> {contactDetails}</p></div>
+    </div>
+    <div style='border: 1px solid black;float: left;width: calc(100% - 2px);border-top: none;'>
+        <div style='width:100%;'><p style='text-indent: 5px;line-height: 0px;'><strong>Other significant information :</strong></p></div>
+        <div style='width:100%;'>{otherSignificantInfo}</div>
+    </div>
+    <div style='border: 1px solid black;float: left;width: calc(100% - 2px);border-top: none;'>
+        <div style='width:100%;'><p style='text-indent: 5px;line-height: 0px;'><strong>Diagnosis :</strong></p></div>
+        <div style='width:100%;'>{diagnosis}</div>
+    </div>
+    <div style='border: 1px solid black;float: left;width: calc(100% - 2px);border-top: none;'>
+        <div style='width:100%;'><p style='text-indent: 5px;line-height: 0px;'><strong>Additional Details :</strong></p></div>
+        <div style='width:100%;'>{additionalDetails}</div>
+    </div>
+</body>
+</html>

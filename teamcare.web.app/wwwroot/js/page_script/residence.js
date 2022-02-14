@@ -299,7 +299,7 @@ $(document).ready(function () {
                                     Cleardata();
                                     q.isConfirmed && modal.hide();
                                 });
-
+                                debugger;
                                 $('#ShowCurrentTab').html('');
                                 $('#ShowCurrentTab').html(data);
                             }

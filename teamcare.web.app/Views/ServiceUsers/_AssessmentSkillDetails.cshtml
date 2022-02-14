@@ -2,58 +2,82 @@
 @using teamcare.common.Enumerations;
 @model teamcare.web.app.ViewModels.SkillAssessmentViewModel
 
-<table class="table table-row-dashed border-gray-300 align-middle gy-6" id="tbldetails">
-    @*<thead class="border-gray-200 fs-5 fw-bold bg-lighten">
-            <tr>
-                <th>Group / Skill</th>
-                <th>Level</th>
-            </tr>
-        </thead>*@
-    <tbody class="fs-6">
-        @foreach (var item in Model.SkillGroups)
-        {
-            var skillsInGroup = Model.AssessmentSkill.Where(r => r.SkillGroup == item.GroupName).ToList();
+@{
+	var optionGroup = Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
+	var firstSkill = Model.LivingSkills.Where(x => x.GroupId == Model.SkillGroups?.FirstOrDefault().Id)?.FirstOrDefault();
+}
+@if (optionGroup == AssessmentOptionsGroup.InitialAssessment)
+{
+	@foreach (var item in Model.AssessmentSkill)
+	{
+		<div class="fv-row mb-10" style="border-bottom:1px solid #ddd;">
+			<!--begin::Label-->
+			<label class="d-flex align-items-center fs-5 fw-bold mb-2">
+				<span>@item.InitialAssessmentSection.GetEnumDescription() </span>
+			</label>
+			<!--end::Label-->
+			<!--begin::Input-->
+			@Html.Raw(item.InitialAssessmentContent)
+			<!--end::Input-->
+		</div>
+	}
 
-            if (skillsInGroup.Count > 0)
-            {
-                <tr>
-                    <td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                        <label class="fw-bold fs-6">
-                            @item.GroupName
-                        </label>
-                    </td>
-                </tr>
+}
+else
+{
+	<table class="table table-row-dashed border-gray-300 align-middle gy-6" id="tbldetails">
+		@*<thead class="border-gray-200 fs-5 fw-bold bg-lighten">
+				<tr>
+					<th>Group / Skill</th>
+					<th>Level</th>
+				</tr>
+			</thead>*@
+		<tbody class="fs-6">
+			@foreach (var item in Model.SkillGroups)
+			{
+				var skillsInGroup = Model.AssessmentSkill.Where(r => r.SkillGroup == item.GroupName).ToList();
 
-                @foreach (var livingitem in skillsInGroup)
-                {
-                    var optionsgroup = @Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
+				if (skillsInGroup.Count > 0)
+				{
+					<tr>
+						<td colspan="2" style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+							<label class="fw-bold fs-6">
+								@item.GroupName
+							</label>
+						</td>
+					</tr>
 
-                    <tr>
-                        <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                            <label class="fs-7 text-muted">
-                                @livingitem.SkillName
-                            </label>
-                        </td>
+					@foreach (var livingitem in skillsInGroup)
+					{
+						var optionsgroup = @Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
 
-                        @if (optionsgroup == AssessmentOptionsGroup.Risk)
-                        {
-                            <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                <label class="fw-bold fs-6">
-                                    @livingitem.RiskLevel.GetEnumDescription()
-                                </label>
-                            </td>
-                        }
-                        else
-                        {
-                            <td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
-                                <label class="fs-7 text-muted">
-                                    @livingitem.SkillLevel.GetEnumDescription()
-                                </label>
-                            </td>
-                        }
-                    </tr>
-                }
-            }
-        }
-    </tbody>
-</table>
+						<tr>
+							<td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+								<label class="fs-7 text-muted">
+									@livingitem.SkillName
+								</label>
+							</td>
+
+							@if (optionsgroup == AssessmentOptionsGroup.Risk)
+							{
+								<td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+									<label class="fw-bold fs-6">
+										@livingitem.RiskLevel.GetEnumDescription()
+									</label>
+								</td>
+							}
+							else
+							{
+								<td style="padding-top: 0.7rem; padding-bottom: 0.7rem;">
+									<label class="fs-7 text-muted">
+										@livingitem.SkillLevel.GetEnumDescription()
+									</label>
+								</td>
+							}
+						</tr>
+					}
+				}
+			}
+		</tbody>
+	</table>
+}

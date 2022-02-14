@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport'
+          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no' />
+    <meta name='description' content='' />
+    <meta name='author' content='' />
+    <title></title>
+    <style>
+        .body-main {
+            width: 794px;
+            font-family: sans-serif;
+            background-color: white;
+            margin: 0 auto;
+        }
+
+        .header-img {
+            display: flex;
+            justify-content: center;
+        }
+
+        .header-title {
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        .first-section {
+            width: Calc(100% - 2px);
+            clear: both;
+            display: flex;
+            border: 1px solid #000 !important;
+        }
+
+            .first-section .profile-detail {
+                width: 70%;
+            }
+
+                .first-section .profile-detail table {
+                    width: 100%;
+                    padding: 5px;
+                }
+
+                    .first-section .profile-detail table td {
+                        font-weight: bold;
+                    }
+
+            .first-section .profile-img {
+                width: 30%;
+                display: flex;
+                justify-content: center;
+            }
+
+                .first-section .profile-img img {
+                    width: 70%;
+                    padding: 5%;
+                }
+
+        .second-section {
+            border: 1px solid black;
+            width: calc(100% - 2px);
+            border-top: none;
+            clear: both;
+            display: flex;
+        }
+
+        .div-50 {
+            width: 50%;
+        }
+
+        p {
+            margin: 0;
+            padding: 5px;
+        }
+
+        .other-section {
+            border: 1px solid black;
+            width: calc(100% - 2px);
+            border-top: none;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .w100 {
+            width: 100%;
+        }
+
+        .w60 {
+            width: 60%;
+        }
+
+        .w40 {
+            width: 40%;
+        }
+
+        .w33 {
+            width: 33%;
+        }
+
+        .w34 {
+            width: 34%;
+        }
+		ul {
+			margin: 0
+		}
+    </style>
+</head>
+<body class='body-main'>
+    <div class='header-img'><img style="width:100px;" src='{logoImage}' /></div>
+    <div class='header-title'>
+        <h2>Missing Person</h2>
+    </div>
+    <div class='first-section'>
+        <div class='profile-detail'>
+            <table>
+                <tr>
+                    <td>Name :</td>
+                    <td>{name}</td>
+                </tr>
+                <tr>
+                    <td>Known as :</td>
+                    <td>{knownAs}</td>
+                </tr>
+                <tr>
+                    <td>Date of birth :</td>
+                    <td>{dob}</td>
+                </tr>
+                <tr>
+                    <td>Legal Status :</td>
+                    <td>{legalStatus}</td>
+                </tr>
+                <tr>
+                    <td>NHS ID No. :</td>
+                    <td>{nhsID}</td>
+                </tr>
+                <tr>
+                    <td>National Insurance No. :</td>
+                    <td>{nationalInsurance}</td>
+                </tr>
+                <tr>
+                    <td>Date of Admission :</td>
+                    <td>{dateOfAdmission}</td>
+                </tr>
+                <tr>
+                    <td>Last seen :</td>
+                    <td>{dateLastSeen}</td>
+                </tr>
+            </table>
+        </div>
+        <div class='profile-img'><img src='{suImage}' /></div>
+    </div>
+    <div class='second-section'>
+        <div class='div-50'>
+            <p><strong>House Tel. No. :</strong> {houseTelNo}</p>
+        </div>
+        <div class='div-50'>
+            <p><strong>Personal Tel. No. :</strong> {personalTelNo}</p>
+        </div>
+    </div>
+    <div class='other-section'>
+        <div class='w33'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Marital Status :</strong> {maritalStatus}</p>
+        </div>
+        <div class='w33'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Religion :</strong> {religion}</p>
+        </div>
+        <div class='w34'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Ethnicity :</strong> {ethnicity}</p>
+        </div>
+        <div class='div-50'>
+            <p style="padding-left: 5px; padding-top: 0px; padding-bottom: 5px;"><strong>Preferred First Language :</strong> {language}</p>
+        </div>
+        <div class='div-50'>
+            <p style="padding-left: 5px; padding-top: 0px; padding-bottom: 5px;">
+                <strong>Current/Previous occupation :</strong> {occupation}
+            </p>
+        </div>
+    </div>
+    <div class='other-section'>
+        <div class='w60'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Next of Kin :</strong> {nextOfKin}</p>
+        </div>
+        <div class='w40'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Relationship to person :</strong> {relationship}</p>
+        </div>
+        <div class='w60'>
+            <p style="padding-left: 5px; padding-top: 0px; padding-bottom: 5px;"><strong>Address :</strong> {address}</p>
+        </div>
+        <div class='w40'>
+            <p style="padding-left: 5px; padding-top: 0px; padding-bottom: 5px;"><strong>Contact Details :</strong> {contactDetails}</p>
+        </div>
+    </div>
+    <div class='other-section'>
+        <div class='w100'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Other significant information :</strong></p>
+        </div>
+        <div class='w100'><p style="padding-left: 5px; padding-top: 0px; padding-bottom: 5px;">{otherSignificantInfo}</p></div>
+    </div>
+    <div class='other-section'>
+        <div class='w100'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Diagnosis :</strong></p>
+        </div>
+        <div class='w100' style="padding-left: 0px;">{diagnosis}</div>
+    </div>
+    <div class='other-section'>
+        <div class='w100'>
+            <p style="padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><strong>Additional Details :</strong></p>
+        </div>
+        <div class='w100' style="padding-left: 5px;">{additionalDetails}</div>
+    </div>
+</body>
+</html>

@@ -361,7 +361,63 @@ async function setCurrentTabAssessment(id) {
 								fields: {
 									ias_profile: {
 										validators: {
+											callback: {
+												message: 'Profile detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorProfile.getData()
 
+													return text.trim().length>0;
+												},
+											},
+										}
+									},
+									ias_behaviour: {
+										validators: {
+											callback: {
+												message: 'Behaviour detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorBehaviour.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_cognition: {
+										validators: {
+											callback: {
+												message: 'Cognition detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorCognition.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_psychological_needs: {
+										validators: {
+											callback: {
+												message: 'Psycological needs is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorPsychologicalNeeds.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_communication: {
+										validators: {
+											callback: {
+												message: 'Communication detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorCommunication.getData()
+													return text.trim().length > 0;
+												},
+											},
 										}
 									}
 								},
@@ -380,13 +436,130 @@ async function setCurrentTabAssessment(id) {
 							iasstep2,
 							{
 								fields: {
-									marital_status: {
+									ias_mobility: {
 										validators: {
-											notEmpty: {
-												message: "Select marital stauts"
-											}
+											callback: {
+												message: 'Mobility detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorMobility.getData()
+													return text.trim().length > 0;
+												},
+											},
 										}
-									}
+									},
+									ias_nutrition: {
+										validators: {
+											callback: {
+												message: 'Nutrition - Food & Drink is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorNutrition.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_continence: {
+										validators: {
+											callback: {
+												message: 'Continence detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorContinence.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_skin: {
+										validators: {
+											callback: {
+												message: 'Skin (including tissue viability) is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorSkin.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_breathing: {
+										validators: {
+											callback: {
+												message: 'Breathing detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorBreathing.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+								},
+								plugins: {
+									trigger: new FormValidation.plugins.Trigger(),
+									bootstrap: new FormValidation.plugins.Bootstrap5({
+										rowSelector: ".fv-row",
+										eleInvalidClass: "",
+										eleValidClass: ""
+									})
+								}
+							}
+					);
+					iasfv3 = FormValidation
+						.formValidation(
+							iasstep3,
+							{
+								fields: {
+									ias_drug_therapies: {
+										validators: {
+											callback: {
+												message: 'Drug Therapies & Medication detail is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorDrug.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_altered_state: {
+										validators: {
+											callback: {
+												message: 'Altered State of Consciousness is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorAltered.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_independent_skills: {
+										validators: {
+											callback: {
+												message: 'Independent Skills is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorIndependent.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
+									ias_SummaryofNeeds: {
+										validators: {
+											callback: {
+												message: 'Summary of Needs is required',
+												callback: function (value) {
+													// Get the plain text without HTML
+													const text = editorSummary.getData()
+													return text.trim().length > 0;
+												},
+											},
+										}
+									},
 								},
 								plugins: {
 									trigger: new FormValidation.plugins.Trigger(),
@@ -505,192 +678,205 @@ async function setCurrentTabAssessment(id) {
 }
 
 function saveInitialAssessment(sender) {
-	var grpname = $('#ckeProfile').attr('grpname');
-	var skillname = $('#ckeProfile').attr('skillname');
-	var skillid = $('#ckeProfile').attr('skillid');
-	var section = $('#ckeProfile').attr('section');
-	var assessmsnedata = [];
-	assessmsnedata.push({
-		Id: 0,
-		SkillGroup: grpname,
-		SkillName: skillname,
-		SkillId: skillid,
-		InitialAssessmentSection: section,
-		InitialAssessmentContent: editorProfile.getData()
-	});
-	if (editorBehaviour.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeBehaviour').attr('section'),
-			InitialAssessmentContent: editorBehaviour.getData()
-		});
-	}
-	if (editorCognition.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeCognition').attr('section'),
-			InitialAssessmentContent: editorCognition.getData()
-		});
-	}
-	if (editorPsychologicalNeeds.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckePsychologicalNeeds').attr('section'),
-			InitialAssessmentContent: editorPsychologicalNeeds.getData()
-		});
-	}
-	if (editorCommunication.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeCommunication').attr('section'),
-			InitialAssessmentContent: editorCommunication.getData()
-		});
-	}
-	if (editorMobility.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeMobility').attr('section'),
-			InitialAssessmentContent: editorMobility.getData()
-		});
-	}
+	if (iasfv3) {
+		iasfv3.validate().then(function (t) {
+			if ("Valid" == t) {
+				var grpname = $('#ckeProfile').attr('grpname');
+				var skillname = $('#ckeProfile').attr('skillname');
+				var skillid = $('#ckeProfile').attr('skillid');
+				var section = $('#ckeProfile').attr('section');
+				var assessmsnedata = [];
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: section,
+					InitialAssessmentContent: editorProfile.getData()
+				});
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeBehaviour').attr('section'),
+					InitialAssessmentContent: editorBehaviour.getData()
+				});
 
-	if (editorNutrition.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeNutrition').attr('section'),
-			InitialAssessmentContent: editorNutrition.getData()
-		});
-	}
-	if (editorContinence.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeContinence').attr('section'),
-			InitialAssessmentContent: editorContinence.getData()
-		});
-	}
-	if (editorSkin.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeSkin').attr('section'),
-			InitialAssessmentContent: editorSkin.getData()
-		});
-	}
-	if (editorBreathing.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeBreathing').attr('section'),
-			InitialAssessmentContent: editorBreathing.getData()
-		});
-	}
-	if (editorDrug.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeDrugTherapies').attr('section'),
-			InitialAssessmentContent: editorDrug.getData()
-		});
-	}
-	if (editorAltered.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeAlteredState').attr('section'),
-			InitialAssessmentContent: editorAltered.getData()
-		});
-	}
-	if (editorIndependent.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeIndependentSkills').attr('section'),
-			InitialAssessmentContent: editorIndependent.getData()
-		});
-	}
-	if (editorSummary.getData()?.length > 0) {
-		assessmsnedata.push({
-			Id: 0,
-			SkillGroup: grpname,
-			SkillName: skillname,
-			SkillId: skillid,
-			InitialAssessmentSection: $('#ckeSummaryofNeeds').attr('section'),
-			InitialAssessmentContent: editorSummary.getData()
-		});
-	}
-	var Assessment = {
-		ServiceUserId: $('#hdnserviceuserid').val(),
-		AssessmentTypeId: $('#hdnassessmenttype').val()
-	}
-	var assessmentCreateViewModel = {
-		Assessment: Assessment,
-		AssessmentSkills: assessmsnedata
-	}
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeCognition').attr('section'),
+					InitialAssessmentContent: editorCognition.getData()
+				});
 
-	$.ajax({
-		type: "POST",
-		url: '/ServiceUsers/AssessmentSave',
-		data: { assessmentCreateViewModel: assessmentCreateViewModel },
-		success: function (data) {
-			if (data.statuscode == 3) {
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckePsychologicalNeeds').attr('section'),
+					InitialAssessmentContent: editorPsychologicalNeeds.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeCommunication').attr('section'),
+					InitialAssessmentContent: editorCommunication.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeMobility').attr('section'),
+					InitialAssessmentContent: editorMobility.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeNutrition').attr('section'),
+					InitialAssessmentContent: editorNutrition.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeContinence').attr('section'),
+					InitialAssessmentContent: editorContinence.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeSkin').attr('section'),
+					InitialAssessmentContent: editorSkin.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeBreathing').attr('section'),
+					InitialAssessmentContent: editorBreathing.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeDrugTherapies').attr('section'),
+					InitialAssessmentContent: editorDrug.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeAlteredState').attr('section'),
+					InitialAssessmentContent: editorAltered.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeIndependentSkills').attr('section'),
+					InitialAssessmentContent: editorIndependent.getData()
+				});
+
+				assessmsnedata.push({
+					Id: 0,
+					SkillGroup: grpname,
+					SkillName: skillname,
+					SkillId: skillid,
+					InitialAssessmentSection: $('#ckeSummaryofNeeds').attr('section'),
+					InitialAssessmentContent: editorSummary.getData()
+				});
+
+				var Assessment = {
+					ServiceUserId: $('#hdnserviceuserid').val(),
+					AssessmentTypeId: $('#hdnassessmenttype').val()
+				}
+				var assessmentCreateViewModel = {
+					Assessment: Assessment,
+					AssessmentSkills: assessmsnedata
+				}
+
+				$.ajax({
+					type: "POST",
+					url: '/ServiceUsers/AssessmentSave',
+					data: { assessmentCreateViewModel: assessmentCreateViewModel },
+					success: function (data) {
+						if (data.statuscode == 3) {
+							Swal.fire({
+								text: data.message,
+								icon: "error",
+								buttonsStyling: !1,
+								confirmButtonText: "Ok, got it!",
+								customClass: {
+									confirmButton: "btn btn-light"
+								}
+							});
+						} else {
+							Swal.fire({
+								text: "Form has been successfully submitted!",
+								icon: "success",
+								buttonsStyling: !1,
+								confirmButtonText: "Ok, got it!",
+								customClass: {
+									confirmButton: "btn btn-primary"
+								}
+							}).then(function (q) {
+								q.isConfirmed && $('#create_assessment').modal('hide');
+								setCurrentTabAssessment($('#hdnassessmenttype').val());
+							});
+						}
+					}
+
+				});
+			}
+			else {
 				Swal.fire({
-					text: data.message,
-					icon: "error",
+					text: "Sorry, looks like there are some errors detected, please try again.",
+					icon: "info",
 					buttonsStyling: !1,
 					confirmButtonText: "Ok, got it!",
 					customClass: {
 						confirmButton: "btn btn-light"
 					}
 				});
-			} else {
-				Swal.fire({
-					text: "Form has been successfully submitted!",
-					icon: "success",
-					buttonsStyling: !1,
-					confirmButtonText: "Ok, got it!",
-					customClass: {
-						confirmButton: "btn btn-primary"
-					}
-				}).then(function (q) {
-					q.isConfirmed && $('#create_assessment').modal('hide');
-					setCurrentTabAssessment(id);
-				});
 			}
-		}
-
-	});
-
+		});
+	}
+	else {
+		Swal.fire({
+			text: "Sorry, looks like there are some errors detected, please try again.",
+			icon: "info",
+			buttonsStyling: !1,
+			confirmButtonText: "Ok, got it!",
+			customClass: {
+				confirmButton: "btn btn-light"
+			}
+		});
+	}
 }
 
 function assessmentDetails(ctrl) {
@@ -859,6 +1045,48 @@ function UnArchiveUser(ctrl) {
 
 				});
 			},
+		});
+	}
+}
+
+function jsOpenMissingPersonForm(ctrl) {
+	var id = $(ctrl).attr('suid');
+	if (id != undefined) {
+
+		$('#kt_modal_missing_person').modal('show');
+		$(".date-last-seen").daterangepicker({
+			singleDatePicker: true,
+			showDropdowns: true,
+			minYear: 2001,
+			maxYear: parseInt(moment().format("YYYY"), 10),
+			locale: {
+				format: 'DD/MM/yyyy'
+			}
+		}, function (start, end, label) {
+		});
+
+		$('#generate_missing_report').on('click', function () {
+			$.ajax({
+				type: "POST",
+				url: '/ServiceUsers/generateMissingReport',
+				data: { suId: id, last_seen: $('#su_mp_last_seen').val(), additional_details: $('#su_mp_add_detail').val().trim() },
+				success: function (data) {
+					if (data && data.status == 1) {
+						window.location.href = "/ServiceUsers/DownloadMissingReport";
+					}
+					else {
+						Swal.fire({
+							text: data.message,
+							icon: "error",
+							buttonsStyling: !1,
+							confirmButtonText: "Ok, got it!",
+							customClass: {
+								confirmButton: "btn btn-light"
+							}
+						});
+					}
+				}
+			});
 		});
 	}
 }
