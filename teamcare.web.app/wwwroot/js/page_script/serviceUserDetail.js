@@ -163,6 +163,34 @@ $(document).ready(function () {
 			});
 		}
 	});
+
+	$('#generate_missing_report').click(function () {
+		var suId = $("#hdnserviceuserid").val();
+		$.ajax({
+			type: "POST",
+			url: '/ServiceUsers/generateMissingReport',
+			data: { suId: suId, last_seen: $('#su_mp_last_seen').val(), additional_details: $('#su_mp_add_detail').val().trim() },
+			success: function (data) {
+				debugger;
+				if (data && data.status == 1) {
+					var pdfByteArray = base64ToArrayBuffer(data.pdfByteArray);
+					saveByteArrayToPdf("missing_report", pdfByteArray);
+					//window.location.href = "/ServiceUsers/DownloadMissingReport";
+				}
+				else {
+					Swal.fire({
+						text: data.message,
+						icon: "error",
+						buttonsStyling: !1,
+						confirmButtonText: "Ok, got it!",
+						customClass: {
+							confirmButton: "btn btn-light"
+						}
+					});
+				}
+			}
+		});
+	});
 });
 
 var rServiceUserLogSubmit = document.querySelector("#su-service_user_log_form");
@@ -1064,32 +1092,29 @@ function jsOpenMissingPersonForm(ctrl) {
 			}
 		}, function (start, end, label) {
 		});
-
-		$('#generate_missing_report').on('click', function () {
-			$.ajax({
-				type: "POST",
-				url: '/ServiceUsers/generateMissingReport',
-				data: { suId: id, last_seen: $('#su_mp_last_seen').val(), additional_details: $('#su_mp_add_detail').val().trim() },
-				success: function (data) {
-					if (data && data.status == 1) {
-						window.location.href = "/ServiceUsers/DownloadMissingReport";
-					}
-					else {
-						Swal.fire({
-							text: data.message,
-							icon: "error",
-							buttonsStyling: !1,
-							confirmButtonText: "Ok, got it!",
-							customClass: {
-								confirmButton: "btn btn-light"
-							}
-						});
-					}
-				}
-			});
-		});
 	}
 }
+
+function base64ToArrayBuffer(base64) {
+	var binaryString = window.atob(base64);
+	var binaryLen = binaryString.length;
+	var bytes = new Uint8Array(binaryLen);
+	for (var i = 0; i < binaryLen; i++) {
+		var ascii = binaryString.charCodeAt(i);
+		bytes[i] = ascii;
+	}
+	return bytes;
+}
+
+
+function saveByteArrayToPdf(reportName, byte) {
+	var blob = new Blob([byte], { type: "application/pdf" });
+	var link = document.createElement('a');
+	link.href = window.URL.createObjectURL(blob);
+	var fileName = reportName;
+	link.download = fileName;
+	link.click();
+};
 
 
 function openAddEditServiceUserModal(id) {
