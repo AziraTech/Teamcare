@@ -26,6 +26,8 @@ using SixLabors.ImageSharp.Web.Processors;
 using teamcare.business.Services;
 using teamcare.data.Entities;
 using teamcare.common.Enumerations;
+using WkHtmlToPdfDotNet.Contracts;
+using WkHtmlToPdfDotNet;
 
 namespace teamcare.web.app
 {
@@ -41,6 +43,7 @@ namespace teamcare.web.app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
             services.AddOptions<AzureStorageSettings>().Bind(Configuration.GetSection("AzureStorageSettings"));
             services.AddControllersWithViews().AddNewtonsoftJson(x =>
  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

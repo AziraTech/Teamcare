@@ -18,6 +18,8 @@ using teamcare.common.ReferenceData;
 using teamcare.data.Entities;
 using teamcare.web.app.Helpers;
 using teamcare.web.app.ViewModels;
+using WkHtmlToPdfDotNet;
+using WkHtmlToPdfDotNet.Contracts;
 
 namespace teamcare.web.app.Controllers
 {
@@ -41,6 +43,7 @@ namespace teamcare.web.app.Controllers
         private readonly IHealthMedicationService _healthmedicationService;
         private IHostingEnvironment _hostingEnv;
         public Guid userName;
+        private readonly IConverter _converter;
 
         public ServiceUsersController(IServiceUserService serviceUserService,
                                       IResidenceService residenceService,
@@ -57,7 +60,8 @@ namespace teamcare.web.app.Controllers
                                       IAssessmentTypeService assessmentTypeService,
                                       IServiceUserDocumentService serviceUserDocumentService,
                                       IHostingEnvironment hostingEnv,
-                                      IHealthMedicationService healthMedicationService
+                                      IHealthMedicationService healthMedicationService,
+                                      IConverter converter
                                      )
         {
             _serviceUserService = serviceUserService;
@@ -76,6 +80,7 @@ namespace teamcare.web.app.Controllers
             _serviceUserDocumentService = serviceUserDocumentService;
             _hostingEnv = hostingEnv;
             _healthmedicationService = healthMedicationService;
+            _converter = converter;
         }
 
         public async Task<IActionResult> Index()
@@ -941,21 +946,37 @@ namespace teamcare.web.app.Controllers
                             html = html.Replace("{diagnosis}", userhealth.Diagnosis);
                             html = html.Replace("{additionalDetails}", additional_details);
 
-                            // instantiate a html to pdf converter object
-                            HtmlToPdf converter = new HtmlToPdf();
+                            //// instantiate a html to pdf converter object
+                            //HtmlToPdf converter = new HtmlToPdf();
 
-                            // set converter options
-                            converter.Options.PdfPageSize = PdfPageSize.A4;
-                            converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
-                            // create a new pdf document converting an url
-                            PdfDocument doc = converter.ConvertHtmlString(html, "");
+                            //// set converter options
+                            //converter.Options.PdfPageSize = PdfPageSize.A4;
+                            //converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+                            //// create a new pdf document converting an url
+                            //PdfDocument doc = converter.ConvertHtmlString(html, "");
 
-                            // save pdf document
-                            vs = doc.Save();
+                            //// save pdf document
+                            //vs = doc.Save();
 
 
-                            // close pdf document
-                            doc.Close();
+                            //// close pdf document
+                            //doc.Close();
+
+
+                            var doc = new HtmlToPdfDocument()
+                            {
+                                GlobalSettings = {
+                                    Orientation = Orientation.Portrait,
+                                    PaperSize = PaperKind.A4
+                                },
+                                Objects = {
+                                    new ObjectSettings() {
+                                        HtmlContent = html
+                                    }
+                                }
+                            };
+
+                            vs = _converter.Convert(doc);
                         }
                     }
                 }
