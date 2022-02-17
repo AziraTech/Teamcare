@@ -109,7 +109,7 @@
                                         {
                                             if (item.Text == Model.ServiceUserDocument.DocumentCategory.GetEnumDescription().ToString())
                                             {
-                                                <option value="@item.Value" selected >@item.Text</option>
+                                                <option value="@item.Value" selected>@item.Text</option>
                                             }
                                             else
                                             {
@@ -120,12 +120,20 @@
                                 </div>
                                 <!--end::Input-->
                             </div>
-
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                                    <input class="form-check-input" type="checkbox" id="chkuIsConfiDoc" @(Model.ServiceUserDocument.IsConfidential==true ? "checked":"")>
+                                    &nbsp;&nbsp;
+                                    <span>Is Confidential Document</span>
+                                </label>
+                                <!--end::Label-->
+                            </div>
 
                             <div class="fv-row mb-10">
                                 <!--begin::Dropzone-->
                                 @*<div class="dropzone" id="sv-profile-photo">*@
-                                <div class="dropzone drzonupdate"  id="sud-document">
+                                <div class="dropzone drzonupdate" id="sud-document">
                                     @if (Model == null)
                                     {
 

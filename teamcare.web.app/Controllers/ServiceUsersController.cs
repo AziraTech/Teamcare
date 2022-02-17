@@ -204,8 +204,8 @@ namespace teamcare.web.app.Controllers
                     item.PrePath = "/" + _azureStorageOptions.Container;
                     var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == (Guid)base.UserId).FirstOrDefault();
                     item.Favourite = valueOfFavourite == null ? false : true;
-                    
-                    var totaldue = assesmentlist.Where(z=>z.ServiceUserId==item.Id)
+
+                    var totaldue = assesmentlist.Where(z => z.ServiceUserId == item.Id)
                         .GroupBy(x => new { x.AssessmentTypeId })
                         .Select(y => new
                         {
@@ -723,36 +723,44 @@ namespace teamcare.web.app.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DocumentTabBind(Guid userid)
+        {
+            var serviceUsersDocument = await _serviceUserDocumentService.ListAllAsync();
+            var dTypes = EnumExtensions.GetEnumListItems<DocumentTypes>();
+            var model = new ServiceUsersDocumentsViewModel
+            {
+                ServiceUsersDocument = serviceUsersDocument,
+                UserId=userid,
+                CreateViewModel = new ServiceUsersDocumentsCreateViewModel
+                {
+                    DocumentCategories = dTypes.Where(x => x.Value != 1),
+                }
+            };
+
+            return PartialView("_ServiceUsersDocumentsManagerDataContent", model);
+        }
 
         [HttpGet]
-        public async Task<IActionResult> DocumentsManagerTabBind(string docId = "", string serviceUserId = "")
+        public async Task<IActionResult> DocumentCategoryBind(int catId, string serviceUserId = "")
         {
-            if (docId == null) { docId = ""; }
             if (serviceUserId == null) { serviceUserId = ""; }
-            var serviceUsersDocument = ("" + docId.Trim() == "") ? await _serviceUserDocumentService.ListAllAsync() : null;
-            var serviceUsersDocumentByID = ("" + docId.Trim() == "") ? null : await _serviceUserDocumentService.GetByIdAsync(new Guid(docId));
+            var serviceUsersDocument = await _serviceUserDocumentService.ListAllAsync();
             if (serviceUsersDocument != null && ("" + serviceUserId.ToString().Trim()) != "")
             {
-                serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId)).ToList();
+                serviceUsersDocument = serviceUsersDocument.Where(x => x.ServiceUserId == new Guid(serviceUserId) && (int)x.DocumentCategory == catId).ToList();
             }
 
             foreach (var item in serviceUsersDocument)
             {
                 item.PrePath = "/" + _azureStorageOptions.Container;
             }
-            var dTypes = EnumExtensions.GetEnumListItems<DocumentTypes>();
             var model = new ServiceUsersDocumentsViewModel
             {
-                ServiceUsersDocument = serviceUsersDocument,
-                ServiceUsersDocumentByID = serviceUsersDocumentByID,
-
-                CreateViewModel = new ServiceUsersDocumentsCreateViewModel
-                {
-                    DocumentCategories = dTypes.Where(x => x.Value != 1)
-                }
+                ServiceUsersDocument = serviceUsersDocument
             };
 
-            return PartialView("_ServiceUsersDocumentsManagerDataContent", model);
+            return PartialView("_ServiceUsersDocumentsManagerShow", model);
         }
 
 

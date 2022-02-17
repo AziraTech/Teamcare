@@ -1,7 +1,9 @@
 ﻿@model teamcare.web.app.ViewModels.ServiceUsersDocumentsViewModel
 @using teamcare.common.Helpers
 
-@{ Guid userId = new Guid(User.GetClaimValue(teamcare.common.ReferenceData.ClaimTypes.UserId)); }
+@{ Guid userId = new Guid(User.GetClaimValue(teamcare.common.ReferenceData.ClaimTypes.UserId));
+
+}
 
 <input type="hidden" id="editOrDelete" value="I" />
 <input type="hidden" id="editOrDeleteId" value="" />
@@ -11,7 +13,7 @@
         <div class="col-md-12 card-title m-5">
             <div class="col-md-12 d-flex flex-wrap flex-stack pb-0">
                 <div class="col-md-9 d-flex flex-wrap align-items-center my-1">
-                    <h3 class="fw-bolder me-5 my-1">Documents : @Model.ServiceUsersDocument.Count()</h3>
+                    <h3 class="fw-bolder me-5 my-1">Documents :</h3>
                 </div>
                 <div class="col-md-3 d-flex flex-wrap my-1  text-end">
                     <!--begin::Tab nav-->
@@ -51,52 +53,73 @@
 
 
                     @*<div class="col-md-2 align-center right text-end">
-                    <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
-                        <li class="nav-item m-0">
-                            <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_service_user_document_grid_pane">
-                                <span class="svg-icon svg-icon-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
-                                            <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                            <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                            <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                        </g>
-                                    </svg>
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item m-0">
-                            <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_service_user_document_table_pane">
-                                <span class="svg-icon svg-icon-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <rect x="0" y="0" width="24" height="24" />
-                                            <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
-                                            <rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
-                                        </g>
-                                    </svg>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>*@
+                            <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
+                                <li class="nav-item m-0">
+                                    <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_service_user_document_grid_pane">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
+                                                    <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                                    <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                                    <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item m-0">
+                                    <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_service_user_document_table_pane">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
+                                                    <rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>*@
 
 
                     <!--end::Tab nav-->
                 </div>
                 <!--end::Controls-->
-            </div> 
+            </div>
         </div>
     </div>
-    
-    @if (Model.ServiceUsersDocument.Count() > 0)
-    {
-        <div class="tab-content" id="ServiceUsersDocumentsTabContent">
-            <partial name="_ServiceUsersDocumentsManagerShow" model="Model" />
+
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header cursor-pointer">
+                <!--begin::Card title-->
+                <div class="card-title m-0">
+                    <input type="hidden" id="hdndocumenttab" value="@(Model.CreateViewModel.DocumentCategories.Where(r=>r.Text.ToLower()=="Correspondence".ToLower()).Select(r=>r.Value).FirstOrDefault())" />
+
+                    <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
+                        <!--begin::Nav item-->
+                        @foreach (var item in Model.CreateViewModel.DocumentCategories)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary me-6 @(item.Text.ToLower() == "Correspondence".ToLower() ? " active " : " ")" data-bs-toggle="tab" id="@item.Value" href="#tab_@item.Text.Replace(" ","")" onclick="setCurrentTabDocument('@item.Value')">@item.Text ( @Model.ServiceUsersDocument.Where(r=>(int)r.DocumentCategory==item.Value && r.ServiceUserId==Model.UserId).Count() )</a>
+                            </li>
+                        }
+                        <!--end::Nav item-->
+                    </ul>
+                </div>
+                <!--end::Card title-->
+            </div>
         </div>
 
-    }
+        <div class="tab-content" id="DocumentTabContent">
+        </div>
+
+        @*<div  id="ServiceUsersDocumentsTabContent">
+            <partial name="_ServiceUsersDocumentsManagerShow" model="Model" />
+        </div>*@
+
 </div>
 
 <div id="showServiceUserDocumentModel">

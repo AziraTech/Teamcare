@@ -23,6 +23,8 @@ namespace teamcare.web.app.ViewModels
         public IEnumerable<business.Models.ServiceUsersDocumentsModel> ServiceUsersDocument { get; set; }
         public business.Models.ServiceUsersDocumentsModel ServiceUsersDocumentByID { get; set; }
         public IEnumerable<business.Models.ServiceUserModel> ServiceUser { get; set; }
-        public business.Models.ServiceUserModel ServiceUserByID { get; set; }        
+        public business.Models.ServiceUserModel ServiceUserByID { get; set; }
+        public Guid UserId { get; set; }
+
     }
 }

@@ -120,7 +120,15 @@
                                 </div>
                                 <!--end::Input-->
                             </div>
-
+                            <div class="fv-row mb-10">
+                                <!--begin::Label-->
+                                <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+                                    <input class="form-check-input" type="checkbox" id="chkuIsConfiDoc">
+                                    &nbsp;&nbsp;
+                                    <span>Is Confidential Document</span>
+                                </label>
+                                <!--end::Label-->
+                            </div>
 
                             <div class="fv-row mb-10">
                                 <!--begin::Dropzone-->
@@ -156,11 +164,11 @@
                                     {
 
                                         @*<div class="dz-preview dz-file-preview" id="OldDocument">
-                                                <div class="dz-image">
-                                                    <img data-dz-thumbnail src="@(Model.ServiceUserDocument.DocumentFile !=null ? Model.PrePath +"/"+Model.ServiceUserDocument.DocumentFile.BlobName+"?width=200" : "../../media/avatars/blank.png" )" alt="Click me to remove the file." />
-                                                </div>
-                                                <a class="dz-remove" href="javascript:undefined;" onclick="RemoveDocument()">Remove file</a>
-                                            </div>*@
+                        <div class="dz-image">
+                            <img data-dz-thumbnail src="@(Model.ServiceUserDocument.DocumentFile !=null ? Model.PrePath +"/"+Model.ServiceUserDocument.DocumentFile.BlobName+"?width=200" : "../../media/avatars/blank.png" )" alt="Click me to remove the file." />
+                        </div>
+                        <a class="dz-remove" href="javascript:undefined;" onclick="RemoveDocument()">Remove file</a>
+                    </div>*@
                                     }
 
                                 </div>

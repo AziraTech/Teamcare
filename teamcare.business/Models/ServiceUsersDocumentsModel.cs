@@ -12,6 +12,7 @@ namespace teamcare.business.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DocumentTypes DocumentCategory { get; set; }
+        public bool IsConfidential { get; set; }
         public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
         public DocumentUploadModel DocumentFile => DocumentUploads?.OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefault(i => i.IsTemporary == false && i.DocumentType != (int)DocumentTypes.ProfilePhoto && i.ServiceUserDocumentId == this.Id);
