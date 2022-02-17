@@ -198,11 +198,23 @@ namespace teamcare.web.app.Controllers
             if (listOfUser != null)
             {
                 var listOfFavourite = await _favouriteServiceUserService.ListAllAsync();
+                var assesmentlist = await _assessmentService.ListAllAsync();
                 foreach (var item in listOfUser)
                 {
                     item.PrePath = "/" + _azureStorageOptions.Container;
                     var valueOfFavourite = listOfFavourite.Where(x => x.ServiceUserId == item.Id && x.UserId == (Guid)base.UserId).FirstOrDefault();
                     item.Favourite = valueOfFavourite == null ? false : true;
+                    
+                    var totaldue = assesmentlist.Where(z=>z.ServiceUserId==item.Id)
+                        .GroupBy(x => new { x.AssessmentTypeId })
+                        .Select(y => new
+                        {
+                            AssessmentType = y.Key.AssessmentTypeId,
+                            CreatedOn = y.Max(r => r.CreatedOn)
+                        });
+
+                    var filteres = totaldue.Where(x => x.CreatedOn.AddMonths(11) <= DateTimeOffset.UtcNow.DateTime).ToList();
+                    item.AssessmentDue = filteres != null ? filteres.Count : 0;
                 }
             }
 
@@ -908,8 +920,8 @@ namespace teamcare.web.app.Controllers
                 string html = "";
                 string[] filePath = Directory.GetFiles(_hostingEnv.WebRootPath, "HtmlsForPdf/missingPresonReportNew.html");
                 string pdfFile = Path.Combine(_hostingEnv.WebRootPath, "DownloadContent/missing_report.pdf");
-                string logoimage = Path.Combine(_hostingEnv.WebRootPath, "media/logos/apple-touch-icon.png");
-                string blankImage = Path.Combine(_hostingEnv.WebRootPath, "media/media/avatars/blank.png");
+                string logoimage = Request.Scheme + "://" + Request.Host.Value + "/media/logos/apple-touch-icon.png";
+                string blankImage = Request.Scheme + "://" + Request.Host.Value + "media/media/avatars/blank.png";
                 if (filePath.Length > 0)
                 {
                     using (StreamReader reader = new StreamReader(filePath[0]))
@@ -937,7 +949,7 @@ namespace teamcare.web.app.Controllers
                             html = html.Replace("{religion}", su.Religion.ToString());
                             html = html.Replace("{ethnicity}", su.Ethnicity.ToString());
                             html = html.Replace("{language}", su.PreferredFirstLanguage.ToString());
-                            html = html.Replace("{occupation}", su.CurrentPreviousOccupation ?? string.Empty);
+                            html = html.Replace("{occupation}", su.CurrentPreviousOccupation.ToString());
                             html = html.Replace("{nextOfKin}", nextOfKin?.FirstName + " " + nextOfKin?.MiddleName + " " + nextOfKin?.LastName);
                             html = html.Replace("{relationship}", nextOfKin?.Relationship.ToString());
                             html = html.Replace("{address}", nextOfKin?.Address);
@@ -971,7 +983,8 @@ namespace teamcare.web.app.Controllers
                                 },
                                 Objects = {
                                     new ObjectSettings() {
-                                        HtmlContent = html
+                                        HtmlContent = html,
+                                        UseLocalLinks=true
                                     }
                                 }
                             };

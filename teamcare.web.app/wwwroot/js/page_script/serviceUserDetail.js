@@ -18,13 +18,13 @@ let editorCommunication = null;
 let editorMobility = null;
 let editorNutrition = null;
 let editorContinence = null;
-let editorSkin= null;
-let editorBreathing= null;
+let editorSkin = null;
+let editorBreathing = null;
 
 let editorDrug = null;
 let editorAltered = null;
 let editorIndependent = null;
-let editorSummary  = null;
+let editorSummary = null;
 
 // Stepper lement
 var serviceUserId = $('#selectedId').val();
@@ -112,7 +112,6 @@ $(document).ready(function () {
 	$('#archive_submit').click(function () {
 
 		if ($('#ddlreason').val() != "") {
-
 			$.ajax({
 				type: "POST",
 				url: '/ServiceUsers/ArchiveUserReason',
@@ -395,7 +394,7 @@ async function setCurrentTabAssessment(id) {
 													// Get the plain text without HTML
 													const text = editorProfile.getData()
 
-													return text.trim().length>0;
+													return text.trim().length > 0;
 												},
 											},
 										}
@@ -534,7 +533,7 @@ async function setCurrentTabAssessment(id) {
 									})
 								}
 							}
-					);
+						);
 					iasfv3 = FormValidation
 						.formValidation(
 							iasstep3,
@@ -945,7 +944,7 @@ function iasckeditorInit() {
 		console.error(error);
 	});
 	ClassicEditor.create(document.querySelector('#ckeBehaviour')).then(newEditor => {
-		editorBehaviour= newEditor;
+		editorBehaviour = newEditor;
 	}).catch(error => {
 		console.error(error);
 	});
@@ -971,12 +970,12 @@ function iasckeditorInit() {
 		console.error(error);
 	});
 	ClassicEditor.create(document.querySelector('#ckeNutrition')).then(newEditor => {
-		editorNutrition= newEditor;
+		editorNutrition = newEditor;
 	}).catch(error => {
 		console.error(error);
 	});
 	ClassicEditor.create(document.querySelector('#ckeContinence')).then(newEditor => {
-		editorContinence= newEditor;
+		editorContinence = newEditor;
 	}).catch(error => {
 		console.error(error);
 	});
