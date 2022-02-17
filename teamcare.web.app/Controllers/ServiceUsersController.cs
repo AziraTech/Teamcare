@@ -937,7 +937,7 @@ namespace teamcare.web.app.Controllers
                             html = html.Replace("{religion}", su.Religion.ToString());
                             html = html.Replace("{ethnicity}", su.Ethnicity.ToString());
                             html = html.Replace("{language}", su.PreferredFirstLanguage.ToString());
-                            html = html.Replace("{occupation}", su.CurrentPreviousOccupation.ToString());
+                            html = html.Replace("{occupation}", su.CurrentPreviousOccupation ?? string.Empty);
                             html = html.Replace("{nextOfKin}", nextOfKin?.FirstName + " " + nextOfKin?.MiddleName + " " + nextOfKin?.LastName);
                             html = html.Replace("{relationship}", nextOfKin?.Relationship.ToString());
                             html = html.Replace("{address}", nextOfKin?.Address);

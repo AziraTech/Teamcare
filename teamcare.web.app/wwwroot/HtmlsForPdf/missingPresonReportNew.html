@@ -18,8 +18,9 @@
         }
 
         .header-img {
-            display: flex;
-            justify-content: center;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
         }
 
         .header-title {
@@ -28,29 +29,25 @@
         }
 
         .first-section {
-            width: Calc(100% - 2px);
+            width: 99.8%;
             clear: both;
             display: flex;
             border: 1px solid #000 !important;
         }
 
             .first-section .profile-detail {
-                width: 70%;
+                width: 100%;
             }
 
-                .first-section .profile-detail table {
-                    width: 100%;
-                    padding: 5px;
-                }
+                
 
                     .first-section .profile-detail table td {
                         font-weight: bold;
                     }
 
             .first-section .profile-img {
-                width: 30%;
-                display: flex;
-                justify-content: center;
+                width: 29%;
+                text-align: right;
             }
 
                 .first-section .profile-img img {
@@ -114,42 +111,56 @@
     </div>
     <div class='first-section'>
         <div class='profile-detail'>
-            <table>
+            <table width="100%">
                 <tr>
-                    <td>Name :</td>
-                    <td>{name}</td>
-                </tr>
-                <tr>
-                    <td>Known as :</td>
-                    <td>{knownAs}</td>
-                </tr>
-                <tr>
-                    <td>Date of birth :</td>
-                    <td>{dob}</td>
-                </tr>
-                <tr>
-                    <td>Legal Status :</td>
-                    <td>{legalStatus}</td>
-                </tr>
-                <tr>
-                    <td>NHS ID No. :</td>
-                    <td>{nhsID}</td>
-                </tr>
-                <tr>
-                    <td>National Insurance No. :</td>
-                    <td>{nationalInsurance}</td>
-                </tr>
-                <tr>
-                    <td>Date of Admission :</td>
-                    <td>{dateOfAdmission}</td>
-                </tr>
-                <tr>
-                    <td>Last seen :</td>
-                    <td>{dateLastSeen}</td>
+                    <td width="70%">
+                        <table width="100%">
+                            <tr>
+                                <td>Name :</td>
+                                <td>{name}</td>
+                            </tr>
+                            <tr>
+                                <td>Known as :</td>
+                                <td>{knownAs}</td>
+                            </tr>
+                            <tr>
+                                <td>Date of birth :</td>
+                                <td>{dob}</td>
+                            </tr>
+                            <tr>
+                                <td>Legal Status :</td>
+                                <td>{legalStatus}</td>
+                            </tr>
+                            <tr>
+                                <td>NHS ID No. :</td>
+                                <td>{nhsID}</td>
+                            </tr>
+                            <tr>
+                                <td>National Insurance No. :</td>
+                                <td>{nationalInsurance}</td>
+                            </tr>
+                            <tr>
+                                <td>Date of Admission :</td>
+                                <td>{dateOfAdmission}</td>
+                            </tr>
+                            <tr>
+                                <td>Last seen :</td>
+                                <td>{dateLastSeen}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="30%">
+                        <table width="100%">
+                            <tr>
+                                <td align="right">
+                                    <img src='{suImage}' width="122" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
             </table>
         </div>
-        <div class='profile-img'><img src='{suImage}' /></div>
     </div>
     <div class='second-section'>
         <div class='div-50'>
