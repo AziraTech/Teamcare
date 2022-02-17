@@ -27,7 +27,10 @@ namespace teamcare.data.Entities.ServiceUsers
         [Column("document_category")]
         public DocumentTypes DocumentCategory { get; set; }
 
-        public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
+        [Column("is_confidential")]
+		public bool IsConfidential { get; set; }
+
+		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
 
     }
 }
