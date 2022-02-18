@@ -171,7 +171,6 @@ $(document).ready(function () {
             url: '/ServiceUsers/generateMissingReport',
             data: { suId: suId, last_seen: $('#su_mp_last_seen').val(), additional_details: $('#su_mp_add_detail').val().trim() },
             success: function (data) {
-                debugger;
                 if (data && data.status == 1) {
                     var pdfByteArray = base64ToArrayBuffer(data.pdfByteArray);
                     saveByteArrayToPdf("missing_report", pdfByteArray);
@@ -320,6 +319,15 @@ async function setCurrentTabDocument(id) {
         success: function (data) {
             $('#DocumentTabContent').html('');
             $('#DocumentTabContent').html(data);
+            if (id > 0) {
+                let counter = $('#hdnSUDocumentCounter').val();
+                let currentTab = $('#hdnSUTab').val();
+                if (counter && currentTab) {
+                    $('#zzDocumentCounter' + currentTab).html(counter);
+                    $('#zzDocumentCounter' + currentTab)?.closest('ul')?.find('li a')?.removeClass('active');
+                    $('#zzDocumentCounter' + currentTab)?.closest('a')?.addClass('active');
+                }
+            }
         }
     });
 }
@@ -1515,7 +1523,6 @@ async function sendServiceUserDocument(dbType, docId) {
         };
     }
 
-
     await $.ajax({
         type: "POST",
         url: '/ServiceUsers/saveServiceUserDocument',
@@ -1532,9 +1539,7 @@ async function sendServiceUserDocument(dbType, docId) {
                 var edirOrNot = $('#editOrDelete').val();
                 $('#editOrDelete').val('I');
                 $('#editOrDeleteId').val('');
-
                 setCurrentTabDocument($('#sud-document_category').val());
-
                 //$('#ServiceUsersDocumentsTabContent').html('');
                 //$('#ServiceUsersDocumentsTabContent').html(data);
 

@@ -24,7 +24,9 @@ namespace teamcare.web.app.ViewModels
         public business.Models.ServiceUsersDocumentsModel ServiceUsersDocumentByID { get; set; }
         public IEnumerable<business.Models.ServiceUserModel> ServiceUser { get; set; }
         public business.Models.ServiceUserModel ServiceUserByID { get; set; }
-        public Guid UserId { get; set; }
+		public int CurrentTab { get; set; }
+		public int CurrentCounter { get; set; }
+		public Guid UserId { get; set; }
 
     }
 }

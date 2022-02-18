@@ -103,7 +103,7 @@
                         @foreach (var item in Model.CreateViewModel.DocumentCategories)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-active-primary me-6 @(item.Text.ToLower() == "Correspondence".ToLower() ? " active " : " ")" data-bs-toggle="tab" id="@item.Value" href="#tab_@item.Text.Replace(" ","")" onclick="setCurrentTabDocument('@item.Value')">@item.Text ( @Model.ServiceUsersDocument.Where(r=>(int)r.DocumentCategory==item.Value && r.ServiceUserId==Model.UserId).Count() )</a>
+                                <a class="nav-link text-active-primary me-6 @(item.Text.ToLower() == "Correspondence".ToLower() ? " active " : " ")" data-bs-toggle="tab" id="@item.Value" href="#tab_@item.Text.Replace(" ","")" onclick="setCurrentTabDocument('@item.Value')">@item.Text ( <zz id="@("zzDocumentCounter"+item.Value)">@Model.ServiceUsersDocument.Where(r=>(int)r.DocumentCategory==item.Value && r.ServiceUserId==Model.UserId).Count()</zz> )</a>
                             </li>
                         }
                         <!--end::Nav item-->

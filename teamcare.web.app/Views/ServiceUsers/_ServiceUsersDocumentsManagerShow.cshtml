@@ -1,22 +1,21 @@
 ﻿
 @model teamcare.web.app.ViewModels.ServiceUsersDocumentsViewModel
+@{
+	var a = Model;
+ }
 <!--begin::Tab Content-->
 <!--begin::Tab pane-->
-
+<input type="hidden" value="@Model.CurrentCounter" id="hdnSUDocumentCounter" />
+<input type="hidden" value="@Model.CurrentTab" id="hdnSUTab" />
 <div id="kt_service_user_document_grid_pane" class="tab-pane fade ">
-    <!--begin::Row-->        
-        <partial name="_ServiceUsersDocumentsManagerCard" model="Model" />    
-    <!--end::Row-->
+	<!--begin::Row-->
+	<partial name="_ServiceUsersDocumentsManagerCard" model="Model" />
+	<!--end::Row-->
 </div>
 <!--end::Tab pane-->
 <!--begin::Tab pane-->
-<div id="kt_service_user_document_table_pane" class="tab-pane fade show active">    
-    <partial name="_ServiceUsersDocumentsManagerList" model="Model" />                    
+<div id="kt_service_user_document_table_pane" class="tab-pane fade show active">
+	<partial name="_ServiceUsersDocumentsManagerList" model="Model" />
 </div>
 <!--end::Tab pane-->
 <!--end::Tab Content-->
-
-
-
-
-
