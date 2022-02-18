@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using teamcare.common.Enumerations;
@@ -24,6 +25,11 @@ namespace teamcare.data.Entities
 		[Column("user_role")]
 		[Required]
 		public UserRoles UserRole { get; set; }
+		
+		[ForeignKey("ServiceUser")]
+		[Column("service_user_id")]
+		public Guid? ServiceUserId { get; set; }
+		public virtual ServiceUser ServiceUser { get; set; }
 
 		[Column("position")]
 		public string Position { get; set; }
