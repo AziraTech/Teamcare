@@ -107,6 +107,7 @@ $(document).ready(function () {
                         LastName: $('#txtlastname').val(),
                         Email: $('#txtemail').val(),
                         UserRole: $('#txtrole').val(),
+                        ServiceUserId: $('#ddlserviceuser').val(),
                         Position: $('#txtposition').val(),
                         Mobile_No: $('#txtmobileno').val(),
                         Phone_No: $('#txtphoneno').val(),
@@ -183,6 +184,13 @@ $(document).ready(function () {
         });
     });
 
+    $('#txtrole').change(function () {
+        if ($('#txtrole').val() == "4") {
+            $('#dvserviceuser').show();
+        } else {
+            $('#dvserviceuser').hide();
+        }
+    });
 });
 
 function Cleardata() {

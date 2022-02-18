@@ -91,6 +91,26 @@
 
         </select>
     </div>
+    <div class="flex-column mb-7 fv-row" style="@(Model.User == null ? "display:none;" : "display:d-flex;")" id="dvserviceuser">
+        <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">
+            <span class="required">Service User</span>
+        </label>
+        <!--end::Label-->
+        <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select service user" data-allow-clear="true" name="serviceuser" id="ddlserviceuser">
+            <option selected></option>
+            @foreach (var group in Model.CreateViewModel.ServiceUserList)
+            {
+                if (Model.User != null && group.Value == Model.User.ServiceUserId.ToString())
+                {
+                    <option value="@group.Value" selected>@group.Text</option>
+                }
+                else
+                {
+                    <option value="@group.Value">@group.Text</option>
+                }
+            }
+        </select>
+    </div>
     <div class="d-flex flex-column mb-7 fv-row">
         <!--begin::Label-->
         <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2">

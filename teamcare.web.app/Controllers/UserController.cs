@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -20,20 +21,21 @@ namespace teamcare.web.app.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
+        private readonly IServiceUserService _serviceUserService;
         private readonly IFileUploadService _fileUploadService;
         private readonly IDocumentUploadService _documentUploadService;
         private readonly AzureStorageSettings _azureStorageOptions;
         private readonly IAuditService _auditService;
         public Guid userName;
 
-        public UserController(IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService)
+        public UserController(IUserService userService, IFileUploadService fileUploadService, IDocumentUploadService documentUploadService, IOptions<AzureStorageSettings> azureStorageOptions, IAuditService auditService, IServiceUserService serviceUserService)
         {
             _userService = userService;
             _fileUploadService = fileUploadService;
             _documentUploadService = documentUploadService;
             _azureStorageOptions = azureStorageOptions.Value;
             _auditService = auditService;
-
+            _serviceUserService = serviceUserService;
         }
 
         public async Task<IActionResult> Index()
@@ -46,6 +48,8 @@ namespace teamcare.web.app.Controllers
 
             var usersDetail = await _userService.ListAllAsync();
             foreach (var item in usersDetail) { item.PrePath = "/" + _azureStorageOptions.Container; }
+
+
             var model = new UserListViewModel
             {
                 Users = usersDetail,
@@ -54,7 +58,7 @@ namespace teamcare.web.app.Controllers
                 {
                     UserRoles = EnumExtensions.GetEnumListItems<UserRoles>(),
                     Title = EnumExtensions.GetEnumListItems<NameTitle>(),
-
+                    ServiceUserList = await ServiceUserList()
                 }
             };
 
@@ -75,6 +79,9 @@ namespace teamcare.web.app.Controllers
 
             var listOfUser = await _userService.GetByIdAsync(Id);
             listOfUser.PrePath = "/" + _azureStorageOptions.Container;
+
+
+
             var model = new UserListViewModel
             {
                 User = listOfUser,
@@ -83,10 +90,22 @@ namespace teamcare.web.app.Controllers
                 {
                     UserRoles = EnumExtensions.GetEnumListItems<UserRoles>(),
                     Title = EnumExtensions.GetEnumListItems<NameTitle>(),
+                    ServiceUserList = await ServiceUserList()
 
                 }
             };
             return View(model);
+
+        }
+
+        public async Task<List<SelectListItem>> ServiceUserList()
+        {
+            var listOfServiceuser = await _serviceUserService.ListAllAsync();
+            return listOfServiceuser.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.FirstName + " " + x.LastName
+            }).OrderBy(y => y.Text).ToList();
 
         }
 
@@ -113,11 +132,12 @@ namespace teamcare.web.app.Controllers
 
                         _auditService.Execute(async repository =>
                         {
-                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = userCreateViewModel.User.FirstName +" "+ userCreateViewModel.User.LastName+" has been created.", UserReference = "", CreatedBy = base.UserId });
+                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = userCreateViewModel.User.FirstName + " " + userCreateViewModel.User.LastName + " has been created.", UserReference = "", CreatedBy = base.UserId });
                         });
                     }
                     else
                     {
+                        userCreateViewModel.User.ServiceUserId = userCreateViewModel.User.UserRole == UserRoles.ServiceUser ? userCreateViewModel.User.ServiceUserId : null;
                         createdUser = await _userService.UpdateAsync(userCreateViewModel.User);
 
                         _auditService.Execute(async repository =>

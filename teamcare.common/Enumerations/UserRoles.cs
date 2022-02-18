@@ -9,7 +9,9 @@ namespace teamcare.common.Enumerations
         [Description("Admin")]
         Admin = 2,
         [Description("Staff Member")]
-        StaffMember = 3
+        StaffMember = 3,
+        [Description("Service User")]
+        ServiceUser = 4
     }
 }
 

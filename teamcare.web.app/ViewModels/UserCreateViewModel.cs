@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using teamcare.business.Models;
 using teamcare.common.Configuration;
@@ -20,6 +21,8 @@ namespace teamcare.web.app.ViewModels
         public string TempFileId { get; set; }
         public IEnumerable<EnumListItem> UserRoles { get; set; }
         public IEnumerable<EnumListItem> Title { get; set; }
+        public List<SelectListItem> ServiceUserList { get; set; }
+
 
     }
 }

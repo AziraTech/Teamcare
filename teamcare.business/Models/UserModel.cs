@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using teamcare.common.Enumerations;
 
@@ -15,6 +16,7 @@ namespace teamcare.business.Models
 		public string Email { get; set; }
 
 		public UserRoles UserRole { get; set; }
+		public Guid? ServiceUserId { get; set; }
 
 		public bool IsActive { get; set; }
 		public string Position { get; set; }
@@ -24,6 +26,7 @@ namespace teamcare.business.Models
 		
 		public string PrePath { get; set; }
 		public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
+		public ServiceUserModel ServiceUser { get; set; }
 
 		public DocumentUploadModel ProfilePhoto => DocumentUploads?.OrderByDescending(x=>x.CreatedOn).FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
 	}
