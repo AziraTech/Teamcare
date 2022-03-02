@@ -25,7 +25,8 @@ namespace teamcare.web.app.Controllers
                 {
                     FullName = loggedInUser.GetClaimValue(ClaimTypes.Name),
                     Email = loggedInUser.GetClaimValue(ClaimTypes.UserEmail),
-                    ProfilePhoto=loggedInUser.GetClaimValue(ClaimTypes.UserPhoto)
+                    ProfilePhoto=loggedInUser.GetClaimValue(ClaimTypes.UserPhoto),
+                    UserRole=loggedInUser.GetClaimValue(System.Security.Claims.ClaimTypes.Role)
                 };
             }
             return base.OnActionExecutionAsync(context, next);
@@ -69,6 +70,24 @@ namespace teamcare.web.app.Controllers
             {
                 var email = User.GetClaimValue(common.ReferenceData.ClaimTypes.UserEmail);
                 return email == null ? "" : email;
+            }
+        }
+
+        public string UserRole
+        {
+            get
+            {
+                var role = User.GetClaimValue(System.Security.Claims.ClaimTypes.Role);
+                return role == null ? "" : role;
+            }
+        }
+
+        public string ServiceUserId
+        {
+            get
+            {
+                var serviceUserId = User.GetClaimValue(common.ReferenceData.ClaimTypes.ServiceUserId);
+                return serviceUserId == null ? "" : serviceUserId;
             }
         }
     }

@@ -1,67 +1,72 @@
 ﻿@using teamcare.common.Helpers
 @using teamcare.web.app.Helpers
 @model teamcare.web.app.ViewModels.ServiceUsersDocumentsViewModel
+@using teamcare.common.ReferenceData
+@{
+	var user = ViewData[ViewDataKeys.UserProfile] as teamcare.web.app.ViewModels.UserProfile;
+	var isServiceUser = user.UserRole != teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString();
+}
 <!--begin::Col-->
 <!--begin::Card-->
 @if (Model.ServiceUsersDocument.Count() > 0)
 {
-    <div class="row g-6 g-xl-9">
-        @foreach (var item in Model.ServiceUsersDocument)
-        {        
-        <div class="col-md-3 col-xxl-3">
-            <a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0" onclick="UpdateServiceUserDocument('U','@item.Id')" data-document-id="@item.Id">
-                <div class="card card-flush">
-                    <!--begin::Card body-->
-                    <div class="card-body d-flex flex-center flex-column pt-12 p-9">
-                        <!--begin::Avatar-->
-                        <div class="symbol symbol-65px symbol-circle mb-5">
-                            @if (item.DocumentFile != null)
-                            {
-                                @if (item.DocumentFile.FileExtension.ToLower() == ".xls" || item.DocumentFile.FileExtension.ToLower() == ".xlsx")
-                                {
-                                    <img src="~/media/icons/xls.png" alt="image" />
-                                }
-                                else if (item.DocumentFile.FileExtension.ToLower() == ".pdf")
-                                {
-                                    <img src="~/media/icons/pdf.png" alt="image" />
-                                }
-                                else if (item.DocumentFile.FileExtension.ToLower() == ".png")
-                                {
-                                    <img src="~/media/icons/png.png" alt="image" />
-                                }
-                                else if (item.DocumentFile.FileExtension.ToLower() == ".jpg" ||
-                                         item.DocumentFile.FileExtension.ToLower() == ".gif" ||
-                                         item.DocumentFile.FileExtension.ToLower() == ".bmp" ||
-                                         item.DocumentFile.FileExtension.ToLower() == ".jpeg")
-                                {
-                                    <img src="~/media/icons/jpg.png" alt="image" />
-                                }
-                            }
-                            else
-                            {
-                                <img src="~/media/icons/file.png" alt="image" />
-                            }
-                        </div>
-                        <!--end::Avatar-->
-                        <!--begin::Name-->
-                        <div class="flex-row bold flex-center">
-                            @item.Title
-                        </div>
-                        <div class="flex-row flex-center">
-                            @item.DocumentCategory.GetEnumDescription()
-                        </div>
-                        <!--end::Name-->
-                        <!--begin::Position-->
-                        @if (item.DateReceived != null)
-                        {<div class="fw-bold text-gray-400 mb-6"> @item.DateReceived.GetDateFormat(true)</div>}
-                        <!--end::Position-->
-                    </div>
-                    <!--end::Card body-->
-                </div>
-                <!--end::Card-->
-            </a>
-        </div>        
-        }
-    </div>
+	<div class="row g-6 g-xl-9">
+		@foreach (var item in Model.ServiceUsersDocument)
+		{
+			<div class="col-md-3 col-xxl-3">
+				<a href="#" class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0" @(Html.Raw(!isServiceUser ? "" : $"onclick=\"UpdateServiceUserDocument('U','" + item.Id + "')\"")) data-document-id="@item.Id">
+					<div class="card card-flush">
+						<!--begin::Card body-->
+						<div class="card-body d-flex flex-center flex-column pt-12 p-9">
+							<!--begin::Avatar-->
+							<div class="symbol symbol-65px symbol-circle mb-5">
+								@if (item.DocumentFile != null)
+								{
+									@if (item.DocumentFile.FileExtension.ToLower() == ".xls" || item.DocumentFile.FileExtension.ToLower() == ".xlsx")
+									{
+										<img src="~/media/icons/xls.png" alt="image" />
+									}
+									else if (item.DocumentFile.FileExtension.ToLower() == ".pdf")
+									{
+										<img src="~/media/icons/pdf.png" alt="image" />
+									}
+									else if (item.DocumentFile.FileExtension.ToLower() == ".png")
+									{
+										<img src="~/media/icons/png.png" alt="image" />
+									}
+									else if (item.DocumentFile.FileExtension.ToLower() == ".jpg" ||
+											 item.DocumentFile.FileExtension.ToLower() == ".gif" ||
+											 item.DocumentFile.FileExtension.ToLower() == ".bmp" ||
+											 item.DocumentFile.FileExtension.ToLower() == ".jpeg")
+									{
+										<img src="~/media/icons/jpg.png" alt="image" />
+									}
+								}
+								else
+								{
+									<img src="~/media/icons/file.png" alt="image" />
+								}
+							</div>
+							<!--end::Avatar-->
+							<!--begin::Name-->
+							<div class="flex-row bold flex-center">
+								@item.Title
+							</div>
+							<div class="flex-row flex-center">
+								@item.DocumentCategory.GetEnumDescription()
+							</div>
+							<!--end::Name-->
+							<!--begin::Position-->
+							@if (item.DateReceived != null)
+							{<div class="fw-bold text-gray-400 mb-6"> @item.DateReceived.GetDateFormat(true)</div>}
+							<!--end::Position-->
+						</div>
+						<!--end::Card body-->
+					</div>
+					<!--end::Card-->
+				</a>
+			</div>
+		}
+	</div>
 }
 <!--end::Col-->

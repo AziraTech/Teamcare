@@ -23,7 +23,7 @@ using WkHtmlToPdfDotNet.Contracts;
 
 namespace teamcare.web.app.Controllers
 {
-    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin, UserRoles.StaffMember)]
+    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin, UserRoles.StaffMember,UserRoles.ServiceUser)]
     public class ServiceUsersController : BaseController
     {
         private readonly IServiceUserService _serviceUserService;
@@ -123,7 +123,7 @@ namespace teamcare.web.app.Controllers
                 Text = x.Name
             }).OrderBy(y => y.Text).ToList();
         }
-
+       
         public async Task<IActionResult> Detail(string id)
         {
 

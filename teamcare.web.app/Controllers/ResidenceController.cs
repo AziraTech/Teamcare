@@ -12,12 +12,13 @@ using teamcare.common.Enumerations;
 using teamcare.common.Helpers;
 using teamcare.common.ReferenceData;
 using teamcare.data.Entities;
+using teamcare.web.app.Helpers;
 using teamcare.web.app.ViewModels;
 
 
 namespace teamcare.web.app.Controllers
 {
-    [Authorize]
+    [AuthorizeEnum(UserRoles.GlobalAdmin, UserRoles.Admin, UserRoles.StaffMember)]
 
     public class ResidenceController : BaseController
     {

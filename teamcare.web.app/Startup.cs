@@ -27,6 +27,7 @@ using teamcare.business.Services;
 using teamcare.data.Entities;
 using WkHtmlToPdfDotNet.Contracts;
 using WkHtmlToPdfDotNet;
+using teamcare.common.Enumerations;
 
 namespace teamcare.web.app
 {
@@ -120,6 +121,7 @@ namespace teamcare.web.app
                                         new Claim(common.ReferenceData.ClaimTypes.UserId, currentUser.Id.ToString()),
                                         new Claim(common.ReferenceData.ClaimTypes.UserEmail, currentUser.Email),
                                         new Claim(common.ReferenceData.ClaimTypes.UserPhoto,currentUser.ProfilePhoto!=null? currentUser.ProfilePhoto?.BlobName:""),
+                                        new Claim(common.ReferenceData.ClaimTypes.ServiceUserId, currentUser.ServiceUserId.ToString()),
                                     };
                                     var appIdentity = new ClaimsIdentity(claims);
 

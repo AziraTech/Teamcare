@@ -1,240 +1,253 @@
 ﻿@model teamcare.web.app.ViewModels.ServiceUsersViewModel
+@using teamcare.common.Helpers
+@{
+
+	var userRole = User.GetClaimValue(System.Security.Claims.ClaimTypes.Role);
+}
 <!--begin::Tab Content-->
 <!--begin::Title-->
 @if (Model.ContactList.Count() == 0)
 {
-    <div class="d-flex align-items-center bg-light-danger rounded p-5 mb-10">
-        <span class="svg-icon svg-icon-danger me-5">
-            <!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
-            <span class="svg-icon svg-icon-1">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <rect x="0" y="0" width="24" height="24"></rect>
-                        <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
-                        <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
-                    </g>
-                </svg>
-            </span>
-            <!--end::Svg Icon-->
-        </span>
-        <!--begin::Title-->
-        <div class="flex-grow-1 me-2">
-            <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
-                No next of kins or emergency contacts are defined.
-            </a>
-        </div>
-        <!--end::Title-->
-    </div>
+	<div class="d-flex align-items-center bg-light-danger rounded p-5 mb-10">
+		<span class="svg-icon svg-icon-danger me-5">
+			<!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
+			<span class="svg-icon svg-icon-1">
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+						<rect x="0" y="0" width="24" height="24"></rect>
+						<path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
+						<rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
+					</g>
+				</svg>
+			</span>
+			<!--end::Svg Icon-->
+		</span>
+		<!--begin::Title-->
+		<div class="flex-grow-1 me-2">
+			<a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
+				No next of kins or emergency contacts are defined.
+			</a>
+		</div>
+		<!--end::Title-->
+	</div>
 
 }
 else
 {
-    if (Model.IsNextOfKin == true)
-    {
-        <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-10">
-            <span class="svg-icon svg-icon-warning me-5">
-                <!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
-                <span class="svg-icon svg-icon-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <rect x="0" y="0" width="24" height="24" />
-                            <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
-                            <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
-                        </g>
-                    </svg>
-                </span>
-                <!--end::Svg Icon-->
-            </span>
-            <!--begin::Title-->
-            <div class="flex-grow-1 me-2">
-                <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
-                    No next of kins are defined.
-                </a>
-            </div>
-            <!--end::Title-->
-        </div>
-    }
-    else if (Model.IsNoEmergency == true)
-    {
-        <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-10">
-            <span class="svg-icon svg-icon-warning me-5">
-                <!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
-                <span class="svg-icon svg-icon-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <rect x="0" y="0" width="24" height="24" />
-                            <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
-                            <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
-                        </g>
-                    </svg>
-                </span>
-                <!--end::Svg Icon-->
-            </span>
-            <!--begin::Title-->
-            <div class="flex-grow-1 me-2">
-                <a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
-                    No emergency contacts are defined.
-                </a>
-            </div>
-            <!--end::Title-->
-        </div>
-    }
+	if (Model.IsNextOfKin == true)
+	{
+		<div class="d-flex align-items-center bg-light-warning rounded p-5 mb-10">
+			<span class="svg-icon svg-icon-warning me-5">
+				<!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
+				<span class="svg-icon svg-icon-1">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							<rect x="0" y="0" width="24" height="24" />
+							<path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+							<rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+						</g>
+					</svg>
+				</span>
+				<!--end::Svg Icon-->
+			</span>
+			<!--begin::Title-->
+			<div class="flex-grow-1 me-2">
+				<a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
+					No next of kins are defined.
+				</a>
+			</div>
+			<!--end::Title-->
+		</div>
+	}
+	else if (Model.IsNoEmergency == true)
+	{
+		<div class="d-flex align-items-center bg-light-warning rounded p-5 mb-10">
+			<span class="svg-icon svg-icon-warning me-5">
+				<!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
+				<span class="svg-icon svg-icon-1">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							<rect x="0" y="0" width="24" height="24" />
+							<path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000" />
+							<rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
+						</g>
+					</svg>
+				</span>
+				<!--end::Svg Icon-->
+			</span>
+			<!--begin::Title-->
+			<div class="flex-grow-1 me-2">
+				<a href="#" class="fw-bolder text-gray-800 text-hover-primary fs-6">
+					No emergency contacts are defined.
+				</a>
+			</div>
+			<!--end::Title-->
+		</div>
+	}
 
 }
 
 <div class="d-flex flex-wrap flex-stack pb-7">
 
-    <div class="d-flex flex-wrap align-items-center my-1">
-        <h3 class="fw-bolder me-5 my-1"> Contact (@Model.ContactList.Count())</h3>
-    </div>
-    <!--end::Title-->
-    <!--begin::Controls-->
-    <div class="d-flex flex-wrap my-1">
-        <!--begin::Tab nav-->
-        <ul class="nav nav-pills me-6 mb-2 mb-sm-0">
-            <li class="nav-item m-0">
-                <a href="javaScript:void(0);" class="btn btn-sm btn-primary align-self-center me-3" id="btncreatecontact" onclick="openAddEditContactModal('')">Create</a>
-            </li>
-            <li class="nav-item m-0">
-                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_contact_card_pane">
-                    <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-4-blocks-2.svg-->
-                    <span class="svg-icon svg-icon-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
-                                <rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                <rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                                <rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
-                            </g>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                </a>
-            </li>
-            <li class="nav-item m-0">
-                <a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_project_contact_table_pane">
-                    <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-horizontal.svg-->
-                    <span class="svg-icon svg-icon-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
-                                <rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
-                            </g>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                </a>
-            </li>
-        </ul>
-        <!--end::Tab nav-->
-    </div>
-    <!--end::Controls-->
+	<div class="d-flex flex-wrap align-items-center my-1">
+		<h3 class="fw-bolder me-5 my-1"> Contact (@Model.ContactList.Count())</h3>
+	</div>
+	<!--end::Title-->
+	<!--begin::Controls-->
+	<div class="d-flex flex-wrap my-1">
+		<!--begin::Tab nav-->
+		<ul class="nav nav-pills me-6 mb-2 mb-sm-0">
+			@if (userRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
+			{
+				<li class="nav-item m-0">
+					<a href="javaScript:void(0);" class="btn btn-sm btn-primary align-self-center me-3" id="btncreatecontact" onclick="openAddEditContactModal('')">Create</a>
+				</li>
+			}
+
+			<li class="nav-item m-0">
+				<a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_contact_table_pane">
+					<!--begin::Svg Icon | path: icons/duotone/Layout/Layout-horizontal.svg-->
+					<span class="svg-icon svg-icon-2">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+								<rect x="0" y="0" width="24" height="24" />
+								<rect fill="#000000" opacity="0.3" x="4" y="5" width="16" height="6" rx="1.5" />
+								<rect fill="#000000" x="4" y="13" width="16" height="6" rx="1.5" />
+							</g>
+						</svg>
+					</span>
+					<!--end::Svg Icon-->
+				</a>
+			</li>
+			<li class="nav-item m-0">
+				<a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary" data-bs-toggle="tab" href="#kt_project_contact_card_pane">
+					<!--begin::Svg Icon | path: icons/duotone/Layout/Layout-4-blocks-2.svg-->
+					<span class="svg-icon svg-icon-2">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+								<rect x="5" y="5" width="5" height="5" rx="1" fill="#000000" />
+								<rect x="14" y="5" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+								<rect x="5" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+								<rect x="14" y="14" width="5" height="5" rx="1" fill="#000000" opacity="0.3" />
+							</g>
+						</svg>
+					</span>
+					<!--end::Svg Icon-->
+				</a>
+			</li>
+		</ul>
+		<!--end::Tab nav-->
+	</div>
+	<!--end::Controls-->
 </div>
 
 <div class="tab-content">
-    <!--begin::Tab pane-->
-    <div id="kt_project_contact_card_pane" class="tab-pane fade show active">
-        <!--begin::Row-->
-        <div class="row g-6 g-xl-9">
-            @if (Model != null)
-            {
-                <partial name="../Contact/_ContactCard" model="Model" />
-            }
-        </div>
-        <!--end::Row-->
-    </div>
-    <!--end::Tab pane-->
-    <!--begin::Tab pane-->
-    <div id="kt_project_contact_table_pane" class="tab-pane fade">
-        <!--begin::Card-->
-        <div class="card card-flush">
-            <!--begin::Card body-->
-            <div class="card-body pt-0">
-                <!--begin::Table container-->
-                <div class="table-responsive">
-                    <!--begin::Table-->
-                    <table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
-                        <!--begin::Head-->
-                        <thead class="fs-7 text-gray-400 text-uppercase">
-                            <tr>
-                                <th class="min-w-250px">Name</th>
-                                <th class="min-w-250px">Email</th>
-                                <th class="min-w-250px">Mobile No.</th>
-                                <th class="min-w-50px text-end">Details</th>
-                            </tr>
-                        </thead>
-                        <!--end::Head-->
-                        <!--begin::Body-->
-                        <tbody class="fs-6">
-                            @if (Model != null)
-                            {
-                                foreach (var item in Model.ContactList)
-                                {
-                                    <partial name="../Contact/_ContactListItem" model="item" />
-                                }
-                            }
-                        </tbody>
-                        <!--end::Body-->
-                    </table>
-                    <!--end::Table-->
-                </div>
-                <!--end::Table container-->
-            </div>
-            <!--end::Card body-->
-        </div>
-        <!--end::Card-->
-    </div>
-    <!--end::Tab pane-->
+	<!--begin::Tab pane-->
+	<div id="kt_project_contact_card_pane" class="tab-pane fade">
+		<!--begin::Row-->
+		<div class="row g-6 g-xl-9">
+			@if (Model != null)
+			{
+				<partial name="../Contact/_ContactCard" model="Model" />
+			}
+		</div>
+		<!--end::Row-->
+	</div>
+	<!--end::Tab pane-->
+	<!--begin::Tab pane-->
+	<div id="kt_project_contact_table_pane" class="tab-pane fade show active">
+		<!--begin::Card-->
+		<div class="card card-flush">
+			<!--begin::Card body-->
+			<div class="card-body pt-0">
+				<!--begin::Table container-->
+				<div class="table-responsive">
+					<!--begin::Table-->
+					<table id="kt_project_users_table" class="table table-row-bordered table-row-dashed gy-4 align-middle fw-bolder">
+						<!--begin::Head-->
+						<thead class="fs-7 text-gray-400 text-uppercase">
+							<tr>
+								<th class="min-w-250px">Name</th>
+								<th class="min-w-250px">Email</th>
+								<th class="min-w-250px">Mobile No.</th>
+								<th class="min-w-50px text-end">Address</th>
+								<th class="min-w-50px text-end">Details</th>
+							</tr>
+						</thead>
+						<!--end::Head-->
+						<!--begin::Body-->
+						<tbody class="fs-6">
+							@if (Model != null)
+							{
+								foreach (var item in Model.ContactList)
+								{
+									<partial name="../Contact/_ContactListItem" model="item" />
+								}
+							}
+						</tbody>
+						<!--end::Body-->
+					</table>
+					<!--end::Table-->
+				</div>
+				<!--end::Table container-->
+			</div>
+			<!--end::Card body-->
+		</div>
+		<!--end::Card-->
+	</div>
+	<!--end::Tab pane-->
 </div>
 <!--end::Tab Content-->
 <!-- ------------------------------------- Model Portion ------------------------------------- -->
 <!--begin::Modals-->
 <!--begin::Modal - Create Contact-->
 <div class="modal fade" id="modalAddEditContact" data-backdrop="false" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-900px">
-        <!--begin::Modal content-->
-        <input type="hidden" id="hdnsrvuserid" value="@Model.ServiceUserByID.Id" />
+	<!--begin::Modal dialog-->
+	<div class="modal-dialog modal-dialog-centered mw-900px">
+		<!--begin::Modal content-->
+		<input type="hidden" id="hdnsrvuserid" value="@Model.ServiceUserByID.Id" />
 
-        <div class="modal-content" id="divAddEditContact">
-        </div>
-        <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
+		<div class="modal-content" id="divAddEditContact">
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal dialog-->
 </div>
 <!--end::Modal - Create Contact-->
 <!--end::Modals-->
 <!--begin::Modals-->
 <!--begin::Modal - Contact Details -->
 <div class="modal fade" id="kt_modal_contact_details" data-backdrop="false" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-900px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-            <!--begin::Modal header-->
-            <div class="modal-header">
-                <!--begin::Modal title-->
-                <h2>Contact Details</h2>
-                <!--end::Modal title-->
-                <!--begin::Close-->
-                <div class="d-flex mb-4" style="padding-left:501px;">
-                    <a href="javaScript:void(0);" class="btn btn-sm btn-primary me-3" id="btneditcontact" title="Edit Contact"><i class="bi bi-pencil-square"></i></a>
-                    <a href="#" class="btn btn-sm btn-danger" id="btndeletecontact" title="Delete Contact" onclick="DeleteContact(this, '@Model.ServiceUserByID.Id')"><i class="bi bi-trash"></i></a>
-                </div>
-                <!--end::Close-->
-            </div>
-            <!--end::Modal header-->
-            <!--begin::Modal body-->
-            <div class="modal-body scroll-y py-lg-10 px-lg-10">
-                <input type="hidden" id="hdncontactid" />
-                <partial name="../Contact/_ContactDetails" />
-            </div>
-            <!--end::Modal body-->
-        </div>
-        <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
+	<!--begin::Modal dialog-->
+	<div class="modal-dialog modal-dialog-centered mw-900px">
+		<!--begin::Modal content-->
+		<div class="modal-content">
+			<!--begin::Modal header-->
+			<div class="modal-header">
+				<!--begin::Modal title-->
+				<h2>Contact Details</h2>
+				<!--end::Modal title-->
+				<!--begin::Close-->
+				@if (userRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
+				{
+					<div class="d-flex mb-4" style="padding-left:501px;">
+						<a href="javaScript:void(0);" class="btn btn-sm btn-primary me-3" id="btneditcontact" title="Edit Contact"><i class="bi bi-pencil-square"></i></a>
+						<a href="#" class="btn btn-sm btn-danger" id="btndeletecontact" title="Delete Contact" onclick="DeleteContact(this, '@Model.ServiceUserByID.Id')"><i class="bi bi-trash"></i></a>
+					</div>
+				}
+				<!--end::Close-->
+			</div>
+			<!--end::Modal header-->
+			<!--begin::Modal body-->
+			<div class="modal-body scroll-y py-lg-10 px-lg-10">
+				<input type="hidden" id="hdncontactid" />
+				<partial name="../Contact/_ContactDetails" />
+			</div>
+			<!--end::Modal body-->
+		</div>
+		<!--end::Modal content-->
+	</div>
+	<!--end::Modal dialog-->
 </div>
 <!--end::Modal - Contact Details -->
 <!--end::Modals-->

@@ -101,9 +101,12 @@
                                     <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Action</div>
                                 </div>
                                 <!--end::Heading-->
-                                <div class="menu-item px-3">
-									<a href="#" class="menu-link px-3" onclick="jsOpenMissingPersonForm(this)" suid="@Model.ServiceUserByID.Id">Missing Person</a>
+                                @if (userRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
+								{
+                                    <div class="menu-item px-3">
+									    <a href="#" class="menu-link px-3" onclick="jsOpenMissingPersonForm(this)" suid="@Model.ServiceUserByID.Id">Missing Person</a>
                                     </div>
+								}
                                 <!--begin::Menu item-->
 
                                 @if (userRole == teamcare.common.Enumerations.UserRoles.GlobalAdmin.ToString() || userRole == teamcare.common.Enumerations.UserRoles.Admin.ToString())
@@ -188,9 +191,12 @@
                     <h3 class="fw-bolder m-0">Profile Details</h3>
                 </div>
                 <!--end::Card title-->
-                <!--begin::Action-->
-                <a href="javaScript:void(0);" class="btn btn-primary align-self-center" id="btneditprofile" onclick="openAddEditServiceUserModal('@Model.ServiceUserByID.Id')">Edit Profile</a>
-                <!--end::Action-->
+                @if (userRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
+				{
+                    <!--begin::Action-->
+                    <a href="javaScript:void(0);" class="btn btn-primary align-self-center" id="btneditprofile" onclick="openAddEditServiceUserModal('@Model.ServiceUserByID.Id')">Edit Profile</a>
+                    <!--end::Action-->
+				}
             </div>
             <!--begin::Card header-->
             <!--begin::Card body-->

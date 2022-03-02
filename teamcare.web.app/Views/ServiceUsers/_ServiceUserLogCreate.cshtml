@@ -1,32 +1,39 @@
 ﻿@model teamcare.web.app.ViewModels.ServiceUsersViewModel
+
+@using teamcare.common.ReferenceData
+@{
+	var user = ViewData[ViewDataKeys.UserProfile] as teamcare.web.app.ViewModels.UserProfile;
+}
 <input type="hidden" id="selectedId" value="@if (Model.ServiceUserByID != null) { @Model.ServiceUserByID.Id; }" />
 <input type="hidden" id="editOrDelete" value="I" />
 <input type="hidden" id="editOrDeleteId" value="" />
 @*<div class="d-flex flex-column">
-        <div class="d-flex align-items-center mb-2">
-            <span class="mb-1 m-1">Add Log Entry for </span><a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1 cursor-pointer">@Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName</a>
-        </div>
-    </div>*@
-<div class="d-flex flex-column mb-7 fv-row">
-    <!--begin::Label-->
-    <label class="d-flex align-items-center fs-6 fw-bold form-label mb-2"><span class="required">Log Message</span></label>
-    <!--end::Label-->
-    <textarea type="text" class="form-control form-control-solid" rows="2" cols="150" name="sul-log_message" id="sul-log_message"></textarea>
-</div>
-<!--begin::Actions-->
-<br />
-<br />
-<br />
-<div class="d-flex align-items-center py-3 py-md-1">
-    <!--begin::Wrapper-->
-    <div class="me-4">
-        <!--begin::Menu-->
-        <button type="submit" data-action="actionServiceUserLog" id="new_card_service_user_log_submit"
-                class="btn btn-primary btn-sm align-self-center" onclick="sendServiceUserLog('@Model.ServiceUserByID.Id', 'sul-log_message', 'I', null)">
-            <span class="indicator-label">Send</span>
-            <span class="indicator-progress">Please wait...<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-        </button>  
-    </div> 
-</div>
-
+		<div class="d-flex align-items-center mb-2">
+			<span class="mb-1 m-1">Add Log Entry for </span><a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bolder me-1 cursor-pointer">@Model.ServiceUserByID.FirstName @Model.ServiceUserByID.LastName</a>
+		</div>
+	</div>*@
+@if (user.UserRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
+{
+	<div class="d-flex flex-column mb-7 fv-row">
+		<!--begin::Label-->
+		<label class="d-flex align-items-center fs-6 fw-bold form-label mb-2"><span class="required">Log Message</span></label>
+		<!--end::Label-->
+		<textarea type="text" class="form-control form-control-solid" rows="2" cols="150" name="sul-log_message" id="sul-log_message"></textarea>
+	</div>
+	<!--begin::Actions-->
+	<br />
+	<br />
+	<br />
+	<div class="d-flex align-items-center py-3 py-md-1">
+		<!--begin::Wrapper-->
+		<div class="me-4">
+			<!--begin::Menu-->
+			<button type="submit" data-action="actionServiceUserLog" id="new_card_service_user_log_submit"
+					class="btn btn-primary btn-sm align-self-center" onclick="sendServiceUserLog('@Model.ServiceUserByID.Id', 'sul-log_message', 'I', null)">
+				<span class="indicator-label">Send</span>
+				<span class="indicator-progress">Please wait...<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+			</button>
+		</div>
+	</div>
+}
 <!--end::Actions-->

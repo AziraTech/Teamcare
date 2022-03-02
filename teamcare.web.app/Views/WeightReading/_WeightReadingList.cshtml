@@ -1,6 +1,9 @@
 ﻿@using teamcare.web.app.Helpers;
 @model teamcare.web.app.ViewModels.WeightReadingViewModel
-
+@using teamcare.common.ReferenceData
+@{
+	var user = ViewData[ViewDataKeys.UserProfile] as teamcare.web.app.ViewModels.UserProfile;
+}
 
 <div class="d-flex flex-wrap flex-stack pb-7">
 	<div class="d-flex flex-wrap align-items-center my-1">
@@ -70,7 +73,10 @@
 				</div>
 			</li>
 			<li class="nav-item m-0">
-				<a href="javaScript:void(0);" class="btn btn-primary btn-sm align-self-center me-3" id="btncreate" onclick="openAddEditWeightModal('')">Create</a>
+				@if (user.UserRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
+				{
+					<a href="javaScript:void(0);" class="btn btn-primary btn-sm align-self-center me-3" id="btncreate" onclick="openAddEditWeightModal('')">Create</a>
+				}
 			</li>
 			<li class="nav-item m-0">
 				<a class="btn btn-sm btn-icon btn-light btn-color-muted btn-active-primary me-3 active" data-bs-toggle="tab" href="#kt_project_weight_card_pane">
@@ -136,7 +142,10 @@
 										<td>@item.Weight</td>
 										<td class="text-end">
 											@*  <a href="javaScript:void(0);" class="btn btn-sm btn-primary me-3" id="btnedit" title="Edit Blood Pressure Reading" onclick="openAddEditBloodModal('@item.Id')"><i class="bi bi-pencil-square"></i></a>*@
-											<a href="#" class="btn btn-sm btn-danger" id="btndelete" title="Delete Weight Reading" onclick="DeleteWeightReading(this, '@item.Id')"><i class="bi bi-trash"></i></a>
+											@if (user.UserRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
+											{
+												<a href="#" class="btn btn-sm btn-danger" id="btndelete" title="Delete Weight Reading" onclick="DeleteWeightReading(this, '@item.Id')"><i class="bi bi-trash"></i></a>
+											}
 										</td>
 									</tr>
 								}
