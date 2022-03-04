@@ -15,5 +15,7 @@ namespace teamcare.web.app.ViewModels
         }
         public WeightReadingModel WeightReading { get; set; }
         public IEnumerable<business.Models.WeightReadingModel> WeightReadingList { get; set; }
+        public string NotifyStatus { get; set; }
+        public int DueDays { get; set; }
     }
 }

@@ -42,10 +42,27 @@ namespace teamcare.web.app.Controllers
             {
                 var weightreadingdata = await _weightReadingService.ListFiltered(id, daterange);
 
+                string notify = "success";
+                int days = 0;
+                if (weightreadingdata == null)
+                {
+                    notify = "warning";
+                }
+                else
+                {
+                    var lastReading = weightreadingdata.OrderByDescending(x => x.TestDate).FirstOrDefault();
 
+                    days = Convert.ToInt32((DateTime.Now.Date - lastReading.TestDate.Date).TotalDays);
+                    if (days > 7)
+                    {
+                        notify = "danger";
+                    }
+                }
                 var model = new WeightReadingViewModel
                 {
-                    WeightReadingList = weightreadingdata.ToList()
+                    WeightReadingList = weightreadingdata.ToList(),
+                    NotifyStatus = notify,
+                    DueDays = days - 7
                 };
 
                 return PartialView("~/Views/WeightReading/_WeightReadingList.cshtml", model);

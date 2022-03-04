@@ -15,5 +15,7 @@ namespace teamcare.web.app.ViewModels
         }
         public BloodPressureReadingModel BloodPressureReading { get; set; }
         public IEnumerable<business.Models.BloodPressureReadingModel> BloodPressureReadingList { get; set; }
+        public string NotifyStatus { get; set; }
+        public int DueDays { get; set; }
     }
 }

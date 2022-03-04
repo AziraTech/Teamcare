@@ -154,7 +154,7 @@
 			<div class="modal-body flex-row-fluid scroll-y py-lg-10 px-lg-10">
 				@{
 					var optionGroup = Model.AssessmentType.Where(r => r.Id == Model.AssessmentTypeId).Select(a => a.OptionsGroup).FirstOrDefault();
-					var firstSkill = Model.LivingSkills.Where(x => x.GroupId == Model.SkillGroups?.FirstOrDefault().Id)?.FirstOrDefault();
+					var firstSkill = Model.LivingSkills.Where(x => x.GroupId == Model.SkillGroups?.FirstOrDefault()?.Id)?.FirstOrDefault();
 				}
 				@if (optionGroup == AssessmentOptionsGroup.InitialAssessment)
 				{

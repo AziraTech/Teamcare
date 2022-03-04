@@ -12,171 +12,189 @@ using teamcare.web.app.ViewModels;
 
 namespace teamcare.web.app.Controllers
 {
-    public class BloodPressureController : BaseController
-    {
-        private readonly IBloodPressureReadingService _bloodPressureReadingService;
-        private readonly IAuditService _auditService;
-        private readonly IServiceUserService _serviceUserService;
+	public class BloodPressureController : BaseController
+	{
+		private readonly IBloodPressureReadingService _bloodPressureReadingService;
+		private readonly IAuditService _auditService;
+		private readonly IServiceUserService _serviceUserService;
 
 
-        public BloodPressureController(IBloodPressureReadingService bloodPressureReadingService,
-                                          IAuditService auditService,
-                                          IServiceUserService serviceUserService
-                                     )
-        {
-            _bloodPressureReadingService = bloodPressureReadingService;
-            _auditService = auditService;
-            _serviceUserService = serviceUserService;
+		public BloodPressureController(IBloodPressureReadingService bloodPressureReadingService,
+										  IAuditService auditService,
+										  IServiceUserService serviceUserService
+									 )
+		{
+			_bloodPressureReadingService = bloodPressureReadingService;
+			_auditService = auditService;
+			_serviceUserService = serviceUserService;
 
-        }
+		}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		public IActionResult Index()
+		{
+			return View();
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> GetBloodReadingData(Guid id, string daterange)
-        {
-            try
-            {
-                var bloodreadingdata = await _bloodPressureReadingService.ListAllSortedFiltered(id, daterange);
+		[HttpGet]
+		public async Task<IActionResult> GetBloodReadingData(Guid id, string daterange)
+		{
+			try
+			{
+				var bloodreadingdata = await _bloodPressureReadingService.ListAllSortedFiltered(id, daterange);
+				string notify = "success";
+				int days = 0;
+				if (bloodreadingdata == null)
+				{
+					notify = "warning";
+				}
+				else
+				{
+					var lastReading = bloodreadingdata.OrderByDescending(x => x.TestDate).FirstOrDefault();
 
-                var model = new BloodPressureReadingViewModel
-                {
-                    BloodPressureReadingList = bloodreadingdata.ToList()
-                };
+					days = Convert.ToInt32((DateTime.Now.Date - lastReading.TestDate.Date).TotalDays);
+					if (days > 7)
+					{
+						notify = "danger";
+					}
+				}
+				var model = new BloodPressureReadingViewModel
+				{
+					BloodPressureReadingList = bloodreadingdata.ToList(),
+					NotifyStatus = notify,
+					DueDays = days - 7
 
-                return PartialView("~/Views/BloodPressureReading/_BloodPressureReadingList.cshtml", model);
+				};
 
-            }
-            catch (Exception ex)
-            {
-                return Json(new { statuscode = 3, message = ex.Message });
-            }
-        }
+				return PartialView("~/Views/BloodPressureReading/_BloodPressureReadingList.cshtml", model);
 
-        [HttpGet]
-        public async Task<IActionResult> GetBloodReadingChartData(Guid id, string daterange)
-        {
-            try
-            {
-                var bloodreadingdata = await _bloodPressureReadingService.ListAllSortedFiltered(id, daterange);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { statuscode = 3, message = ex.Message });
+			}
+		}
 
-                if (bloodreadingdata != null && bloodreadingdata.Count() > 0)
-                {
-                    bloodreadingdata = bloodreadingdata.GroupBy(x => x.TestDate).Select(y => y.OrderByDescending(z => z.TestDate).FirstOrDefault()).ToList();
-                    var blooddata = bloodreadingdata?.OrderBy(x => x.TestDate)?.Take(20).Select(y => new
-                    {
-                        TestDate = y.TestDate.ToString("dd-MMM-yyyy"),
-                        SystolicReading = y.SystolicReading,
-                        DiastolicReading = y.DiastolicReading,
-                        Pulse = y.Pulse
-                    }).ToList();
+		[HttpGet]
+		public async Task<IActionResult> GetBloodReadingChartData(Guid id, string daterange)
+		{
+			try
+			{
+				var bloodreadingdata = await _bloodPressureReadingService.ListAllSortedFiltered(id, daterange);
 
-                    return Json(new { statuscode = 1, data = blooddata });
-                }
-                return Json(new { statuscode = 0, data = "" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { statuscode = 3, message = ex.Message });
-            }
-        }
+				if (bloodreadingdata != null && bloodreadingdata.Count() > 0)
+				{
+					bloodreadingdata = bloodreadingdata.GroupBy(x => x.TestDate).Select(y => y.OrderByDescending(z => z.TestDate).FirstOrDefault()).ToList();
+					var blooddata = bloodreadingdata?.OrderBy(x => x.TestDate)?.Take(20).Select(y => new
+					{
+						TestDate = y.TestDate.ToString("dd-MMM-yyyy"),
+						SystolicReading = y.SystolicReading,
+						DiastolicReading = y.DiastolicReading,
+						Pulse = y.Pulse
+					}).ToList();
 
-        [HttpPost]
-        public async Task<IActionResult> BloodModalBind(string id)
-        {
-            try
-            {
-                var model = new BloodPressureReadingViewModel();
+					return Json(new { statuscode = 1, data = blooddata });
+				}
+				return Json(new { statuscode = 0, data = "" });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { statuscode = 3, message = ex.Message });
+			}
+		}
 
-                if (!string.IsNullOrEmpty(id))
-                {
-                    var bloodData = await _bloodPressureReadingService.GetByIdAsync(new Guid(id));
+		[HttpPost]
+		public async Task<IActionResult> BloodModalBind(string id)
+		{
+			try
+			{
+				var model = new BloodPressureReadingViewModel();
 
-                    model = new BloodPressureReadingViewModel
-                    {
-                        BloodPressureReading = bloodData
-                    };
-                }
-                else
-                {
-                    model = new BloodPressureReadingViewModel
-                    {
-                        BloodPressureReading = new BloodPressureReadingModel()
-                    };
-                }
-                return PartialView("~/Views/BloodPressureReading/_CreateBloodPressureReading.cshtml", model);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { statuscode = 3, message = ex.Message });
-            }
-        }
+				if (!string.IsNullOrEmpty(id))
+				{
+					var bloodData = await _bloodPressureReadingService.GetByIdAsync(new Guid(id));
 
-        [HttpPost]
-        public async Task<IActionResult> Save(BloodPressureReadingViewModel bloodPressureReadingViewModel)
-        {
-            try
-            {
-                if (bloodPressureReadingViewModel?.BloodPressureReading != null)
-                {
-                    var serviceuser = await _serviceUserService.GetByIdAsync(bloodPressureReadingViewModel.BloodPressureReading.ServiceUserId);
+					model = new BloodPressureReadingViewModel
+					{
+						BloodPressureReading = bloodData
+					};
+				}
+				else
+				{
+					model = new BloodPressureReadingViewModel
+					{
+						BloodPressureReading = new BloodPressureReadingModel()
+					};
+				}
+				return PartialView("~/Views/BloodPressureReading/_CreateBloodPressureReading.cshtml", model);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { statuscode = 3, message = ex.Message });
+			}
+		}
 
-                    var bloodPressureReading = new BloodPressureReadingModel();
+		[HttpPost]
+		public async Task<IActionResult> Save(BloodPressureReadingViewModel bloodPressureReadingViewModel)
+		{
+			try
+			{
+				if (bloodPressureReadingViewModel?.BloodPressureReading != null)
+				{
+					var serviceuser = await _serviceUserService.GetByIdAsync(bloodPressureReadingViewModel.BloodPressureReading.ServiceUserId);
 
-                    var oldblooddata = await _bloodPressureReadingService.ListAllAsync();
+					var bloodPressureReading = new BloodPressureReadingModel();
 
-                    var IsGetTodayData = oldblooddata.Where(x => x.TestDate.Date == DateTimeOffset.UtcNow.Date && x.ServiceUserId == bloodPressureReadingViewModel.BloodPressureReading.ServiceUserId).FirstOrDefault();
+					var oldblooddata = await _bloodPressureReadingService.ListAllAsync();
 
-                    bloodPressureReadingViewModel.BloodPressureReading.TestDate = DateTime.ParseExact(bloodPressureReadingViewModel.BloodPressureReading.BloodTestdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+					var IsGetTodayData = oldblooddata.Where(x => x.TestDate.Date == DateTimeOffset.UtcNow.Date && x.ServiceUserId == bloodPressureReadingViewModel.BloodPressureReading.ServiceUserId).FirstOrDefault();
 
-                    if (IsGetTodayData == null)
-                    {
-                        bloodPressureReading = await _bloodPressureReadingService.AddAsync(bloodPressureReadingViewModel.BloodPressureReading);
+					bloodPressureReadingViewModel.BloodPressureReading.TestDate = DateTime.ParseExact(bloodPressureReadingViewModel.BloodPressureReading.BloodTestdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-                        _auditService.Execute(async repository =>
-                        {
-                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = serviceuser.FirstName + " " + serviceuser.LastName + " Blood Pressure Reading has been created.", UserReference = "", CreatedBy = base.UserId });
-                        });
-                    }
-                    else
-                    {
-                        bloodPressureReadingViewModel.BloodPressureReading.Id = IsGetTodayData.Id;
+					if (IsGetTodayData == null)
+					{
+						bloodPressureReading = await _bloodPressureReadingService.AddAsync(bloodPressureReadingViewModel.BloodPressureReading);
 
-                        bloodPressureReading = await _bloodPressureReadingService.UpdateAsync(bloodPressureReadingViewModel.BloodPressureReading);
+						_auditService.Execute(async repository =>
+						{
+							await repository.CreateAuditRecord(new Audit { Action = AuditAction.Create, Details = serviceuser.FirstName + " " + serviceuser.LastName + " Blood Pressure Reading has been created.", UserReference = "", CreatedBy = base.UserId });
+						});
+					}
+					else
+					{
+						bloodPressureReadingViewModel.BloodPressureReading.Id = IsGetTodayData.Id;
 
-                        _auditService.Execute(async repository =>
-                        {
-                            await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = serviceuser.FirstName + " " + serviceuser.LastName + " Blood Pressure Reading has been updated.", UserReference = "", CreatedBy = base.UserId });
-                        });
-                    }
-                }
-                return Json(new { statuscode = 1 });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { statuscode = 3, message = ex.Message });
-            }
-        }
+						bloodPressureReading = await _bloodPressureReadingService.UpdateAsync(bloodPressureReadingViewModel.BloodPressureReading);
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            try
-            {
-                var data = await _bloodPressureReadingService.GetByIdAsync(id);
+						_auditService.Execute(async repository =>
+						{
+							await repository.CreateAuditRecord(new Audit { Action = AuditAction.Update, Details = serviceuser.FirstName + " " + serviceuser.LastName + " Blood Pressure Reading has been updated.", UserReference = "", CreatedBy = base.UserId });
+						});
+					}
+				}
+				return Json(new { statuscode = 1 });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { statuscode = 3, message = ex.Message });
+			}
+		}
 
-                await _bloodPressureReadingService.DeleteAsync(data);
+		[HttpPost]
+		public async Task<IActionResult> Delete(Guid id)
+		{
+			try
+			{
+				var data = await _bloodPressureReadingService.GetByIdAsync(id);
 
-                return Json(new { statuscode = 1 });
+				await _bloodPressureReadingService.DeleteAsync(data);
 
-            }
-            catch (Exception ex)
-            {
-                return Json(new { statuscode = 3, message = ex.Message });
-            }
-        }
-    }
+				return Json(new { statuscode = 1 });
+
+			}
+			catch (Exception ex)
+			{
+				return Json(new { statuscode = 3, message = ex.Message });
+			}
+		}
+	}
 }
