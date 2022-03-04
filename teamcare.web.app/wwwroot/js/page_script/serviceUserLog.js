@@ -62,7 +62,7 @@ $(document).ready(function () {
                     $.ajax({
                         type: "POST",
                         url: '/ServiceUserLog/UpdateLog',
-                        data: { id: $('#hdnlogid').val(), logtext: $('#txtlogtext').val() },
+                        data: { id: $('#hdnlogid').val(), logtext: $('#txtlogtext').val(), logCategory: $('#suu_log_category').val() },
                         success: function (data) {
                             if (data.statuscode == 1) {
                                 Swal.fire({
@@ -208,7 +208,7 @@ function AdminUpdateLog(ctrl) {
                 } else {
                     $('#txtlogtext').val(data.logMessage);
                 }
-
+                $('#suuLogCategory').val(data.logCategory).select2();
             } else { }
         }
     });
@@ -218,12 +218,14 @@ function AdminUpdateLog(ctrl) {
 
 async function doFilter() {
     var optFilterByApprove = $("#chkIsArchive").prop('checked');
+    var category = $("#lfLogCategory").val();
+    debugger
     var optSortBy = $("#sortByUser").val();
     var daterange = $("#txtdaterange").val();
     await $.ajax({
         type: "POST",
         url: '/ServiceUserLog/SortFilterOptionList',
-        data: { filterByserviceuser: optSortBy, IsApprove: optFilterByApprove, daterange: daterange },
+        data: { filterByserviceuser: optSortBy, IsApprove: optFilterByApprove, daterange: daterange, logCategory: category },
         success: function (data) {
             if (data !=null) {
                 $('#partialViewDataContent').html('');

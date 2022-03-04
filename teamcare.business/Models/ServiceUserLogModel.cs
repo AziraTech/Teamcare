@@ -13,6 +13,7 @@ namespace teamcare.business.Models
 		public User ActionByAdmin { get; set; }
 		public Guid LogCreatedFor { get; set; }
 		public ServiceUserModel ServiceUser { get; set; }
+		public ServiceUserLogCategory LogCategory { get; set; }				
 		public string LogMessage { get; set; }				
 		public bool IsApproved { get; set; }
 		public bool IsVisible { get; set; }

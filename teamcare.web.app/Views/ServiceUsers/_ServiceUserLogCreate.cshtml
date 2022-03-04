@@ -14,6 +14,22 @@
 	</div>*@
 @if (user.UserRole != teamcare.common.Enumerations.UserRoles.ServiceUser.ToString())
 {
+	<div class="d-flex flex-column mb-5 fv-row" style="width: 100%;">
+		<!--begin::Label-->
+		<label class="form-label fw-bold">
+			<span class="required">Category :</span>
+		</label>
+		<!--end::Label-->
+		<select class="form-select form-select-solid" id="suLogCategory" data-kt-select2="true" data-placeholder="select Category" data-allow-clear="true">
+			@if (Model.LogCategory != null)
+			{
+				foreach (var itm in Model.LogCategory)
+				{
+					<option value="@itm.Value">@itm.Text</option>
+				}
+			}
+		</select>
+	</div>
 	<div class="d-flex flex-column mb-7 fv-row">
 		<!--begin::Label-->
 		<label class="d-flex align-items-center fs-6 fw-bold form-label mb-2"><span class="required">Log Message</span></label>

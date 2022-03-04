@@ -232,9 +232,20 @@ async function sendServiceUserLog(serviceUserId, logMessageId, dbType, logId) {
             });
             return;
         }
+        else if ($('#suLogCategory').val() == null || $('#suLogCategory').val() == "0") {
+            Swal.fire({
+                text: "Please Select category",
+                icon: "info",
+                buttonsStyling: !1,
+                confirmButtonText: "Ok",
+                customClass: { confirmButton: "btn btn-light" }
+            });
+            return;
+        }
     }
     var opType = $('#editOrDelete').val();
     var DelLogId = $('#editOrDeleteId').val();
+    var category = $('#suLogCategory').val();
     dbType = opType != 'I' ? opType : dbType;
     logId = DelLogId != '' ? DelLogId : logId;
     var logMessage = '';
@@ -242,7 +253,7 @@ async function sendServiceUserLog(serviceUserId, logMessageId, dbType, logId) {
     await $.ajax({
         type: "POST",
         url: '/ServiceUsers/saveLog',
-        data: { logId: logId, dbType: dbType, serviceUserId: serviceUserId, logMessage: logMessage },
+        data: { logId: logId, dbType: dbType, serviceUserId: serviceUserId, logMessage: logMessage, logCategory: category },
         success: function (data) {
             var showMessage = ""; var icon = "";
             if (data) {
@@ -300,6 +311,7 @@ async function fncEditOrDelete(opType, logId, msgAreaId) {
             success: function (data) {
                 if (data != null) {
                     $('#sul-log_message').val(data.logMessage);
+                    $('#suLogCategory').val(data.logCategory).select2();
                     $('#' + msgAreaId).html = '';
                     $('#' + msgAreaId).html = data.logMessage;
                 } else { }

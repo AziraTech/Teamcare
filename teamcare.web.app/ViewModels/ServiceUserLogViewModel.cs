@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using teamcare.common.Configuration;
+using teamcare.common.Models;
 
 namespace teamcare.web.app.ViewModels
 {
@@ -21,5 +22,6 @@ namespace teamcare.web.app.ViewModels
         public business.Models.ServiceUserLogModel ServiceUserLogByID { get; set; }
         public ServiceUserLogCreateViewModel CreateViewModel { get; set; }
         public List<SelectListItem> ServcieUsersList { get; set; }
+        public IEnumerable<EnumListItem> LogCategory { get; set; }
     }
 }

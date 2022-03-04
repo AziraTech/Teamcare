@@ -67,7 +67,7 @@ namespace teamcare.web.app.Controllers
 				}
 			}
 
-			var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+			var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null,null);
 
 			var audit = await _auditService.ListAllAsync();
 			var myActivity = audit.Where(r => r.CreatedBy == base.UserId).ToList();

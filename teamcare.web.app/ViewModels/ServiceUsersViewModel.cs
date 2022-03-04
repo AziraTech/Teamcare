@@ -27,6 +27,6 @@ namespace teamcare.web.app.ViewModels
         public IEnumerable<business.Models.ServiceUsersDocumentsModel> ServiceUsersDocument { get; set; }
         public bool IsNextOfKin { get; set; }
         public bool IsNoEmergency { get; set; }
-
+        public IEnumerable<EnumListItem> LogCategory { get; set; }
     }
 }

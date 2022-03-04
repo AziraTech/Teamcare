@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using teamcare.business.Models;
+using teamcare.common.Enumerations;
 using teamcare.data.Entities.ServiceUsers;
 using teamcare.data.Repositories;
 
@@ -58,7 +59,7 @@ namespace teamcare.business.Services
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
         }
 
-        public async Task<ServiceUserLogModel> UpdateLogByParam(int type, Guid id, bool Status, String logtext, Guid UserId)
+        public async Task<ServiceUserLogModel> UpdateLogByParam(int type, Guid id, bool Status, String logtext, Guid UserId, ServiceUserLogCategory logCategory)
         {
 
             var logdata = await GetByIdAsync(id);
@@ -74,17 +75,17 @@ namespace teamcare.business.Services
             else if (type == 3)
             {
                 logdata.LogMessageUpdated = logtext;
+                logdata.LogCategory = logCategory;
             }
 
             logdata.Id = id;
             logdata.AdminActionOn = DateTimeOffset.UtcNow;
-
             var mapped = _mapper.Map<ServiceUserLogModel, ServiceUserLog>(logdata);
             var result = await _repository.UpdateAsync(mapped);
             return _mapper.Map<ServiceUserLog, ServiceUserLogModel>(result);
         }
 
-        public async Task<IEnumerable<ServiceUserLogModel>> ListAllSortedFiltered(Guid? filterByserviceuser, bool IsApprove, string daterange)
+        public async Task<IEnumerable<ServiceUserLogModel>> ListAllSortedFiltered(Guid? filterByserviceuser, bool IsApprove, string daterange, ServiceUserLogCategory? logCategory)
         {
 
 
@@ -101,8 +102,12 @@ namespace teamcare.business.Services
             {
                 listLogs = listLogs.Where(y => y.ServiceUser.Id == filterByserviceuser).ToList();
             }
-            
-            if(daterange != null)
+            if (logCategory!= null && logCategory!=0)
+            {
+                listLogs = listLogs.Where(y => y.LogCategory == logCategory).ToList();
+            }
+
+            if (daterange != null)
             {
                 string[] date = daterange.Split('-');
 

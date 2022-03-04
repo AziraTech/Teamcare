@@ -108,7 +108,7 @@ namespace teamcare.web.app.Controllers
                     listOfResidence.ServiceUsers = listOfResidence.ServiceUsers.Where(x => x.ArchivedOn == null).ToList();
                 }
                 if (listOfResidence != null) { listOfResidence.PrePath = "/" + _azureStorageOptions.Container; }
-                var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+                var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null,null);
                 var model = new ResidenceListViewModel
                 {
                     Residence = listOfResidence, 
@@ -218,7 +218,7 @@ namespace teamcare.web.app.Controllers
                     return await ResidenceDetail((Guid)residenceCreateViewModel.Residence.Id);
                 }
 
-                var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null);
+                var listOfLog = await _serviceUserLogService.ListAllSortedFiltered(null, false, null,null);
                 var listOfResidence = await _residenceService.ListAllAsync();                
                 var model = new ResidenceListViewModel
                 {

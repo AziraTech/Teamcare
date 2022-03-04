@@ -16,6 +16,9 @@ namespace teamcare.data.Entities.ServiceUsers
 		public Guid LogCreatedFor { get; set; }
 		public virtual ServiceUser ServiceUser { get; set; }
 
+		[Column("log_category")]
+		public ServiceUserLogCategory LogCategory { get; set; }
+
 		[Column("log_message")]
 		public string LogMessage { get; set; }
 
