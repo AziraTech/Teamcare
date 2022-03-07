@@ -64,7 +64,8 @@ namespace teamcare.data.Entities
 
 		[Column("archived_reason")]
 		public ArchiveReason ArchivedReason { get; set; }
-
+		[Column("absent_from_residence")]
+		public bool AbsentFromResidence { get; set; }
 		public virtual ICollection<DocumentUpload> DocumentUploads { get; set; }
 		public virtual ICollection<Contact> Contacts { get; set; }		
         public virtual Residence Residence { get; set; }

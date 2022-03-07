@@ -1031,5 +1031,25 @@ namespace teamcare.web.app.Controllers
 			return File(fileBytes, "application/pdf", filename);
 
 		}
+
+		public async Task<IActionResult> UpdateAbsentFromResidence(string serviceUserId, bool absentFromResidence)
+		{
+			try
+			{
+				ServiceUserModel serviceUser = await _serviceUserService.GetByIdAsync(new Guid(serviceUserId));
+				if (serviceUser != null)
+				{
+					serviceUser.AbsentFromResidence = absentFromResidence;
+					serviceUser = await _serviceUserService.UpdateAsync(serviceUser);
+					return Json(new { statuscode = 1 });
+				}
+
+				return Json(new { statuscode = -1 });
+			}
+			catch
+			{
+				return Json(new { statuscode = -2 });
+			}
+		}
 	}
 }

@@ -190,6 +190,11 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#absent-from-residence').on('change', function () {
+        var checked = this.checked;
+        UpdateAbsentFromResidence(serviceUserId, checked);
+    });
 });
 
 var rServiceUserLogSubmit = document.querySelector("#su-service_user_log_form");
@@ -1704,5 +1709,17 @@ async function DownloadServiceUserDocument(docId, prePath, blobName) {
 
 
     }
+
+}
+async function UpdateAbsentFromResidence(serviceUserId, absentFromResidence) {
+
+    await $.ajax({
+        type: "POST",
+        url: '/ServiceUsers/UpdateAbsentFromResidence',
+        data: { serviceUserId: serviceUserId, absentFromResidence: absentFromResidence },
+        success: function (data) {
+
+        }
+    });
 
 }

@@ -26,6 +26,7 @@ namespace teamcare.business.Models
         public string CurrentPreviousOccupation { get; set; }
 		public DateTime? ArchivedOn { get; set; }
         public ArchiveReason ArchivedReason { get; set; }
+        public bool AbsentFromResidence { get; set; }
         public ResidenceModel Residence { get; set; }        
         public ICollection<DocumentUploadModel> DocumentUploads { get; set; }
         public DocumentUploadModel ProfilePhoto => DocumentUploads?.OrderByDescending(x => x.CreatedOn).FirstOrDefault(i => i.IsTemporary == false && i.DocumentType == (int)DocumentTypes.ProfilePhoto);
