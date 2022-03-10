@@ -1713,12 +1713,24 @@ async function DownloadServiceUserDocument(docId, prePath, blobName) {
 }
 async function UpdateAbsentFromResidence(serviceUserId, absentFromResidence) {
 
-    await $.ajax({
-        type: "POST",
-        url: '/ServiceUsers/UpdateAbsentFromResidence',
-        data: { serviceUserId: serviceUserId, absentFromResidence: absentFromResidence },
-        success: function (data) {
-
+    await Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to make this change?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, do it!',
+        showLoaderOnConfirm: true,
+        preConfirm: async function () {
+            await $.ajax({
+                type: "POST",
+                url: '/ServiceUsers/UpdateAbsentFromResidence',
+                data: { serviceUserId: serviceUserId, absentFromResidence: absentFromResidence },
+                success: function (data) {
+                    window.location.reload();
+                }
+            });
         }
     });
 
